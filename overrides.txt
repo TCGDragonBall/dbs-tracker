@@ -1,0 +1,2 @@
+864:const IMAGE_OVERRIDES: Record<string, string> = {
+4523:        imageUrl: IMAGE_OVERRIDES[cardNumber] || `https://www.dbs-cardgame.com/images/cardlist/cardimg/${imageCode}.png`,

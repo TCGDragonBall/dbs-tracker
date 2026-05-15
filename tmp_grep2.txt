@@ -1,0 +1,16 @@
+4295:        const setCards = cards.filter(c => c.expansion === set.id);
+4307:            const sc = cards.filter(c => c.expansion === set.id);
+4333:                const rc = cards.filter(c => c.expansion === set.id && (c.rarity === rarity || c.rarity === `${rarity}*`));
+4730:          return c.expansion === targetSetId;
+4756:                const setLeaders = cards.filter(c => c.expansion === set.id && c.type.toLowerCase().includes('leader'));
+4780:                const rCards = cards.filter(c => c.expansion === set.id && c.rarity === r);
+4810:              return c.expansion === targetSetId;
+4844:              return c.expansion === targetSetId;
+4857:  const promoCardsCount = cards.filter(c => c.expansion === 'FP').length;
+6900:      : cards.filter(c => c.expansion === filters.expansion);
+7944:                           const firstCards = cards.filter(c => c.expansion === firstId || (PACK_ARRAYS[firstId] && PACK_ARRAYS[firstId].includes(c.id)));
+8067:                                       const cardsInSubSet = cards.filter(c => c.expansion === firstSubItemId || (PACK_ARRAYS[firstSubItemId] && PACK_ARRAYS[firstSubItemId].includes(c.id)));
+8095:                                   const cardsInSet = cards.filter(c => c.expansion === set.id || (PACK_ARRAYS[set.id] && PACK_ARRAYS[set.id].includes(c.id)));
+8187:                                     const cardsInSet = cards.filter(c => c.expansion === targetIdForCards || (PACK_ARRAYS[targetIdForCards] && PACK_ARRAYS[targetIdForCards].includes(c.id)));
+8291:                                   return c.expansion === item.id;
+8311:                                   const fallbackCards = cards.filter(c => c.expansion === subId || (PACK_ARRAYS[subId] && PACK_ARRAYS[subId].includes(c.id)));

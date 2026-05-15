@@ -1,0 +1,163 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helpers ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedUser() {
+      return isSignedIn();
+    }
+
+    function isAdmin() {
+      return isVerifiedUser() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        request.auth.token.email == 'anulix1983@gmail.com'
+      );
+    }
+
+    function isOwner(userId) {
+      return isVerifiedUser() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // --- Validation Helpers ---
+
+    function isValidCard(data) {
+      return data.keys().hasAll(['id', 'name', 'rarity', 'type', 'color', 'expansion']) &&
+             data.id is string && data.id.size() <= 64 &&
+             data.name is string && data.name.size() <= 200 &&
+             data.rarity is string && data.rarity.size() <= 10 &&
+             data.type is string && data.type.size() <= 50 &&
+             data.color is string && data.color.size() <= 20 &&
+             data.expansion is string && data.expansion.size() <= 20;
+    }
+
+    function isValidExpansion(data) {
+      return data.keys().hasAll(['id', 'label']) &&
+             data.id is string && data.id.size() <= 20 &&
+             data.label is string && data.label.size() <= 100;
+    }
+
+    function isValidInventoryForCreate(data) {
+      return data.keys().hasAll(['ownerId', 'cardId', 'quantity']) &&
+             data.ownerId == request.auth.uid &&
+             data.cardId is string && data.cardId.size() <= 64 &&
+             data.quantity is int && data.quantity >= 0 && data.quantity <= 1000 &&
+             (!('updatedAt' in data) || data.updatedAt == request.time) &&
+             (!('addedAt' in data) || data.addedAt == request.time);
+    }
+
+    function isValidInventoryForUpdate(data) {
+      return data.cardId is string && data.cardId.size() <= 64 &&
+             data.quantity is int && data.quantity >= 0 && data.quantity <= 1000 &&
+             (!('updatedAt' in data) || data.updatedAt == request.time || (existing() != null && data.updatedAt == existing().updatedAt));
+    }
+
+    function isValidAchievementForCreate(data) {
+      return data.keys().hasAll(['achievementId', 'ownerId', 'unlockedAt']) &&
+             data.ownerId == request.auth.uid &&
+             data.achievementId is string && data.achievementId.size() <= 64 &&
+             (data.unlockedAt == request.time || data.unlockedAt == null);
+    }
+
+    function isValidAchievementForUpdate(data) {
+      return (!('unlockedAt' in data) || data.unlockedAt == request.time || (existing() != null && data.unlockedAt == existing().unlockedAt));
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email', 'createdAt']) &&
+             data.uid == request.auth.uid &&
+             data.email is string && data.email.size() <= 256 &&
+             (!('displayName' in data) || (data.displayName is string && data.displayName.size() <= 100)) &&
+             (!('photoURL' in data) || (data.photoURL is string && data.photoURL.size() <= 1000)) &&
+             (!('language' in data) || (data.language is string && data.language.size() <= 10)) &&
+             (!('collectionGoal' in data) || (data.collectionGoal is string && data.collectionGoal.size() <= 20)) &&
+             (!('hasSetGoal' in data) || (data.hasSetGoal is bool)) &&
+             (!('friends' in data) || (data.friends is list && data.friends.size() <= 100)) &&
+             // Immutability and Timestamp logic
+             ( (resource == null && (data.createdAt == request.time || data.createdAt == null)) || 
+               (resource != null && data.createdAt == resource.data.createdAt) );
+    }
+
+    function isValidFeedback(data) {
+      return data.keys().hasAll(['userId', 'message', 'timestamp']) &&
+             data.userId == request.auth.uid &&
+             data.message is string && data.message.size() <= 2000 &&
+             (data.timestamp == request.time || data.timestamp == null);
+    }
+
+    // --- Collection Matches ---
+
+    match /cards/{cardId} {
+      allow read: if isVerifiedUser();
+      allow write: if isAdmin() && isValidCard(incoming());
+    }
+
+    match /expansions/{expansionId} {
+      allow read: if isVerifiedUser();
+      allow write: if isAdmin() && isValidExpansion(incoming());
+    }
+
+    match /inventory/{inventoryId} {
+      allow get: if isOwner(existing().ownerId) || isAdmin();
+      allow list: if isVerifiedUser() && (resource.data.ownerId == request.auth.uid || isAdmin());
+      allow create: if isVerifiedUser() && isValidInventoryForCreate(incoming());
+      allow update: if isOwner(existing().ownerId) && 
+                      isValidInventoryForUpdate(incoming()) &&
+                      incoming().diff(existing()).affectedKeys().hasOnly(['quantity', 'updatedAt']);
+      allow delete: if isOwner(existing().ownerId);
+    }
+
+    match /achievements/{achievementId} {
+      allow get: if isOwner(existing().ownerId) || isAdmin();
+      allow list: if isVerifiedUser() && (resource.data.ownerId == request.auth.uid || isAdmin());
+      allow create: if isVerifiedUser() && isValidAchievementForCreate(incoming());
+      allow update: if isOwner(existing().ownerId) &&
+                      isValidAchievementForUpdate(incoming()) &&
+                      incoming().diff(existing()).affectedKeys().hasOnly(['currentTier', 'currentProgress', 'unlockedAt', 'isSeen']);
+      allow delete: if isOwner(existing().ownerId);
+    }
+
+    match /users/{userId} {
+      allow read: if isVerifiedUser() || isAdmin();
+      allow create: if isVerifiedUser() && isValidUser(incoming()) && userId == request.auth.uid;
+      allow update: if isValidUser(incoming()) && (
+                      (isOwner(userId) && incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'photoURL', 'language', 'collectionGoal', 'hasSetGoal', 'friends', 'uniqueCards', 'totalCards', 'lastStatsUpdate'])) ||
+                      isAdmin()
+                    );
+      allow delete: if isOwner(userId) || isAdmin();
+    }
+
+    match /feedback/{feedbackId} {
+      allow create: if isVerifiedUser() && isValidFeedback(incoming());
+      allow read: if isAdmin();
+    }
+
+    match /admins/{userId} {
+      allow read: if isVerifiedUser();
+      allow write: if isAdmin();
+    }
+
+    match /test/connection {
+      allow read: if isVerifiedUser();
+    }
+  }
+}

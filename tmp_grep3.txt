@@ -1,0 +1,9 @@
+4729:          if (PACK_ARRAYS[targetSetId]) return PACK_ARRAYS[targetSetId].includes(c.id);
+4809:              if (PACK_ARRAYS[targetSetId]) return PACK_ARRAYS[targetSetId].includes(c.id);
+4843:              if (PACK_ARRAYS[targetSetId]) return PACK_ARRAYS[targetSetId].includes(c.id);
+7950:                           const firstCards = cards.filter(c => c.expansion === firstId || (PACK_ARRAYS[firstId] && PACK_ARRAYS[firstId].includes(c.id)));
+8073:                                       const cardsInSubSet = cards.filter(c => c.expansion === firstSubItemId || (PACK_ARRAYS[firstSubItemId] && PACK_ARRAYS[firstSubItemId].includes(c.id)));
+8101:                                   const cardsInSet = cards.filter(c => c.expansion === set.id || (PACK_ARRAYS[set.id] && PACK_ARRAYS[set.id].includes(c.id)));
+8193:                                     const cardsInSet = cards.filter(c => c.expansion === targetIdForCards || (PACK_ARRAYS[targetIdForCards] && PACK_ARRAYS[targetIdForCards].includes(c.id)));
+8296:                                   if (PACK_ARRAYS[item.id]) return PACK_ARRAYS[item.id].includes(c.id);
+8317:                                   const fallbackCards = cards.filter(c => c.expansion === subId || (PACK_ARRAYS[subId] && PACK_ARRAYS[subId].includes(c.id)));

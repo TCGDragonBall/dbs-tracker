@@ -1,0 +1,32 @@
+1980:FP-040	King Piccolo	PR	Battle	Black	FP
+1981:FP-041	Vegeta (Mini) : DA	PR	Battle	Blue	FP
+1982:FP-042	Android 17	PR	Battle	Red	FP
+1983:FP-043	Son Goku (Mini) : DA	PR	Battle	Yellow	FP
+1984:FP-044	Vegeta	PR	Battle	Red	FP
+1985:FP-045	Tien Shinhan	PR	Battle	Blue	FP
+1986:FP-046	Nappa	PR	Battle	Green	FP
+1987:FP-047	Vegeta (Mini) : DA	PR	Battle	Yellow	FP
+1988:FP-048	Piccolo Jr.	PR	Battle	Black	FP
+1989:FP-049	Son Goku : Childhood	PR	Battle	Black	FP
+2588:FP-049_RE_SB01	Son Goku : Childhood (Release Event SB01)	PR*	Battle	Black	FP
+2589:FP-044_TP	Vegeta	PR*	Battle	Red	TP07
+2590:FP-045_TP	Tien Shinhan	PR*	Battle	Blue	TP07
+2591:FP-046_TP	Nappa	PR*	Battle	Green	TP07
+2592:FP-047_TP	Vegeta (Mini) : DA	PR*	Battle	Yellow	TP07
+2593:FP-048_TP	Piccolo Jr.	PR*	Battle	Black	TP07
+2594:FP-044_TP_W	Vegeta (Winner)	PR*	Battle	Red	TP07
+2595:FP-045_TP_W	Tien Shinhan (Winner)	PR*	Battle	Blue	TP07
+2596:FP-046_TP_W	Nappa (Winner)	PR*	Battle	Green	TP07
+2597:FP-047_TP_W	Vegeta (Mini) : DA (Winner)	PR*	Battle	Yellow	TP07
+2598:FP-048_TP_W	Piccolo Jr. (Winner)	PR*	Battle	Black	TP07
+2607:FP-045_LP01	Tien Shinhan (Limited Pack Manga Version 01)	PR*	Battle	Blue	LP01
+1990:FP-050	Son Goku : DA	PR	Battle	Red	FP
+1991:FP-051	Son Gohan : SH	PR	Battle	Green	FP
+1992:FP-052	Android 18	PR	Battle	Red	FP
+1993:FP-053	Zamasu/Goku Black	PR	Battle	Blue	FP
+1994:FP-054	Son Gohan : Childhood	PR	Battle	Green	FP
+1995:FP-055	Jeice/Burter	PR	Battle	Yellow	FP
+1996:FP-056	Piccolo	PR	Battle	Black	FP
+1997:FP-057	Son Gohan : Childhood	PR	Battle	Red	FP
+1998:FP-058	Son Gohan : Adolescence	PR	Battle	Blue	FP
+1999:FP-059	Son Goku	PR	Battle	Green	FP

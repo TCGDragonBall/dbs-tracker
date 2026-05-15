@@ -1,0 +1,116 @@
+{
+  "entities": {
+    "Card": {
+      "title": "Card",
+      "description": "A Dragon Ball Super Card Game card",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "rarity": { "type": "string" },
+        "type": { "type": "string" },
+        "color": { "type": "string" },
+        "expansion": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "sourceProduct": { "type": "string" },
+        "releaseDate": { "type": "string" }
+      },
+      "required": ["id", "name", "rarity", "type", "color", "expansion"]
+    },
+    "Expansion": {
+      "title": "Expansion",
+      "description": "An expansion set or group",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "label": { "type": "string" },
+        "sub": { "type": "string" },
+        "locked": { "type": "boolean" },
+        "isSubItem": { "type": "boolean" },
+        "category": { "type": "string" }
+      },
+      "required": ["id", "label"]
+    },
+    "Inventory": {
+      "title": "Inventory",
+      "description": "User's card collection quantity",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string" },
+        "cardId": { "type": "string" },
+        "quantity": { "type": "integer" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "cardId", "quantity"]
+    },
+    "Feedback": {
+      "title": "Feedback",
+      "description": "User feedback messages",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "message": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "message"]
+    },
+    "Achievement": {
+      "title": "Achievement",
+      "description": "User earned achievement status",
+      "type": "object",
+      "properties": {
+        "achievementId": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "unlockedAt": { "type": "string", "format": "date-time" },
+        "currentProgress": { "type": "number" },
+        "currentTier": { "type": "integer" },
+        "isSeen": { "type": "boolean" }
+      },
+      "required": ["achievementId", "ownerId", "unlockedAt"]
+    },
+    "User": {
+      "title": "User",
+      "description": "User profile data",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "email": { "type": "string" },
+        "friends": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    }
+  },
+  "firestore": {
+    "/cards/{cardId}": {
+      "schema": "Card",
+      "description": "Global card database"
+    },
+    "/expansions/{expansionId}": {
+      "schema": "Expansion",
+      "description": "Expansion metadata"
+    },
+    "/inventory/{inventoryId}": {
+      "schema": "Inventory",
+      "description": "User's owned cards"
+    },
+    "/feedback/{feedbackId}": {
+      "schema": "Feedback",
+      "description": "User feedback"
+    },
+    "/achievements/{achievementId}": {
+      "schema": "Achievement",
+      "description": "User earned achievements"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/admins/{userId}": {
+      "schema": { "type": "object", "properties": { "role": { "type": "string" } } },
+      "description": "Admin users list"
+    }
+  }
+}
