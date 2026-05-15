@@ -10484,7 +10484,7 @@ export default function App() {
       {/* Joyride Onboarding Tutorial */}
       <Joyride
         steps={tutorialSteps}
-        run={true} // FORCED FOR TESTING
+        run={!hasCompletedTutorial}
         continuous={true}
         scrollToFirstStep={false}
         disableOverlayClose={true}
