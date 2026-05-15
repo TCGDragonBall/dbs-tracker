@@ -1177,7 +1177,6 @@ const translations = {
     recentAdded: 'Últimas añadidas',
     last7days: 'Últimos 7 días',
     exploreCollections: 'Explorar Colecciones',
-    estimatedValue: 'Valor Estimado',
     mostCompletedSet: 'Set más completo',
     completionProgress: 'Progreso de Colección',
     uniqueCards: 'Cartas Únicas',
@@ -1222,7 +1221,6 @@ const translations = {
     currentSet: 'Set Actual',
     viewDetails: 'VER DETALLES',
     hideDetails: 'OCULTAR DETALLES',
-    marketValue: 'Valor de Mercado',
     type: 'Tipo',
     banned: 'Baneada',
     bannedBO1: 'Baneada (BO1)',
@@ -1299,7 +1297,6 @@ const translations = {
     recentAdded: 'Recently added',
     last7days: 'Last 7 days',
     exploreCollections: 'Explore Collections',
-    estimatedValue: 'Estimated Value',
     mostCompletedSet: 'Most completed set',
     completionProgress: 'Collection Progress',
     uniqueCards: 'Unique Cards',
@@ -1344,7 +1341,6 @@ const translations = {
     currentSet: 'Current Set',
     viewDetails: 'VIEW DETAILS',
     hideDetails: 'HIDE DETAILS',
-    marketValue: 'Market Value',
     type: 'Type',
     banned: 'Banned',
     bannedBO1: 'Banned (BO1)',
@@ -1433,7 +1429,6 @@ interface Card {
   expansion: string;
   imageUrl: string;
   backImageUrl?: string;
-  marketValue: number;
   isFoil?: boolean;
   legalStatus?: 'Banned' | 'Limited' | 'Errata' | 'Banned (BO1)';
   legalDate?: string;
@@ -5084,7 +5079,6 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
     group.items.forEach(set => {
       // Logic to get cards for this set (including virtual sets from Coleccionismo)
       const getSetCards = (cards: Card[], setId: string) => {
-        const tags = getCardTags({ id: '', cardNumber: '', expansion: '', type: '', rarity: '', color: '', name: '', marketValue: 0 } as any); // Dummy for getCardTags logic
         // We need a proper getCardTags that works with the current card
         const cardTagsCheck = (c: Card, targetSetId: string) => {
           const tags = getCardTags(c);
@@ -5303,11 +5297,6 @@ const Dashboard = ({
     };
   }, [cards, inventory, collectionGoal]);
 
-  const totalValue = inventory.reduce((acc, curr) => {
-    const card = cards.find(c => c.id === curr.cardId);
-    return acc + (card ? card.marketValue * curr.quantity : 0);
-  }, 0);
-
   const chartData = [
     { name: t.completed, value: stats.totalOwned, color: '#FF8C00' },
     { name: t.remaining, value: Math.max(0, stats.totalNeeded - stats.totalOwned), color: '#2A2A2A' }
@@ -5348,8 +5337,8 @@ const Dashboard = ({
           <h3 className="text-2xl font-black text-white mb-3">¡Empieza tu Colección!</h3>
           <p className="text-gray-400 text-sm mb-6 max-w-[280px]">
             {lang === 'es' 
-              ? 'Tu colección está vacía. Usa el menú inferior para descubrir cartas y consultar precios.' 
-              : 'Your collection is empty. Use the bottom menu to discover cards and check prices.'}
+              ? 'Tu colección está vacía. Usa el menú inferior para descubrir cartas y gestionar tu colección.' 
+              : 'Your collection is empty. Use the bottom menu to discover cards and manage your collection.'}
           </p>
           <div className="grid grid-cols-2 gap-3 w-full">
             <div className="bg-white/5 rounded-xl p-4 flex flex-col items-center border border-white/5 shadow-inner">
@@ -5433,14 +5422,7 @@ const Dashboard = ({
               </div>
             </div>
             
-            {/* Value Section */}
-            <div className="w-full py-4 mt-8 bg-black/30 backdrop-blur-md rounded-2xl border border-white/5 flex flex-col items-center justify-center gap-1">
-              <span className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">{t.collectionValue}</span>
-              <span className="text-3xl font-black text-cyan-400 tracking-tight flex items-start">
-                <span className="text-lg mt-1 text-cyan-600 mr-1">$</span>
-                {totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-              </span>
-            </div>
+            {/* Value section removed */}
           </div>
         </div>
       )}
@@ -7131,8 +7113,8 @@ export default function App() {
     {
       target: '#tour-nav-stats',
       content: lang === 'es' 
-        ? 'Analiza el valor de mercado total y descubre qué colores o rarezas predominan en tu carpeta a través de gráficas.' 
-        : 'Analyze the total market value and discover what colors or rarities dominate your binder through charts.',
+        ? 'Descubre qué colores o rarezas predominan en tu carpeta a través de gráficas interactivas.' 
+        : 'Discover what colors or rarities dominate your binder through interactive charts.',
       skipBeacon: true,
       title: lang === 'es' ? 'Gráficos y Datos' : 'Charts and Data',
       placement: 'top',
@@ -7267,7 +7249,7 @@ export default function App() {
     alternatives: DEFAULT_ALTERNATIVES,
     owned: 'all'
   });
-  const [sortBy, setSortBy] = useState<'index' | 'marketValue' | 'name'>('index');
+  const [sortBy, setSortBy] = useState<'index' | 'name'>('index');
 
   useEffect(() => {
     setIsSearchOpen(false);
@@ -7459,7 +7441,6 @@ export default function App() {
     
     return matchesSearch && matchesExpansion && matchesRarity && matchesColor && matchesType && matchesLegal;
   }).sort((a, b) => {
-    if (sortBy === 'marketValue') return b.marketValue - a.marketValue;
     if (sortBy === 'name') return a.name.localeCompare(b.name);
     
     if (gameType === 'fusion' && filters.expansion !== 'Todos') {
@@ -7846,7 +7827,6 @@ export default function App() {
           expansion: expansionId || 'BT1',
           imageUrl: imageUrl,
           backImageUrl: backImageUrl,
-          marketValue: rarity === 'SR' ? 25.0 : rarity === 'SPR' ? 85.0 : rarity === 'R' ? 5.0 : 0.5,
           isFoil: ['SR', 'SPR', 'SCR', 'GDR', 'RLR', 'PRW', 'LEADER RARE', 'L*', 'C*', 'UC*', 'R*', 'SR*', 'SCR*', 'SCR**'].includes(rarity),
           ...(SET_METADATA[cardNumber] || SET_METADATA[expansionId] || {})
         };
@@ -8354,7 +8334,7 @@ export default function App() {
             />
           </div>
           <h1 className="text-4xl font-black text-white mb-4 tracking-tight uppercase italic drop-shadow-lg">DBS<span className="text-orange-500">TRACKER</span></h1>
-          <p className="text-gray-300 mb-8 leading-relaxed px-4 text-sm font-medium drop-shadow-md">Gestiona tu colección de Dragon Ball Super Card Game con estilo. Precios en tiempo real, inventario y más.</p>
+          <p className="text-gray-300 mb-8 leading-relaxed px-4 text-sm font-medium drop-shadow-md">Gestiona tu colección de Dragon Ball Super Card Game con estilo. Inventario en tiempo real, seguimiento de colecciones y más.</p>
           <button
             onClick={handleLogin}
             className="w-full py-4 bg-white text-black font-black rounded-2xl hover:bg-gray-100 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 shadow-2xl uppercase tracking-tighter"
