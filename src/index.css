@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  /* Dragon Ball Theme Colors */
+  --color-db-orange: #FF8C00;
+  --color-db-blue: #0047AB;
+  --color-db-dark: #121212;
+  --color-db-card: #1E1E1E;
+}
+
+@layer base {
+  body {
+    @apply bg-[#121212] text-gray-100;
+  }
+}
+
+@layer utilities {
+  .db-border-orange {
+    border: 2px solid var(--color-db-orange);
+    box-shadow: 0 0 10px rgba(255, 140, 0, 0.3);
+  }
+  .db-border-blue {
+    border: 2px solid var(--color-db-blue);
+    box-shadow: 0 0 10px rgba(0, 71, 171, 0.3);
+  }
+  .db-glow-orange {
+    box-shadow: 0 0 15px rgba(255, 140, 0, 0.5);
+  }
+  .db-glow-blue {
+    box-shadow: 0 0 15px rgba(0, 71, 171, 0.5);
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  /* Poke-Holo Animations */
+  @keyframes holoSparkle {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.5; }
+  }
+  
+  @keyframes holoGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .scr-gdr-foil {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 50%),
+      linear-gradient(115deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.4) 30%, 
+        rgba(255, 0, 255, 0.2) 45%, 
+        rgba(0, 255, 255, 0.2) 55%, 
+        rgba(255, 255, 255, 0.4) 70%, 
+        transparent 100%
+      );
+    background-size: 200% 200%;
+    mix-blend-mode: color-dodge;
+    filter: brightness(1.2) contrast(1.2);
+    animation: holoGradient 4s ease infinite;
+    pointer-events: none;
+    z-index: 20;
+  }
+
+  .scr-gdr-foil::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
+    opacity: 0.3;
+    mix-blend-mode: overlay;
+    animation: holoSparkle 2s ease-in-out infinite;
+  }
+}

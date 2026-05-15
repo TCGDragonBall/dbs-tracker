@@ -1,0 +1,18 @@
+import {StrictMode} from 'react';
+import {createRoot} from 'react-dom/client';
+import App from './App.tsx';
+import './index.css';
+import { AuthProvider } from './AuthContext';
+import { ErrorBoundary } from './components/ErrorBoundary';
+
+console.log('%c DBS Tracker Loaded - v1.5.0 ', 'background: #f97316; color: white; font-weight: bold; padding: 4px; border-radius: 4px;');
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <ErrorBoundary>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </ErrorBoundary>
+  </StrictMode>,
+);
