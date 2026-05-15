@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Joyride, CallBackProps, STATUS, Step } from 'react-joyride';
 import { 
   PieChart, 
   Pie, 
@@ -61,7 +62,7 @@ import { signInWithPopup, signOut } from 'firebase/auth';
 import { useAuth } from './AuthContext';
 import emailjs from '@emailjs/browser';
 
-const APP_VERSION = '4.6.0';
+const APP_VERSION = '5.0.2';
 
 const CATEGORY_BG: Record<string, string> = {
   'box': '/fondobox.jpg',
@@ -3278,6 +3279,23 @@ const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata'
 
 const CHANGELOG = [
   {
+    version: '5.0.2',
+    date: '15 de mayo de 2026',
+    changes: [
+      { es: 'Nuevo tutorial interactivo para ayudar a los nuevos usuarios a familiarizarse con la app.', en: 'New interactive tutorial to help new users familiarize themselves with the app.' },
+      { es: 'Añadidos Empty States visuales cuando no hay cartas en la colección o al buscar.', en: 'Added visual Empty States when there are no cards in the collection or searching.' }
+    ]
+  },
+  {
+    version: '5.0.1',
+    date: '15 de mayo de 2026',
+    changes: [
+      { es: 'Añadido botón de donaciones en el perfil para apoyar el proyecto mediante Ko-fi.', en: 'Added donation button in profile to support the project via Ko-fi.' },
+      { es: 'Raffinada la lógica de filtros y opciones de versiones alternativas separando Fusion World y Masters.', en: 'Refined filtering logic and alternative versions choices separating Fusion World and Masters.' },
+      { es: 'Corregida la etiqueta de secciones de color en el menú de filtros.', en: 'Fixed color section label in the filters menu.' }
+    ]
+  },
+  {
     version: '5.0.0',
     date: '14 de mayo de 2026',
     changes: [
@@ -5320,78 +5338,112 @@ const Dashboard = ({
         </div>
       </motion.a>
 
-      {/* Main Progress Ring */}
-      <div className="bg-[#1E1E1E] rounded-2xl p-8 shadow-xl border border-white/5 flex flex-col items-center text-center relative overflow-hidden">
-        {/* Background Image with Opacity */}
-        <img 
-          src="/fondo portada.jpg"
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover z-0 opacity-15"
-          alt=""
-        />
-        <div className="absolute inset-0 z-1 bg-gradient-to-b from-transparent to-[#1E1E1E]/60" />
-        
-        <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full -mr-16 -mt-16 blur-3xl opacity-50 z-2" />
-        
-        <div className="relative z-10 w-full flex flex-col items-center">
-          <div className="flex flex-col items-center mb-8 pt-4">
-            <h3 className="text-[10px] font-black text-orange-500 uppercase tracking-[0.3em] mb-1 italic">
-              {lang === 'es' ? 'COLECCIÓN GLOBAL' : 'GLOBAL COLLECTION'}
-            </h3>
-            <p className="text-[8px] font-bold text-gray-500 uppercase tracking-[0.2em]">
-              MODO: {collectionGoal === 'collector' ? t.collector : t.player}
-            </p>
+      {/* Main Progress Ring OR Empty State */}
+      {inventory.length === 0 ? (
+        <div className="bg-[#1E1E1E] rounded-2xl p-8 shadow-xl border border-dashed border-orange-500/30 flex flex-col items-center text-center relative overflow-hidden">
+          <div className="w-20 h-20 bg-orange-500/10 rounded-full flex items-center justify-center mb-6 relative">
+            <div className="absolute inset-0 bg-orange-500/20 rounded-full animate-ping opacity-50" />
+            <Package size={36} className="text-orange-500 relative z-10" />
           </div>
-          
-          <div className="relative w-56 h-56 mb-4 group lowercase">
-            <div className="absolute inset-0 bg-orange-500/5 rounded-full blur-2xl group-hover:bg-orange-500/10 transition-all duration-700" />
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={chartData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={75}
-                  outerRadius={95}
-                  paddingAngle={8}
-                  dataKey="value"
-                  strokeWidth={0}
-                  startAngle={90}
-                  endAngle={450}
-                  cornerRadius={10}
-                >
-                  {chartData.map((entry, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
-                      fill={entry.color} 
-                      className="transition-all duration-500 hover:opacity-80"
-                    />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-6xl font-black text-white italic leading-none drop-shadow-2xl">{stats.percentage}%</span>
-              <span className="text-[8px] font-bold text-gray-500 uppercase tracking-[0.2em] mt-2">{t.completionProgress}</span>
+          <h3 className="text-2xl font-black text-white mb-3">¡Empieza tu Colección!</h3>
+          <p className="text-gray-400 text-sm mb-6 max-w-[280px]">
+            {lang === 'es' 
+              ? 'Tu colección está vacía. Usa el menú inferior para descubrir cartas y consultar precios.' 
+              : 'Your collection is empty. Use the bottom menu to discover cards and check prices.'}
+          </p>
+          <div className="grid grid-cols-2 gap-3 w-full">
+            <div className="bg-white/5 rounded-xl p-4 flex flex-col items-center border border-white/5 shadow-inner">
+              <Package size={20} className="text-cyan-500 mb-2" />
+              <span className="text-[10px] font-black uppercase text-gray-300 tracking-widest">{lang === 'es' ? 'Explora' : 'Browse'}</span>
             </div>
-          </div>
-
-          <div className="w-full flex justify-end mt-4">
-            <div className="flex flex-col items-end gap-1">
-              <div className="flex items-center gap-2 bg-black/40 px-3 py-1.5 rounded-full border border-white/10 backdrop-blur-sm shadow-xl">
-                <Layers size={12} className="text-orange-500" />
-                <span className="text-[13px] font-black text-white uppercase tracking-tighter">
-                  {stats.totalOwned} <span className="text-gray-500">/ {stats.totalNeeded}</span>
-                </span>
-              </div>
-              <div className="flex items-baseline gap-1 mr-2">
-                <span className="text-xs font-black text-orange-400 italic leading-none">{cards.length}</span>
-                <span className="text-[7px] font-black text-gray-400 uppercase tracking-tighter">{t.cardsLabel}</span>
-              </div>
+            <div className="bg-white/5 rounded-xl p-4 flex flex-col items-center border border-white/5 shadow-inner">
+              <Search size={20} className="text-rose-500 mb-2" />
+              <span className="text-[10px] font-black uppercase text-gray-300 tracking-widest">{lang === 'es' ? 'Busca' : 'Search'}</span>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="bg-[#1E1E1E] rounded-2xl p-8 shadow-xl border border-white/5 flex flex-col items-center text-center relative overflow-hidden">
+          {/* Background Image with Opacity */}
+          <img 
+            src="/fondo portada.jpg"
+            loading="lazy"
+            className="absolute inset-0 w-full h-full object-cover z-0 opacity-15"
+            alt=""
+          />
+          <div className="absolute inset-0 z-1 bg-gradient-to-b from-transparent to-[#1E1E1E]/60" />
+          
+          <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full -mr-16 -mt-16 blur-3xl opacity-50 z-2" />
+          
+          <div className="relative z-10 w-full flex flex-col items-center">
+            <div className="flex flex-col items-center mb-8 pt-4">
+              <h3 className="text-[10px] font-black text-orange-500 uppercase tracking-[0.3em] mb-1 italic">
+                {lang === 'es' ? 'COLECCIÓN GLOBAL' : 'GLOBAL COLLECTION'}
+              </h3>
+              <p className="text-[8px] font-bold text-gray-500 uppercase tracking-[0.2em]">
+                MODO: {collectionGoal === 'collector' ? t.collector : t.player}
+              </p>
+            </div>
+            
+            <div className="relative w-56 h-56 mb-4 group lowercase">
+              <div className="absolute inset-0 bg-orange-500/5 rounded-full blur-2xl group-hover:bg-orange-500/10 transition-all duration-700" />
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={chartData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={75}
+                    outerRadius={95}
+                    paddingAngle={8}
+                    dataKey="value"
+                    strokeWidth={0}
+                    startAngle={90}
+                    endAngle={450}
+                    cornerRadius={10}
+                  >
+                    {chartData.map((entry, index) => (
+                      <Cell 
+                        key={`cell-${index}`} 
+                        fill={entry.color} 
+                        className="transition-all duration-500 hover:opacity-80"
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-6xl font-black text-white italic leading-none drop-shadow-2xl">{stats.percentage}%</span>
+                <span className="text-[8px] font-bold text-gray-500 uppercase tracking-[0.2em] mt-2">{t.completionProgress}</span>
+              </div>
+            </div>
+
+            <div className="w-full flex justify-end mt-4">
+              <div className="flex flex-col items-end gap-1">
+                <div className="flex items-center gap-2 bg-black/40 px-3 py-1.5 rounded-full border border-white/10 backdrop-blur-sm shadow-xl">
+                  <Layers size={12} className="text-orange-500" />
+                  <span className="text-[13px] font-black text-white uppercase tracking-tighter">
+                    {stats.totalOwned} <span className="text-gray-500">/ {stats.totalNeeded}</span>
+                  </span>
+                </div>
+                <div className="flex items-baseline gap-1 mr-2">
+                  <span className="text-xs font-black text-orange-400 italic leading-none">{cards.length}</span>
+                  <span className="text-[7px] font-black text-gray-400 uppercase tracking-tighter">{t.cardsLabel}</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Value Section */}
+            <div className="w-full py-4 mt-8 bg-black/30 backdrop-blur-md rounded-2xl border border-white/5 flex flex-col items-center justify-center gap-1">
+              <span className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">{t.collectionValue}</span>
+              <span className="text-3xl font-black text-cyan-400 tracking-tight flex items-start">
+                <span className="text-lg mt-1 text-cyan-600 mr-1">$</span>
+                {totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Recently Added Section Moved Here */}
       {recentlyAddedCards.length > 0 && (
@@ -5523,41 +5575,55 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
 
   return (
     <div className="space-y-8 pb-32">
-      <div className="bg-[#1E1E1E] rounded-3xl p-6 shadow-xl border border-white/5">
-        <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-6">{t.colorProgress}</h3>
-        
-        <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-          {colorData.map((stat) => (
-            <div key={stat.name} className="flex items-center justify-between border-b border-white/5 pb-2">
-              <div className="flex flex-col">
-                <p className="text-xs font-black text-white italic uppercase tracking-tighter">
-                  {(t as any).colorNames?.[stat.name] || stat.name}
-                </p>
-                <p className="text-[9px] text-gray-500 font-bold uppercase">{stat.owned} / {stat.total}</p>
-              </div>
-              <p className={`text-xs font-black italic ${stat.percentage === 100 ? 'text-green-500' : 'text-orange-500'}`}>{stat.percentage}%</p>
-            </div>
-          ))}
+      {inventory.length === 0 ? (
+        <div className="bg-[#1E1E1E] rounded-3xl p-8 shadow-xl border border-dashed border-orange-500/30 flex flex-col items-center text-center opacity-80 mt-4">
+          <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-6">
+            <BarChart3 size={36} className="text-gray-500" />
+          </div>
+          <h3 className="text-xl font-black text-white mb-2">Sin datos disponibles</h3>
+          <p className="text-gray-400 text-sm max-w-[280px]">
+             {lang === 'es' ? 'Aún no hay datos que analizar. Empieza a añadir cartas a tu colección para ver estadísticas detalladas sobre su rareza, colores y tipos.' : 'No data available yet. Start adding cards to your collection to see detailed statistics on rarity, colors and types.'}
+          </p>
         </div>
-      </div>
+      ) : (
+        <>
+          <div className="bg-[#1E1E1E] rounded-3xl p-6 shadow-xl border border-white/5">
+            <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-6">{t.colorProgress}</h3>
+            
+            <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+              {colorData.map((stat) => (
+                <div key={stat.name} className="flex items-center justify-between border-b border-white/5 pb-2">
+                  <div className="flex flex-col">
+                    <p className="text-xs font-black text-white italic uppercase tracking-tighter">
+                      {(t as any).colorNames?.[stat.name] || stat.name}
+                    </p>
+                    <p className="text-[9px] text-gray-500 font-bold uppercase">{stat.owned} / {stat.total}</p>
+                  </div>
+                  <p className={`text-xs font-black italic ${stat.percentage === 100 ? 'text-green-500' : 'text-orange-500'}`}>{stat.percentage}%</p>
+                </div>
+              ))}
+            </div>
+          </div>
 
-      <div className="bg-[#1E1E1E] rounded-3xl p-6 shadow-xl border border-white/5">
-        <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-6">{t.distributionByType}</h3>
-        
-        <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-          {typeData.map((stat) => (
-            <div key={stat.name} className="flex items-center justify-between border-b border-white/5 pb-2">
-              <div className="flex flex-col">
-                <p className="text-xs font-black text-white italic uppercase tracking-tighter">
-                  {(t as any).typeNames?.[stat.name] || stat.name}
-                </p>
-                <p className="text-[9px] text-gray-500 font-bold uppercase">{stat.owned} / {stat.total}</p>
-              </div>
-              <p className={`text-xs font-black italic ${stat.percentage === 100 ? 'text-green-500' : 'text-orange-500'}`}>{stat.percentage}%</p>
+          <div className="bg-[#1E1E1E] rounded-3xl p-6 shadow-xl border border-white/5">
+            <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-6">{t.distributionByType}</h3>
+            
+            <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+              {typeData.map((stat) => (
+                <div key={stat.name} className="flex items-center justify-between border-b border-white/5 pb-2">
+                  <div className="flex flex-col">
+                    <p className="text-xs font-black text-white italic uppercase tracking-tighter">
+                      {(t as any).typeNames?.[stat.name] || stat.name}
+                    </p>
+                    <p className="text-[9px] text-gray-500 font-bold uppercase">{stat.owned} / {stat.total}</p>
+                  </div>
+                  <p className={`text-xs font-black italic ${stat.percentage === 100 ? 'text-green-500' : 'text-orange-500'}`}>{stat.percentage}%</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
+        </>
+      )}
 
       <div className="bg-[#1E1E1E] rounded-3xl p-6 shadow-xl border border-white/5">
         <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-6">{t.distributionByRarity}</h3>
@@ -6268,6 +6334,7 @@ const SearchIcon = (props: any) => <CustomIcon src="/assets/buscar.png" {...prop
         ].map((tab) => (
           <button
             key={tab.id}
+            id={`tour-nav-${tab.id}`}
             onClick={() => handleTabChange(tab.id)}
             className={`flex flex-col items-center gap-1 transition-colors ${activeTab === tab.id ? 'text-orange-500' : 'text-white/70'}`}
           >
@@ -7028,6 +7095,82 @@ export default function App() {
   const [hasSetGoal, setHasSetGoal] = useState(() => {
     return localStorage.getItem('hasSetGoal') === 'true';
   });
+
+  const [hasCompletedTutorial, setHasCompletedTutorial] = useState(() => {
+    return localStorage.getItem('tutorialStep') === 'completed';
+  });
+
+  const tutorialSteps: Step[] = useMemo(() => [
+    {
+      target: '#tour-nav-home',
+      content: lang === 'es' 
+        ? 'En Inicio verás el resumen global de tu colección. Usa el selector superior para cambiar entre Fusion World y Masters.' 
+        : 'In Home you will see the global summary of your collection. Use the top selector to switch between Fusion World and Masters.',
+      skipBeacon: true,
+      title: lang === 'es' ? 'Vista General' : 'Overview',
+      placement: 'top',
+    },
+    {
+      target: '#tour-nav-collection',
+      content: lang === 'es' 
+        ? 'Navega por el catálogo completo organizado por Sets, Expansiones y Paquetes Promocionales para descubrir y adquirir nuevas cartas.' 
+        : 'Browse the full catalog organized by Sets, Expansions, and Promotional Packs to discover and acquire new cards.',
+      skipBeacon: true,
+      title: lang === 'es' ? 'Explorar' : 'Explore',
+      placement: 'top',
+    },
+    {
+      target: '#tour-nav-search',
+      content: lang === 'es' 
+        ? 'Encuentra cartas por nombre o código. Usa el botón de filtros para afinar por rareza, color o etiquetas.' 
+        : 'Find cards by name or code. Use the filters button to refine by rarity, color, or tags.',
+      skipBeacon: true,
+      title: lang === 'es' ? 'Búsqueda Avanzada' : 'Advanced Search',
+      placement: 'top',
+    },
+    {
+      target: '#tour-nav-stats',
+      content: lang === 'es' 
+        ? 'Analiza el valor de mercado total y descubre qué colores o rarezas predominan en tu carpeta a través de gráficas.' 
+        : 'Analyze the total market value and discover what colors or rarities dominate your binder through charts.',
+      skipBeacon: true,
+      title: lang === 'es' ? 'Gráficos y Datos' : 'Charts and Data',
+      placement: 'top',
+    },
+    {
+      target: '#tour-nav-profile',
+      content: lang === 'es' 
+        ? 'Revisa tus Preferencias y Logros. Si te gusta la App, ¡tienes un botón para apoyar el proyecto en Ko-Fi!' 
+        : 'Check your Preferences and Achievements. If you like the App, there is a button to support the project on Ko-Fi!',
+      skipBeacon: true,
+      title: lang === 'es' ? 'Tu Perfil' : 'Your Profile',
+      placement: 'bottom',
+    }
+  ], [lang]);
+
+  const handleJoyrideCallback = (data: CallBackProps) => {
+    const { status, type, index, action } = data;
+    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
+
+    if (finishedStatuses.includes(status)) {
+      setHasCompletedTutorial(true);
+      localStorage.setItem('tutorialStep', 'completed');
+    }
+
+    if (type === 'step:after') {
+      if (action === 'next') {
+         if (index === 0) setActiveTab('collection');
+         if (index === 1) setActiveTab('search');
+         if (index === 2) setActiveTab('stats');
+         if (index === 3) setActiveTab('profile');
+      } else if (action === 'prev') {
+         if (index === 1) setActiveTab('home');
+         if (index === 2) setActiveTab('collection');
+         if (index === 3) setActiveTab('search');
+         if (index === 4) setActiveTab('stats');
+      }
+    }
+  };
 
   const [userAchievements, setUserAchievements] = useState<UserAchievement[]>([]);
   const userAchievementsRef = useRef<UserAchievement[]>([]);
@@ -8414,6 +8557,7 @@ export default function App() {
             )}
 
             <button 
+              id="tour-nav-profile"
               onClick={() => setActiveTab('profile')}
               className={`w-10 h-10 rounded-full overflow-hidden border-2 transition-all bg-white/5 flex items-center justify-center ${activeTab === 'profile' ? 'border-orange-500 db-glow-orange' : 'border-white/10'}`}
             >
@@ -9174,9 +9318,26 @@ export default function App() {
             </div>
 
             {searchQuery.length < 2 && !hasActiveFilters ? (
-              <div className="flex flex-col items-center justify-center py-32 opacity-20">
-                <Search size={64} className="mb-4" />
-                <p className="text-sm font-black uppercase tracking-[0.2em]">{t.searchPlaceholder}</p>
+              <div className="flex flex-col items-center justify-center py-20 text-center px-4 opacity-70">
+                <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mb-6 relative">
+                  <div className="absolute inset-0 bg-cyan-500/20 rounded-full animate-ping opacity-50" />
+                  <Search size={40} className="text-cyan-500 relative z-10" />
+                </div>
+                <h3 className="text-xl font-black text-white mb-3 tracking-tight">Empieza a buscar</h3>
+                <p className="text-gray-400 text-sm max-w-[280px] mb-8 leading-relaxed">
+                  Busca por <strong className="text-white">Nombre</strong> o <strong className="text-white">Código</strong> (ej. FB01-001).
+                  Usa el botón de filtros arriba a la derecha para un control más avanzado.
+                </p>
+                <div className="flex items-center gap-4 w-full max-w-[280px]">
+                  <div className="h-[1px] flex-1 bg-white/10" />
+                  <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">o prueba con</span>
+                  <div className="h-[1px] flex-1 bg-white/10" />
+                </div>
+                <div className="flex flex-wrap justify-center gap-2 mt-6">
+                   <button onClick={() => setSearchQuery('Son Goku')} className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-bold text-gray-300 hover:bg-orange-500/20 hover:text-orange-400 hover:border-orange-500/50 transition-all">Son Goku</button>
+                   <button onClick={() => setSearchQuery('Vegeta')} className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-bold text-gray-300 hover:bg-orange-500/20 hover:text-orange-400 hover:border-orange-500/50 transition-all">Vegeta</button>
+                   <button onClick={() => setSearchQuery('Secret Rare')} className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-bold text-gray-300 hover:bg-orange-500/20 hover:text-orange-400 hover:border-orange-500/50 transition-all">Secret Rare</button>
+                </div>
               </div>
             ) : (
               <div className="space-y-6">
@@ -10319,6 +10480,77 @@ export default function App() {
       </AnimatePresence>
 
       <Navbar activeTab={activeTab} handleTabChange={handleTabChange} lang={lang} />
+
+      {/* Joyride Onboarding Tutorial */}
+      <Joyride
+        steps={tutorialSteps}
+        run={true} // FORCED FOR TESTING
+        continuous={true}
+        scrollToFirstStep={false}
+        disableOverlayClose={true}
+        disableCloseOnEsc={true}
+        callback={handleJoyrideCallback}
+        showProgress={true}
+        showSkipButton={true}
+        styles={{
+          options: {
+            arrowColor: '#1E1E1E',
+            backgroundColor: '#1E1E1E',
+            overlayColor: 'rgba(0, 0, 0, 0.6)',
+            primaryColor: '#f97316',
+            textColor: '#fff',
+            zIndex: 1000,
+          },
+          tooltipContainer: {
+            textAlign: 'left',
+          },
+          buttonNext: {
+            backgroundColor: '#f97316',
+            borderRadius: '12px',
+            fontSize: '12px',
+            textTransform: 'uppercase',
+            fontWeight: 900,
+            padding: '10px 16px',
+            border: '1px solid rgba(249, 115, 22, 0.5)',
+            boxShadow: '0 0 15px rgba(249, 115, 22, 0.3)',
+          },
+          buttonBack: {
+            marginRight: 10,
+            fontSize: '12px',
+            fontWeight: 'bold',
+            color: '#9ca3af',
+          },
+          buttonSkip: {
+            fontSize: '12px',
+            fontWeight: 'bold',
+            color: '#ef4444',
+          },
+          tooltip: {
+            borderRadius: '24px',
+            border: '1px solid rgba(249, 115, 22, 0.3)',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+          },
+          tooltipTitle: {
+            fontSize: '18px',
+            fontWeight: 900,
+            textTransform: 'uppercase',
+            fontStyle: 'italic',
+            marginBottom: '8px',
+          },
+          tooltipContent: {
+            fontSize: '14px',
+            color: '#9ca3af', // Darker gray for description text
+            lineHeight: 1.5,
+          }
+        }}
+        locale={{
+          back: lang === 'es' ? 'Atrás' : 'Back',
+          close: lang === 'es' ? 'Cerrar' : 'Close',
+          last: lang === 'es' ? '¡Empezar!' : 'Start!',
+          next: lang === 'es' ? 'Siguiente' : 'Next',
+          skip: lang === 'es' ? 'Saltar' : 'Skip',
+        }}
+      />
 
       {/* Multi-Select Action Bar */}
       <AnimatePresence>
