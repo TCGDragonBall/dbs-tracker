@@ -52,7 +52,8 @@ import {
   Swords,
   Gem,
   Diamond,
-  Store
+  Store,
+  Coffee
 } from 'lucide-react';
 import { collection, query, onSnapshot, where, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, getDocFromServer, writeBatch, getCountFromServer } from 'firebase/firestore';
 import { db, auth, googleProvider, handleFirestoreError, OperationType, isQuotaError } from './firebase';
@@ -1197,6 +1198,8 @@ const translations = {
     language: 'Idioma',
     sendFeedback: 'Enviar Feedback',
     logout: 'Cerrar Sesión',
+    donateTitle: 'Apoyar el proyecto',
+    donateDesc: 'Ayúdame a mantener la app y añadir nuevas funciones',
     sponsorLabel: 'Patrocinador oficial',
     visitSponsor: 'Visitar montalfan.com',
     syncOfficial: 'Sincronizando con la web oficial...',
@@ -1317,6 +1320,8 @@ const translations = {
     language: 'Language',
     sendFeedback: 'Send Feedback',
     logout: 'Logout',
+    donateTitle: 'Support the project',
+    donateDesc: 'Help me maintain the app and add new features',
     sponsorLabel: 'Official sponsor',
     visitSponsor: 'Visit montalfan.com',
     syncOfficial: 'Syncing with official website...',
@@ -7067,6 +7072,8 @@ export default function App() {
     localStorage.setItem('collectionGoal', collectionGoal);
   }, [collectionGoal]);
 
+  const DEFAULT_ALTERNATIVES = ['event', 'tournament', 'judge', 'giant', 'championship', 'ultimate-battle', 'serial', 'sleeve', 'playmat'];
+
   useEffect(() => {
     localStorage.setItem('hasSetGoal', hasSetGoal.toString());
   }, [hasSetGoal]);
@@ -7077,7 +7084,7 @@ export default function App() {
     setCurrentCollectionSubCategory(null);
     setExpandedCategories([]);
     setSearchQuery('');
-    setFilters({ rarities: [], colors: [], expansion: 'Todos', types: [], legalStatus: [], alternatives: ['event', 'tournament', 'judge', 'giant'], owned: 'all' });
+    setFilters({ rarities: [], colors: [], expansion: 'Todos', types: [], legalStatus: [], alternatives: DEFAULT_ALTERNATIVES, owned: 'all' });
   }, [gameType]);
 
   const recentlyAddedCards = useMemo(() => {
@@ -7114,7 +7121,7 @@ export default function App() {
     expansion: 'Todos',
     types: [],
     legalStatus: [],
-    alternatives: ['event', 'tournament', 'judge', 'giant'],
+    alternatives: DEFAULT_ALTERNATIVES,
     owned: 'all'
   });
   const [sortBy, setSortBy] = useState<'index' | 'marketValue' | 'name'>('index');
@@ -7292,8 +7299,19 @@ export default function App() {
     // Alternatives individual filters
     if (isEvent && !filters.alternatives.includes('event')) return false;
     if (isTournament && !filters.alternatives.includes('tournament')) return false;
-    if (isJudge && !filters.alternatives.includes('judge')) return false;
-    if (isGiant && !filters.alternatives.includes('giant')) return false;
+    
+    if (gameType === 'masters') {
+      if (isJudge && !filters.alternatives.includes('judge')) return false;
+      if (isGiant && !filters.alternatives.includes('giant')) return false;
+    } else {
+      const isChampionship = cardTags.includes('championship');
+      const isUltimateBattle = cardTags.includes('ultimate-battle');
+      const isSerialTag = cardTags.includes('serial');
+      if (isChampionship && !filters.alternatives.includes('championship')) return false;
+      if (isUltimateBattle && !filters.alternatives.includes('ultimate-battle')) return false;
+      if (isSerialTag && !filters.alternatives.includes('serial')) return false;
+    }
+    
     if (filters.expansion === 'Todos' && card.id.match(/_FB\d+$/)) return false;
     
     return matchesSearch && matchesExpansion && matchesRarity && matchesColor && matchesType && matchesLegal;
@@ -7350,10 +7368,59 @@ export default function App() {
   }, [filteredCards, searchQuery, hasActiveFilters, filters.expansion]);
 
   const availableOptions = useMemo(() => {
-    // Filter cards by expansion first to determine valid sub-filters
-    const expansionCards = filters.expansion === 'Todos' 
-      ? cards 
-      : cards.filter(c => c.expansion === filters.expansion);
+    // Filter cards by expansion and search query first to determine valid sub-filters
+    const expansionCards = cards.filter(card => {
+      // 1. Check expansion
+      if (filters.expansion !== 'Todos') {
+        const isGiant = getCardTags(card).includes('giant');
+        if (filters.expansion === 'COL02' && !isGiant) return false;
+        else if (filters.expansion === 'COL05' && !getCardTags(card).includes('event')) return false;
+        else if (filters.expansion === 'COL06' && !getCardTags(card).includes('tournament')) return false;
+        else if (filters.expansion === 'COL07' && !getCardTags(card).includes('judge')) return false;
+        else if (PACK_ARRAYS[filters.expansion]) {
+          if (!PACK_ARRAYS[filters.expansion].includes(card.id)) return false;
+        }
+        else if (filters.expansion === 'FP' && gameType === 'fusion') {
+          if (card.expansion !== 'FP' && !card.cardNumber.startsWith('FP-')) return false;
+        }
+        else {
+          let matchesExp = card.expansion === filters.expansion && !isGiant;
+          if (!matchesExp) {
+            if (filters.expansion.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${filters.expansion}`]?.includes(card.id)) matchesExp = true;
+            if (filters.expansion === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(card.id)) matchesExp = true;
+            if (gameType === 'fusion' && (filters.expansion.startsWith('FB') || filters.expansion.startsWith('FS') || filters.expansion.startsWith('SB'))) {
+              if (card.cardNumber.split('_')[0].startsWith(filters.expansion + '-')) matchesExp = true;
+            }
+          }
+          if (!matchesExp) return false;
+        }
+      }
+
+      // 2. Check search query (simplified version of the one used in filteredCards)
+      if (searchQuery.length >= 2 && searchQuery !== 'Promo Vol.4' && searchQuery !== 'Tournament Pack 2' && searchQuery !== 'Tournament Pack 3' && searchQuery !== 'Tournament Pack 4' && searchQuery !== 'Tournament Pack 5' && searchQuery !== 'Tournament Pack 6' && searchQuery !== 'Store Tournament Vol.1' && searchQuery !== 'Store Tournament Vol.2' && searchQuery !== 'Store Tournament Vol.3' && searchQuery !== 'Store Tournament Vol.4' && searchQuery !== 'Energy Marker Pack 01' && !searchQuery.startsWith('Union Force PR') && !searchQuery.startsWith('Cross Worlds PR') && !searchQuery.startsWith('Colossal Warfare PR') && searchQuery !== 'Puzzle Hunt') {
+        const q = searchQuery.toLowerCase();
+        const normalize = (str: string) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const nq = normalize(searchQuery);
+        
+        let matchesSearch = false;
+        if (card.name && card.name.toLowerCase().includes(q)) matchesSearch = true;
+        else if (card.cardNumber && card.cardNumber.toLowerCase().includes(q)) matchesSearch = true;
+        else if (card.name && normalize(card.name).includes(nq)) matchesSearch = true;
+        else if (card.cardNumber && normalize(card.cardNumber).includes(nq)) matchesSearch = true;
+        else {
+          const specialCardInfo = CARD_METADATA[card.id];
+          const sourceProduct = specialCardInfo?.sourceProduct || '';
+          const setMeta = SET_METADATA[card.expansion];
+          const setName = setMeta?.sourceProduct || '';
+          if (sourceProduct && sourceProduct.toLowerCase().includes(q)) matchesSearch = true;
+          else if (setName && setName.toLowerCase().includes(q)) matchesSearch = true;
+          else if (card.traits && card.traits.toLowerCase().includes(q)) matchesSearch = true;
+          else if (card.skill && card.skill.toLowerCase().includes(q)) matchesSearch = true;
+        }
+        if (!matchesSearch) return false;
+      }
+      return true;
+    });
 
     const getEffectiveType = (card: Card) => {
       if (card.id.includes('_SLR')) return 'Leader Rare';
@@ -7363,7 +7430,9 @@ export default function App() {
     let colors = Array.from(new Set(expansionCards.map(c => c.color).filter(Boolean))).sort();
     
     if (gameType === 'fusion') {
-      colors = colors.filter(c => c !== 'Multi');
+      colors = colors.filter(c => c !== 'Multi' && c !== 'None' && c !== 'Neutral');
+    } else {
+      colors = colors.filter(c => c !== 'None' && c !== 'Neutral');
     }
     
     // Custom sort for Fusion World rarities
@@ -7401,7 +7470,7 @@ export default function App() {
       });
 
     return { colors, rarities, types };
-  }, [cards, filters.expansion]);
+  }, [cards, filters.expansion, searchQuery, gameType]);
 
   const globalStats = useMemo(() => {
     // Para el conteo deduplicado (slots de juego)
@@ -9052,7 +9121,7 @@ export default function App() {
                     <p className="text-gray-400 font-bold">{t.noCardsFound}</p>
                     <button 
                       onClick={() => {
-                        setFilters({ rarities: [], colors: [], expansion: filters.expansion, types: [], legalStatus: [], alternatives: ['event', 'tournament', 'judge', 'giant'], owned: 'all' });
+                        setFilters({ rarities: [], colors: [], expansion: filters.expansion, types: [], legalStatus: [], alternatives: DEFAULT_ALTERNATIVES, owned: 'all' });
                         setSearchQuery('');
                       }}
                       className="mt-4 text-cyan-500 text-sm font-bold underline"
@@ -9139,7 +9208,7 @@ export default function App() {
                     <p className="text-gray-500 font-bold">{t.noCardsFound}</p>
                     <button 
                       onClick={() => {
-                        setFilters({ rarities: [], colors: [], expansion: filters.expansion, types: [], legalStatus: [], alternatives: ['event', 'tournament', 'judge', 'giant'], owned: 'all' });
+                        setFilters({ rarities: [], colors: [], expansion: filters.expansion, types: [], legalStatus: [], alternatives: DEFAULT_ALTERNATIVES, owned: 'all' });
                         setSearchQuery('');
                       }}
                       className="mt-4 text-cyan-500 text-sm font-bold underline"
@@ -9312,6 +9381,25 @@ export default function App() {
                       </div>
                     </div>
                   )}
+
+                  <a 
+                    href="https://ko-fi.com/pabloanulix" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="w-full p-5 bg-pink-500/10 rounded-2xl flex items-center justify-between hover:bg-pink-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] border border-pink-500/30 text-pink-500 shadow-[0_0_15px_rgba(236,72,153,0.15)] overflow-hidden relative group"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-pink-500/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+                    <div className="flex items-center gap-4 relative z-10">
+                      <div className="p-2.5 bg-gradient-to-br from-pink-500 to-rose-500 text-white rounded-xl shadow-lg border border-pink-400/50">
+                        <Coffee size={24} className="animate-[wiggle_2s_ease-in-out_infinite]" />
+                      </div>
+                      <div className="text-left">
+                        <span className="font-black text-lg block">{t.donateTitle}</span>
+                        <span className="text-xs text-pink-400/80 font-medium">{t.donateDesc}</span>
+                      </div>
+                    </div>
+                    <ExternalLink size={20} className="text-pink-400 opacity-50 group-hover:opacity-100 transition-opacity relative z-10" />
+                  </a>
 
                   <button 
                     onClick={handleLogout}
@@ -9601,7 +9689,7 @@ export default function App() {
                                 expansion: 'Todos',
                                 types: [],
                                 legalStatus: [],
-                                alternatives: ['event', 'tournament', 'judge', 'giant', 'promo'],
+                                alternatives: DEFAULT_ALTERNATIVES,
                                 owned: 'all'
                               });
                               window.scrollTo(0, 0);
@@ -9955,7 +10043,7 @@ export default function App() {
               <div className="flex justify-between items-center mb-6 sticky top-0 bg-[#1E1E1E] z-10 py-2">
                 <h3 className="text-xl font-black text-white">{t.filters}</h3>
                 <button 
-                  onClick={() => setFilters({ rarities: [], colors: [], expansion: filters.expansion, types: [], legalStatus: [], alternatives: ['event', 'tournament', 'judge', 'giant'], owned: 'all' })}
+                  onClick={() => setFilters({ rarities: [], colors: [], expansion: filters.expansion, types: [], legalStatus: [], alternatives: DEFAULT_ALTERNATIVES, owned: 'all' })}
                   className="text-[10px] font-black text-orange-500 uppercase tracking-widest bg-orange-500/10 px-3 py-1.5 rounded-full border border-orange-500/20 active:scale-95 transition-transform"
                 >
                   {lang === 'es' ? 'LIMPIAR TODO' : 'CLEAR ALL'}
@@ -9987,7 +10075,7 @@ export default function App() {
                 {availableOptions.colors.length > 0 && (
                   <div className="space-y-3">
                     <div className="flex justify-between items-center px-1">
-                      <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">{t.colorProgress.split(' ')[0]}</p>
+                      <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">{t.color}</p>
                       <button 
                         onClick={() => setFilters({...filters, colors: []})}
                         className="text-[10px] font-black text-orange-500 uppercase hover:underline"
@@ -10082,19 +10170,25 @@ export default function App() {
                   <div className="flex justify-between items-center px-1">
                     <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">{t.alternatives}</p>
                     <button 
-                      onClick={() => setFilters({...filters, alternatives: ['event', 'tournament', 'judge', 'giant']})}
+                      onClick={() => setFilters({...filters, alternatives: DEFAULT_ALTERNATIVES})}
                       className="text-[10px] font-black text-orange-500 uppercase hover:underline"
                     >
                       {lang === 'es' ? 'TODAS' : 'ALL'}
                     </button>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {[
+                    {(gameType === 'fusion' ? [
+                      { id: 'tournament', label: 'Tournament Packs' },
+                      { id: 'championship', label: 'Championship' },
+                      { id: 'ultimate-battle', label: 'Ultimate Battle' },
+                      { id: 'serial', label: 'Serial Cards' },
+                      { id: 'event', label: 'Event Packs' },
+                    ] : [
                       { id: 'event', label: 'Event Packs' },
                       { id: 'tournament', label: 'Tournament Packs' },
                       { id: 'judge', label: 'Judge Packs' },
                       { id: 'giant', label: 'Giant Size' }
-                    ].map(alt => {
+                    ]).map(alt => {
                       const isSelected = filters.alternatives.includes(alt.id);
                       return (
                         <button 
