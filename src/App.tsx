@@ -6871,6 +6871,10 @@ export default function App() {
         setHasSetGoal(profile.hasSetGoal);
         localStorage.setItem('hasSetGoal', profile.hasSetGoal.toString());
       }
+      if (profile.hasCompletedTutorial !== undefined && profile.hasCompletedTutorial !== hasCompletedTutorial) {
+        setHasCompletedTutorial(profile.hasCompletedTutorial);
+        localStorage.setItem('tutorialStep', profile.hasCompletedTutorial ? 'completed' : '');
+      }
     }
   }, [profile]);
 
@@ -7137,6 +7141,11 @@ export default function App() {
     if (finishedStatuses.includes(status)) {
       setHasCompletedTutorial(true);
       localStorage.setItem('tutorialStep', 'completed');
+      if (user) {
+        updateDoc(doc(db, 'users', user.uid), { hasCompletedTutorial: true }).catch(err => {
+          console.error("Failed to update tutorial status in DB:", err);
+        });
+      }
     }
 
     if (type === 'step:after') {
@@ -10464,7 +10473,7 @@ export default function App() {
       {/* Joyride Onboarding Tutorial */}
       <Joyride
         steps={tutorialSteps}
-        run={!hasCompletedTutorial}
+        run={false} // !hasCompletedTutorial && !authLoading && (!user || profile !== null)
         continuous={true}
         scrollToFirstStep={false}
         disableOverlayClose={true}
