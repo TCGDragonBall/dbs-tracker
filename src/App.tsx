@@ -6947,33 +6947,48 @@ export default function App() {
       const now = serverTimestamp();
       const updatedCardIds = Array.from(selectedCardIds);
       
-      // Update local inventory first for immediate feedback
-      const newInventory = [...inventory];
+      let newInventory = [...inventory];
+
+      // Logic check for collector mode toggle
+      const isCollectorToggleOff = collectionGoal === 'collector' && updatedCardIds.every(id => {
+        const item = inventory.find(i => i.cardId === id);
+        return item && item.quantity >= 1;
+      });
       
       for (const cardId of updatedCardIds) {
-        const qty = collectionGoal === 'player' ? bulkQuantity : 1;
         const existingItem = inventory.find(i => i.cardId === cardId);
         
-        if (existingItem) {
-          // If already exists, update document using its ID from local inventory
-          const docRef = doc(db, 'inventory', existingItem.id);
-          batch.update(docRef, { 
-            quantity: qty,
-            updatedAt: now 
-          });
-          
-          const index = newInventory.findIndex(i => i.id === existingItem.id);
-          if (index > -1) newInventory[index].quantity = qty;
+        if (isCollectorToggleOff) {
+          // If all selected are already owned, unselect (delete) them all
+          if (existingItem) {
+            const docRef = doc(db, 'inventory', existingItem.id);
+            batch.delete(docRef);
+            newInventory = newInventory.filter(i => i.id !== existingItem.id);
+          }
         } else {
-          // If not exists, create new doc
-          const newDocRef = doc(collection(db, 'inventory'));
-          batch.set(newDocRef, {
-            cardId,
-            ownerId: user.uid,
-            quantity: qty,
-            addedAt: now
-          });
-          // We don't add to local newInventory here because onSnapshot will deliver it
+          const qty = collectionGoal === 'player' ? bulkQuantity : 1;
+          
+          if (existingItem) {
+            // If already exists, update document using its ID from local inventory
+            const docRef = doc(db, 'inventory', existingItem.id);
+            batch.update(docRef, { 
+              quantity: qty,
+              updatedAt: now 
+            });
+            
+            const index = newInventory.findIndex(i => i.id === existingItem.id);
+            if (index > -1) newInventory[index].quantity = qty;
+          } else {
+            // If not exists, create new doc
+            const newDocRef = doc(collection(db, 'inventory'));
+            batch.set(newDocRef, {
+              cardId,
+              ownerId: user.uid,
+              quantity: qty,
+              addedAt: now
+            });
+            // We don't add to local newInventory here because onSnapshot will deliver it
+          }
         }
       }
 
@@ -6983,6 +6998,17 @@ export default function App() {
       setBulkQuantity(1);
 
       await batch.commit();
+      
+      // Update denormalized stats if there was a deletion in collector mode
+      // Otherwise, the addition might be handled later via onSnapshot or we can just always update stats
+      const uniqueCards = newInventory.filter(i => i.quantity > 0).length;
+      const totalCards = newInventory.reduce((sum, i) => sum + i.quantity, 0);
+      updateDoc(doc(db, 'users', user.uid), {
+        uniqueCards,
+        totalCards,
+        lastStatsUpdate: serverTimestamp()
+      }).catch(err => console.error("Failed to update user stats post-bulk:", err));
+      
       console.log(`[BulkUpdate] Successfully synced ${updatedCardIds.length} cards.`);
     } catch (error) {
       console.error("Error in bulk update:", error);
@@ -8443,6 +8469,7 @@ export default function App() {
             </form>
             
             <button
+              type="button"
               onClick={() => setEmailAuth(p => ({...p, isLogin: !p.isLogin, error: ''}))}
               className="mt-2 text-xs font-bold text-gray-400 hover:text-white transition-colors underline decoration-white/20 underline-offset-4"
             >
@@ -8455,6 +8482,72 @@ export default function App() {
       </motion.div>
     </div>
   );
+
+  if (profile && !profile.hasAcceptedTerms) {
+    return (
+      <div className="min-h-screen bg-[#121212] flex items-center justify-center p-4 sm:p-8 relative overflow-hidden">
+        <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-orange-500/10 via-black to-black opacity-60"></div>
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-[#1E1E1E] border border-white/10 rounded-3xl p-6 sm:p-10 max-w-2xl w-full shadow-2xl relative z-10 flex flex-col max-h-[90vh]"
+        >
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 bg-orange-500/10 rounded-full flex items-center justify-center">
+              <Shield size={24} className="text-orange-500" />
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight">
+              {lang === 'es' ? 'Términos y Condiciones' : 'Terms & Conditions'}
+            </h2>
+          </div>
+          
+          <div className="overflow-y-auto pr-4 mb-8 space-y-6 text-gray-300 text-sm leading-relaxed custom-scrollbar flex-1 border border-white/5 rounded-2xl p-6 bg-black/40">
+            <section>
+              <h3 className="text-white font-bold text-base mb-2">{lang === 'es' ? '1. Uso de la Aplicación' : '1. App Usage'}</h3>
+              <p>{lang === 'es' ? 'DBS Tracker es una aplicación no oficial creada por fans para gestionar colecciones del Dragon Ball Super Card Game. Todos los derechos de imágenes y nombres de las cartas pertenecen a Bandai Co., Ltd. y Bird Studio/Shueisha, Toei Animation.' : 'DBS Tracker is an unofficial fan-made app for managing Dragon Ball Super Card Game collections. All rights to card images and names belong to Bandai Co., Ltd. and Bird Studio/Shueisha, Toei Animation.'}</p>
+            </section>
+            
+            <section>
+              <h3 className="text-white font-bold text-base mb-2">{lang === 'es' ? '2. Privacidad de Datos' : '2. Data Privacy'}</h3>
+              <p>{lang === 'es' ? 'Tu información de inicio de sesión, inventario y estadísticas se almacenan de forma segura en Google Cloud (Firebase). No compartimos ni vendemos tu información personal a terceros. Los datos recabados se utilizan exclusivamente para el funcionamiento de la aplicación.' : 'Your login info, inventory, and stats are securely stored on Google Cloud (Firebase). We do not share or sell your personal information to third parties. Collected data is used exclusively for the application\'s operation.'}</p>
+            </section>
+
+            <section>
+              <h3 className="text-white font-bold text-base mb-2">{lang === 'es' ? '3. Disponibilidad y Servicio' : '3. Availability and Service'}</h3>
+              <p>{lang === 'es' ? 'Esta herramienta es gratuita y hacemos un gran esfuerzo para mantenerla online de forma continua, pero se proporciona "tal cual". Podría experimentar tiempos de inactividad o pérdida de datos. No nos hacemos responsables por eventuales discrepancias en tu inventario.' : 'This tool is free and we make a great effort to keep it continuously online, but it is provided "as is". You might experience downtime or data loss. We are not responsible for eventual discrepancies in your inventory.'}</p>
+            </section>
+
+            <section>
+              <h3 className="text-white font-bold text-base mb-2">{lang === 'es' ? '4. Conducta' : '4. Conduct'}</h3>
+              <p>{lang === 'es' ? 'El abuso del sistema, incluyendo múltiples cuentas automatizadas, extracción masiva de datos (scraping) u otra acción que perjudique el servidor, resultará en el acceso denegado.' : 'System abuse, including multiple automated accounts, data scraping, or any action that harms the server, will result in access denial.'}</p>
+            </section>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 mt-auto border-t border-white/5 pt-6">
+            <button 
+              onClick={() => signOut(auth)}
+              className="flex-1 py-4 bg-white/5 text-white font-bold rounded-xl hover:bg-white/10 active:scale-95 transition-all uppercase tracking-wider text-sm flex justify-center items-center gap-2"
+            >
+              <X size={18} />
+              {lang === 'es' ? 'Rechazar y Salir' : 'Decline & Exit'}
+            </button>
+            <button 
+              onClick={async () => {
+                await updateDoc(doc(db, 'users', user.uid), { 
+                  hasAcceptedTerms: true,
+                  acceptedTermsAt: serverTimestamp()
+                });
+              }}
+              className="flex-1 py-4 bg-orange-600 text-white font-black rounded-xl hover:bg-orange-500 active:scale-95 transition-all shadow-xl uppercase tracking-wider text-sm flex justify-center items-center gap-2 border border-orange-500/50"
+            >
+              <CheckCircle2 size={18} />
+              {lang === 'es' ? 'Aceptar y Entrar' : 'Accept & Enter'}
+            </button>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#121212] text-gray-100 pb-32 font-sans">
@@ -10705,7 +10798,13 @@ export default function App() {
                   className="flex-1 bg-orange-500 text-white font-black py-4 rounded-2xl shadow-lg db-glow-orange flex items-center justify-center gap-2"
                 >
                   <Save size={18} />
-                  {lang === 'es' ? 'ACTUALIZAR INVENTARIO' : 'UPDATE INVENTORY'}
+                  {collectionGoal === 'collector' && Array.from(selectedCardIds).every(id => {
+                    const item = inventory.find(i => i.cardId === id);
+                    return item && item.quantity >= 1;
+                  }) 
+                    ? (lang === 'es' ? 'DESMARCAR CARTAS' : 'UNMARK CARDS')
+                    : (lang === 'es' ? 'ACTUALIZAR INVENTARIO' : 'UPDATE INVENTORY')
+                  }
                 </button>
               </div>
             </div>

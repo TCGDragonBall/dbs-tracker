@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { auth, db, handleFirestoreError, OperationType, isQuotaError } from './firebase';
 import { onAuthStateChanged, User, signOut } from 'firebase/auth';
-import { doc, getDoc, setDoc, serverTimestamp, getCountFromServer, collection } from 'firebase/firestore';
+import { doc, getDoc, setDoc, serverTimestamp, getCountFromServer, collection, onSnapshot } from 'firebase/firestore';
 import emailjs from '@emailjs/browser';
 
 interface AuthContextType {
@@ -53,6 +53,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     }, 8000);
 
+    let unsubscribeProfile: (() => void) | null = null;
+
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
       clearTimeout(safetyTimeout);
       
@@ -71,59 +73,64 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           if (isQuotaExceeded) return;
           
           const userDocRef = doc(db, 'users', authUser.uid);
-          let userDoc;
-          try {
-            userDoc = await getDoc(userDocRef);
-          } catch (err) {
-            // Already handled by error handler, just quit this background task
-            handleFirestoreError(err, OperationType.GET, `users/${authUser.uid}`);
-            return;
-          }
           
-          if (!userDoc.exists()) {
-            const newProfile = {
-              uid: authUser.uid,
-              displayName: authUser.displayName || 'Usuario',
-              photoURL: authUser.photoURL || '',
-              email: authUser.email || '',
-              friends: [],
-              createdAt: serverTimestamp()
-            };
-            
-            try {
-              await setDoc(userDocRef, newProfile);
-              setProfile(newProfile);
-            } catch (err) {
-              handleFirestoreError(err, OperationType.WRITE, `users/${authUser.uid}`);
-              return;
-            }
-
-            // Notify admin of new registration (async)
-            const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-            const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-            const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-            if (serviceId && templateId && publicKey) {
-              emailjs.send(
-                serviceId,
-                templateId,
-                {
-                  from_name: 'DBS Tracker System',
-                  from_email: 'system@dbstracker.com',
-                  message: `Nuevo usuario registrado: ${newProfile.displayName} (${newProfile.email})`,
-                  to_email: 'anulix1983@gmail.com',
-                  reply_to: newProfile.email,
-                },
-                publicKey
-              ).catch(e => console.error("Error sending registration notification:", e));
-            }
-          } else {
-            setProfile(userDoc.data());
+          if (unsubscribeProfile) {
+            unsubscribeProfile();
           }
+
+          unsubscribeProfile = onSnapshot(userDocRef, async (userDoc) => {
+            if (!userDoc.exists()) {
+              const newProfile = {
+                uid: authUser.uid,
+                displayName: authUser.displayName || 'Usuario',
+                photoURL: authUser.photoURL || '',
+                email: authUser.email || '',
+                friends: [],
+                createdAt: serverTimestamp(),
+                hasAcceptedTerms: false // Explicitly set starting state
+              };
+              
+              try {
+                await setDoc(userDocRef, newProfile);
+                setProfile(newProfile);
+              } catch (err) {
+                handleFirestoreError(err, OperationType.WRITE, `users/${authUser.uid}`);
+                return;
+              }
+
+              // Notify admin of new registration (async)
+              const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+              const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+              const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+              if (serviceId && templateId && publicKey) {
+                emailjs.send(
+                  serviceId,
+                  templateId,
+                  {
+                    from_name: 'DBS Tracker System',
+                    from_email: 'system@dbstracker.com',
+                    message: `Nuevo usuario registrado: ${newProfile.displayName} (${newProfile.email})`,
+                    to_email: 'anulix1983@gmail.com',
+                    reply_to: newProfile.email,
+                  },
+                  publicKey
+                ).catch(e => console.error("Error sending registration notification:", e));
+              }
+            } else {
+              setProfile(userDoc.data());
+            }
+          }, (err) => {
+            handleFirestoreError(err, OperationType.GET, `users/${authUser.uid}`);
+          });
         } else {
           setUser(null);
           setProfile(null);
           setLoading(false);
+          if (unsubscribeProfile) {
+            unsubscribeProfile();
+            unsubscribeProfile = null;
+          }
         }
       } catch (err: any) {
         if (isQuotaError(err) || err?.message === 'Quota exceeded') {
@@ -140,6 +147,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     return () => {
       clearTimeout(safetyTimeout);
+      if (unsubscribeProfile) unsubscribeProfile();
       unsubscribe();
     };
   }, []);
