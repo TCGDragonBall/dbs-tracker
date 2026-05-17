@@ -77,7 +77,6 @@ SD2-02_PR	Broken Limits Super Saiyan 3 Son Goku	PR	Battle	Red	SD2
 SD2-03	Unbreakable Super Saiyan Son Goku	ST	Battle	Red	SD2
 SD2-03_PR	Unbreakable Super Saiyan Son Goku	PR	Battle	Red	SD2
 SD2-03_PR02	Unbreakable Super Saiyan Son Goku	PR	Battle	Red	SD2
-SD2-03_PR03	Unbreakable Super Saiyan Son Goku	PR	Battle	Red	SD2
 SD2-04	Rushing Warrior Pan	ST	Battle	Red	SD2
 SD2-04_JP13	Rushing Warrior Pan	PR	Battle	Red	SD2
 SD2-05	Chain Attack Trunks	ST	Battle	Red	SD2

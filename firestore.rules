@@ -91,6 +91,12 @@ service cloud.firestore {
              (!('language' in data) || (data.language is string && data.language.size() <= 10)) &&
              (!('collectionGoal' in data) || (data.collectionGoal is string && data.collectionGoal.size() <= 20)) &&
              (!('hasSetGoal' in data) || (data.hasSetGoal is bool)) &&
+             (!('hasAcceptedTerms' in data) || (data.hasAcceptedTerms is bool)) &&
+             (!('acceptedTermsAt' in data) || (data.acceptedTermsAt == request.time || data.acceptedTermsAt == existing().acceptedTermsAt)) &&
+             (!('hasCompletedTutorial' in data) || (data.hasCompletedTutorial is bool)) &&
+             (!('uniqueCards' in data) || (data.uniqueCards is int && data.uniqueCards >= 0)) &&
+             (!('totalCards' in data) || (data.totalCards is int && data.totalCards >= 0)) &&
+             (!('lastStatsUpdate' in data) || (data.lastStatsUpdate == request.time || data.lastStatsUpdate == existing().lastStatsUpdate)) &&
              (!('friends' in data) || (data.friends is list && data.friends.size() <= 100)) &&
              // Immutability and Timestamp logic
              ( (resource == null && (data.createdAt == request.time || data.createdAt == null)) || 
@@ -140,7 +146,7 @@ service cloud.firestore {
       allow read: if isVerifiedUser() || isAdmin();
       allow create: if isVerifiedUser() && isValidUser(incoming()) && userId == request.auth.uid;
       allow update: if isValidUser(incoming()) && (
-                      (isOwner(userId) && incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'photoURL', 'language', 'collectionGoal', 'hasSetGoal', 'friends', 'uniqueCards', 'totalCards', 'lastStatsUpdate'])) ||
+                      (isOwner(userId) && incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'photoURL', 'language', 'collectionGoal', 'hasSetGoal', 'hasAcceptedTerms', 'acceptedTermsAt', 'hasCompletedTutorial', 'friends', 'uniqueCards', 'totalCards', 'lastStatsUpdate'])) ||
                       isAdmin()
                     );
       allow delete: if isOwner(userId) || isAdmin();

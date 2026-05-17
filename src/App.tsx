@@ -2012,6 +2012,7 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
 };
 
 const IMAGE_OVERRIDES: Record<string, string> = {
+  'SD2-03_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/SD2-03_PR02.png',
   'FS01-01_P1': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS01-01_f_p1.webp',
   'FS01-01_P1_b': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS01-01_b_p1.webp',
   'FS02-01_P1': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS02-01_f_p1.webp',
@@ -4524,7 +4525,9 @@ const PACK_ARRAYS: Record<string, string[]> = {
 
 const getCardTags = (card: Card) => {
   const tags: string[] = [];
-  const source = card.sourceProduct?.toLowerCase() || '';
+  const specialCardInfo = CARD_METADATA[card.id];
+  const displaySourceProduct = specialCardInfo?.sourceProduct || card.sourceProduct;
+  const source = displaySourceProduct?.toLowerCase() || '';
   const id = card.id.toUpperCase();
   
   if (source.includes('event pack') || source.includes('event promo') || source.includes('release event') || id.includes('_EP') || id.includes('_RE') || 
@@ -7360,7 +7363,7 @@ export default function App() {
     const normalizedQuery = normalize(searchQuery);
     
     const specialCardInfo = CARD_METADATA[card.id];
-    const sourceProduct = specialCardInfo?.sourceProduct || '';
+    const sourceProduct = specialCardInfo?.sourceProduct || card.sourceProduct || '';
     const setMeta = SET_METADATA[card.expansion];
     const setName = setMeta?.sourceProduct || '';
 
@@ -7584,7 +7587,7 @@ export default function App() {
         else if (card.cardNumber && normalize(card.cardNumber).includes(nq)) matchesSearch = true;
         else {
           const specialCardInfo = CARD_METADATA[card.id];
-          const sourceProduct = specialCardInfo?.sourceProduct || '';
+          const sourceProduct = specialCardInfo?.sourceProduct || card.sourceProduct || '';
           const setMeta = SET_METADATA[card.expansion];
           const setName = setMeta?.sourceProduct || '';
           if (sourceProduct && sourceProduct.toLowerCase().includes(q)) matchesSearch = true;
@@ -8533,10 +8536,15 @@ export default function App() {
             </button>
             <button 
               onClick={async () => {
-                await updateDoc(doc(db, 'users', user.uid), { 
-                  hasAcceptedTerms: true,
-                  acceptedTermsAt: serverTimestamp()
-                });
+                try {
+                  await updateDoc(doc(db, 'users', user.uid), { 
+                    hasAcceptedTerms: true,
+                    acceptedTermsAt: serverTimestamp()
+                  });
+                } catch (err) {
+                  console.error(err);
+                  handleFirestoreError(err, OperationType.UPDATE, `users/${user.uid}`);
+                }
               }}
               className="flex-1 py-4 bg-orange-600 text-white font-black rounded-xl hover:bg-orange-500 active:scale-95 transition-all shadow-xl uppercase tracking-wider text-sm flex justify-center items-center gap-2 border border-orange-500/50"
             >
@@ -10147,7 +10155,9 @@ export default function App() {
                     </button>
                   </div>
 
-                  {selectedCard.sourceProduct && (() => {
+                  {(() => {
+                    const displaySourceProduct = CARD_METADATA[selectedCard.id]?.sourceProduct || selectedCard.sourceProduct;
+                    if (!displaySourceProduct) return null;
                     const findSetIdBySourceProduct = (sourceProduct: string, cardId: string): string | null => {
                       const lowerSource = sourceProduct.toLowerCase();
                       
@@ -10212,7 +10222,7 @@ export default function App() {
                       return null;
                     };
                     
-                    const targetSetId = findSetIdBySourceProduct(selectedCard.sourceProduct, selectedCard.id);
+                    const targetSetId = findSetIdBySourceProduct(displaySourceProduct, selectedCard.id);
                     const isSpecial = getCardTags(selectedCard).some(t => ['winner', 'tournament', 'anniversary', 'playmat', 'championship', 'sleeve', 'ultimate-battle'].includes(t)) || selectedCard.id.includes('_PR') || selectedCard.id.includes('_RE_');
 
                     return (
@@ -10237,10 +10247,10 @@ export default function App() {
                                 if (parentCategoryId) break;
                               }
 
-                              const targetCategory = FUSION_CATEGORIES.find(c => c.categories.includes(parentCategoryId));
+                              const targetCategory = (gameType === 'fusion' ? FUSION_CATEGORIES : MAIN_CATEGORIES).find(c => c.categories.includes(parentCategoryId));
                               
                               if (targetCategory) {
-                                setActiveTab('fusion-world');
+                                setActiveTab('collection');
                                 setCurrentCollectionCategory(targetCategory.id);
                                 if (['Coleccionismo', 'Store Events', 'Championship'].includes(parentCategoryId)) {
                                   setCurrentCollectionSubCategory(parentLabel);
@@ -10257,7 +10267,7 @@ export default function App() {
                                 setSelectedCard(null);
                                 window.scrollTo(0, 0);
                               } else {
-                                setSearchQuery(selectedCard.sourceProduct);
+                                setSearchQuery(displaySourceProduct);
                                 handleTabChange('search');
                                 setSelectedCard(null);
                                 window.scrollTo(0, 0);
@@ -10271,7 +10281,7 @@ export default function App() {
                               {isSpecial ? 'INFO ORIGEN' : 'SET COLECCIÓN'}
                             </p>
                             <p className={`font-black text-[11px] uppercase italic tracking-tight leading-none ${targetSetId ? 'text-orange-500 group-hover/set:text-orange-400' : 'text-white/80'}`}>
-                              {selectedCard.sourceProduct}
+                              {displaySourceProduct}
                             </p>
                           </div>
                           {targetSetId && (
