@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Joyride, CallBackProps, STATUS, Step } from 'react-joyride';
+import { Joyride, STATUS, Step } from 'react-joyride';
 import { 
   PieChart, 
   Pie, 
@@ -58,7 +58,7 @@ import {
 } from 'lucide-react';
 import { collection, query, onSnapshot, where, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, getDocFromServer, writeBatch, getCountFromServer } from 'firebase/firestore';
 import { db, auth, googleProvider, handleFirestoreError, OperationType, isQuotaError } from './firebase';
-import { signInWithPopup, signOut } from 'firebase/auth';
+import { signInWithPopup, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useAuth } from './AuthContext';
 import emailjs from '@emailjs/browser';
 
@@ -1436,6 +1436,8 @@ interface Card {
   releaseDate?: string;
   description?: string;
   sourceUrl?: string;
+  traits?: string;
+  skill?: string;
 }
 
 interface InventoryItem {
@@ -5260,7 +5262,8 @@ const Dashboard = ({
   isMultiSelectMode,
   selectedCardIds,
   handleLongPress,
-  toggleCardSelection
+  toggleCardSelection,
+  isInventoryLoading
 }: { 
   cards: Card[], 
   inventory: InventoryItem[], 
@@ -5271,7 +5274,8 @@ const Dashboard = ({
   isMultiSelectMode: boolean,
   selectedCardIds: Set<string>,
   handleLongPress: (id: string) => void,
-  toggleCardSelection: (id: string) => void
+  toggleCardSelection: (id: string) => void,
+  isInventoryLoading: boolean
 }) => {
   const t = translations[lang];
   
@@ -5328,7 +5332,12 @@ const Dashboard = ({
       </motion.a>
 
       {/* Main Progress Ring OR Empty State */}
-      {inventory.length === 0 ? (
+      {isInventoryLoading ? (
+        <div className="bg-[#1E1E1E] rounded-2xl p-16 shadow-xl flex flex-col items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-orange-500 mb-4"></div>
+          <p className="text-orange-500/60 font-black animate-pulse">CARGANDO DATOS...</p>
+        </div>
+      ) : inventory.length === 0 ? (
         <div className="bg-[#1E1E1E] rounded-2xl p-8 shadow-xl border border-dashed border-orange-500/30 flex flex-col items-center text-center relative overflow-hidden">
           <div className="w-20 h-20 bg-orange-500/10 rounded-full flex items-center justify-center mb-6 relative">
             <div className="absolute inset-0 bg-orange-500/20 rounded-full animate-ping opacity-50" />
@@ -5456,14 +5465,15 @@ const Dashboard = ({
   );
 };
 
-const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, userAchievements, gameType }: { 
+const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, userAchievements, gameType, isInventoryLoading }: { 
   cards: Card[], 
   inventory: InventoryItem[], 
   collectionGoal: 'collector' | 'player',
   lang: 'es' | 'en',
   achievementsList: AchievementDef[],
   userAchievements: UserAchievement[],
-  gameType: 'masters' | 'fusion'
+  gameType: 'masters' | 'fusion',
+  isInventoryLoading: boolean
 }) => {
   const t = translations[lang];
 
@@ -5557,7 +5567,11 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
 
   return (
     <div className="space-y-8 pb-32">
-      {inventory.length === 0 ? (
+      {isInventoryLoading ? (
+        <div className="bg-[#1E1E1E] rounded-3xl p-16 shadow-xl flex flex-col items-center justify-center mt-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-orange-500 mb-4"></div>
+        </div>
+      ) : inventory.length === 0 ? (
         <div className="bg-[#1E1E1E] rounded-3xl p-8 shadow-xl border border-dashed border-orange-500/30 flex flex-col items-center text-center opacity-80 mt-4">
           <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-6">
             <BarChart3 size={36} className="text-gray-500" />
@@ -6801,6 +6815,7 @@ export default function App() {
   const isAdmin = user?.email === 'anulix1983@gmail.com';
   const [dataProtected, setDataProtected] = useState(true);
   const [activeTab, setActiveTab] = useState('home');
+  const [emailAuth, setEmailAuth] = useState({ email: '', password: '', isLogin: true, error: '' });
   const [lang, setLang] = useState<'es' | 'en'>(() => {
     const saved = localStorage.getItem('lang');
     return (saved as 'es' | 'en') || 'es';
@@ -6888,6 +6903,7 @@ export default function App() {
 
 
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
+  const [isInventoryLoading, setIsInventoryLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -7134,7 +7150,7 @@ export default function App() {
     }
   ], [lang]);
 
-  const handleJoyrideCallback = (data: CallBackProps) => {
+  const handleJoyrideCallback = (data: any) => {
     const { status, type, index, action } = data;
     const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
 
@@ -7851,20 +7867,26 @@ export default function App() {
   // Separate inventory listener to prevent redundant re-subscriptions on game/group change
   useEffect(() => {
     if (user && !isQuotaExceeded) {
+      setIsInventoryLoading(true);
       console.log("[Firestore] Subscribing to inventory...");
       const q = query(collection(db, 'inventory'), where('ownerId', '==', user.uid));
       const unsubscribeInv = onSnapshot(q, 
         (snapshot) => {
           const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as InventoryItem));
           setInventory(items);
+          setIsInventoryLoading(false);
           console.log(`[Firestore] Inventory updated: ${items.length} items.`);
         },
         (error) => {
+          setIsInventoryLoading(false);
           handleFirestoreError(error, OperationType.LIST, 'inventory');
         }
       );
 
       return () => unsubscribeInv();
+    } else {
+      setIsInventoryLoading(false);
+      if (!user) setInventory([]);
     }
   }, [user?.uid, isQuotaExceeded]);
 
@@ -8072,8 +8094,41 @@ export default function App() {
     }
     signInWithPopup(auth, googleProvider).catch((error) => {
       console.error("Login failed:", error);
-      alert(lang === 'es' ? `Error al iniciar sesión: ${error.message}` : `Login failed: ${error.message}`);
+      if (error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request') {
+        alert(lang === 'es' ? `Error al iniciar sesión: ${error.message}` : `Login failed: ${error.message}`);
+      }
     });
+  };
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isQuotaExceeded) {
+      setEmailAuth(p => ({...p, error: lang === 'es' ? 'El límite de tráfico diario ha sido alcanzado. Inténtalo de nuevo mañana.' : 'Daily traffic limit reached.'}));
+      return;
+    }
+    
+    if (!emailAuth.email || !emailAuth.password) {
+      setEmailAuth(p => ({...p, error: lang === 'es' ? 'Rellena todos los campos.' : 'Please fill all fields.'}));
+      return;
+    }
+    
+    try {
+      if (emailAuth.isLogin) {
+        await signInWithEmailAndPassword(auth, emailAuth.email, emailAuth.password);
+      } else {
+        await createUserWithEmailAndPassword(auth, emailAuth.email, emailAuth.password);
+      }
+      setEmailAuth({ email: '', password: '', isLogin: true, error: '' });
+    } catch (error: any) {
+      console.error("Auth failed:", error);
+      // Simplify error message for user
+      let errMsg = error.message;
+      if (error.code === 'auth/invalid-credential') errMsg = lang === 'es' ? 'Credenciales incorrectas' : 'Invalid credentials';
+      if (error.code === 'auth/email-already-in-use') errMsg = lang === 'es' ? 'El email ya está en uso' : 'Email already in use';
+      if (error.code === 'auth/weak-password') errMsg = lang === 'es' ? 'La contraseña debe tener al menos 6 caracteres' : 'Password should be at least 6 characters';
+      
+      setEmailAuth(p => ({...p, error: errMsg}));
+    }
   };
   const handleLogout = () => signOut(auth);
 
@@ -8344,13 +8399,58 @@ export default function App() {
           </div>
           <h1 className="text-4xl font-black text-white mb-4 tracking-tight uppercase italic drop-shadow-lg">DBS<span className="text-orange-500">TRACKER</span></h1>
           <p className="text-gray-300 mb-8 leading-relaxed px-4 text-sm font-medium drop-shadow-md">Gestiona tu colección de Dragon Ball Super Card Game con estilo. Inventario en tiempo real, seguimiento de colecciones y más.</p>
-          <button
-            onClick={handleLogin}
-            className="w-full py-4 bg-white text-black font-black rounded-2xl hover:bg-gray-100 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 shadow-2xl uppercase tracking-tighter"
-          >
-            <img src="https://www.google.com/favicon.ico" className="w-5 h-5" alt="Google" />
-            Entrar con Google
-          </button>
+          <div className="flex flex-col gap-4 w-full">
+            <button
+              onClick={handleLogin}
+              className="w-full py-3.5 bg-white text-black font-black rounded-xl hover:bg-gray-100 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 shadow-xl uppercase tracking-tighter"
+            >
+              <img src="https://www.google.com/favicon.ico" className="w-5 h-5" alt="Google" />
+              Entrar con Google
+            </button>
+
+            <div className="flex items-center gap-4 my-2">
+              <div className="h-px bg-white/10 flex-1"></div>
+              <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">{lang === 'es' ? 'O usa tu email' : 'Or use email'}</span>
+              <div className="h-px bg-white/10 flex-1"></div>
+            </div>
+
+            <form onSubmit={handleEmailSubmit} className="flex flex-col gap-3">
+              <input
+                type="email"
+                placeholder="Email"
+                value={emailAuth.email}
+                onChange={e => setEmailAuth(p => ({...p, email: e.target.value}))}
+                className="w-full px-4 py-3 bg-black/40 border-2 border-white/5 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+                autoComplete="email"
+              />
+              <input
+                type="password"
+                placeholder={lang === 'es' ? 'Contraseña' : 'Password'}
+                value={emailAuth.password}
+                onChange={e => setEmailAuth(p => ({...p, password: e.target.value}))}
+                className="w-full px-4 py-3 bg-black/40 border-2 border-white/5 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+                autoComplete="current-password"
+              />
+              {emailAuth.error && (
+                <p className="text-red-400 text-xs font-bold text-center">{emailAuth.error}</p>
+              )}
+              <button
+                type="submit"
+                className="w-full py-3.5 bg-orange-600 text-white font-black rounded-xl hover:bg-orange-500 hover:scale-[1.02] active:scale-95 transition-all shadow-xl uppercase tracking-tighter mt-1"
+              >
+                {emailAuth.isLogin ? (lang === 'es' ? 'Entrar' : 'Sign In') : (lang === 'es' ? 'Crear cuenta' : 'Create Account')}
+              </button>
+            </form>
+            
+            <button
+              onClick={() => setEmailAuth(p => ({...p, isLogin: !p.isLogin, error: ''}))}
+              className="mt-2 text-xs font-bold text-gray-400 hover:text-white transition-colors underline decoration-white/20 underline-offset-4"
+            >
+              {emailAuth.isLogin 
+                ? (lang === 'es' ? '¿No tienes cuenta? Regístrate aquí' : "Don't have an account? Sign up here")
+                : (lang === 'es' ? '¿Ya tienes cuenta? Entra aquí' : "Already have an account? Sign in here")}
+            </button>
+          </div>
         </>
       </motion.div>
     </div>
@@ -8631,6 +8731,7 @@ export default function App() {
               selectedCardIds={selectedCardIds}
               handleLongPress={handleLongPress}
               toggleCardSelection={toggleCardSelection}
+              isInventoryLoading={isInventoryLoading}
             />
           </div>
         )}
@@ -9386,6 +9487,7 @@ export default function App() {
               achievementsList={achievementsList}
               userAchievements={userAchievements}
               gameType={gameType}
+              isInventoryLoading={isInventoryLoading}
             />
           </motion.div>
         )}
@@ -10489,9 +10591,9 @@ export default function App() {
             primaryColor: '#f97316',
             textColor: '#fff',
             zIndex: 1000,
-          },
+          } as any,
           tooltipContainer: {
-            textAlign: 'left',
+            textAlign: 'left' as any,
           },
           buttonNext: {
             backgroundColor: '#f97316',
