@@ -2012,6 +2012,11 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
 };
 
 const IMAGE_OVERRIDES: Record<string, string> = {
+  'SD18-02': 'https://tcgplayer-cdn.tcgplayer.com/product/281726_in_1000x1000.jpg',
+  'SD18-02_PR03': 'https://tcgplayer-cdn.tcgplayer.com/product/283517_in_1000x1000.jpg',
+  'SD18-02_PR04': 'https://tcgplayer-cdn.tcgplayer.com/product/283518_in_1000x1000.jpg',
+  'SD17-02_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/SD17-02_PR02.png',
+  'SD17-02_PR04': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/SD17-02_PR04.png',
   'SD2-03_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/SD2-03_PR02.png',
   'FS01-01_P1': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS01-01_f_p1.webp',
   'FS01-01_P1_b': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS01-01_b_p1.webp',
@@ -5568,6 +5573,8 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
     }).sort((a, b) => b.total - a.total);
   }, [cards, inventory, collectionGoal, gameType]);
 
+  const filteredChartData = achievementChartData.filter(d => d.value > 0 || d.name === t.remaining);
+
   return (
     <div className="space-y-8 pb-32">
       {isInventoryLoading ? (
@@ -5621,76 +5628,82 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
               ))}
             </div>
           </div>
+
+          <div className="bg-[#1E1E1E] rounded-3xl p-6 shadow-xl border border-white/5">
+            <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-6">{t.distributionByRarity}</h3>
+            
+            <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+              {rarityData.map((stat) => (
+                <div key={stat.name} className="flex items-center justify-between border-b border-white/5 pb-2">
+                  <div className="flex flex-col">
+                    <p className="text-xs font-black text-white italic uppercase tracking-tighter">{stat.name}</p>
+                    <p className="text-[9px] text-gray-500 font-bold uppercase">{stat.owned} / {stat.total}</p>
+                  </div>
+                  <p className={`text-xs font-black italic ${stat.percentage === 100 ? 'text-green-500' : 'text-orange-500'}`}>{stat.percentage}%</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Achievement Stats Section */}
+          <div className="bg-[#1E1E1E] rounded-2xl p-6 shadow-xl border border-white/5 overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full -mr-16 -mt-16 blur-2xl" />
+            
+            <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-6">{t.achievementStats}</h3>
+            
+            <div className="flex flex-col items-center">
+              <div className="w-full h-48 mb-6">
+                {achievementStats.total > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={filteredChartData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={50}
+                        outerRadius={70}
+                        paddingAngle={5}
+                        dataKey="value"
+                      >
+                        {filteredChartData.map((entry, index) => (
+                           <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center text-gray-500">
+                    <Trophy size={32} className="opacity-20 mb-2" />
+                  </div>
+                )}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pt-8">
+                  <Trophy size={20} className="text-orange-500 mb-1" />
+                  <p className="text-lg font-black text-white italic leading-none">{achievementStats.unlockedTotal}</p>
+                  <p className="text-[8px] text-gray-500 font-bold uppercase">Total</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 w-full">
+                <div className="bg-white/5 p-3 rounded-2xl border border-white/5 flex flex-col items-center">
+                  <span className="text-[8px] font-black text-orange-500 uppercase mb-1">{t.visibleAchievements}</span>
+                  <p className="text-xl font-black text-white italic leading-tight">
+                    {achievementStats.visibleUnlocked}<span className="text-xs text-gray-600 font-bold">/{achievementStats.visibleTotal}</span>
+                  </p>
+                </div>
+                <div className="bg-white/5 p-3 rounded-2xl border border-white/5 flex flex-col items-center">
+                  <div className="flex items-center gap-1 mb-1">
+                    <span className="text-[8px] font-black text-purple-500 uppercase">{t.hiddenAchievements}</span>
+                    <div className="w-1 h-1 bg-purple-500 rounded-full animate-pulse" />
+                  </div>
+                  <p className="text-xl font-black text-white italic leading-tight">
+                    {achievementStats.hiddenUnlocked}<span className="text-xs text-gray-600 font-bold">/{achievementStats.hiddenTotal}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </>
       )}
-
-      <div className="bg-[#1E1E1E] rounded-3xl p-6 shadow-xl border border-white/5">
-        <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-6">{t.distributionByRarity}</h3>
-        
-        <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-          {rarityData.map((stat) => (
-            <div key={stat.name} className="flex items-center justify-between border-b border-white/5 pb-2">
-              <div className="flex flex-col">
-                <p className="text-xs font-black text-white italic uppercase tracking-tighter">{stat.name}</p>
-                <p className="text-[9px] text-gray-500 font-bold uppercase">{stat.owned} / {stat.total}</p>
-              </div>
-              <p className={`text-xs font-black italic ${stat.percentage === 100 ? 'text-green-500' : 'text-orange-500'}`}>{stat.percentage}%</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Achievement Stats Section */}
-      <div className="bg-[#1E1E1E] rounded-2xl p-6 shadow-xl border border-white/5 overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full -mr-16 -mt-16 blur-2xl" />
-        
-        <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-6">{t.achievementStats}</h3>
-        
-        <div className="flex flex-col items-center">
-          <div className="w-full h-48 mb-6">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={achievementChartData.filter(d => d.value > 0 || d.name === t.remaining)}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={50}
-                  outerRadius={70}
-                  paddingAngle={5}
-                  dataKey="value"
-                >
-                  {achievementChartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pt-8">
-              <Trophy size={20} className="text-orange-500 mb-1" />
-              <p className="text-lg font-black text-white italic leading-none">{achievementStats.unlockedTotal}</p>
-              <p className="text-[8px] text-gray-500 font-bold uppercase">Total</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 w-full">
-            <div className="bg-white/5 p-3 rounded-2xl border border-white/5 flex flex-col items-center">
-              <span className="text-[8px] font-black text-orange-500 uppercase mb-1">{t.visibleAchievements}</span>
-              <p className="text-xl font-black text-white italic leading-tight">
-                {achievementStats.visibleUnlocked}<span className="text-xs text-gray-600 font-bold">/{achievementStats.visibleTotal}</span>
-              </p>
-            </div>
-            <div className="bg-white/5 p-3 rounded-2xl border border-white/5 flex flex-col items-center">
-              <div className="flex items-center gap-1 mb-1">
-                <span className="text-[8px] font-black text-purple-500 uppercase">{t.hiddenAchievements}</span>
-                <div className="w-1 h-1 bg-purple-500 rounded-full animate-pulse" />
-              </div>
-              <p className="text-xl font-black text-white italic leading-tight">
-                {achievementStats.hiddenUnlocked}<span className="text-xs text-gray-600 font-bold">/{achievementStats.hiddenTotal}</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
