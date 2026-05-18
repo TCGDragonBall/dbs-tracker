@@ -2012,6 +2012,8 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
 };
 
 const IMAGE_OVERRIDES: Record<string, string> = {
+  'SD19-02_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/SD19-02_PR02.png',
+  'SD20-02_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/SD20-02_PR02.png',
   'SD18-02': 'https://tcgplayer-cdn.tcgplayer.com/product/281726_in_1000x1000.jpg',
   'SD18-02_PR03': 'https://tcgplayer-cdn.tcgplayer.com/product/283517_in_1000x1000.jpg',
   'SD18-02_PR04': 'https://tcgplayer-cdn.tcgplayer.com/product/283518_in_1000x1000.jpg',
