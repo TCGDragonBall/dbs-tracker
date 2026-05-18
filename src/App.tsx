@@ -54,7 +54,8 @@ import {
   Gem,
   Diamond,
   Store,
-  Coffee
+  Coffee,
+  AlertTriangle
 } from 'lucide-react';
 import { collection, query, onSnapshot, where, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, getDocFromServer, writeBatch, getCountFromServer } from 'firebase/firestore';
 import { db, auth, googleProvider, handleFirestoreError, OperationType, isQuotaError } from './firebase';
@@ -8136,6 +8137,14 @@ export default function App() {
         : 'Daily traffic limit reached. Please try again tomorrow.');
       return;
     }
+
+    if (/FBAN|FBAV|Instagram|WhatsApp|Line|LinkedIn|Snapchat|Viber|Threads/i.test(navigator.userAgent)) {
+      alert(lang === 'es' 
+        ? 'El inicio de sesión de Google no funciona dentro de WhatsApp o Instagram. Por favor, abre la app en Safari/Chrome usando el menú de opciones (tres puntos) inferior, o utiliza el registro por email que tienes justo abajo.' 
+        : 'Google Sign-In does not work in this embedded browser. Please open the app in Safari/Chrome using the options menu, or use email login below.');
+      return;
+    }
+
     signInWithPopup(auth, googleProvider).catch((error) => {
       console.error("Login failed:", error);
       if (error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request') {
@@ -8444,6 +8453,21 @@ export default function App() {
           <h1 className="text-4xl font-black text-white mb-4 tracking-tight uppercase italic drop-shadow-lg">DBS<span className="text-orange-500">TRACKER</span></h1>
           <p className="text-gray-300 mb-8 leading-relaxed px-4 text-sm font-medium drop-shadow-md">Gestiona tu colección de Dragon Ball Super Card Game con estilo. Inventario en tiempo real, seguimiento de colecciones y más.</p>
           <div className="flex flex-col gap-4 w-full">
+            {/FBAN|FBAV|Instagram|WhatsApp|Line|LinkedIn|Snapchat|Viber|Threads/i.test(navigator.userAgent) && (
+              <div className="bg-red-500/20 border border-red-500/50 p-4 rounded-xl text-left mb-2">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="text-red-500 shrink-0 mt-0.5" size={20} />
+                  <div>
+                    <h3 className="text-red-400 font-bold text-sm mb-1">{lang === 'es' ? 'Aviso importante' : 'Important Notice'}</h3>
+                    <p className="text-gray-300 text-xs leading-relaxed">
+                      {lang === 'es' 
+                        ? 'Parece que has abierto la app desde WhatsApp o similar. Para poder iniciar sesión con Google y evitar errores, por favor abre este enlace en el navegador normal de tu móvil (Safari o Chrome) usando el menú superior.' 
+                        : 'You seem to be using an embedded browser. To sign in with Google without errors, please open this app in your normal browser (Safari or Chrome) using the top menu.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
             <button
               onClick={handleLogin}
               className="w-full py-3.5 bg-white text-black font-black rounded-xl hover:bg-gray-100 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 shadow-xl uppercase tracking-tighter"
