@@ -7800,7 +7800,7 @@ export default function App() {
             'FB06-013_A_SB02': 'FB06-013_p4', 'FB06-016_A_SB02': 'FB06-016_p2', 'FB06-023_A_SB02': 'FB06-023_p2',
             'FB06-096_A_SB02': 'FB06-096_p2', 'FB06-108_A_SB02': 'FB06-108_p4', 'FB06-108_B_SB02': 'FB06-108_p5',
             'FB06-110_A_SB02': 'FB06-110_p2', 'FB06-111_A_SB02': 'FB06-111_p2', 'FB06-115_A_SB02': 'FB06-115_p2',
-            'FB06-116_A_SB02': 'FB06-116_p2', 'FB06-118_A_SB02': 'FB06-118_p1', 'FB06-119_A_SB02': 'FB06-119_p2',
+            'FB06-116_A_SB02': 'FB06-116_p2', 'FB06-118_A_SB02': 'FB06-118_p1',
             'FB07-004_A_SB02': 'FB07-004_p2', 'FB07-007_A_SB02': 'FB07-007_p1', 'FB07-097_A_SB02': 'FB07-097_p2',
             'FB07-097_B_SB02': 'FB07-097_p3', 'FB07-099_A_SB02': 'FB07-099_p2', 'FB07-100_A_SB02': 'FB07-100_p1',
             'FB07-103_A_SB02': 'FB07-103_p1', 'FB07-115_A_SB02': 'FB07-115_p2', 'FB07-116_A_SB02': 'FB07-116_p2',
@@ -8140,9 +8140,19 @@ export default function App() {
 
     if (/FBAN|FBAV|Instagram|WhatsApp|Line|LinkedIn|Snapchat|Viber|Threads/i.test(navigator.userAgent)) {
       alert(lang === 'es' 
-        ? 'El inicio de sesión de Google no funciona dentro de WhatsApp o Instagram. Por favor, abre la app en Safari/Chrome usando el menú de opciones (tres puntos) inferior, o utiliza el registro por email que tienes justo abajo.' 
+        ? 'El inicio de sesión de Google no funciona dentro de WhatsApp o Instagram. Por favor, abre la app en Safari/Chrome usando el menú de opciones inferior, o utiliza el registro por email que tienes justo abajo.' 
         : 'Google Sign-In does not work in this embedded browser. Please open the app in Safari/Chrome using the options menu, or use email login below.');
       return;
+    }
+
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isSafari = /WebKit/i.test(navigator.userAgent) && !/CriOS|FxiOS|OPiOS/i.test(navigator.userAgent);
+    
+    if (isIOS && isSafari) {
+      const proceed = window.confirm(lang === 'es'
+        ? 'Aviso: Safari en iPhone suele bloquear el inicio de sesión con Google por su sistema de privacidad (verás una pantalla blanca con error de sessionStorage).\n\nSi te ocurre, vuelve atrás y utiliza el ACCESO POR EMAIL de abajo, o abre la web en Chrome.\n\n¿Quieres intentar usar Google de todos modos?'
+        : 'Notice: Safari on iOS often blocks Google Sign-in due to privacy settings (you might see a blank screen with a sessionStorage error).\n\nIf this happens, please go back and use EMAIL LOGIN below, or use Chrome.\n\nDo you want to try Google Sign-in anyway?');
+      if (!proceed) return;
     }
 
     signInWithPopup(auth, googleProvider).catch((error) => {

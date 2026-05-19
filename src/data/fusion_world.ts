@@ -2057,7 +2057,6 @@ FB06-111_A_SB02	Mai (Alt)	UC*	Battle	Black	SB02
 FB06-115_A_SB02	Demon's Egg (Alt)	C*	Battle	Black	SB02
 FB06-116_A_SB02	King Castle (Alt)	C*	Extra	Black	SB02
 FB06-118_A_SB02	Piccolo Day (Alt)	R*	Extra	Black	SB02
-FB06-119_A_SB02	Son Goku : Childhood (Alt)	SCR*	Battle	Blue	SB02
 FB07-004_A_SB02	Android 16 (Alt)	C*	Battle	Red	SB02
 FB07-007_A_SB02	Cell (Alt)	R*	Battle	Red	SB02
 FB07-097_A_SB02	Dragon Ball (Alt)	L*	Leader	Black	SB02
