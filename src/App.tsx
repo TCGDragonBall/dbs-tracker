@@ -7513,7 +7513,7 @@ export default function App() {
   }).sort((a, b) => {
     if (sortBy === 'name') return a.name.localeCompare(b.name);
     
-    if (gameType === 'fusion' && filters.expansion !== 'Todos') {
+    if (filters.expansion !== 'Todos') {
       const aBase = a.cardNumber.split('_')[0];
       const bBase = b.cardNumber.split('_')[0];
       
@@ -7522,27 +7522,21 @@ export default function App() {
         const bIsBase = !b.cardNumber.includes('_');
         if (aIsBase && !bIsBase) return -1;
         if (!aIsBase && bIsBase) return 1;
-        return a.index - b.index;
+        
+        // Custom PR / sub order parsing (e.g. 'PR' vs 'PR02')
+        const aSub = a.cardNumber.split('_')[1] || '';
+        const bSub = b.cardNumber.split('_')[1] || '';
+        return aSub.localeCompare(bSub, undefined, { numeric: true });
       }
       
-      // If we are looking at a specific base set, e.g. FB01, prioritize cards whose base starts with FB01-
-      const viewPrefix = filters.expansion + '-';
-      const aBelongsToView = aBase.startsWith(viewPrefix);
-      const bBelongsToView = bBase.startsWith(viewPrefix);
+      // Native expansion cards first
+      const aIsNative = a.expansion === filters.expansion;
+      const bIsNative = b.expansion === filters.expansion;
+      if (aIsNative && !bIsNative) return -1;
+      if (!aIsNative && bIsNative) return 1;
       
-      if (aBelongsToView && !bBelongsToView) return -1;
-      if (!aBelongsToView && bBelongsToView) return 1;
-      
-      // If both belong to the view (or both don't), sort them by their base number so they are perfectly grouped
-      if (aBelongsToView && bBelongsToView) {
-        return aBase.localeCompare(bBase);
-      }
-      
-      // Fallback for extra/promo cards added at the end
-      const aStartsSet = a.id.startsWith(a.expansion);
-      const bStartsSet = b.id.startsWith(b.expansion);
-      if (aStartsSet && !bStartsSet) return -1;
-      if (!aStartsSet && bStartsSet) return 1;
+      // Compare bases numerically
+      return aBase.localeCompare(bBase, undefined, { numeric: true });
     }
     
     return a.index - b.index;
@@ -7865,6 +7859,9 @@ export default function App() {
             
             // Fix Expansion Set EX 1-9 leading zeros (e.g. EX2-01 -> EX02-01)
             finalCode = finalCode.replace(/^EX([1-9])(-)/, 'EX0$1$2');
+            
+            // Fix Expert Deck XD 1-9 leading zeros (e.g. XD01-01 -> XD1-01)
+            finalCode = finalCode.replace(/^XD0([1-9])(-)/, 'XD$1$2');
 
             // Clean specific suffixes that shouldn't affect image lookup
             finalCode = finalCode.replace(/_TS$/, '_PR').replace(/_GS$/, '');

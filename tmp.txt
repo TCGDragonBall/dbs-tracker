@@ -1,0 +1,2 @@
+      const parsedCards: Card[] = combinedData.split('\n').filter(line => line.trim()).map((line, i) => {
+      setCards(parsedCards);

@@ -23,10 +23,10 @@ XD03-01	Cell / Cell & Cell Jr., Endless Supremity	ST	Leader	Green	XD3
 XD03-02	Cell, Genetic Consumption	ST	Battle	Green	XD3
 XD03-03	Android 18, Imminent Danger	ST	Battle	Green	XD3
 XD03-04	Android 17, Impending Crisis	ST	Battle	Green	XD3
+XD03-04_PR	Android 17, Impending Crisis	PR	Battle	Green	XD3
 XD03-05	SS Son Goku, Valiant Breakthrough	ST	Battle	Yellow	XD3
 XD03-06	SS Vegeta, Begrudging Support	ST	Battle	Yellow	XD3
 XD03-07	Pernicious Progeny	ST	Extra	Yellow	XD3
 XD03-08	SS2 Son Gohan, Wounded Victor	ST	Battle	Multi	XD3
 XD03-09	Cell, Perfection Misspent	ST	Battle	Multi	XD3
-XD03-10	Cell, Perfection Reclaimed	ST	Battle	Multi	XD3
-XD3-04_PR	Android 17, Impending Crisis	PR	Battle	Green	XD3`;
+XD03-10	Cell, Perfection Reclaimed	ST	Battle	Multi	XD3`;
