@@ -2723,4 +2723,116 @@ FB09-037_CH26_T4	Son Goku (Top 4 Championship 2026 Wave 1)	SR*	Battle	Blue	CH26_
 FB09-007_CH26_SE	Gogeta : BR (Serial Championship 2026 Wave 1)	SR*	Battle	Red	CH26_W1
 PM-CH26-W1	Championship 2026 Wave 1 Playmat	Accessories	Playmat	Black	CH26_W1
 
+
+FB01-007_JSP01	Gohan : Youth	UC*	Battle	Red	JSP01
+FB01-008_JSP01	Gohan : Youth	C*	Battle	Red	JSP01
+FB01-016_JSP01	Super Saiyan God Goku	SR*	Battle	Red	JSP01
+FB01-037_JSP01	Goku Black	SR*	Battle	Blue	JSP01
+FB01-081_JSP01	Dr. Gero	C*	Battle	Green	JSP01
+FB01-098_JSP01	Broly	C*	Battle	Green	JSP01
+FB01-108_JSP01	Frieza	UC*	Battle	Yellow	JSP01
+FB01-136_JSP01	Time Rewound	UC*	Extra	Yellow	JSP01
+FS02-10_JSP01	Vegeta	C*	Battle	Blue	JSP01
+FS04-09_JSP01	Frieza	R*	Battle	Yellow	JSP01
+
+FB02-029_JSP02	Top	UC*	Battle	Red	JSP02
+FB02-040_JSP02	Zamasu	UC*	Battle	Blue	JSP02
+FB03-018_JSP02	Android 17	SR*	Battle	Red	JSP02
+FB03-036_JSP02	Zeno	UC*	Battle	Red	JSP02
+FB03-066_JSP02	Goku Black	R*	Battle	Blue	JSP02
+FB03-071_JSP02	Bulma	C*	Battle	Blue	JSP02
+FB03-084_JSP02	Android 17	SR*	Battle	Green	JSP02
+FB03-094_JSP02	Piccolo	C*	Battle	Green	JSP02
+FB03-132_JSP02	Sorbet	C*	Battle	Yellow	JSP02
+FS05-13_JSP02	Frieza	C*	Battle	Yellow	JSP02
+
+FB04-007_JSP03	Piccolo	C*	Battle	Red	JSP03
+FB04-042_JSP03	Vegeta	C*	Battle	Blue	JSP03
+FB04-060_JSP03	SSGSS Vegito	UC*	Battle	Blue	JSP03
+FB04-072_JSP03	Bulma	C*	Battle	Green	JSP03
+FB04-089_JSP03	SSGS Evolved Vegeta	R*	Battle	Green	JSP03
+FB04-092_JSP03	Nail	UC*	Battle	Green	JSP03
+FB04-112_JSP03	Frieza	UC*	Battle	Yellow	JSP03
+FB04-125_JSP03	Cooler	C*	Battle	Yellow	JSP03
+FS06-05_JSP03	Cheelai	R*	Battle	Green	JSP03
+FS07-06_JSP03	Great Ape Vegeta	C*	Battle	Yellow	JSP03
+
+FB01-007_JEP01	Gohan : Youth	UC*	Battle	Red	JEP01
+FB01-008_JEP01	Gohan : Youth	C*	Battle	Red	JEP01
+FB01-016_JEP01	Super Saiyan God Goku	SR*	Battle	Red	JEP01
+FB01-037_JEP01	Goku Black	SR*	Battle	Blue	JEP01
+FB01-081_JEP01	Dr. Gero	C*	Battle	Green	JEP01
+FB01-098_JEP01	Broly	C*	Battle	Green	JEP01
+FB01-108_JEP01	Frieza	UC*	Battle	Yellow	JEP01
+FB01-136_JEP01	Time Rewound	UC*	Extra	Yellow	JEP01
+FS02-10_JEP01	Vegeta	C*	Battle	Blue	JEP01
+FS04-09_JEP01	Frieza	R*	Battle	Yellow	JEP01
+
+FB02-029_JEP02	Top	UC*	Battle	Red	JEP02
+FB02-040_JEP02	Zamasu	UC*	Battle	Blue	JEP02
+FB03-018_JEP02	Android 17	SR*	Battle	Red	JEP02
+FB03-036_JEP02	Zeno	UC*	Battle	Red	JEP02
+FB03-066_JEP02	Goku Black	R*	Battle	Blue	JEP02
+FB03-071_JEP02	Bulma	C*	Battle	Blue	JEP02
+FB03-084_JEP02	Android 17	SR*	Battle	Green	JEP02
+FB03-094_JEP02	Piccolo	C*	Battle	Green	JEP02
+FB03-132_JEP02	Sorbet	C*	Battle	Yellow	JEP02
+FS05-13_JEP02	Frieza	C*	Battle	Yellow	JEP02
+
+FB04-007_JEP03	Piccolo	C*	Battle	Red	JEP03
+FB04-042_JEP03	Vegeta	C*	Battle	Blue	JEP03
+FB04-060_JEP03	SSGSS Vegito	UC*	Battle	Blue	JEP03
+FB04-072_JEP03	Bulma	C*	Battle	Green	JEP03
+FB04-089_JEP03	SSGS Evolved Vegeta	R*	Battle	Green	JEP03
+FB04-092_JEP03	Nail	UC*	Battle	Green	JEP03
+FB04-112_JEP03	Frieza	UC*	Battle	Yellow	JEP03
+FB04-125_JEP03	Cooler	C*	Battle	Yellow	JEP03
+FS06-05_JEP03	Cheelai	R*	Battle	Green	JEP03
+FS07-06_JEP03	Great Ape Vegeta	C*	Battle	Yellow	JEP03
+
+
+FB05-011_JSP04	Neva : DA	C*	Battle	Red	JSP04
+FB05-018_JSP04	Vegeta (Mini) : DA	UC*	Battle	Red	JSP04
+FB05-041_JSP04	Vegito	R*	Battle	Blue	JSP04
+FB05-062_JSP04	Bulma	R*	Battle	Green	JSP04
+FB05-083_JSP04	Bio-Broly	R*	Battle	Yellow	JSP04
+FB05-114_JSP04	South Kai	C*	Battle	Black	JSP04
+FB06-026_JSP04	Announcer	C*	Battle	Blue	JSP04
+FB06-061_JSP04	Broly : BR	UC*	Battle	Green	JSP04
+FB06-085_JSP04	Marba : DA	R*	Battle	Yellow	JSP04
+FB06-108_JSP04	King Piccolo	R*	Battle	Black	JSP04
+
+FB05-011_JEP04	Neva : DA	C*	Battle	Red	JEP04
+FB05-018_JEP04	Vegeta (Mini) : DA	UC*	Battle	Red	JEP04
+FB05-041_JEP04	Vegito	R*	Battle	Blue	JEP04
+FB05-062_JEP04	Bulma	R*	Battle	Green	JEP04
+FB05-083_JEP04	Bio-Broly	R*	Battle	Yellow	JEP04
+FB05-114_JEP04	South Kai	C*	Battle	Black	JEP04
+FB06-026_JEP04	Announcer	C*	Battle	Blue	JEP04
+FB06-061_JEP04	Broly : BR	UC*	Battle	Green	JEP04
+FB06-085_JEP04	Marba : DA	R*	Battle	Yellow	JEP04
+FB06-108_JEP04	King Piccolo	R*	Battle	Black	JEP04
+
+FB07-007_JSP05	Cell	R*	Battle	Red	JSP05
+FB07-011_JSP05	Son Goku (Mini) : DA	R*	Battle	Red	JSP05
+FB07-027_JSP05	Syn Shenron	R*	Battle	Blue	JSP05
+FB07-043_JSP05	Oceanus Shenron	C*	Battle	Blue	JSP05
+FB07-063_JSP05	Pan : SH	R*	Battle	Green	JSP05
+FB07-069_JSP05	Broly : BR	R*	Battle	Green	JSP05
+FB07-080_JSP05	King Cold	R*	Battle	Yellow	JSP05
+FB07-085_JSP05	Chilled	C*	Battle	Yellow	JSP05
+FB07-103_JSP05	Krillin	R*	Battle	Black	JSP05
+FB07-116_JSP05	Vegeta	C*	Battle	Black	JSP05
+
+FB07-007_JEP05	Cell	R*	Battle	Red	JEP05
+FB07-011_JEP05	Son Goku (Mini) : DA	R*	Battle	Red	JEP05
+FB07-027_JEP05	Syn Shenron	R*	Battle	Blue	JEP05
+FB07-043_JEP05	Oceanus Shenron	C*	Battle	Blue	JEP05
+FB07-063_JEP05	Pan : SH	R*	Battle	Green	JEP05
+FB07-069_JEP05	Broly : BR	R*	Battle	Green	JEP05
+FB07-080_JEP05	King Cold	R*	Battle	Yellow	JEP05
+FB07-085_JEP05	Chilled	C*	Battle	Yellow	JEP05
+FB07-103_JEP05	Krillin	R*	Battle	Black	JEP05
+FB07-116_JEP05	Vegeta	C*	Battle	Black	JEP05
+
 `;

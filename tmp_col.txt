@@ -1,0 +1,63 @@
+556:    category: 'Coleccionismo',
+557-    items: [
+558-      { id: 'COL01', label: 'Merit Cards', sub: 'Premios de torneos' },
+559-      { id: 'ENM', label: 'Energy Markers', sub: 'Markers' },
+560-      { id: 'COL02', label: 'Giant Size Cards', sub: 'Próximamente', locked: true },
+561-      { 
+562-        id: 'COL05', 
+563-        label: 'Event Packs', 
+564-        sub: 'Eventos especiales',
+565-        subItems: [
+566-          { id: 'EP01', label: 'Event Pack 2018 (Event pack 01)', sub: '2018' },
+567-          { id: 'EP02', label: 'Event Pack 2018 (Event pack 02)', sub: '2018' },
+568-          { id: 'EP03', label: 'Event Pack 03', sub: 'Eventos' },
+569-          { id: 'EP04', label: 'Event Pack 04', sub: 'Eventos' },
+570-          { id: 'EP05', label: 'Event Pack 05', sub: 'Eventos' },
+571-          { id: 'EP06', label: 'Event Pack 06', sub: 'Eventos' },
+572-          { id: 'EP07', label: 'Event Pack 07', sub: 'Eventos' },
+573-          { id: 'EP08', label: 'Event Pack 08', sub: 'Eventos' },
+574-          { id: 'EP09', label: 'Event Pack 09', sub: 'Eventos' },
+575-          { id: 'EP10', label: 'Event Pack 10', sub: 'Eventos' },
+576-          { id: 'EP11', label: 'Event Pack 11', sub: 'Eventos' },
+577-          { id: 'EP12', label: 'Event Pack 12', sub: 'Eventos' },
+578-          { id: 'EP13', label: 'Event Pack 13', sub: 'Eventos' },
+579-          { id: 'EP14', label: 'Event Pack 14', sub: 'Eventos' },
+580-          { id: 'EP15', label: 'Event Pack 15', sub: 'Eventos' },
+581-          { id: 'EP16', label: 'Event Pack 16', sub: 'Eventos' },
+582-          { id: 'EP17', label: 'Event Pack 17', sub: 'Eventos' },
+583-          { id: 'EP18', label: 'Event Pack 18', sub: 'Eventos' },
+584-        ]
+585-      },
+586-      { 
+--
+1037:    category: 'Coleccionismo',
+1038-    items: [
+1039-      {
+1040-        id: 'ANNIVERSARY_FOLDER',
+1041-        label: 'Anniversary Set',
+1042-        sub: 'Anniversary',
+1043-        locked: false,
+1044-        subItems: [
+1045-          { id: 'AS2025', label: '1st Anniversary Set', sub: 'Premium' },
+1046-          { id: 'AS2026', label: '2nd Anniversary Set', sub: 'Premium' },
+1047-        ]
+1048-      },
+1049-      {
+1050-        id: 'SLEEVES_FOLDER',
+1051-        label: 'Sleeves',
+1052-        sub: 'Accessories',
+1053-        locked: false,
+1054-        subItems: [
+1055-          { id: 'SL-CH-W1', label: 'Championship 2024 Wave 1', sub: 'Eventos', locked: false },
+1056-          { id: 'SL-CH-W2', label: 'Championship 2024 Wave 2', sub: 'Eventos', locked: false },
+1057-          { id: 'SL-CH25-W1', label: 'Championship 2025 Wave 1 Sleeve', sub: 'Eventos', locked: false },
+1058-          { id: 'SL-CH25-W2', label: 'Championship 2025 Wave 2 Sleeve', sub: 'Eventos', locked: false },
+1059-          { id: 'SL01', label: 'OFFICIAL CARD SLEEVES 01', sub: 'Accessories', locked: false },
+1060-          { id: 'SL02', label: 'OFFICIAL CARD SLEEVES 02', sub: 'Accessories', locked: false },
+1061-          { id: 'SL03', label: 'OFFICIAL CARD SLEEVES 03', sub: 'Accessories', locked: false },
+1062-          { id: 'SL04', label: 'OFFICIAL CARD SLEEVES 04', sub: 'Accessories', locked: false },
+1063-          { id: 'SL-ILL', label: 'OFFICIAL CARD SLEEVES -ILLUSTRATIONS-', sub: 'Accessories', locked: false },
+1064-          { id: 'SL-ILL-SP', label: 'OFFICIAL CARD SLEEVES -ILLUSTRATIONS- Special', sub: 'Accessories', locked: false },
+1065-          { id: 'SL-LTD02-GOKU', label: 'Official Card Sleeves Limited Edition 02 - Son Goku Gold', sub: 'Accessories', locked: false },
+1066-          { id: 'SL-LTD02-SHENRON', label: 'Official Card Sleeves Limited Edition 02 - Shenron', sub: 'Accessories', locked: false },
+1067-          { id: 'SL-LTD03-BULMA', label: 'Official Card Sleeves Limited Edition 03 - Bulma', sub: 'Accessories', locked: false },

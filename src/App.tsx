@@ -63,7 +63,7 @@ import { signInWithPopup, signOut, signInWithEmailAndPassword, createUserWithEma
 import { useAuth } from './AuthContext';
 import emailjs from '@emailjs/browser';
 
-const APP_VERSION = '5.0.2';
+const APP_VERSION = '5.0.4';
 
 const CATEGORY_BG: Record<string, string> = {
   'box': '/fondobox.jpg',
@@ -1097,6 +1097,24 @@ const FUSION_EXPANSION_GROUPS: ExpansionGroup[] = [
         ]
       },
       {
+        id: 'JUDGE_PACKS_FOLDER',
+        label: 'Judge Packs',
+        sub: 'Eventos',
+        locked: false,
+        subItems: [
+          { id: 'JSP01', label: 'Judge Store Pack 01', sub: 'Store', locked: false },
+          { id: 'JSP02', label: 'Judge Store Pack 02', sub: 'Store', locked: false },
+          { id: 'JSP03', label: 'Judge Store Pack 03', sub: 'Store', locked: false },
+          { id: 'JSP04', label: 'Judge Store Pack 04', sub: 'Store', locked: false },
+          { id: 'JSP05', label: 'Judge Store Pack 05', sub: 'Store', locked: false },
+          { id: 'JEP01', label: 'Judge Event Pack 01', sub: 'Event', locked: false },
+          { id: 'JEP02', label: 'Judge Event Pack 02', sub: 'Event', locked: false },
+          { id: 'JEP03', label: 'Judge Event Pack 03', sub: 'Event', locked: false },
+          { id: 'JEP04', label: 'Judge Event Pack 04', sub: 'Event', locked: false },
+          { id: 'JEP05', label: 'Judge Event Pack 05', sub: 'Event', locked: false },
+        ]
+      },
+      {
         id: 'CARD_CASE_FOLDER',
         label: 'Card Case',
         sub: 'Accessories',
@@ -1502,6 +1520,16 @@ const SET_METADATA: Record<string, { sourceProduct: string; releaseDate?: string
   'DB3': { sourceProduct: 'Draft Box 03' },
   'EB1': { sourceProduct: 'Battle Evolution Booster' },
   'ENM': { sourceProduct: 'Energy Markers' },
+  'JSP01': { sourceProduct: 'Judge Store Pack 01' },
+  'JSP02': { sourceProduct: 'Judge Store Pack 02' },
+  'JSP03': { sourceProduct: 'Judge Store Pack 03' },
+  'JSP04': { sourceProduct: 'Judge Store Pack 04' },
+  'JSP05': { sourceProduct: 'Judge Store Pack 05' },
+  'JEP01': { sourceProduct: 'Judge Event Pack 01' },
+  'JEP02': { sourceProduct: 'Judge Event Pack 02' },
+  'JEP03': { sourceProduct: 'Judge Event Pack 03' },
+  'JEP04': { sourceProduct: 'Judge Event Pack 04' },
+  'JEP05': { sourceProduct: 'Judge Event Pack 05' },
   'TP01': { sourceProduct: 'Tournament Pack 01' },
   'TP02': { sourceProduct: 'Tournament Pack 02' },
   'TP03': { sourceProduct: 'Tournament Pack 03' },
@@ -2033,9 +2061,110 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'FS05-01_P1_b': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS05-01_b_p1.webp',
   'FB02-119_P3': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB02-119_p3.webp?v1',
   'FB04-012_P3': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB04-012_p3.webp?v1',
+
+  'FB05-011_JEP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB05-011_p1.webp',
+  'FB05-018_JEP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB05-018_p1.webp',
+  'FB05-041_JEP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB05-041_p1.webp',
+  'FB05-062_JEP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB05-062_p1.webp',
+  'FB05-083_JEP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB05-083_p1.webp',
+  'FB05-114_JEP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB05-114_p1.webp',
+  'FB06-026_JEP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB06-026_p2.webp',
+  'FB06-061_JEP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB06-061_p1.webp',
+  'FB06-085_JEP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB06-085_p2.webp',
+  'FB06-108_JEP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB06-108_p2.webp',
+  'FB05-011_JSP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB05-011_p2.webp',
+  'FB05-018_JSP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB05-018_p2.webp',
+  'FB05-041_JSP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB05-041_p2.webp',
+  'FB05-062_JSP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB05-062_p2.webp',
+  'FB05-083_JSP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB05-083_p2.webp',
+  'FB05-114_JSP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB05-114_p2.webp',
+  'FB06-026_JSP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB06-026_p3.webp',
+  'FB06-061_JSP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB06-061_p2.webp',
+  'FB06-085_JSP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB06-085_p3.webp',
+  'FB06-108_JSP04': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB06-108_p3.webp',
+  'FB07-007_JEP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-007_p2.webp',
+  'FB07-011_JEP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-011_p1.webp',
+  'FB07-027_JEP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-027_p1.webp',
+  'FB07-043_JEP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-043_p2.webp',
+  'FB07-063_JEP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-063_p1.webp',
+  'FB07-069_JEP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-069_p1.webp',
+  'FB07-080_JEP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-080_p1.webp',
+  'FB07-085_JEP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-085_p2.webp',
+  'FB07-103_JEP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-103_p2.webp',
+  'FB07-116_JEP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-116_p4.webp',
+  'FB07-007_JSP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-007_p3.webp',
+  'FB07-011_JSP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-011_p2.webp',
+  'FB07-027_JSP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-027_p2.webp',
+  'FB07-043_JSP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-043_p3.webp',
+  'FB07-063_JSP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-063_p2.webp',
+  'FB07-069_JSP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-069_p2.webp',
+  'FB07-080_JSP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-080_p2.webp',
+  'FB07-085_JSP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-085_p3.webp',
+  'FB07-103_JSP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-103_p3.webp',
+  'FB07-116_JSP05': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB07-116_p5.webp',
   'FB06-036_P1': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB06-036_p1.webp?v1',
   'FB06-062_P1': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB06-062_p1.webp?v1',
   'FB06-097_P3': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB06-097_p3.webp?v1',
+  'FB01-007_JSP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB01-007_p4.webp',
+  'FB01-008_JSP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB01-008_p2.webp',
+  'FB01-016_JSP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB01-016_p3.webp',
+  'FB01-037_JSP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB01-037_p2.webp',
+  'FB01-081_JSP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB01-081_p2.webp',
+  'FB01-098_JSP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB01-098_p2.webp',
+  'FB01-108_JSP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB01-108_p2.webp',
+  'FB01-136_JSP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB01-136_p2.webp',
+  'FS02-10_JSP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS02-10_p5.webp',
+  'FS04-09_JSP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS04-09_p4.webp',
+  'FB02-029_JSP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB02-029_p4.webp',
+  'FB02-040_JSP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB02-040_p2.webp',
+  'FB03-018_JSP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB03-018_p2.webp',
+  'FB03-036_JSP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB03-036_p2.webp',
+  'FB03-066_JSP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB03-066_p2.webp',
+  'FB03-071_JSP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB03-071_p2.webp',
+  'FB03-084_JSP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB03-084_p2.webp',
+  'FB03-094_JSP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB03-094_p2.webp',
+  'FB03-132_JSP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB03-132_p3.webp',
+  'FS05-13_JSP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS05-13_p3.webp',
+  'FB04-007_JSP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB04-007_p2.webp',
+  'FB04-042_JSP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB04-042_p4.webp',
+  'FB04-060_JSP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB04-060_p4.webp',
+  'FB04-072_JSP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB04-072_p2.webp',
+  'FB04-089_JSP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB04-089_p2.webp',
+  'FB04-092_JSP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB04-092_p2.webp',
+  'FB04-112_JSP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB04-112_p2.webp',
+  'FB04-125_JSP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB04-125_p2.webp',
+  'FS06-05_JSP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS06-05_p3.webp',
+  'FS07-06_JSP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS07-06_p3.webp',
+  'FB01-007_JEP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB01-007_p3.webp',
+  'FB01-008_JEP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB01-008_p1.webp',
+  'FB01-016_JEP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB01-016_p2.webp',
+  'FB01-037_JEP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB01-037_p1.webp',
+  'FB01-081_JEP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB01-081_p1.webp',
+  'FB01-098_JEP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB01-098_p1.webp',
+  'FB01-108_JEP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB01-108_p1.webp',
+  'FB01-136_JEP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB01-136_p1.webp',
+  'FS02-10_JEP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS02-10_p4.webp',
+  'FS04-09_JEP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS04-09_p3.webp',
+  'FB02-029_JEP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB02-029_p3.webp',
+  'FB02-040_JEP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB02-040_p1.webp',
+  'FB03-018_JEP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB03-018_p1.webp',
+  'FB03-036_JEP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB03-036_p1.webp',
+  'FB03-066_JEP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB03-066_p1.webp',
+  'FB03-071_JEP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB03-071_p1.webp',
+  'FB03-084_JEP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB03-084_p1.webp',
+  'FB03-094_JEP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB03-094_p1.webp',
+  'FB03-132_JEP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB03-132_p2.webp',
+  'FS05-13_JEP02': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS05-13_p2.webp',
+  'FB04-007_JEP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB04-007_p1.webp',
+  'FB04-042_JEP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB04-042_p3.webp',
+  'FB04-060_JEP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB04-060_p3.webp',
+  'FB04-072_JEP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB04-072_p1.webp',
+  'FB04-089_JEP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB04-089_p1.webp',
+  'FB04-092_JEP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB04-092_p1.webp',
+  'FB04-112_JEP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB04-112_p1.webp',
+  'FB04-125_JEP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB04-125_p1.webp',
+  'FS06-05_JEP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS06-05_p2.webp',
+  'FS07-06_JEP03': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS07-06_p2.webp',
   'FB02-004_TP': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB02-004_p1.webp?v1',
   'FB02-034_TP': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB02-034_p1.webp?v1',
   'FB02-047_TP': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB02-047_p1.webp?v1',
@@ -3285,6 +3414,20 @@ const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata'
 
 const CHANGELOG = [
   {
+    version: '5.0.4',
+    date: '20 de mayo de 2026',
+    changes: [
+      { es: 'Corregidas las imágenes de los Judge Packs 04 y 05, y ajustado el orden lógico dentro de sus sets base.', en: 'Fix Judge Packs 04 and 05 images and logic sort inside their expansion set.' }
+    ]
+  },
+  {
+    version: '5.0.3',
+    date: '20 de mayo de 2026',
+    changes: [
+      { es: 'Añadidas las cartas de los Judge Store y Event Packs 04 y 05 para Fusion World.', en: 'Added Judge Store and Event Packs 04 and 05 cards to Fusion World.' }
+    ]
+  },
+  {
     version: '5.0.2',
     date: '15 de mayo de 2026',
     changes: [
@@ -4391,7 +4534,20 @@ const ULTIMATE_BATTLE_2024_V1 = ['FB01-096_UB_W', 'FS04-12_UB_T8'];
 const ULTIMATE_BATTLE_2024_V2 = ['FB02-007_UB_V2_T8', 'FB02-061_UB_V2_W'];
 const BCG_FEST_24 = ['FB03-011_BCGF'];
 
+const FUSION_JUDGE_STORE_PACK_01 = ['FB01-007_JSP01', 'FB01-008_JSP01', 'FB01-016_JSP01', 'FB01-037_JSP01', 'FB01-081_JSP01', 'FB01-098_JSP01', 'FB01-108_JSP01', 'FB01-136_JSP01', 'FS02-10_JSP01', 'FS04-09_JSP01'];
+const FUSION_JUDGE_STORE_PACK_02 = ['FB02-029_JSP02', 'FB02-040_JSP02', 'FB03-018_JSP02', 'FB03-036_JSP02', 'FB03-066_JSP02', 'FB03-071_JSP02', 'FB03-084_JSP02', 'FB03-094_JSP02', 'FB03-132_JSP02', 'FS05-13_JSP02'];
+const FUSION_JUDGE_STORE_PACK_03 = ['FB04-007_JSP03', 'FB04-042_JSP03', 'FB04-060_JSP03', 'FB04-072_JSP03', 'FB04-089_JSP03', 'FB04-092_JSP03', 'FB04-112_JSP03', 'FB04-125_JSP03', 'FS06-05_JSP03', 'FS07-06_JSP03'];
+const FUSION_JUDGE_STORE_PACK_04 = ['FB05-011_JSP04', 'FB05-018_JSP04', 'FB05-041_JSP04', 'FB05-062_JSP04', 'FB05-083_JSP04', 'FB05-114_JSP04', 'FB06-026_JSP04', 'FB06-061_JSP04', 'FB06-085_JSP04', 'FB06-108_JSP04'];
+const FUSION_JUDGE_STORE_PACK_05 = ['FB07-007_JSP05', 'FB07-011_JSP05', 'FB07-027_JSP05', 'FB07-043_JSP05', 'FB07-063_JSP05', 'FB07-069_JSP05', 'FB07-080_JSP05', 'FB07-085_JSP05', 'FB07-103_JSP05', 'FB07-116_JSP05'];
+const FUSION_JUDGE_EVENT_PACK_01 = ['FB01-007_JEP01', 'FB01-008_JEP01', 'FB01-016_JEP01', 'FB01-037_JEP01', 'FB01-081_JEP01', 'FB01-098_JEP01', 'FB01-108_JEP01', 'FB01-136_JEP01', 'FS02-10_JEP01', 'FS04-09_JEP01'];
+const FUSION_JUDGE_EVENT_PACK_02 = ['FB02-029_JEP02', 'FB02-040_JEP02', 'FB03-018_JEP02', 'FB03-036_JEP02', 'FB03-066_JEP02', 'FB03-071_JEP02', 'FB03-084_JEP02', 'FB03-094_JEP02', 'FB03-132_JEP02', 'FS05-13_JEP02'];
+const FUSION_JUDGE_EVENT_PACK_03 = ['FB04-007_JEP03', 'FB04-042_JEP03', 'FB04-060_JEP03', 'FB04-072_JEP03', 'FB04-089_JEP03', 'FB04-092_JEP03', 'FB04-112_JEP03', 'FB04-125_JEP03', 'FS06-05_JEP03', 'FS07-06_JEP03'];
+const FUSION_JUDGE_EVENT_PACK_04 = ['FB05-011_JEP04', 'FB05-018_JEP04', 'FB05-041_JEP04', 'FB05-062_JEP04', 'FB05-083_JEP04', 'FB05-114_JEP04', 'FB06-026_JEP04', 'FB06-061_JEP04', 'FB06-085_JEP04', 'FB06-108_JEP04'];
+const FUSION_JUDGE_EVENT_PACK_05 = ['FB07-007_JEP05', 'FB07-011_JEP05', 'FB07-027_JEP05', 'FB07-043_JEP05', 'FB07-063_JEP05', 'FB07-069_JEP05', 'FB07-080_JEP05', 'FB07-085_JEP05', 'FB07-103_JEP05', 'FB07-116_JEP05'];
+
 const PACK_ARRAYS: Record<string, string[]> = {
+  JSP01: FUSION_JUDGE_STORE_PACK_01, JSP02: FUSION_JUDGE_STORE_PACK_02, JSP03: FUSION_JUDGE_STORE_PACK_03, JSP04: FUSION_JUDGE_STORE_PACK_04, JSP05: FUSION_JUDGE_STORE_PACK_05,
+  JEP01: FUSION_JUDGE_EVENT_PACK_01, JEP02: FUSION_JUDGE_EVENT_PACK_02, JEP03: FUSION_JUDGE_EVENT_PACK_03, JEP04: FUSION_JUDGE_EVENT_PACK_04, JEP05: FUSION_JUDGE_EVENT_PACK_05,
   EP01: EVENT_PACK_01, EP02: EVENT_PACK_02, EP03: EVENT_PACK_03, EP04: EVENT_PACK_04, EP05: EVENT_PACK_05, EP06: EVENT_PACK_06, EP07: EVENT_PACK_07, EP08: EVENT_PACK_08, EP09: EVENT_PACK_09, EP10: EVENT_PACK_10, EP11: EVENT_PACK_11, EP12: EVENT_PACK_12, EP13: EVENT_PACK_13, EP14: EVENT_PACK_14, EP15: EVENT_PACK_15, EP16: EVENT_PACK_16, EP17: EVENT_PACK_17, EP18: EVENT_PACK_18,
   JP01: JUDGE_PACK_01, JP02: JUDGE_PACK_02, JP03: JUDGE_PACK_03, JP04: JUDGE_PACK_04, JP05: JUDGE_PACK_05, JP06: JUDGE_PACK_06, JP07: JUDGE_PACK_07, JP08: JUDGE_PACK_08, JP09: JUDGE_PACK_09, JP10: JUDGE_PACK_10, JP11: JUDGE_PACK_11, JP12: JUDGE_PACK_12, JP13: JUDGE_PACK_13, JP14: JUDGE_PACK_14, JP15: JUDGE_PACK_15, JP16: JUDGE_PACK_16, JP17: JUDGE_PACK_17, JP18: JUDGE_PACK_18,
   TP01: [...TOURNAMENT_PACK_01_NORMAL, ...TOURNAMENT_PACK_01_WINNER],
@@ -7548,8 +7704,12 @@ export default function App() {
       }
       
       // Native expansion cards first
-      const aIsNative = a.expansion === filters.expansion;
-      const bIsNative = b.expansion === filters.expansion;
+      let aIsNative = a.expansion === filters.expansion;
+      let bIsNative = b.expansion === filters.expansion;
+      if (gameType === 'fusion' && filters.expansion.length > 0) {
+        aIsNative = aBase.startsWith(filters.expansion + '-');
+        bIsNative = bBase.startsWith(filters.expansion + '-');
+      }
       if (aIsNative && !bIsNative) return -1;
       if (!aIsNative && bIsNative) return 1;
       
