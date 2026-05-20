@@ -6829,6 +6829,24 @@ function GameSelectionModal({ lang, onSelect }: { lang: 'es' | 'en', onSelect: (
   );
 }
 
+
+const safeStorage = {
+  getItem: (key: string) => {
+    try {
+      return window.localStorage.getItem(key);
+    } catch (e) {
+      return null;
+    }
+  },
+  setItem: (key: string, value: string) => {
+    try {
+      window.localStorage.setItem(key, value);
+    } catch (e) {
+      // Ignored
+    }
+  }
+};
+
 export default function App() {
   const { user, loading: authLoading, profile, error, isQuotaExceeded, quotaErrorMessage, setIsQuotaExceeded } = useAuth();
   const isAdmin = user?.email === 'anulix1983@gmail.com';
@@ -6836,20 +6854,20 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [emailAuth, setEmailAuth] = useState({ email: '', password: '', isLogin: true, error: '' });
   const [lang, setLang] = useState<'es' | 'en'>(() => {
-    const saved = localStorage.getItem('lang');
+    const saved = safeStorage.getItem('lang');
     return (saved as 'es' | 'en') || 'es';
   });
   const [showLanguageSelector, setShowLanguageSelector] = useState(() => {
-    return !localStorage.getItem('lang');
+    return !safeStorage.getItem('lang');
   });
 
   const [gameType, setGameType] = useState<'masters' | 'fusion'>(() => {
-    const saved = localStorage.getItem('gameType');
+    const saved = safeStorage.getItem('gameType');
     return (saved as 'masters' | 'fusion') || 'masters';
   });
 
   const [showGameSelector, setShowGameSelector] = useState(() => {
-    const lastSelection = localStorage.getItem('lastGameSelectionDate');
+    const lastSelection = safeStorage.getItem('lastGameSelectionDate');
     const today = new Date().toDateString();
     return lastSelection !== today;
   });
@@ -6857,8 +6875,8 @@ export default function App() {
 
   const handleGameSelect = (type: 'masters' | 'fusion') => {
     setGameType(type);
-    localStorage.setItem('gameType', type);
-    localStorage.setItem('lastGameSelectionDate', new Date().toDateString());
+    safeStorage.setItem('gameType', type);
+    safeStorage.setItem('lastGameSelectionDate', new Date().toDateString());
     setShowGameSelector(false);
   };
 
@@ -6883,7 +6901,7 @@ export default function App() {
 
   const handleLanguageSelect = (selectedLang: 'es' | 'en') => {
     setLang(selectedLang);
-    localStorage.setItem('lang', selectedLang);
+    safeStorage.setItem('lang', selectedLang);
     setShowLanguageSelector(false);
     if (user) {
       updateProfileFields({ language: selectedLang });
@@ -6894,26 +6912,26 @@ export default function App() {
     if (profile) {
       if (profile.language && profile.language !== lang) {
         setLang(profile.language as 'es' | 'en');
-        localStorage.setItem('lang', profile.language);
+        safeStorage.setItem('lang', profile.language);
         setShowLanguageSelector(false);
       }
       if (profile.collectionGoal && profile.collectionGoal !== collectionGoal) {
         setCollectionGoal(profile.collectionGoal as 'collector' | 'player');
-        localStorage.setItem('collectionGoal', profile.collectionGoal);
+        safeStorage.setItem('collectionGoal', profile.collectionGoal);
       }
       if (profile.hasSetGoal !== undefined && profile.hasSetGoal !== hasSetGoal) {
         setHasSetGoal(profile.hasSetGoal);
-        localStorage.setItem('hasSetGoal', profile.hasSetGoal.toString());
+        safeStorage.setItem('hasSetGoal', profile.hasSetGoal.toString());
       }
       if (profile.hasCompletedTutorial !== undefined && profile.hasCompletedTutorial !== hasCompletedTutorial) {
         setHasCompletedTutorial(profile.hasCompletedTutorial);
-        localStorage.setItem('tutorialStep', profile.hasCompletedTutorial ? 'completed' : '');
+        safeStorage.setItem('tutorialStep', profile.hasCompletedTutorial ? 'completed' : '');
       }
     }
   }, [profile]);
 
   useEffect(() => {
-    localStorage.setItem('lang', lang);
+    safeStorage.setItem('lang', lang);
   }, [lang]);
 
   const t = translations[lang];
@@ -7086,7 +7104,7 @@ export default function App() {
 
   // Check changelog visibility on entry
   useEffect(() => {
-    const lastSeenVersion = localStorage.getItem('lastSeenVersion');
+    const lastSeenVersion = safeStorage.getItem('lastSeenVersion');
     const isNewVersion = lastSeenVersion !== APP_VERSION;
 
     if (user) {
@@ -7094,7 +7112,7 @@ export default function App() {
         setShowChangelogOnEntry(true);
       } else {
         // If not showing changelog, check if we should show the community modal (once a week)
-        const lastCommunityModalSeen = localStorage.getItem('lastCommunityModalSeen');
+        const lastCommunityModalSeen = safeStorage.getItem('lastCommunityModalSeen');
         const now = Date.now();
         const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
         
@@ -7107,12 +7125,12 @@ export default function App() {
 
   const markChangelogAsSeen = () => {
     const wasShownOnEntry = showChangelogOnEntry;
-    localStorage.setItem('lastSeenVersion', APP_VERSION);
+    safeStorage.setItem('lastSeenVersion', APP_VERSION);
     setShowChangelogOnEntry(false);
     setIsChangelogModalOpen(false);
     
     // Show community message after changelog on entry if it's been more than a week
-    const lastCommunityModalSeen = localStorage.getItem('lastCommunityModalSeen');
+    const lastCommunityModalSeen = safeStorage.getItem('lastCommunityModalSeen');
     const now = Date.now();
     const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
     
@@ -7123,7 +7141,7 @@ export default function App() {
   const [isExpansionSheetOpen, setIsExpansionSheetOpen] = useState(false);
 
   const closeCommunityModal = () => {
-    localStorage.setItem('lastCommunityModalSeen', Date.now().toString());
+    safeStorage.setItem('lastCommunityModalSeen', Date.now().toString());
     setIsCommunityModalOpen(false);
   };
 
@@ -7136,15 +7154,15 @@ export default function App() {
   const [currentCollectionSubCategory, setCurrentCollectionSubCategory] = useState<string | null>(null);
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
   const [collectionGoal, setCollectionGoal] = useState<'collector' | 'player'>(() => {
-    const saved = localStorage.getItem('collectionGoal');
+    const saved = safeStorage.getItem('collectionGoal');
     return (saved as 'collector' | 'player') || 'collector';
   });
   const [hasSetGoal, setHasSetGoal] = useState(() => {
-    return localStorage.getItem('hasSetGoal') === 'true';
+    return safeStorage.getItem('hasSetGoal') === 'true';
   });
 
   const [hasCompletedTutorial, setHasCompletedTutorial] = useState(() => {
-    return localStorage.getItem('tutorialStep') === 'completed';
+    return safeStorage.getItem('tutorialStep') === 'completed';
   });
 
   const tutorialSteps: Step[] = useMemo(() => [
@@ -7201,7 +7219,7 @@ export default function App() {
 
     if (finishedStatuses.includes(status)) {
       setHasCompletedTutorial(true);
-      localStorage.setItem('tutorialStep', 'completed');
+      safeStorage.setItem('tutorialStep', 'completed');
       if (user) {
         updateDoc(doc(db, 'users', user.uid), { hasCompletedTutorial: true }).catch(err => {
           console.error("Failed to update tutorial status in DB:", err);
@@ -7264,17 +7282,17 @@ export default function App() {
   const achievementsList = useMemo(() => getAchievementsList(cards, currentGroups, gameType), [cards, currentGroups, gameType]);
 
   useEffect(() => {
-    localStorage.setItem('collectionGoal', collectionGoal);
+    safeStorage.setItem('collectionGoal', collectionGoal);
   }, [collectionGoal]);
 
   const DEFAULT_ALTERNATIVES = ['event', 'tournament', 'judge', 'giant', 'championship', 'ultimate-battle', 'serial', 'sleeve', 'playmat'];
 
   useEffect(() => {
-    localStorage.setItem('hasSetGoal', hasSetGoal.toString());
+    safeStorage.setItem('hasSetGoal', hasSetGoal.toString());
   }, [hasSetGoal]);
 
   useEffect(() => {
-    localStorage.setItem('gameType', gameType);
+    safeStorage.setItem('gameType', gameType);
     setCurrentCollectionCategory(null);
     setCurrentCollectionSubCategory(null);
     setExpandedCategories([]);
@@ -7539,7 +7557,19 @@ export default function App() {
       return aBase.localeCompare(bBase, undefined, { numeric: true });
     }
     
-    return a.index - b.index;
+    // Sort globally by baseIndex so promos group with their original card position
+    const aBaseIndex = (a as any).baseIndex ?? a.index;
+    const bBaseIndex = (b as any).baseIndex ?? b.index;
+    
+    if (aBaseIndex === bBaseIndex) {
+        // They share the same base, sort by their sub identifier
+        const aSub = a.cardNumber.split('_')[1] || '';
+        const bSub = b.cardNumber.split('_')[1] || '';
+        if (aSub === bSub) return a.index - b.index;
+        return aSub.localeCompare(bSub, undefined, { numeric: true });
+    }
+    
+    return aBaseIndex - bBaseIndex;
   });
 
   const hasActiveFilters = useMemo(() => {
@@ -7734,7 +7764,7 @@ export default function App() {
       const mastersDataRaw = `${bt1Data}\n${promoData}\n${startersData}\n${expertsData}\n${expansionsData}\n${tb3Data}\n${tb2Data}\n${tb1Data}\n${eb1Data}\n${db3Data}\n${db2Data}\n${db1Data}\n${bt2Data}\n${bt3Data}\n${bt4Data}\n${bt5Data}\n${bt6Data}\n${bt7Data}\n${bt8Data}\n${bt9Data}\n${bt10Data}\n${bt11Data}\n${bt12Data}\n${bt13Data}\n${bt14Data}\n${bt15Data}\n${bt16Data}\n${bt17Data}\n${bt18Data}\n${bt19Data}\n${bt20Data}\n${bt21Data}\n${bt22Data}\n${bt23Data}\n${bt24Data}\n${bt25Data}\n${bt26Data}\n${bt27Data}\n${bt28Data}\n${bt29Data}\n${bt30Data}\n${energyMarkersData}\n${tokensData}\n${meritsData}`;
       const combinedData = gameType === 'fusion' ? fusionWorldData : mastersDataRaw;
 
-      const parsedCards: Card[] = combinedData.split('\n').filter(line => line.trim()).map((line, i) => {
+      let parsedCards: (Card & { baseIndex?: number })[] = combinedData.split('\n').filter(line => line.trim()).map((line, i) => {
         const parts = line.split('\t').map(s => s?.trim() || '');
         const [cardNumber, name, rarity, type, color, expansion] = parts;
         
@@ -7896,9 +7926,23 @@ export default function App() {
           backImageUrl: backImageUrl,
           isFoil: ['SR', 'SPR', 'SCR', 'GDR', 'RLR', 'PRW', 'LEADER RARE', 'L*', 'C*', 'UC*', 'R*', 'SR*', 'SCR*', 'SCR**'].includes(rarity),
           ...(SET_METADATA[cardNumber] || SET_METADATA[expansionId] || {})
-        };
+        } as Card & { baseIndex?: number };
       });
       
+      const baseIndexMap = new Map<string, number>();
+      parsedCards.forEach(card => {
+        const base = card.cardNumber.split('_')[0];
+        if (!card.cardNumber.includes('_') && !baseIndexMap.has(base)) {
+           baseIndexMap.set(base, card.index);
+        }
+      });
+      
+      parsedCards = parsedCards.map(card => {
+        const base = card.cardNumber.split('_')[0];
+        card.baseIndex = baseIndexMap.has(base) ? baseIndexMap.get(base) : card.index;
+        return card;
+      });
+
       setCards(parsedCards);
     };
 
@@ -8746,8 +8790,8 @@ export default function App() {
               onClick={() => {
                 const newType = gameType === 'masters' ? 'fusion' : 'masters';
                 setGameType(newType);
-                localStorage.setItem('gameType', newType);
-                localStorage.setItem('lastGameSelectionDate', new Date().toDateString());
+                safeStorage.setItem('gameType', newType);
+                safeStorage.setItem('lastGameSelectionDate', new Date().toDateString());
               }}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-all ${
                 gameType === 'fusion' 
@@ -9985,7 +10029,7 @@ export default function App() {
                 </button>
               </div>
 
-              <div className="w-full max-w-md px-4 mx-auto relative pt-24 pb-12">
+              <div className="w-full max-w-2xl px-4 mx-auto relative pt-24 pb-12">
                 <motion.div 
                   key={selectedCard.id}
                   initial={{ x: 300, opacity: 0 }}
@@ -10003,8 +10047,14 @@ export default function App() {
                       handlePrevCard();
                     }
                   }}
-                  className="flex flex-col items-center gap-6 cursor-grab active:cursor-grabbing"
+                  className="flex flex-col items-center gap-6 cursor-grab active:cursor-grabbing w-full"
                 >
+                  <div className="bg-black/80 px-4 py-1.5 rounded-full border border-white/20 backdrop-blur-md shadow-2xl flex items-center justify-center -mb-2">
+                    <span className="text-sm font-black tracking-widest text-white/90 uppercase">
+                      {selectedCard.cardNumber} <span className="text-orange-500 mx-2">•</span> {selectedCard.rarity.replace(/\*/g, '★')}
+                    </span>
+                  </div>
+
                 <AnimatePresence mode="wait">
                   {!showDetails ? (
                     <motion.div 
@@ -10013,7 +10063,7 @@ export default function App() {
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.95 }}
                       transition={{ duration: 0.15 }}
-                      className={`w-full ${selectedCard.type === 'Playmat' ? 'max-w-[460px] md:max-w-[600px] mt-12' : 'max-w-[260px]'} mx-auto`}
+                      className={`w-full ${selectedCard.type === 'Playmat' ? 'max-w-[460px] md:max-w-[600px] mt-12' : 'max-w-[260px] md:max-w-[325px]'} mx-auto`}
                     >
                       <ModalCard selectedCard={selectedCard} isFlipped={isFlipped} setIsFlipped={setIsFlipped} />
                     </motion.div>
@@ -10727,20 +10777,18 @@ export default function App() {
         run={false} // !hasCompletedTutorial && !authLoading && (!user || profile !== null)
         continuous={true}
         scrollToFirstStep={false}
-        disableOverlayClose={true}
-        disableCloseOnEsc={true}
-        callback={handleJoyrideCallback}
-        showProgress={true}
-        showSkipButton={true}
+        onEvent={handleJoyrideCallback}
+        options={{
+          arrowColor: '#1E1E1E',
+          backgroundColor: '#1E1E1E',
+          overlayColor: 'rgba(0, 0, 0, 0.6)',
+          primaryColor: '#f97316',
+          textColor: '#fff',
+          zIndex: 1000,
+          showProgress: true,
+          buttons: ['back', 'close', 'primary', 'skip'],
+        }}
         styles={{
-          options: {
-            arrowColor: '#1E1E1E',
-            backgroundColor: '#1E1E1E',
-            overlayColor: 'rgba(0, 0, 0, 0.6)',
-            primaryColor: '#f97316',
-            textColor: '#fff',
-            zIndex: 1000,
-          } as any,
           tooltipContainer: {
             textAlign: 'left' as any,
           },
@@ -10782,7 +10830,7 @@ export default function App() {
             color: '#9ca3af', // Darker gray for description text
             lineHeight: 1.5,
           }
-        }}
+        } as any}
         locale={{
           back: lang === 'es' ? 'Atrás' : 'Back',
           close: lang === 'es' ? 'Cerrar' : 'Close',
