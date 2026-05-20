@@ -4,6 +4,8 @@ BT1-003	Hit / Assassin Hit	UC	Leader	Red	BT1
 BT1-004	Destructive Terror Champa	SR	Battle	Red	BT1
 BT1-005	Furthering Destruction Champa	UC	Battle	Red	BT1
 BT1-005_JP04	Furthering Destruction Champa	PR	Battle	Red	BT1
+BT1-005_PR03	Furthering Destruction Champa	PR	Battle	Red	BT1
+BT1-005_PR04	Furthering Destruction Champa	PR	Battle	Red	BT1
 BT1-006	Scheming Champa	C	Battle	Red	BT1
 BT1-007	Manipulating God Champa	C	Battle	Red	BT1
 BT1-008	Bewitching God Vados	R	Battle	Red	BT1
@@ -134,10 +136,10 @@ BT1-105	Cui	C	Battle	Yellow	BT1
 BT1-106	Recoome Eraser Gun	UC	Extra	Yellow	BT1
 BT1-107	Cold Bloodlust	C	Extra	Yellow	BT1
 BT1-107_PR	Cold Bloodlust	PR	Extra	Yellow	BT1
-BT1-107_PR02	Cold Bloodlust	PR	Extra	Yellow	BT1
 BT1-108	Bad Ring Laser	C	Extra	Yellow	BT1
 BT1-108_JP05	Bad Ring Laser	PR	Extra	Yellow	BT1
 BT1-109	Frieza's Call	C	Extra	Yellow	BT1
 BT1-109_EP03	Frieza's Call	PR	Extra	Yellow	BT1
 BT1-110	Crusher Ball	C	Extra	Yellow	BT1
-BT1-110_JP04	Crusher Ball	PR	Extra	Yellow	BT1`;
+BT1-110_JP04	Crusher Ball	PR	Extra	Yellow	BT1
+BT1-110_PR03	Crusher Ball	PR	Extra	Yellow	BT1`;

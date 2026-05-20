@@ -63,6 +63,7 @@ BT5-050	Dimension Magic	C	Extra	Blue	BT5
 BT5-050_JP06	Dimension Magic	PR	Extra	Blue	BT5
 BT5-050_PR	Dimension Magic	PR	Extra	Blue	BT5
 BT5-050_PR02	Dimension Magic	PR	Extra	Blue	BT5
+BT5-050_PR03	Dimension Magic	PR	Extra	Blue	BT5
 BT5-050_PR04	Dimension Magic	PR	Extra	Blue	BT5
 BT5-051	Call of Justice	C	Extra	Blue	BT5
 BT5-052	Soul Punisher	UC	Extra	Blue	BT5

@@ -63,7 +63,7 @@ import { signInWithPopup, signOut, signInWithEmailAndPassword, createUserWithEma
 import { useAuth } from './AuthContext';
 import emailjs from '@emailjs/browser';
 
-const APP_VERSION = '5.0.4';
+const APP_VERSION = '5.0.16';
 
 const CATEGORY_BG: Record<string, string> = {
   'box': '/fondobox.jpg',
@@ -1864,8 +1864,6 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
     releaseDate: 'Diciembre de 2018' 
   },
   'BT1-005_PR02': { sourceProduct: 'US: National Championship Finals 2018' },
-  'BT1-005_PR03': { sourceProduct: 'EXPANSION SET Magnificent Collection -Forsaken Warrior-' },
-  'BT1-005_PR04': { sourceProduct: 'Special Anniversary Box 2021' },
   'BT1-010_PR': { sourceProduct: 'Winner - UNION FORCE Release Tournament' },
   'BT1-014_PR': { sourceProduct: 'Anniversary Box 2019' },
   'BT1-030_PR': { sourceProduct: 'Launch Kit' },
@@ -1887,14 +1885,18 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
   'BT3-075_PR': { sourceProduct: 'Winner - COLOSSAL WARFARE Release Tournament' },
   'BT3-105_PR': { sourceProduct: 'Winner - COLOSSAL WARFARE Release Tournament' },
   'BT3-117_PR': { sourceProduct: 'Winner - COLOSSAL WARFARE Release Tournament' },
-  'BT1-107_PR02': { sourceProduct: 'Winner - DESTROYER KINGS Release Tournament' },
+  'BT1-005_PR03': { sourceProduct: 'Magnificent Collection' },
+  'BT1-005_PR04': { sourceProduct: 'Anniversary Box 2019' },
+  'BT1-052_PR02': { sourceProduct: 'Anniversary Box 2019' },
+  'BT1-052_PR03': { sourceProduct: 'Magnificent Collection' },
+  'BT1-053_PR02': { sourceProduct: 'Magnificent Collection' },
+  'BT1-053_PR05': { sourceProduct: 'Alt Art Card Set 2023' },
+  'BT1-055_PR02': { sourceProduct: 'Magnificent Collection' },
+  'BT1-110_PR03': { sourceProduct: 'Magnificent Collection' },
   'BT1-052_EP03': { sourceProduct: 'Event Pack 03' },
   'BT1-052_PR02': { sourceProduct: 'Anniversary Box 2019' },
   'BT1-052_PR03': { sourceProduct: 'EXPANSION SET Magnificent Collection -Fusion Hero-' },
   'BT1-053_PR': { sourceProduct: 'Anniversary Box 2019' },
-  'BT1-053_PR02': { sourceProduct: 'EXPANSION SET Magnificent Collection -Fusion Hero-' },
-  'BT1-053_PR03': { sourceProduct: 'Mythic Booster' },
-  'BT1-053_PR05': { sourceProduct: 'Championship Alt Art Card Set 2023 Vol.3' },
   'BT1-055_PR': { sourceProduct: 'Anniversary Box 2019' },
   'BT1-055_PR02': { sourceProduct: 'EXPANSION SET Magnificent Collection -Fusion Hero-' },
   'BT4-012_EP03': { sourceProduct: 'Event Pack 03' },
@@ -2041,6 +2043,79 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
 };
 
 const IMAGE_OVERRIDES: Record<string, string> = {
+  'BT19-065_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT19-065_PR02.png',
+  'BT19-065_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT19-065_PR03.png',
+  'BT21-097_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT21-097_PR02.png',
+  'BT21-097_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT21-097_PR03.png',
+  'BT22-117_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT22-117_PR02.png',
+  'BT22-135_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT22-135_PR02.png',
+  'BT23-011_SPR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT23-011_PR.png',
+  'BT23-015_SPR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT23-015_PR.png',
+  'BT23-022_SPR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT23-022_PR.png',
+  'BT23-048_SPR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT23-048_PR.png',
+  'BT23-055_SPR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT23-055_PR.png',
+  'BT23-060_SPR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT23-060_PR.png',
+  'BT23-081_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT23-060_PR.png',
+  'BT23-081_SPR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT23-081_PR.png',
+  'BT23-085_SPR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT23-085_PR.png',
+  'BT23-109_SPR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT23-109_PR.png',
+  'BT23-110_SPR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT23-110_PR.png',
+  'BT23-115_SPR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT23-115_PR.png',
+  'BT23-127_SPR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT23-127_PR.png',
+  'BT23-135_SPR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT23-135_PR.png',
+  'BT23-136_SPR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT23-136_PR.png',
+  'BT23-140_GDR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT23-140_PR.png',
+  'BT17-066_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT17-066_PR02.png',
+  'BT17-148_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT17-148_PR02.png',
+  'BT18-005': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT17-148_PR02.png',
+  'BT18-005_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT18-005_PR02.png',
+  'BT18-034_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT18-034_PR02.png',
+  'BT18-069_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT18-069_PR02.png',
+  'BT18-107_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT18-107_SPR02.png',
+  'BT18-107_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT18-107_PR02.png',
+  'BT14-029_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT14-029_PR02.png',
+  'BT15-042_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT15-042_PR02.png',
+  'BT16-071_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT16-071_PR02.png',
+  'BT16-071_PR02_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT16-071_PR02_b.png',
+  'BT16-124_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT16-124_PR03.png',
+  'BT16-140_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT16-140_PR02.png',
+  'BT11-005_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT11-005_PR03.png',
+  'BT11-054_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT11-054_PR03.png',
+  'BT11-097_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT11-097_PR03.png',
+  'BT11-130_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT11-130_PR03.png',
+  'BT9-133_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT9-133_PR02.png',
+  'BT10-045_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT10-045_PR02.png',
+  'BT10-097_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT10-097_PR02.png',
+  'BT10-097_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT10-097_PR03.png',
+  'BT8-017_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT8-017_PR02.png',
+  'BT7-073_EP17': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT7-073_PR02.png',
+  'BT7-085_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT7-085_PR02.png',
+  'BT6-004_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT6-004_PR02.png',
+  'BT6-005_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT6-005_PR02.png',
+  'BT6-008_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT6-008_PR02.png',
+  'BT6-009_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT6-009_PR02.png',
+  'BT6-125_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT6-125_PR02.png',
+  'BT5-050_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT5-050_PR02.png',
+  'BT5-050_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT5-050_PR04.png',
+  'BT5-101_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT5-101_PR02.png',
+  'BT5-112_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT5-112_PR02.png',
+  'BT5-115_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT5-115_PR03.png',
+  'BT5-117_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT5-117_PR02.png',
+  'BT3-063_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT3-063_PR02.png',
+  'BT3-104_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT3-104_PR02.png',
+  'BT3-105_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT3-105_PR02.png',
+  'BT3-123_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT3-123_PR02.png',
+  'BT2-064_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT2-064_PR02.png',
+  'BT1-005_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT1-005_PR03.png',
+  'BT1-005_PR04': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT1-005_PR04.png',
+  'BT1-052_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT1-052_PR02.png',
+  'BT1-052_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT1-052_PR03.png',
+  'BT1-053_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT1-053_PR02.png',
+  'BT1-053_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT1-053_PR03.png',
+  'BT1-053_PR05': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT1-053_PR05.png',
+  'BT1-055_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT1-055_PR02.png',
+  'BT1-110_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT1-110_PR03.png',
+  'BT24-138_GDR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT24-138_GDR.png',
   'SD19-02_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/SD19-02_PR02.png',
   'SD20-02_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/SD20-02_PR02.png',
   'SD18-02': 'https://tcgplayer-cdn.tcgplayer.com/product/281726_in_1000x1000.jpg',
@@ -2646,9 +2721,8 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'EX6-36_EP16': 'https://static.dbscards.fr/cards/en/evp16/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-ex06-36-ex-event-pack-16-a-crack-in-spacetime.webp',
   // Event Pack 17
   'BT22-127_EP17': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT22-127_PR02.png',
-  'BT7-073_EP17': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT7-073_PR.png',
   'BT7-073_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT7-073_PR.png',
-  'BT7-057_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT7-073_PR.png',
+  'BT7-057_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT7-057_PR.png',
   'DB3-136_EP17': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/DB3-136_PR02.png',
   'P-082_EP17': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-082_PR02.png',
   'BT12-108_EP17': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT12-108_PR.png',
@@ -3413,6 +3487,90 @@ const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata'
 };
 
 const CHANGELOG = [
+  {
+    version: '5.0.16',
+    date: '20 de mayo de 2026',
+    changes: [
+      { es: 'Añadidas imágenes para promos de BT19, BT21, BT22 y BT23, y eliminadas entradas redundantes.', en: 'Added images for BT19, BT21, BT22, and BT23 promos, and removed redundant entries.' }
+    ]
+  },
+  {
+    version: '5.0.15',
+    date: '20 de mayo de 2026',
+    changes: [
+      { es: 'Añadidas imágenes para promos de BT17 y BT18, y limpiezas menores en data.', en: 'Added images for BT17 and BT18 promos, and minor cleanups in data.' }
+    ]
+  },
+  {
+    version: '5.0.14',
+    date: '20 de mayo de 2026',
+    changes: [
+      { es: 'Añadidas imágenes para promos de BT14, BT15 y BT16.', en: 'Added images for BT14, BT15, and BT16 promos.' }
+    ]
+  },
+  {
+    version: '5.0.13',
+    date: '20 de mayo de 2026',
+    changes: [
+      { es: 'Añadidas imágenes para promos de BT11.', en: 'Added images for BT11 promos.' }
+    ]
+  },
+  {
+    version: '5.0.12',
+    date: '20 de mayo de 2026',
+    changes: [
+      { es: 'Añadidas imágenes para promos de BT9 y BT10.', en: 'Added images for BT9 and BT10 promos.' }
+    ]
+  },
+  {
+    version: '5.0.11',
+    date: '20 de mayo de 2026',
+    changes: [
+      { es: 'Corregida imagen de BT7-073_EP17, BT7-057_PR y añadida BT8-017_PR02.', en: 'Fixed BT7-073_EP17, BT7-057_PR images and added BT8-017_PR02.' }
+    ]
+  },
+  {
+    version: '5.0.10',
+    date: '20 de mayo de 2026',
+    changes: [
+      { es: 'Corregidas imágenes de promos de BT7.', en: 'Fixed BT7 promo images.' }
+    ]
+  },
+  {
+    version: '5.0.9',
+    date: '20 de mayo de 2026',
+    changes: [
+      { es: 'Corregidas imágenes de promos de BT6.', en: 'Fixed BT6 promo images.' }
+    ]
+  },
+  {
+    version: '5.0.8',
+    date: '20 de mayo de 2026',
+    changes: [
+      { es: 'Corregidas imágenes de promos de BT5 y añadida BT5-050_PR03.', en: 'Fixed BT5 promo images and added BT5-050_PR03.' }
+    ]
+  },
+  {
+    version: '5.0.7',
+    date: '20 de mayo de 2026',
+    changes: [
+      { es: 'Corregidas imágenes de promos de BT3.', en: 'Fixed BT3 promo images.' }
+    ]
+  },
+  {
+    version: '5.0.6',
+    date: '20 de mayo de 2026',
+    changes: [
+      { es: 'Corregida imagen de BT2-064_PR02.', en: 'Fixed BT2-064_PR02 image.' }
+    ]
+  },
+  {
+    version: '5.0.5',
+    date: '20 de mayo de 2026',
+    changes: [
+      { es: 'Corregidas varias promos y metadatos de BT1, y arreglado BT24-138 GDR.', en: 'Fixed several BT1 promos/metadata and fixed BT24-138 GDR.' }
+    ]
+  },
   {
     version: '5.0.4',
     date: '20 de mayo de 2026',

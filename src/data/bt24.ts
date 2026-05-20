@@ -248,7 +248,7 @@ BT24-136	Frieza, Second Change in Form	UC	Battle	Multi	BT24
 BT24-136_EP18	Frieza, Second Change in Form	PR	Battle	Multi	BT24
 BT24-137	Frieza, Preliminary Test	C	Battle	Multi	BT24
 BT24-138	SS3 Son Goku, Wrath of the Dragon	SCR	Battle	Blue	BT24
-BT24-138_GDR	SS3 Son Goku, Wrath of the Dragon	GDR	Blue	BT24
+BT24-138_GDR	SS3 Son Goku, Wrath of the Dragon	GDR	Battle	Blue	BT24
 BT24-138_PR	SS3 Son Goku, Wrath of the Dragon	PR	Battle	Blue	BT24
 BT24-138_PR02	SS3 Son Goku, Wrath of the Dragon	PR	Battle	Blue	BT24
 BT24-139	SSB Kaio-Ken Vegito, Blue Potara-Fusion Warrior Champion	SCR	Battle	Black	BT24

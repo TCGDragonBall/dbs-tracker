@@ -23,7 +23,6 @@ BT23-019	Trunks, Battle Preparations	R	Battle	Red	BT23
 BT23-020	Bulma, Future Support	R	Battle	Red	BT23
 BT23-021	Bulma, Invention Completed	UC	Battle	Red	BT23
 BT23-022	Android 17 & Android 18, Domination Achieved	SR	Battle	Red	BT23
-BT23-022_PR02	Android 17 & Android 18, Domination Achieved	PR	Battle	Red	BT23
 BT23-022_SPR	Android 17 & Android 18, Domination Achieved	SPR	Battle	Red	BT23
 BT23-023	Android 17 & Android 18, Hunting Down Survivors	R	Battle	Red	BT23
 BT23-024	Android 17, Perpetual Motion Machine	R	Battle	Red	BT23

@@ -8,7 +8,6 @@ BT18-005	Rush Attack SSB Vegeta	SR	Z-Battle	Red	BT18
 BT18-005_JP14	Rush Attack SSB Vegeta	PR	Z-Battle	Red	BT18
 BT18-005_PR	Rush Attack SSB Vegeta	PR	Z-Battle	Red	BT18
 BT18-005_PR02	Rush Attack SSB Vegeta	PR	Z-Battle	Red	BT18
-BT18-005_PR03	Rush Attack SSB Vegeta	PR	Z-Battle	Red	BT18
 BT18-006	SS4 Gogeta, Power's Connection	SR	Unison	Red	BT18
 BT18-006_EP13	SS4 Gogeta, Power's Connection	PR	Unison	Red	BT18
 BT18-006_SPR	SS4 Gogeta, Power's Connection	SPR	Unison	Red	BT18
@@ -121,7 +120,6 @@ BT18-091	Bardock, Saiyan Determination	UC	Z-Leader	Yellow	BT18
 BT18-092	Son Gohan, Facing New Foes	R	Z-Battle	Yellow	BT18
 BT18-093	SSB Son Goku, Evolved Defender	SR	Z-Battle	Yellow	BT18
 BT18-093_PR	SSB Son Goku, Evolved Defender	PR	Z-Battle	Yellow	BT18
-BT18-093_PR02	SSB Son Goku, Evolved Defender	PR	Z-Battle	Yellow	BT18
 BT18-094	Gine, for the Sake of Family	C	Unison	Yellow	BT18
 BT18-095	Pan, Facing New Foes	R	Unison	Yellow	BT18
 BT18-096	Great Ape Son Goku, Instincts Unleashed	R	Battle	Yellow	BT18
