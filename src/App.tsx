@@ -63,7 +63,7 @@ import { signInWithPopup, signOut, signInWithEmailAndPassword, createUserWithEma
 import { useAuth } from './AuthContext';
 import emailjs from '@emailjs/browser';
 
-const APP_VERSION = '5.0.16';
+const APP_VERSION = '5.0.17';
 
 const CATEGORY_BG: Record<string, string> = {
   'box': '/fondobox.jpg',
@@ -2115,7 +2115,21 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'BT1-053_PR05': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT1-053_PR05.png',
   'BT1-055_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT1-055_PR02.png',
   'BT1-110_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT1-110_PR03.png',
-  'BT24-138_GDR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT24-138_GDR.png',
+  'BT24-013_SPR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT24-013_PR.png',
+  'BT24-128_SPR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT24-128_PR.png',
+  'BT24-138_GDR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT24-138_PR.png',
+  'BT25-009_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT25-009_PR02.png',
+  'BT25-075_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT25-075_PR02.png',
+  'BT25-098_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT25-098_PR02.png',
+  'BT25-098_PR02_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT25-098_PR02_b.png',
+  'BT25-100_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT25-100_PR02.png',
+  'BT25-107_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT25-107_PR02.png',
+  'BT25-147_GDR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT25-147_PR.png',
+  'BT25-148_GDR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT25-148_PR.png',
+  'BT26-138_GDR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT26-138_PR.png',
+  'BT27-001_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT27-001_PR02.png',
+  'BT27-001_PR02_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT27-001_PR02_b.png',
+  'BT27-138_GDR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT27-138_PR.png',
   'SD19-02_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/SD19-02_PR02.png',
   'SD20-02_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/SD20-02_PR02.png',
   'SD18-02': 'https://tcgplayer-cdn.tcgplayer.com/product/281726_in_1000x1000.jpg',
@@ -3248,7 +3262,29 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'ACS01': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2024/07/09/SO7IRc932UC2usKA/set.png',
 };
 
-const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata'; date?: string }> = {
+const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata' | 'Banned (BO1)'; date?: string }> = {
+  // New Bans & Limits (3 de julio de 2026)
+  'BT5-050': { status: 'Banned', date: '3 de julio de 2026' },
+  'BT27-098': { status: 'Banned', date: '3 de julio de 2026' },
+  'P-180': { status: 'Banned', date: '3 de julio de 2026' },
+  'P-456': { status: 'Banned', date: '3 de julio de 2026' },
+  'BT3-050': { status: 'Banned', date: '3 de julio de 2026' },
+  'BT11-132': { status: 'Limited', date: '3 de julio de 2026' },
+  'BT22-127': { status: 'Limited', date: '3 de julio de 2026' },
+  'BT26-065': { status: 'Limited', date: '3 de julio de 2026' },
+  'P-651': { status: 'Limited', date: '3 de julio de 2026' },
+
+  // Fusion World Restrictions
+  'FS01-03': { status: 'Limited' },
+  'FB01-015': { status: 'Limited' },
+  'FB01-039': { status: 'Limited' },
+  'FB02-119': { status: 'Limited' },
+  'FS02-14': { status: 'Limited' },
+  'FB02-013': { status: 'Banned (BO1)' }, // Kefla SR commonly cited in BO1 digital issues
+  'FB02-105': { status: 'Banned (BO1)' }, // Just in case another was hit in BO1
+  'FB01-139': { status: 'Banned (BO1)' },
+  
+  // Masters Restrictions
   'BT1-005': { status: 'Banned', date: '31 de marzo de 2023' },
   'BT1-010': { status: 'Errata' },
   'BT1-052': { status: 'Banned' },
@@ -3487,6 +3523,21 @@ const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata'
 };
 
 const CHANGELOG = [
+  {
+    version: '5.0.18',
+    date: '21 de mayo de 2026',
+    changes: [
+      { es: 'Actualizada la lista de cartas baneadas y limitadas (efectivos desde el 3 de julio de 2026).', en: 'Updated the banned and limited cards list (effective July 3, 2026).' }
+    ]
+  },
+  {
+    version: '5.0.17',
+    date: '20 de mayo de 2026',
+    changes: [
+      { es: 'Restauradas las marcas de limitación y baneo que habían desaparecido por error de la interfaz.', en: 'Restored the limitation and ban marks that had mistakenly disappeared from the interface.' },
+      { es: 'Añadidas las cartas limitadas a 1 copia en Fusion World.', en: 'Added the cards limited to 1 copy in Fusion World.' }
+    ]
+  },
   {
     version: '5.0.16',
     date: '20 de mayo de 2026',
@@ -8201,7 +8252,7 @@ export default function App() {
             if (finalCode.includes('_SLR')) {
               finalCode = finalCode.replace('_SLR', '_PR');
             }
-            if (/_EP\d+$/.test(finalCode) || /_JP\d+$/.test(finalCode) || /_PR\d+$/.test(finalCode)) {
+            if (/_EP\d+$/.test(finalCode) || /_JP\d+$/.test(finalCode) || (/_PR\d+$/.test(finalCode) && !finalCode.startsWith('BT20-') && !finalCode.startsWith('BT24-'))) {
                finalCode = finalCode.replace(/_[A-Z]+\d+$/, '_PR');
             }
             
@@ -8231,6 +8282,7 @@ export default function App() {
           }
         }
         
+        const legalStatusEntry = LEGAL_STATUS_MAP[cardNumber] || LEGAL_STATUS_MAP[cardNumber.split('_')[0]];
         return {
           id: cardNumber || `unknown_${i}`,
           index: i + 1,
@@ -8243,6 +8295,7 @@ export default function App() {
           imageUrl: imageUrl,
           backImageUrl: backImageUrl,
           isFoil: ['SR', 'SPR', 'SCR', 'GDR', 'RLR', 'PRW', 'LEADER RARE', 'L*', 'C*', 'UC*', 'R*', 'SR*', 'SCR*', 'SCR**'].includes(rarity),
+          ...(legalStatusEntry ? { legalStatus: legalStatusEntry.status, legalDate: legalStatusEntry.date } : {}),
           ...(SET_METADATA[cardNumber] || SET_METADATA[expansionId] || {})
         } as Card & { baseIndex?: number };
       });
