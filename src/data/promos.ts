@@ -335,14 +335,11 @@ P-257_PR	Prince of Destruction Vegeta, Evil Awakened	PR	Battle	Green	PROMO
 P-258	Son Gohan & Hire-Dragon, Best Buddies	PR	Battle	Yellow	PROMO
 P-259	Chi-Chi, Demonic Transformation	PR	Battle	Yellow	PROMO
 P-260	Surprise Attack Naturon Shenron	PR	Battle	Yellow	PROMO
-P-260_PR02	Surprise Attack Naturon Shenron	PR	Battle	Yellow	PROMO
 P-260_W	Surprise Attack Naturon Shenron	PRW	Battle	Yellow	PROMO
 P-261	SS4 Bardock, Fighting Against Fate	PR	Battle	Black	PROMO
-P-261_PR02	SS4 Bardock, Fighting Against Fate	PR	Battle	Black	PROMO
 P-261_W	SS4 Bardock, Fighting Against Fate	PRW	Battle	Black	PROMO
 P-262	SS4 Son Goku, Beyond All Limits	PR	Battle	Black	PROMO
 P-262_PR	SS4 Son Goku, Beyond All Limits	PR	Battle	Black	PROMO
-P-262_PR02	SS4 Son Goku, Beyond All Limits	PR	Battle	Black	PROMO
 P-262_W	SS4 Son Goku, Beyond All Limits	PR	Battle	Black	PROMO
 P-263	Masked Saiyan, Brainwashed No More	PR	Battle	Black	PROMO
 P-263_PR	Masked Saiyan, Brainwashed No More	PR	Battle	Black	PROMO
@@ -357,7 +354,6 @@ P-271	Return of the King	PR	Extra	Multi	PROMO
 P-272	King Piccolo, First Step to Revival	PR	Battle	Red	PROMO
 P-273	Piccolo Jr., the King's Scion	PR	Battle	Red	PROMO
 P-274	Launch, Feminine Wiles	PR	Battle	Red	PROMO
-P-274_PR02	Launch, Feminine Wiles	PR	Battle	Red	PROMO
 P-274_W	Launch, Feminine Wiles	PRW	Battle	Red	PROMO
 P-275	Tapion, Savior From Another Time	PR	Unison	Blue	PROMO
 P-276	Son Goku & Vegeta, Saiyan Synergy	PR	Battle	Blue	PROMO
@@ -398,7 +394,6 @@ P-305	Nuova Shenron, Unwavering Conviction	PR	Battle	Yellow	PROMO
 P-306	Time Patrol Son Goten	PR	Battle	Black	PROMO
 P-307	SS4 Vegeta, Feigned Greeting	PR	Battle	Black	PROMO
 P-308	SS3 Gogeta, Thwarting the Dark Empire	PR	Battle	Black	PROMO
-P-308_PR02	SS3 Gogeta, Thwarting the Dark Empire	PR	Battle	Black	PROMO
 P-308_W	SS3 Gogeta, Thwarting the Dark Empire	PRW	Battle	Black	PROMO
 P-309	Demon God Towa, Restoring the Dark Empire	PR	Battle	Black	PROMO
 P-310	Android 16, Stalwart Defender	PR	Battle	Multi	PROMO
@@ -532,8 +527,6 @@ P-404	Piccolo, Master's Teachings	PR	Z-Battle	Green	PROMO
 P-405	Oolong, Greed is Good	PR	Z-Battle	Yellow	PROMO
 P-406	Launch, Personality Shift	PR	Battle	Red	PROMO
 P-407	SS Son Goten, Hyperspeed Rush	PR	Battle	Red	PROMO
-P-407_PR02	SS Son Goten, Hyperspeed Rush	PR	Battle	Red	PROMO
-P-407_PR03	SS Son Goten, Hyperspeed Rush	PR	Battle	Red	PROMO
 P-407_W	SS Son Goten, Hyperspeed Rush	PRW	Battle	Red	PROMO
 P-408	Bubbles, Hide 'n Seeker	PR	Battle	Blue	PROMO
 P-409	Grand Kai, Intentional Draw	PR	Battle	Blue	PROMO
@@ -543,7 +536,6 @@ P-411	Gamma 1, Power Unleashed	PR	Battle	Blue	PROMO
 P-412	Great Ape Son Gohan, Saiyan Bloodlines	PR	Unison	Green	PROMO
 P-413	Hero, Mafuba Master	PR	Battle	Green	PROMO
 P-414	Kaio-Ken Son Goku, the Furious	PR	Battle	Green	PROMO
-P-414_PR02	Kaio-Ken Son Goku, the Furious	PR	Battle	Green	PROMO
 P-414_W	Kaio-Ken Son Goku, the Furious	PRW	Battle	Green	PROMO
 P-415	Vegeta, Elite Arrogance	PR	Battle	Green	PROMO
 P-416	Great Ape Son Gohan, Unstoppable Rampage	PR	Battle	Yellow	PROMO
@@ -590,8 +582,6 @@ P-439	Android 14 & Android 15, the Invaders	PR	Battle	Red	PROMO
 P-440	The Demon Approaches	PR	Extra	Red	PROMO
 P-441	Gotenks, Fusion Practice	PR	Battle	Blue	PROMO
 P-442	Android 17, Defending Friends	PR	Battle	Blue	PROMO
-P-442_PR02	Android 17, Defending Friends	PR	Battle	Blue	PROMO
-P-442_PR03	Android 17, Defending Friends	PR	Battle	Blue	PROMO
 P-442_PR04	Android 17, Defending Friends	PR	Battle	Blue	PROMO
 P-442_W	Android 17, Defending Friends	PRW	Battle	Blue	PROMO
 P-443	Great Saiyaman, In the Nick of Time	PR	Battle	Green	PROMO
@@ -599,7 +589,6 @@ P-444	Bulma, in Search of Dragon Balls	PR	Battle	Green	PROMO
 P-445	Golden Frieza, Commanding Presence	PR	Battle	Green	PROMO
 P-445_W	Golden Frieza, Commanding Presence	PRW	Battle	Green	PROMO
 P-446	Meta-Cooler, Infinite Terror	PR	Battle	Yellow	PROMO
-P-446_PR02	Meta-Cooler, Infinite Terror	PR	Battle	Yellow	PROMO
 P-446_W	Meta-Cooler, Infinite Terror	PRW	Battle	Yellow	PROMO
 P-447	SS Vegeta, Fighting Back	PR	Battle	Yellow	PROMO
 P-448	Super 17, Shocking Arrival	PR	Battle	Yellow	PROMO
@@ -648,8 +637,6 @@ P-477_PR	SS3 Vegeta, Terrifying Agent of Destruction	PR	Z-Battle	Yellow	PROMO
 P-477_PR02	SS3 Vegeta, Terrifying Agent of Destruction	PR	Z-Battle	Yellow	PROMO
 P-478	Jiren, Supreme Readiness	PR	Battle	Red	PROMO
 P-479	SS Son Gohan, Defeating the Demon	PR	Battle	Red	PROMO
-P-479_PR02	SS Son Gohan, Defeating the Demon	PR	Battle	Red	PROMO
-P-479_PR03	SS Son Gohan, Defeating the Demon	PR	Battle	Red	PROMO
 P-479_PR04	SS Son Gohan, Defeating the Demon	PR	Battle	Red	PROMO
 P-479_W	SS Son Gohan, Defeating the Demon	PRW	Battle	Red	PROMO
 P-480	Frieza, Overwhelming Omnipotence	PR	Battle	Red	PROMO
@@ -680,12 +667,10 @@ P-499	Kami, A Responsibility to Fulfill	PR	Battle	Red	PROMO
 P-500	SS Cabba, Student From Another Universe	PR	Battle	Red	PROMO
 P-501	Janemba, Wave Attack Start	PR	Battle	Blue	PROMO
 P-502	Pilaf, Shu, & Mai, Cunning Trio	PR	Battle	Blue	PROMO
-P-502_PR02	Pilaf, Shu, & Mai, Cunning Trio	PR	Battle	Blue	PROMO
 P-502_W	Pilaf, Shu, & Mai, Cunning Trio	PRW	Battle	Blue	PROMO
 P-503	Son Gohan, Domination Complete	PR	Battle	Blue	PROMO
 P-504	Uub, Preparing for Another Release	PR	Battle	Blue	PROMO
 P-505	Raditz, Pulling Ahead	PR	Battle	Green	PROMO
-P-505_PR02	Raditz, Pulling Ahead	PR	Battle	Green	PROMO
 P-505_W	Raditz, Pulling Ahead	PRW	Battle	Green	PROMO
 P-506	Bulma, Family Support	PR	Battle	Green	PROMO
 P-507	Cell, Earthling Absorption	PR	Battle	Green	PROMO
@@ -754,11 +739,8 @@ P-557	Piccolo, Ready to Fire	PR	Battle	Blue	PROMO
 P-558	Raditz, Defensive Form	PR	Battle	Blue	PROMO
 P-559	Nappa, Weak Point Attack	PR	Battle	Blue	PROMO
 P-560	SS3 Vegito, Ultimate Battle Form	PR	Battle	Blue	PROMO
-P-560_PR02	SS3 Vegito, Ultimate Battle Form	PR	Battle	Blue	PROMO
 P-560_W	SS3 Vegito, Ultimate Battle Form	PRW	Battle	Blue	PROMO
 P-561	King Piccolo, Aerial Battle	PR	Battle	Green	PROMO
-P-561_PR02	King Piccolo, Aerial Battle	PR	Battle	Green	PROMO
-P-561_PR03	King Piccolo, Aerial Battle	PR	Battle	Green	PROMO
 P-561_W	King Piccolo, Aerial Battle	PRW	Battle	Green	PROMO
 P-562	Bulma, Sacrifice	PR	Battle	Green	PROMO
 P-563	SS Rose Goku Black, Call of Fusion	PR	Battle	Green	PROMO
@@ -821,7 +803,6 @@ P-605	SS Gotenks, Crazy God of Death	PR	Battle	Blue	PROMO
 P-606	Vegito, Transformed to Candy	PR	Battle	Blue	PROMO
 P-607	SS Gogeta, Fusion Explosion	PR	Battle	Blue	PROMO
 P-608	Son Gohan, Brains of Universe 7	PR	Battle	Blue	PROMO
-P-608_PR02	Son Gohan, Brains of Universe 7	PR	Battle	Blue	PROMO
 P-608_W	Son Gohan, Brains of Universe 7	PRW	Battle	Blue	PROMO
 P-609	Son Goku, Unexpected Meddling	PR	Battle	Green	PROMO
 P-610	Zangya, Inner Cruelty	PR	Battle	Green	PROMO
@@ -831,7 +812,6 @@ P-613	Belmod, Manipulation	PR	Battle	Yellow	PROMO
 P-613_W	Belmod, Manipulation	PRW	Battle	Yellow	PROMO
 P-614	Robelu, Competent Secretary	PR	Battle	Black	PROMO
 P-614_PR	Robelu, Competent Secretary	PR	Battle	Black	PROMO
-P-614_PR02	Robelu, Competent Secretary	PR	Battle	Black	PROMO
 P-614_W	Robelu, Competent Secretary	PRW	Battle	Black	PROMO
 P-615	Kusu, Impatient Battle Watching	PR	Battle	Multi	PROMO
 P-616	Shenron, Final Wish	PR	Battle	Multi	PROMO
@@ -850,7 +830,6 @@ P-623_PR	Mai / Mai, Defying Despair	PR	Leader	Green	PROMO
 P-624	Trunks, Future Protector	PR	Z-Unison	Green	PROMO
 P-624_PR	Trunks, Future Protector	PR	Z-Unison	Green	PROMO
 P-625	SS4 Son Goku, Rapid Reversal	PR	Battle	Red	PROMO
-P-625_PR02	SS4 Son Goku, Rapid Reversal	PR	Battle	Red	PROMO
 P-625_W	SS4 Son Goku, Rapid Reversal	PRW	Battle	Red	PROMO
 P-626	Son Goten, Fierce Battle Premonition	PR	Battle	Red	PROMO
 P-627	Machine Mutant Plan, Fearsome Scheme	PR	Extra	Red	PROMO
@@ -861,7 +840,6 @@ P-630	SS Broly, Limitless Vitality	PR	Battle	Blue	PROMO
 P-631	Son Goku, Days of Training	PR	Battle	Green	PROMO
 P-632	Vegito, Scheme Halting	PR	Battle	Green	PROMO
 P-633	SS2 Trunks, Future-Protecting Sword	PR	Battle	Green	PROMO
-P-633_PR02	SS2 Trunks, Future-Protecting Sword	PR	Battle	Green	PROMO
 P-633_W	SS2 Trunks, Future-Protecting Sword	PRW	Battle	Green	PROMO
 P-634	SS Trunks, Defending Spirit	PR	Battle	Green	PROMO
 P-635	Trunks, Assisting	PR	Battle	Green	PROMO

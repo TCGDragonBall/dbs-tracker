@@ -63,7 +63,6 @@ TB3-048_PR	Preemptive Strike	PR	Extra	Green	TB3
 TB3-049	Dende / Piccolo, Brimming with Confidence	UC	Leader	Yellow	TB3
 TB3-050	Son Gohan	C	Battle	Yellow	TB3
 TB3-051	Vegeta, Striving to be the Best	FR	Battle	Yellow	TB3
-TB3-051_PR	Vegeta, Striving to be the Best	PR	Battle	Yellow	TB3
 TB3-052	Krillin, Ability Unleashed	C	Battle	Yellow	TB3
 TB3-053	Piccolo, Fused with Nail	SR	Battle	Yellow	TB3
 TB3-053_SPR	Piccolo, Fused with Nail	SPR	Battle	Yellow	TB3

@@ -441,7 +441,6 @@ EX6-27_EP10	Swift Retaliation Cooler	PR	Battle	Yellow	EXP6
 EX6-28	Malevolent Revenge	EX	Extra	Yellow	EXP6
 EX6-29	Towa / Towa, Chaosbringer	EX	Leader	Black	EXP6
 EX6-30	Bardock, Awakened Instincts	EX	Battle	Black	EXP6
-EX6-30_PR	Bardock, Awakened Instincts	PR	Battle	Black	EXP6
 EX6-31	Supreme Kai of Time, Time Disruptor	EX	Battle	Black	EXP6
 EX6-32	Demigra, Over Realm Unleashed	EX	Battle	Black	EXP6
 EX6-33	Mira, Self Reformation	EX	Battle	Black	EXP6

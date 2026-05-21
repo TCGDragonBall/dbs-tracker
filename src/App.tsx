@@ -2689,8 +2689,9 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   // Judge Packs
   'BT1-055_JP05': 'https://static.dbscards.fr/cards/en/jp/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-bt1-055-c-judge-whiss-coercion.webp',
   // Event Pack 02
+  'TB1-003_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/TB1-003_PR03.png',
   'TB1-012_EP02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/TB1-012_PR.png',
-  'TB1-027_EP02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/TB1-027_PR02.png',
+  'TB1-027_EP02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/TB1-027_PR.png',
   'P-047_EP02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-047_PR.png',
   'P-057_EP02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-057_PR.png',
   'P-060_EP02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-060_PR.png',
@@ -3121,11 +3122,9 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'BT9-018_EP06': 'https://static.dbscards.fr/cards/en/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-bt9-018-uc-event-pack-2020-unison-warrior-series-we-are-universe-7.webp',
   'BT9-037_EP06': 'https://static.dbscards.fr/cards/en/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-bt9-037-uc-event-pack-2020-unison-warrior-series-tournament-of-power-arena.webp',
   'BT9-039_EP06': 'https://static.dbscards.fr/cards/en/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-bt9-039-uc-event-pack-2020-unison-warrior-series-cell-android-absorber.webp',
-  'DB1-040_EP02': 'https://static.dbscards.fr/cards/en/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db1-040-c-event-pack-2020-unison-warrior-series-desperate-measures.webp',
   'DB1-040_EP06': 'https://static.dbscards.fr/cards/en/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db1-040-c-event-pack-2020-unison-warrior-series-desperate-measures.webp',
   'BT2-060_EP03': 'https://static.dbscards.fr/cards/en/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-bt2-060-uc-event-pack-2020-unison-warrior-series-zen-oh-the-plain-god.webp',
   'BT2-060_EP06': 'https://static.dbscards.fr/cards/en/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-bt2-060-uc-event-pack-2020-unison-warrior-series-zen-oh-the-plain-god.webp',
-  'DB1-064_EP02': 'https://static.dbscards.fr/cards/en/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db1-064-sr-event-pack-2020-unison-warrior-series-great-ape-son-goku-saiyan-instincts.webp',
   'DB1-064_EP06': 'https://static.dbscards.fr/cards/en/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db1-064-sr-event-pack-2020-unison-warrior-series-great-ape-son-goku-saiyan-instincts.webp',
   'BT5-070_EP06': 'https://static.dbscards.fr/cards/en/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-bt5-070-uc-event-pack-2020-unison-warrior-series-android-20-vile-creator.webp',
   'BT7-100_EP06': 'https://static.dbscards.fr/cards/en/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-bt7-100-uc-event-pack-2020-unison-warrior-series-son-goku-making-an-entrance.webp',
@@ -3164,7 +3163,20 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'P-288_EP09': 'https://static.dbscards.fr/cards/en/evp09/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-p-288-pr-event-pack-09-supreme-kai-of-time-summoned-from-another-dimension.webp',
   'P-331_EP04': 'https://static.dbscards.fr/cards/en/evp09/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-p-331-pr-event-pack-09-mecha-frieza-robotic-riposte.webp',
   'P-331_EP09': 'https://static.dbscards.fr/cards/en/evp09/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-p-331-pr-event-pack-09-mecha-frieza-robotic-riposte.webp',
-  'EB1-35_EP02': 'https://static.dbscards.fr/cards/en/evp09/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-eb1-35-sr-event-pack-09-rozie-blast-manipulator.webp',
+  'DB1-014_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/DB1-014_PR02.png',
+  'DB1-021_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/DB1-021_PR02.png',
+  'DB1-084_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/DB1-084_PR02.png',
+  'DB1-084_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/DB1-084_PR03.png',
+  'DB1-088_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/DB1-088_PR02.png',
+  'DB1-088_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/DB1-088_PR03.png',
+  'DB2-136_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/DB2-136_PR02.png',
+  'EX9-06_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/EX09-06_PR02.png',
+  'EX12-02_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/EX12-02_PR02.png',
+  'EX24-01_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/EX24-01_PR02.png',
+  'EX24-01_PR02_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/EX24-01_PR02_b.png',
+  'EB1-22_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/EB1-22_PR03.png',
+  'EB1-37_PR04': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/EB1-37_PR04.png',
+  'EB1-48_PR04': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/EB1-48_PR04.png',
   'EB1-35_EP09': 'https://static.dbscards.fr/cards/en/evp09/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-eb1-35-sr-event-pack-09-rozie-blast-manipulator.webp',
   // Energy Markers
   'M-01': 'https://tcgplayer-cdn.tcgplayer.com/product/588329_in_800x800.jpg',
@@ -3523,6 +3535,48 @@ const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata'
 };
 
 const CHANGELOG = [
+  {
+    version: '5.0.24',
+    date: '21 de mayo de 2026',
+    changes: [
+      { es: 'Eliminados duplicados de PR02/PR03 no solicitados explícitamente en cartas que ya tenían variante Winner (_W).', en: 'Removed explicitly unrequested PR02/PR03 duplicates on cards that already had a Winner (_W) variant.' }
+    ]
+  },
+  {
+    version: '5.0.23',
+    date: '21 de mayo de 2026',
+    changes: [
+      { es: 'Resuelto problema con imágenes de promos terminadas en _W (Winner).', en: 'Resolved issue with images for promos ending in _W (Winner).' }
+    ]
+  },
+  {
+    version: '5.0.22',
+    date: '21 de mayo de 2026',
+    changes: [
+      { es: 'Añadidas variantes de DB2 y EX, y eliminación de la promo EX6-30_PR.', en: 'Added DB2 and EX variants, and removed the EX6-30_PR promo.' }
+    ]
+  },
+  {
+    version: '5.0.21',
+    date: '21 de mayo de 2026',
+    changes: [
+      { es: 'Actualizadas variantes de EB1 y DB1, añadiendo imágenes correctas para los PR y eliminando repeticiones', en: 'Updated EB1 and DB1 variants, adding correct images for PRs and removing repetitions.' }
+    ]
+  },
+  {
+    version: '5.0.20',
+    date: '21 de mayo de 2026',
+    changes: [
+      { es: 'Eliminadas promos de EB1 inexistentes y añadida la imagen de la promo EB1-22_PR03.', en: 'Removed some non-existent EB1 promos and added EB1-22_PR03 image.' }
+    ]
+  },
+  {
+    version: '5.0.19',
+    date: '21 de mayo de 2026',
+    changes: [
+      { es: 'Actualizadas variantes de TB1, eliminada promo inexistente de TB3 y corregidos los IDs de las cartas del set EB1.', en: 'Updated TB1 variants, removed non-existent TB3 promo, and fixed EB1 set card IDs.' }
+    ]
+  },
   {
     version: '5.0.18',
     date: '21 de mayo de 2026',
@@ -8263,7 +8317,7 @@ export default function App() {
             finalCode = finalCode.replace(/^XD0([1-9])(-)/, 'XD$1$2');
 
             // Clean specific suffixes that shouldn't affect image lookup
-            finalCode = finalCode.replace(/_TS$/, '_PR').replace(/_GS$/, '');
+            finalCode = finalCode.replace(/_TS$/, '_PR').replace(/_W$/, '_PR').replace(/_GS$/, '');
 
             imageUrl = `https://www.dbs-cardgame.com/images/cardlist/cardimg/${finalCode}.png`;
             if (type === 'Leader') {

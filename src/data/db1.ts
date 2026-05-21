@@ -48,7 +48,6 @@ DB1-038	Janemba, Infernal Intruder	SR	Battle	Blue	DB1
 DB1-038_EP07	Janemba, Infernal Intruder	PR	Battle	Blue	DB1
 DB1-039	Kamehameha	UC	Extra	Blue	DB1
 DB1-040	Desperate Measures	C	Extra	Blue	DB1
-DB1-040_EP02	Desperate Measures	PR	Extra	Blue	DB1
 DB1-040_EP06	Desperate Measures	PR	Extra	Blue	DB1
 DB1-040_PR	Desperate Measures	PR	Extra	Blue	DB1
 DB1-041	Swift Combo Kaio-Ken Son Goku	UC	Battle	Green	DB1
@@ -81,7 +80,6 @@ DB1-061_PR	Great Ape Bardock, Raider's Warcry	PR	Battle	Yellow	DB1
 DB1-062	Gine, the Kind Saiyan	UC	Battle	Yellow	DB1
 DB1-063	Son Goku, Saiyan Reborn	R	Battle	Yellow	DB1
 DB1-064	Great Ape Son Goku, Saiyan Instincts	SR	Battle	Yellow	DB1
-DB1-064_EP02	Great Ape Son Goku, Saiyan Instincts	PR	Battle	Yellow	DB1
 DB1-064_EP06	Great Ape Son Goku, Saiyan Instincts	PR	Battle	Yellow	DB1
 DB1-064_JP13	Great Ape Son Goku, Saiyan Instincts	PR	Battle	Yellow	DB1
 DB1-064_PR	Great Ape Son Goku, Saiyan Instincts	PR	Battle	Yellow	DB1
