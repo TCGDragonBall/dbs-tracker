@@ -981,6 +981,26 @@ P-736	Majin Buu, Aggregation of Rage	PR	Battle	Black	PROMO
 P-737	SS4 Son Goku, Battling Across Time and Space	PR	Battle	Black	PROMO
 P-738	SS4 Vegeta, Battling Across Time and Space	PR	Battle	Black	PROMO
 P-738_W	SS4 Vegeta, Battling Across Time and Space	PRW	Battle	Black	PROMO
+P-739	Promo P-739 (Ultra-bout TP Vol.3)	PR	Battle	Unknown	PROMO
+P-740	Promo P-740 (Ultra-bout TP Vol.3)	PR	Battle	Unknown	PROMO
+P-741	Promo P-741 (Ultra-bout TP Vol.3)	PR	Battle	Unknown	PROMO
+P-742	Promo P-742 (Ultra-bout TP Vol.3)	PR	Battle	Unknown	PROMO
+P-743	Promo P-743 (Ultra-bout TP Vol.3)	PR	Battle	Unknown	PROMO
+P-744	Promo P-744 (Ultra-bout TP Vol.3)	PR	Battle	Unknown	PROMO
+P-744_W	Promo P-744 (Ultra-bout TP Vol.3)	PRW	Battle	Unknown	PROMO
+P-745	Promo P-745 (Ultra-bout TP Vol.3)	PR	Battle	Unknown	PROMO
+P-746	Promo P-746 (Ultra-bout TP Vol.3)	PR	Battle	Unknown	PROMO
+P-746_W	Promo P-746 (Ultra-bout TP Vol.3)	PRW	Battle	Unknown	PROMO
+P-747	Promo P-747 (Ultra-bout TP Vol.3)	PR	Battle	Unknown	PROMO
+P-748	Promo P-748 (Ultra-bout TP Vol.3)	PR	Battle	Unknown	PROMO
+P-749	Promo P-749 (Ultra-bout TP Vol.3)	PR	Battle	Unknown	PROMO
+P-750	Promo P-750 (Ultra-bout TP Vol.3)	PR	Battle	Unknown	PROMO
+P-750_W	Promo P-750 (Ultra-bout TP Vol.3)	PRW	Battle	Unknown	PROMO
+P-751	Promo P-751 (Ultra-bout TP Vol.3)	PR	Battle	Unknown	PROMO
+P-752	Promo P-752 (Ultra-bout TP Vol.3)	PR	Battle	Unknown	PROMO
+P-753	Promo P-753 (Ultra-bout TP Vol.3)	PR	Battle	Unknown	PROMO
+P-754	Promo P-754 (Ultra-bout TP Vol.3)	PR	Battle	Unknown	PROMO
+P-754_W	Promo P-754 (Ultra-bout TP Vol.3)	PRW	Battle	Unknown	PROMO
 P-755	Fused Zamasu / Fused Zamasu, Despairing Condemnation	PR	Leader	Yellow	PROMO
 P-755_PR	Fused Zamasu / Fused Zamasu, Despairing Condemnation	PR	Leader	Yellow	PROMO
 P-756	SS Rosé Goku Black, Divine Condemnation	PR	Z-Battle	Yellow	PROMO

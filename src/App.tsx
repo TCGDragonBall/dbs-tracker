@@ -58,6 +58,7 @@ import {
   AlertTriangle
 } from 'lucide-react';
 import { collection, query, onSnapshot, where, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, getDocFromServer, writeBatch, getCountFromServer } from 'firebase/firestore';
+import { ExcelExportModal } from './components/ExcelExportModal';
 import { db, auth, googleProvider, handleFirestoreError, OperationType, isQuotaError } from './firebase';
 import { signInWithPopup, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useAuth } from './AuthContext';
@@ -1640,6 +1641,28 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
   'EX19-24_JP17': { sourceProduct: 'Judge Pack 17' }, 'BT13-073_JP17': { sourceProduct: 'Judge Pack 17' }, 'BT25-052_JP17': { sourceProduct: 'Judge Pack 17' }, 'BT10-090_JP17': { sourceProduct: 'Judge Pack 17' }, 'P-359_JP17': { sourceProduct: 'Judge Pack 17' }, 'BT10-123_JP17': { sourceProduct: 'Judge Pack 17' }, 'BT25-005_JP17': { sourceProduct: 'Judge Pack 17' }, 'P-453_JP17': { sourceProduct: 'Judge Pack 17' }, 'BT11-053_JP17': { sourceProduct: 'Judge Pack 17' }, 'BT16-087_JP17': { sourceProduct: 'Judge Pack 17' },
   // Judge Pack 18
   'DB2-097_JP18': { sourceProduct: 'Judge Pack 18' }, 'BT14-007_JP18': { sourceProduct: 'Judge Pack 18' }, 'BT15-033_JP18': { sourceProduct: 'Judge Pack 18' }, 'BT7-110_JP18': { sourceProduct: 'Judge Pack 18' }, 'BT19-049_JP18': { sourceProduct: 'Judge Pack 18' }, 'P-643_JP18': { sourceProduct: 'Judge Pack 18' }, 'BT24-113_JP18': { sourceProduct: 'Judge Pack 18' }, 'BT15-063_JP18': { sourceProduct: 'Judge Pack 18' }, 'BT7-087_JP18': { sourceProduct: 'Judge Pack 18' }, 'BT24-088_JP18': { sourceProduct: 'Judge Pack 18' },
+  // P-739 to P-754 are from Ultra-bout Series TOURNAMENT PACK VOL.3
+  'P-739': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-740': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-741': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-742': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-743': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-744': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-744_W': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-745': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-746': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-746_W': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-747': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-748': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-749': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-750': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-750_W': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-751': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-752': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-753': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-754': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-754_W': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  
   // Event Pack 09
   'BT12-004_EP09': { sourceProduct: 'Event Pack 09' },
   'BT16-012_EP09': { sourceProduct: 'Event Pack 09' },
@@ -1888,17 +1911,14 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
   'BT1-005_PR03': { sourceProduct: 'Magnificent Collection' },
   'BT1-005_PR04': { sourceProduct: 'Anniversary Box 2019' },
   'BT1-052_PR02': { sourceProduct: 'Anniversary Box 2019' },
-  'BT1-052_PR03': { sourceProduct: 'Magnificent Collection' },
-  'BT1-053_PR02': { sourceProduct: 'Magnificent Collection' },
-  'BT1-053_PR05': { sourceProduct: 'Alt Art Card Set 2023' },
-  'BT1-055_PR02': { sourceProduct: 'Magnificent Collection' },
-  'BT1-110_PR03': { sourceProduct: 'Magnificent Collection' },
-  'BT1-052_EP03': { sourceProduct: 'Event Pack 03' },
-  'BT1-052_PR02': { sourceProduct: 'Anniversary Box 2019' },
   'BT1-052_PR03': { sourceProduct: 'EXPANSION SET Magnificent Collection -Fusion Hero-' },
+  'BT1-053_PR02': { sourceProduct: 'EXPANSION SET Magnificent Collection -Forsaken Warrior-' },
+  'BT1-053_PR05': { sourceProduct: 'Alt Art Card Set 2023' },
+  'BT1-055_PR02': { sourceProduct: 'EXPANSION SET Magnificent Collection -Fusion Hero-' },
+  'BT1-110_PR03': { sourceProduct: 'EXPANSION SET Magnificent Collection -Forsaken Warrior-' },
+  'BT1-052_EP03': { sourceProduct: 'Event Pack 03' },
   'BT1-053_PR': { sourceProduct: 'Anniversary Box 2019' },
   'BT1-055_PR': { sourceProduct: 'Anniversary Box 2019' },
-  'BT1-055_PR02': { sourceProduct: 'EXPANSION SET Magnificent Collection -Fusion Hero-' },
   'BT4-012_EP03': { sourceProduct: 'Event Pack 03' },
   'BT4-048_EP03': { sourceProduct: 'Event Pack 03' },
   'BT6-060_EP03': { sourceProduct: 'Event Pack 03' },
@@ -2043,6 +2063,10 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
 };
 
 const IMAGE_OVERRIDES: Record<string, string> = {
+  'P-744_W': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-744_PR.png',
+  'P-746_W': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-746_PR.png',
+  'P-750_W': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-750_PR.png',
+  'P-754_W': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-754_PR.png',
   'BT19-065_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT19-065_PR02.png',
   'BT19-065_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT19-065_PR03.png',
   'BT21-097_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT21-097_PR02.png',
@@ -3535,6 +3559,14 @@ const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata'
 };
 
 const CHANGELOG = [
+// Removed Excel export changes from changelog during staging
+  {
+    version: '5.0.25',
+    date: '22 de mayo de 2026',
+    changes: [
+      { es: 'Añadidas las nuevas cartas promocionales de Masters (Ultra-bout Series TOURNAMENT PACK VOL.3 P-739 a P-754 con sus variantes Winner).', en: 'Added new Masters promo cards (Ultra-bout Series TOURNAMENT PACK VOL.3 P-739 to P-754 with Winner variants).' }
+    ]
+  },
   {
     version: '5.0.24',
     date: '21 de mayo de 2026',
@@ -7565,6 +7597,7 @@ export default function App() {
   };
 
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState('');
   const [isSendingFeedback, setIsSendingFeedback] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -9411,7 +9444,7 @@ export default function App() {
                                 decoding="async"
                                 alt=""
                                 style={{ contentVisibility: 'auto' }}
-                                className={`absolute inset-0 w-full h-full object-cover z-0 ${['decks', 'expansions', 'promos', 'energy-markers'].includes(cat.id) ? 'object-[50%_25%]' : 'object-center'} opacity-15 pointer-events-none grayscale group-hover:grayscale-0 transition-all duration-500`}
+                                className={`absolute inset-0 w-full h-full object-cover z-0 ${['decks', 'expansions', 'promos', 'energy-markers', 'store-events', 'championship'].includes(cat.id) ? 'object-[50%_25%]' : 'object-center'} opacity-15 pointer-events-none grayscale group-hover:grayscale-0 transition-all duration-500`}
                               />
                               <div className="absolute inset-0 z-1 bg-gradient-to-b from-transparent to-[#1E1E1E]/60 pointer-events-none" />
                             </>
@@ -9522,7 +9555,7 @@ export default function App() {
                                      }
                                      const bgImage = SET_BG[set.id] || fallbackBg || internalCardFallback || CATEGORY_BG[currentCollectionCategory || ''];
                                      const fallbackBgPos = set.subItems[0] ? SET_BG_POS[set.subItems[0].id] : undefined;
-                                     const bgPos = SET_BG_POS[set.id] || fallbackBgPos || (['decks', 'expansions', 'promos', 'energy-markers'].includes(currentCollectionCategory || '') ? 'bg-[50%_25%]' : 'bg-center');
+                                     const bgPos = SET_BG_POS[set.id] || fallbackBgPos || (['decks', 'expansions', 'promos', 'energy-markers', 'store-events', 'championship'].includes(currentCollectionCategory || '') ? 'bg-[50%_25%]' : 'bg-center');
 
                                      return (
                                        <button 
@@ -9562,7 +9595,7 @@ export default function App() {
                                   const cardFallback = firstCardImage ? (firstCardImage.startsWith('http') || firstCardImage.startsWith('/') ? firstCardImage : `/${firstCardImage}`) : undefined;
                                   
                                   const bgImage = SET_BG[set.id] || cardFallback || CATEGORY_BG[currentCollectionCategory || ''];
-                                  const bgPos = SET_BG_POS[set.id] || (['decks', 'expansions', 'promos', 'energy-markers'].includes(currentCollectionCategory || '') ? 'bg-[50%_25%]' : 'bg-center');
+                                  const bgPos = SET_BG_POS[set.id] || (['decks', 'expansions', 'promos', 'energy-markers', 'store-events', 'championship'].includes(currentCollectionCategory || '') ? 'bg-[50%_25%]' : 'bg-center');
 
                                   return (
                                     <button 
@@ -9647,7 +9680,7 @@ export default function App() {
                                    }
 
                                    const bgImage = (expansionItem && SET_BG[expansionItem.id]) || (expansionItem?.subItems?.[0] && SET_BG[expansionItem.subItems[0].id]) || (group && group.items[0] && SET_BG[group.items[0].id]) || cardFallback || CATEGORY_BG[currentCollectionCategory || ''];
-                                   const bgPos = (expansionItem && SET_BG_POS[expansionItem.id]) || (expansionItem?.subItems?.[0] && SET_BG_POS[expansionItem.subItems[0].id]) || (group && group.items[0] && SET_BG_POS[group.items[0].id]) || (['decks', 'expansions', 'promos', 'energy-markers'].includes(currentCollectionCategory || '') ? 'bg-[50%_25%]' : 'bg-center');
+                                   const bgPos = (expansionItem && SET_BG_POS[expansionItem.id]) || (expansionItem?.subItems?.[0] && SET_BG_POS[expansionItem.subItems[0].id]) || (group && group.items[0] && SET_BG_POS[group.items[0].id]) || (['decks', 'expansions', 'promos', 'energy-markers', 'store-events', 'championship'].includes(currentCollectionCategory || '') ? 'bg-[50%_25%]' : 'bg-center');
 
                                    return (
                                      <motion.button
@@ -9790,7 +9823,7 @@ export default function App() {
                                  const cardFallback = firstCardImage ? (firstCardImage.startsWith('http') || firstCardImage.startsWith('/') ? firstCardImage : `/${firstCardImage}`) : undefined;
                                  
                                  const bgImage = SET_BG[item.id] || (item.subItems?.[0] && SET_BG[item.subItems[0].id]) || cardFallback || CATEGORY_BG[currentCollectionCategory || ''];
-                                 const bgPos = SET_BG_POS[item.id] || (['decks', 'expansions', 'promos', 'energy-markers'].includes(currentCollectionCategory || '') ? 'bg-[50%_25%]' : 'bg-center');
+                                 const bgPos = SET_BG_POS[item.id] || (['decks', 'expansions', 'promos', 'energy-markers', 'store-events', 'championship'].includes(currentCollectionCategory || '') ? 'bg-[50%_25%]' : 'bg-center');
 
                                  if (isPremium) {
                                    if (index > 0) return null;
@@ -10209,6 +10242,17 @@ export default function App() {
                       </button>
                     </div>
                   </div>
+
+                  {/* <button 
+                    onClick={() => setIsExportModalOpen(true)}
+                    className="w-full p-5 bg-blue-500/10 rounded-2xl flex items-center justify-between hover:bg-blue-500/20 transition-colors border border-blue-500/20 text-blue-400"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="p-2 bg-blue-500/10 rounded-lg"><Download size={20} /></div>
+                      <span className="font-bold">{lang === 'es' ? 'Exportar Faltas a Excel' : 'Export Missing Cards to Excel'}</span>
+                    </div>
+                    <ChevronRight size={20} className="text-blue-900" />
+                  </button> */}
 
                   <button 
                     onClick={() => setIsFeedbackModalOpen(true)}
@@ -11354,7 +11398,18 @@ export default function App() {
 
       {/* Feedback Modal */}
       <AnimatePresence>
-        {isFeedbackModalOpen && (
+        {isExportModalOpen && (
+        <ExcelExportModal
+          isOpen={isExportModalOpen}
+          onClose={() => setIsExportModalOpen(false)}
+          cards={cards}
+          inventory={inventory}
+          collectionGoal={collectionGoal}
+          lang={lang}
+        />
+      )}
+
+      {isFeedbackModalOpen && (
           <>
             <motion.div
               initial={{ opacity: 0 }}
