@@ -715,7 +715,8 @@ const FUSION_EXPANSION_GROUPS: ExpansionGroup[] = [
         { id: 'FP_RELEASE_FB06', label: 'Release Event FB06', sub: 'Eventos' },
         { id: 'FP_RELEASE_FB07', label: 'Release Event FB07', sub: 'Eventos' },
         { id: 'FP_RELEASE_FB08', label: 'Release Event FB08', sub: 'Eventos' },
-        { id: 'FP_RELEASE_FB09', label: 'Release Event FB09', sub: 'Eventos' }
+        { id: 'FP_RELEASE_FB09', label: 'Release Event FB09', sub: 'Eventos' },
+        { id: 'FP_RELEASE_FB10', label: 'Release Event FB10', sub: 'Eventos' }
       ] },
     ]
   },
@@ -737,6 +738,7 @@ const FUSION_EXPANSION_GROUPS: ExpansionGroup[] = [
           { id: 'FP_RELEASE_FB07', label: 'Release Event FB07', sub: 'FB07' },
           { id: 'FP_RELEASE_FB08', label: 'Release Event FB08', sub: 'FB08' },
           { id: 'FP_RELEASE_FB09', label: 'Release Event FB09', sub: 'FB09' },
+          { id: 'FP_RELEASE_FB10', label: 'Release Event FB10', sub: 'FB10' },
           { id: 'RE_SB01_FOLDER', label: 'Release Event SB01', sub: 'SB01' },
           { id: 'RE_SB02_FOLDER', label: 'Release Event SB02', sub: 'SB02' }
         ]
@@ -1580,6 +1582,7 @@ const SET_METADATA: Record<string, { sourceProduct: string; releaseDate?: string
   'FP_RELEASE_FB07': { sourceProduct: 'Release Event FB07' },
   'FP_RELEASE_FB08': { sourceProduct: 'Release Event FB08' },
   'FP_RELEASE_FB09': { sourceProduct: 'Release Event FB09' },
+  'FP_RELEASE_FB10': { sourceProduct: 'Release Event FB10' },
   'RE_SB01_FOLDER': { sourceProduct: 'Release Event SB01' },
   'RE_SB02_FOLDER': { sourceProduct: 'Release Event SB02' },
   'FP_CELEBRATION': { sourceProduct: 'Celebration Event' },
@@ -2575,6 +2578,8 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'FB09-010_UB_26_V2_T8': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/02/26/glxZReEtXiOoSfFW/TOP8_EN_FW_FB09-010_Battle_R_PARA_dummy_s.webp',
   'FS11-07_UB_26_V2_W': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/02/26/t1pniG0RhpJ3Ji1S/WINNER_EN_FW_FS11-07_Battle_SR_PARA_dummy_s.webp',
   'FP-077_RE_FB09': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/02/26/ho0JjheiREB9v30p/EN_FW_FP-077_Battle_PR_PARA_dummy_s.webp',
+  'FP-091': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/04/30/XnHG9LMnxO2F4MpO/EN_FW_FP-091_Battle_PR_dummy_s.webp',
+  'FP-091_RE_FB10': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/04/30/7VVx66xxeKkSe9eB/EN_FW_FP-091_Battle_PR_PARA_dummy_s.webp',
   'FB09-006_LP26_W1': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/03/09/2Gqf5eVowva4C95a/EN_FW_FB09-006_Battle_R_PARA_dummy_s.webp',
   'FB09-008_LP26_W1': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/03/09/SxhFuCyaGnqs6Z3A/EN_FW_FB09-008_Battle_C_PARA_dummy_s.webp',
   'FB09-009_LP26_W1': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/03/09/XsSj4chJcT8xXPtA/EN_FW_FB09-009_Battle_UC_PARA_dummy_s.webp',
@@ -5116,6 +5121,7 @@ const PACK_ARRAYS: Record<string, string[]> = {
   FP_RELEASE_FB07: ['FP-050_RE_FB07'],
   FP_RELEASE_FB08: ['FP-068_RE_FB08'],
   FP_RELEASE_FB09: ['FP-077_RE_FB09'],
+  FP_RELEASE_FB10: ['FP-091_RE_FB10'],
   RE_SB01_FOLDER: ['FP-049_RE_SB01'],
   RE_SB02_FOLDER: ['FP-062_RE_SB02'],
   FP_CELEBRATION: ['FP-006_CE_G', 'FP-007_CE_G', 'FS06-01_CE_G', 'FS07-01_CE_G'],

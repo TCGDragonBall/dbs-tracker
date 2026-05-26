@@ -2019,6 +2019,7 @@ FP-078	Son Goku	PR	Battle	Black	FP
 FP-079	Gogeta : BR	PR	Battle	Red	FP
 FP-080	Gogeta	PR	Battle	Yellow	FP
 FP-081	Gogeta : GT	PR	Battle	Black	FP
+FP-091	Son Goku	PR	Battle	Red	FP
 FB01-107_A_SB02	Ginyu (Alt)	UC*	Battle	Yellow	SB02
 FB01-108_A_SB02	Ginyu (Alt)	R*	Battle	Yellow	SB02
 FB01-108_B_SB02	Ginyu (Alt)	R**	Battle	Yellow	SB02
@@ -2722,6 +2723,7 @@ FB09-060_CH26_T8	Son Gohan : SH (Top 8 Championship 2026 Wave 1)	SR*	Battle	Gree
 FB09-037_CH26_T4	Son Goku (Top 4 Championship 2026 Wave 1)	SR*	Battle	Blue	CH26_W1
 FB09-007_CH26_SE	Gogeta : BR (Serial Championship 2026 Wave 1)	SR*	Battle	Red	CH26_W1
 PM-CH26-W1	Championship 2026 Wave 1 Playmat	Accessories	Playmat	Black	CH26_W1
+FP-091_RE_FB10	Son Goku (Winner Release Event FB10)	PR*	Battle	Red	FP_RELEASE_FB10
 
 
 FB01-007_JSP01	Gohan : Youth	UC*	Battle	Red	JSP01
