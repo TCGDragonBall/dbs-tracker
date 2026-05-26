@@ -1,145 +1,145 @@
-export const bt1Data = `BT1-001	Champa / God of Destruction Champa	R	Leader	Red	BT1
-BT1-002	Vados / Aide Vados	UC	Leader	Red	BT1
-BT1-003	Hit / Assassin Hit	UC	Leader	Red	BT1
-BT1-004	Destructive Terror Champa	SR	Battle	Red	BT1
-BT1-005	Furthering Destruction Champa	UC	Battle	Red	BT1
-BT1-005_JP04	Furthering Destruction Champa	PR	Battle	Red	BT1
-BT1-005_PR03	Furthering Destruction Champa	PR	Battle	Red	BT1
-BT1-005_PR04	Furthering Destruction Champa	PR	Battle	Red	BT1
-BT1-006	Scheming Champa	C	Battle	Red	BT1
-BT1-007	Manipulating God Champa	C	Battle	Red	BT1
-BT1-008	Bewitching God Vados	R	Battle	Red	BT1
-BT1-009	Calm-Hearted Vados	UC	Battle	Red	BT1
-BT1-010	Divine Aide Vados	C	Battle	Red	BT1
-BT1-010_PR	Divine Aide Vados	PR	Battle	Red	BT1
-BT1-011	Lightning-fast Hit	SR	Battle	Red	BT1
-BT1-011_SPR	Lightning-fast Hit	SPR	Battle	Red	BT1
-BT1-012	Hit	UC	Battle	Red	BT1
-BT1-013	Raging Cabba	R	Battle	Red	BT1
-BT1-014	Saiyan Cabba	C	Battle	Red	BT1
-BT1-014_PR	Saiyan Cabba	PR	Battle	Red	BT1
-BT1-015	Terror Assault Frost	UC	Battle	Red	BT1
-BT1-016	Unceasing Evolution Frost	C	Battle	Red	BT1
-BT1-017	Evolution Premonition Frost	C	Battle	Red	BT1
-BT1-018	Confident Botamo	UC	Battle	Red	BT1
-BT1-019	Botamo of Universe 6	C	Battle	Red	BT1
-BT1-020	Iron Wall Magetta	UC	Battle	Red	BT1
-BT1-021	Magetta of Universe 6	C	Battle	Red	BT1
-BT1-022	Universe 6 Supreme Kai	C	Battle	Red	BT1
-BT1-023	Kai Attendant of Universe 6	C	Battle	Red	BT1
-BT1-024	Assassination Plot	C	Extra	Red	BT1
-BT1-025	Vados's Assistance	C	Extra	Red	BT1
-BT1-025_JP07	Vados's Assistance	PR	Extra	Red	BT1
-BT1-026	Fickle Destruction	C	Extra	Red	BT1
-BT1-027	Cabba's Awakening	C	Extra	Red	BT1
-BT1-027_EP05	Cabba's Awakening	PR	Extra	Red	BT1
-BT1-028	Vegeta / Super Saiyan Blue Vegeta	R	Leader	Blue	BT1
-BT1-029	Beerus / Beerus, God of Destruction	UC	Leader	Blue	BT1
-BT1-030	Son Goku / Super Saiyan Blue Son Goku	UC	Leader	Blue	BT1
-BT1-030_PR	Son Goku / Super Saiyan Blue Son Goku	PR	Leader	Blue	BT1
-BT1-031	God Break Son Goku	SR	Battle	Blue	BT1
-BT1-031_SPR	God Break Son Goku	SPR	Battle	Blue	BT1
-BT1-032	Overflowing Spirit SSGSS Son Goku	UC	Battle	Blue	BT1
-BT1-033	Kind Saiyan Son Goku	C	Battle	Blue	BT1
-BT1-034	Mighty Striker Son Gohan	C	Battle	Blue	BT1
-BT1-035	Son Goten	C	Battle	Blue	BT1
-BT1-036	God Charge Vegeta	R	Battle	Blue	BT1
-BT1-037	Assailant Vegeta	UC	Battle	Blue	BT1
-BT1-038	Vegeta	C	Battle	Blue	BT1
-BT1-039	Trunks	C	Battle	Blue	BT1
-BT1-040	Bulma, God Tempter	C	Battle	Blue	BT1
-BT1-041	Beerus, General of Demolition	SR	Battle	Blue	BT1
-BT1-042	Energy Boost Beerus	UC	Battle	Blue	BT1
-BT1-043	Whis, Judge of the Gods	R	Battle	Blue	BT1
-BT1-043_JP14	Whis, Judge of the Gods	PR	Battle	Blue	BT1
-BT1-044	Whis, The Resting Attendant	UC	Battle	Blue	BT1
-BT1-045	Boost Attack Piccolo	C	Battle	Blue	BT1
-BT1-045_PR	Boost Attack Piccolo	PR	Battle	Blue	BT1
-BT1-046	Taunting Piccolo	C	Battle	Blue	BT1
-BT1-047	Energy Boosted Majin Buu	C	Battle	Blue	BT1
-BT1-048	Ultimate Judgment Jaco	C	Battle	Blue	BT1
-BT1-049	Mysterious Presence Monaka	UC	Battle	Blue	BT1
-BT1-050	Guardian North Kai	C	Battle	Blue	BT1
-BT1-051	Result of Training	UC	Extra	Blue	BT1
-BT1-052	Objection	C	Extra	Blue	BT1
-BT1-052_EP03	Objection	PR	Extra	Blue	BT1
-BT1-052_PR02	Objection	PR	Extra	Blue	BT1
-BT1-052_PR03	Objection	PR	Extra	Blue	BT1
-BT1-053	Senzu Bean	C	Extra	Blue	BT1
-BT1-053_PR	Senzu Bean	PR	Extra	Blue	BT1
-BT1-053_PR02	Senzu Bean	PR	Extra	Blue	BT1
-BT1-053_PR03	Senzu Bean	PR	Extra	Blue	BT1
-BT1-053_PR05	Senzu Bean	PR	Extra	Blue	BT1
-BT1-054	Encouraging Presence Monaka	C	Extra	Blue	BT1
-BT1-055	Whis's Coercion	C	Extra	Blue	BT1
-BT1-055_JP05	Whis's Coercion	PR	Extra	Blue	BT1
-BT1-055_PR	Whis's Coercion	PR	Extra	Blue	BT1
-BT1-055_PR02	Whis's Coercion	PR	Extra	Blue	BT1
-BT1-056	Son Goku / Super Saiyan God Son Goku	R	Leader	Green	BT1
-BT1-057	Broly / Broly, The Legendary Super Saiyan	UC	Leader	Green	BT1
-BT1-058	Son Gohan / Full Power Son Gohan	UC	Leader	Green	BT1
-BT1-059	Awakening Rage Son Goku	SR	Battle	Green	BT1
-BT1-060	Son Goku	C	Battle	Green	BT1
-BT1-061	Friend-Summoning Son Gohan	UC	Battle	Green	BT1
-BT1-062	Son Gohan, Family of Justice	C	Battle	Green	BT1
-BT1-063	Son Goten, Family of Justice	C	Battle	Green	BT1
-BT1-064	Raging Attacker Vegeta	R	Battle	Green	BT1
-BT1-065	Furious Yell Vegeta	UC	Battle	Green	BT1
-BT1-066	Tenacious Vegeta	C	Battle	Green	BT1
-BT1-067	Implacable Trunks	UC	Battle	Green	BT1
-BT1-068	Slasher Trunks	C	Battle	Green	BT1
-BT1-069	Trunks, Protector of Children	C	Battle	Green	BT1
-BT1-069_PR	Trunks, Protector of Children	PR	Battle	Green	BT1
-BT1-070	Super Saiyan Gotenks	R	Battle	Green	BT1
-BT1-071	Energy Power Gotenks	C	Battle	Green	BT1
-BT1-072	Human Shield Krillin	C	Battle	Green	BT1
-BT1-073	Broly, The Rampaging Horror	SR	Battle	Green	BT1
-BT1-073_SPR	Broly, The Rampaging Horror	SPR	Battle	Green	BT1
-BT1-074	Rampaging Lifeform Bio-Broly	UC	Battle	Green	BT1
-BT1-075	Rampaging Super Saiyan Broly	C	Battle	Green	BT1
-BT1-076	Broly, Dawn of the Rampage	C	Battle	Green	BT1
-BT1-076_JP05	Broly, Dawn of the Rampage	PR	Battle	Green	BT1
-BT1-077	Paragus, Controller of Monsters	C	Battle	Green	BT1
-BT1-078	Overflowing Bio Warrior Army	C	Battle	Green	BT1
-BT1-079	King Vegeta's Surprise Attack	UC	Extra	Green	BT1
-BT1-079_PR	King Vegeta's Surprise Attack	PR	Extra	Green	BT1
-BT1-080	Full Power Energy	C	Extra	Green	BT1
-BT1-080_JP04	Full Power Energy	PR	Extra	Green	BT1
-BT1-081	Broly's Ring	C	Extra	Green	BT1
-BT1-082	Family Kamehameha	C	Extra	Green	BT1
-BT1-083	Frieza / Ultimate Form Golden Frieza	R	Leader	Yellow	BT1
-BT1-083_JP11	Frieza / Ultimate Form Golden Frieza	PR	Leader	Yellow	BT1
-BT1-084	Frieza / Frieza, The Galactic Emperor	UC	Leader	Yellow	BT1
-BT1-085	Ginyu / Ginyu, The Malicious Transformation	UC	Leader	Yellow	BT1
-BT1-086	Golden Frieza, Resurrected Terror	SR	Battle	Yellow	BT1
-BT1-086_SPR	Golden Frieza, Resurrected Terror	SPR	Battle	Yellow	BT1
-BT1-087	Full-Power Frieza	R	Battle	Yellow	BT1
-BT1-088	Frieza, Hellish Terror	C	Battle	Yellow	BT1
-BT1-089	Avenging Frieza	C	Battle	Yellow	BT1
-BT1-090	Mecha-Frieza, The Returning Terror	UC	Battle	Yellow	BT1
-BT1-091	King Cold, Father of the Emperor	R	Battle	Yellow	BT1
-BT1-092	Sorbet, The Loyal Commander	UC	Battle	Yellow	BT1
-BT1-093	Tagoma, The Loyal Warrior	UC	Battle	Yellow	BT1
-BT1-094	Shisami, The Loyal Warrior	UC	Battle	Yellow	BT1
-BT1-095	Elite Force Captain Ginyu	SR	Battle	Yellow	BT1
-BT1-096	Ginyu Force Recoome	C	Battle	Yellow	BT1
-BT1-097	Ginyu Force Burter	C	Battle	Yellow	BT1
-BT1-098	Ginyu Force Jeice	C	Battle	Yellow	BT1
-BT1-099	Ginyu Force Guldo	C	Battle	Yellow	BT1
-BT1-100	Dodoria, The Emperor's Attendant	C	Battle	Yellow	BT1
-BT1-100_PR	Dodoria, The Emperor's Attendant	PR	Battle	Yellow	BT1
-BT1-101	Zarbon, The Emperor's Attendant	C	Battle	Yellow	BT1
-BT1-102	Appule	C	Battle	Yellow	BT1
-BT1-103	Sui	C	Battle	Yellow	BT1
-BT1-104	Banan	C	Battle	Yellow	BT1
-BT1-105	Cui	C	Battle	Yellow	BT1
-BT1-106	Recoome Eraser Gun	UC	Extra	Yellow	BT1
-BT1-107	Cold Bloodlust	C	Extra	Yellow	BT1
-BT1-107_PR	Cold Bloodlust	PR	Extra	Yellow	BT1
-BT1-108	Bad Ring Laser	C	Extra	Yellow	BT1
-BT1-108_JP05	Bad Ring Laser	PR	Extra	Yellow	BT1
-BT1-109	Frieza's Call	C	Extra	Yellow	BT1
-BT1-109_EP03	Frieza's Call	PR	Extra	Yellow	BT1
-BT1-110	Crusher Ball	C	Extra	Yellow	BT1
-BT1-110_JP04	Crusher Ball	PR	Extra	Yellow	BT1
-BT1-110_PR03	Crusher Ball	PR	Extra	Yellow	BT1`;
+export const bt1Data = `BT1-001	Champa / God of Destruction Champa	R	Leader	Red	BT1	10000 // 15000				Champa // Champa	God // God	Champa Saga // Champa Saga	[Auto] [Once per turn] When your Battle Card attacks a Leader Card, if the attacking card has 15000 or more power, draw 1 card. | [Awaken] When your life is at 4 or less : You may draw 2 cards and flip this card over. // [Auto] When this card attacks, draw 1 card. | [Activate Main] Place 1 card from your hand in the Drop Area : Choose this card or 1 of your Battle Cards. It gains [Double Strike] for the duration of the turn.
+BT1-002	Vados / Aide Vados	UC	Leader	Red	BT1	10000 // 15000				Vados // Vados	God // God	Champa Saga // Champa Saga	[Permanent] This card can attack Battle Cards in Active Mode. | [Awaken] When your life is at 4 or less : You may draw 2 cards and flip this card over. // [Permanent] This card can attack Battle Cards in Active Mode. | [Auto] When this card attacks, draw 1 card. If this card attacks a Battle Card, it gains +5000 power for the duration of the turn.
+BT1-003	Hit / Assassin Hit	UC	Leader	Red	BT1	10000 // 15000				Hit // Hit	Alien // Alien	Champa Saga // Champa Saga	[Auto] When this card attacks, it gains +5000 power for the duration of the turn. | [Awaken] When your life is at 4 or less : You may draw 2 cards and flip this card over. // [Auto] When this card attacks, draw 1 card, and this card gains +5000 power for the duration of this turn. | [Auto] [Once per turn] When your opponent activates [Blocker], you may place 1 red card from your hand into the Drop Area. If you do so, negate that [Blocker].
+BT1-004	Destructive Terror Champa	SR	Battle	Red	BT1	25000	6(RR)	1	10000	Champa	God	Champa Saga	[Evolve] : ＜Champa＞ | [Triple Strike] (This card inflicts 3 damage instead of 1 when attacking) | [Auto] When you play this card, choose all of your opponent's Battle Cards in the Battle Area with 15000 or less power and KO them.
+BT1-005	Furthering Destruction Champa	UC	Battle	Red	BT1	16000	3(RR)	1	10000	Champa	God	Champa Saga	[Auto] When you Combo with this card, choose 1 of your attacking cards. It gains [Double Strike] (This card inflicts 2 damage instead of 1 when attacking) for the duration of the battle.
+BT1-005_JP04	Furthering Destruction Champa	PR	Battle	Red	BT1	16000	3(RR)	1	10000	Champa	God	Champa Saga	[Auto] When you Combo with this card, choose 1 of your attacking cards. It gains [Double Strike] (This card inflicts 2 damage instead of 1 when attacking) for the duration of the battle.
+BT1-005_PR03	Furthering Destruction Champa	PR	Battle	Red	BT1	16000	3(RR)	1	10000	Champa	God	Champa Saga	[Auto] When you Combo with this card, choose 1 of your attacking cards. It gains [Double Strike] (This card inflicts 2 damage instead of 1 when attacking) for the duration of the battle.
+BT1-005_PR04	Furthering Destruction Champa	PR	Battle	Red	BT1	16000	3(RR)	1	10000	Champa	God	Champa Saga	[Auto] When you Combo with this card, choose 1 of your attacking cards. It gains [Double Strike] (This card inflicts 2 damage instead of 1 when attacking) for the duration of the battle.
+BT1-006	Scheming Champa	C	Battle	Red	BT1	10000	2(R)	0	5000	Champa	God	Champa Saga	[Auto] When you play a red 《Alien》, it gains +5000 power for the duration of the turn.
+BT1-007	Manipulating God Champa	C	Battle	Red	BT1	5000	1(R)	0	5000	Champa	God	Champa Saga	[Auto] When you play this card, look at up to 7 cards from the top of your deck. Choose up to 1 red ＜Champa＞ among them and add it to your hand. Then, shuffle your deck.
+BT1-008	Bewitching God Vados	R	Battle	Red	BT1	20000	5(RR)	1	10000	Vados	God	Champa Saga	[Dual Attack] | [Auto] When this card attacks, look at up to 3 cards from the top of your deck. Choose up to 1 《Alien》 with power 15000 or less among them and play it. Then, shuffle your deck.
+BT1-009	Calm-Hearted Vados	UC	Battle	Red	BT1	15000	3(R)	0	5000	Vados	God	Champa Saga	[Auto] When you play this card, look at up to 3 cards from the top of your deck. Choose up to 1 red 《Alien》 among them and add it to your hand. Then, shuffle your deck.
+BT1-010	Divine Aide Vados	C	Battle	Red	BT1	12000	2(R)	0	0	Vados	God	Champa Saga	[Auto] When you Combo with this card, if your Leader Card is red and your life is 4 or lower, draw 1 card and add +10000 to this card's Combo for the duration of the turn.
+BT1-010_PR	Divine Aide Vados	PR	Battle	Red	BT1	12000	2(R)	0	0	Vados	God	Champa Saga	[Auto] When you Combo with this card, if your Leader Card is red and your life is 4 or lower, draw 1 card and add +10000 to this card's Combo for the duration of the turn.
+BT1-011	Lightning-fast Hit	SR	Battle	Red	BT1	25000	6(RR)	1	10000	Hit	Alien	Champa Saga	[Evolve] : ＜Hit＞ | [Double Strike] | [Auto] When a card evolves into this card, inflict 2 damage to your opponent.
+BT1-011_SPR	Lightning-fast Hit	SPR	Battle	Red	BT1	25000	6(RR)	1	10000	Hit	Alien	Champa Saga	[Evolve] : ＜Hit＞ | [Double Strike] | [Auto] When a card evolves into this card, inflict 2 damage to your opponent.
+BT1-012	Hit	UC	Battle	Red	BT1	15000	2(R)	0	5000	Hit	Alien	Champa Saga	‐
+BT1-013	Raging Cabba	R	Battle	Red	BT1	20000	4(RR)	1	10000	Cabba	Alien/Saiyan	Champa Saga	[Evolve] : ＜Cabba＞ | [Double Strike] | [Auto] When a card evolves into this card, switch this card to Active Mode.
+BT1-014	Saiyan Cabba	C	Battle	Red	BT1	5000	1(R)	0	5000	Cabba	Alien/Saiyan	Champa Saga	[Auto] When this card attacks, you may choose 1 card from your life and add it to your hand. If you do so, this card gains +10000 power and [Double Strike] (This card inflicts 2 damage instead of 1 when attacking) for the duration of the turn.
+BT1-014_PR	Saiyan Cabba	PR	Battle	Red	BT1	5000	1(R)	0	5000	Cabba	Alien/Saiyan	Champa Saga	[Auto] When this card attacks, you may choose 1 card from your life and add it to your hand. If you do so, this card gains +10000 power and [Double Strike] (This card inflicts 2 damage instead of 1 when attacking) for the duration of the turn.
+BT1-015	Terror Assault Frost	UC	Battle	Red	BT1	15000	4(RR)	1	10000	Frost	Alien/Frieza Clan	Champa Saga	[Evolve] : ＜Frost＞ (Play this card on top of the specified card) | [Double Strike] (This card inflicts 2 damage instead of 1 when attacking) | [Auto] When this card attacks a Battle Card, KO that card after the battle. Then, if your opponent's Leader Card has 10000 or less power, inflict 1 damage to your opponent.
+BT1-016	Unceasing Evolution Frost	C	Battle	Red	BT1	15000	3(R)	0	5000	Frost	Alien/Frieza Clan	Champa Saga	[Evolve] : ＜Frost＞ (Play this card on top of the specified card)[Double Strike] (This card inflicts 2 damage instead of 1 when attacking)
+BT1-017	Evolution Premonition Frost	C	Battle	Red	BT1	5000	1(R)	0	5000	Frost	Alien/Frieza Clan	Champa Saga	[Activate Main] : Look at up to 7 cards from the top of your deck, choose one ＜Frost＞ with [Evolve] among them and Evolve this card into it. Then, shuffle your deck.
+BT1-018	Confident Botamo	UC	Battle	Red	BT1	15000	3(R)	0	5000	Botamo	Alien	Champa Saga	[Permanent] This Card can attack Battle Cards that are in Active Mode.
+BT1-019	Botamo of Universe 6	C	Battle	Red	BT1	5000	1(R)	0	5000	Botamo	Alien	Champa Saga	[Blocker] (When one of your other cards is attacked, you may switch this card to Rest Mode and change the target of the attack to this card)
+BT1-020	Iron Wall Magetta	UC	Battle	Red	BT1	15000	3(RR)	0	5000	Magetta	Alien	Champa Saga	[Permanent] This card cannot be KO-ed in battle.
+BT1-021	Magetta of Universe 6	C	Battle	Red	BT1	10000	2(R)	0	5000	Magetta	Alien	Champa Saga	[Blocker] (When one of your other cards is attacked, you may switch this card to Rest Mode and change the target of the attack to this card)
+BT1-022	Universe 6 Supreme Kai	C	Battle	Red	BT1	20000	4(RR)	1	10000	Universe 6 Supreme Kai	God	Champa Saga	[Double Strike] (This card inflicts 2 damage instead of 1 when attacking) | [Auto] When you play this card, choose up to 1 ＜Supreme Kai's Attendant＞ from your deck and play it. Then, shuffle your deck.
+BT1-023	Kai Attendant of Universe 6	C	Battle	Red	BT1	10000	1(R)	0	5000	Supreme Kai's Attendant	God	Champa Saga	[Permanent] This card cannot attack Battle Card with 15000 or more power.
+BT1-024	Assassination Plot	C	Extra	Red	BT1		4(RR)						[Activate Main] Choose any number of opponent Battle Cards of which the total power adds up to 30000 or less and KO those cards.
+BT1-025	Vados's Assistance	C	Extra	Red	BT1		1(R)						[Counter Attack] Negate the attack. Then, you may switch up to 1 of your Battle Cards to Active Mode.
+BT1-025_JP07	Vados's Assistance	PR	Extra	Red	BT1		1(R)						[Counter Attack] Negate the attack. Then, you may switch up to 1 of your Battle Cards to Active Mode.
+BT1-026	Fickle Destruction	C	Extra	Red	BT1		1(R)						[Activate Main] Choose 1 of your opponent's Battle Cards with 12000 or less power in the Battle Area and KO that card.
+BT1-027	Cabba's Awakening	C	Extra	Red	BT1		0-						[Activate Battle] Choose up to 1 of your red cards. It gains +6000 power for the duration of the battle.
+BT1-027_EP05	Cabba's Awakening	PR	Extra	Red	BT1		0-						[Activate Battle] Choose up to 1 of your red cards. It gains +6000 power for the duration of the battle.
+BT1-028	Vegeta / Super Saiyan Blue Vegeta	R	Leader	Blue	BT1	10000 // 15000				Vegeta // Vegeta	Saiyan // Saiyan	Resurrection ‘F’ Saga // Resurrection ‘F’ Saga	[Activate Main] [Once per turn] Choose 1 card from your life and add it to your hand : This card gains [Critical] for the duration of the turn. | [Awaken] When your life is at 4 or less : You may draw 2 cards and flip this card over. // [Activate Main] [Once per turn] Choose 1 card from your life and add it to your hand : This card gains [Critical] for the duration of the turn. If you have 7 or more blue energy, this card also gains +10000 power for the duration of the turn. | [Auto] When this card attacks, draw 1 card.
+BT1-029	Beerus / Beerus, God of Destruction	UC	Leader	Blue	BT1	10000 // 15000				Beerus // Beerus	God // God	Battle of Gods Saga // Battle of Gods Saga	[Auto] When this card attacks, if you have 3 or more energy, choose up to 1 of your opponent's Battle Cards with an energy cost of 2 or less and KO it. | [Awaken] When your life is at 4 or less : You may draw 2 cards and flip this card over. // [Auto] When this card attacks, draw 1 card. Then choose up to 1 of your opponent's Battle Cards with an energy cost of 3 or less and KO it. | [Activate Main] , Switch this card to Rest Mode : You win this game.
+BT1-030	Son Goku / Super Saiyan Blue Son Goku	UC	Leader	Blue	BT1	10000 // 15000				Son Goku // Son Goku	Saiyan // Saiyan	Resurrection ‘F’ Saga // Resurrection ‘F’ Saga	[Auto] When this card attacks, it gains +1000 for each 1 energy you have, for the duration of the turn. | [Awaken] When your life is at 4 or less : You may draw 2 cards and flip this card over. // [Permanent] When you have 7 or more energy, this card gains [Dual Attack] (Once per turn, when this card attacks, switch this card to Active Mode after the battle). | [Auto] [Once per turn] When this card attacks, draw 1 card. Then, this card gains +1000 power for each 1 energy you have for the duration of the turn.
+BT1-030_PR	Son Goku / Super Saiyan Blue Son Goku	PR	Leader	Blue	BT1	10000 // 15000				Son Goku // Son Goku	Saiyan // Saiyan	Resurrection ‘F’ Saga // Resurrection ‘F’ Saga	[Auto] When this card attacks, it gains +1000 for each 1 energy you have, for the duration of the turn. | [Awaken] When your life is at 4 or less : You may draw 2 cards and flip this card over. // [Permanent] When you have 7 or more energy, this card gains [Dual Attack] (Once per turn, when this card attacks, switch this card to Active Mode after the battle). | [Auto] [Once per turn] When this card attacks, draw 1 card. Then, this card gains +1000 power for each 1 energy you have for the duration of the turn.
+BT1-031	God Break Son Goku	SR	Battle	Blue	BT1	30000	7(BBB)	1	10000	Son Goku	Saiyan	Resurrection ‘F’ Saga	[Evolve] : ＜Son Goku＞ | [Double Strike] | [Permanent] Your opponent cannot activate [Counter] against this card's attack and cannot activate [Blocker] during this card's attack.
+BT1-031_SPR	God Break Son Goku	SPR	Battle	Blue	BT1	30000	7(BBB)	1	10000	Son Goku	Saiyan	Resurrection ‘F’ Saga	[Evolve] : ＜Son Goku＞ | [Double Strike] | [Permanent] Your opponent cannot activate [Counter] against this card's attack and cannot activate [Blocker] during this card's attack.
+BT1-032	Overflowing Spirit SSGSS Son Goku	UC	Battle	Blue	BT1	15000	4(BB)	1	10000	Son Goku	Saiyan	Champa Saga	[Critical] (When this card inflicts damage to your opponent's life, they place that many cards in their Drop Area instead of their hand) | [Permanent] During your turn, if you have 5 or more energy, this card gains +10000 power.
+BT1-033	Kind Saiyan Son Goku	C	Battle	Blue	BT1	5000	1(B)	0	5000	Son Goku	Saiyan	Battle of Gods Saga	[Auto] When you play this card, look at up to 7 cards from the top of your deck. Choose up to 1 blue ＜Son Goku＞ among them and add it to your hand. Then, shuffle your deck.
+BT1-034	Mighty Striker Son Gohan	C	Battle	Blue	BT1	25000	4(B)	1	10000	Son Gohan: Adolescence	Saiyan/Earthling	Resurrection ‘F’ Saga	[Double Strike] (This card inflicts 2 damage instead of 1 when attacking)
+BT1-035	Son Goten	C	Battle	Blue	BT1	15000	2(B)	0	5000	Son Goten	Saiyan/Earthling	Battle of Gods Saga	-
+BT1-036	God Charge Vegeta	R	Battle	Blue	BT1	25000	6(BBB)	1	10000	Vegeta	Saiyan	Resurrection ‘F’ Saga	[Evolve] : ＜Vegeta＞ | [Dual Attack] | [Critical] | [Auto] When a card evolves into this card, choose up to 1 opponent Battle Card with [Blocker] and return it to their hand.
+BT1-037	Assailant Vegeta	UC	Battle	Blue	BT1	15000	3(B)	0	5000	Vegeta	Saiyan	Resurrection ‘F’ Saga	[Critical] (When this card inflicts damage to your opponent's life, they place that many cards in the Drop Area instead of their hand)
+BT1-038	Vegeta	C	Battle	Blue	BT1	20000	3(B)	0	5000	Vegeta	Saiyan	Resurrection ‘F’ Saga	-
+BT1-039	Trunks	C	Battle	Blue	BT1	15000	2(B)	0	5000	Trunks: Youth	Saiyan/Earthling	Battle of Gods Saga	-
+BT1-040	Bulma, God Tempter	C	Battle	Blue	BT1	1000	1(B)	0	5000	Bulma	Earthling	Resurrection ‘F’ Saga	[Auto] When you play this card, choose up to 1 ＜Whis＞ with an energy cost of 4 or lower from your deck and add it to your hand. Then, shuffle your deck.
+BT1-041	Beerus, General of Demolition	SR	Battle	Blue	BT1	25000	7(BBB)	1	10000	Beerus	God	Resurrection ‘F’ Saga	[Triple Strike] (This card inflicts 3 damage instead of 1 when attacking) | [Auto] When this card attacks a Leader Card, your opponent may choose 2 cards from their hand and place them in the Drop Area. If they don't, choose all of your opponent's Battle Cards and energy. Place them in the Drop Area.
+BT1-042	Energy Boost Beerus	UC	Battle	Blue	BT1	20000	4(BB)	1	10000	Beerus	God	Champa Saga	[Double Strike] (This card inflicts 2 damage instead of 1 when attacking) | [Auto] When you play this card, if you have 5 or more energy, choose up to 1opponent Battle Card and KO that card.
+BT1-043	Whis, Judge of the Gods	R	Battle	Blue	BT1	40000	12(BBBBBB)	1	10000	Whis	God	Resurrection ‘F’ Saga	[Quadruple Strike] (This card inflicts 4 damage instead of 1 when attacking) | [Permanent] This card's attack and skill cannot be negated.[Auto] When you play this card, if your Leader Card is ＜Beerus＞, after your current turn ends, take another turn.
+BT1-043_JP14	Whis, Judge of the Gods	PR	Battle	Blue	BT1	40000	12(BBBBBB)	1	10000	Whis	God	Resurrection ‘F’ Saga	[Quadruple Strike] (This card inflicts 4 damage instead of 1 when attacking) | [Permanent] This card's attack and skill cannot be negated.[Auto] When you play this card, if your Leader Card is ＜Beerus＞, after your current turn ends, take another turn.
+BT1-044	Whis, The Resting Attendant	UC	Battle	Blue	BT1	10000	4(BB)	1	10000	Whis	God	Resurrection ‘F’ Saga	[Auto] When you play this card, add 1 card to your energy from the top of your deck.
+BT1-045	Boost Attack Piccolo	C	Battle	Blue	BT1	12000	2(B)	0	0	Piccolo	Namekian/God	Champa Saga	[Auto] When you Combo with this card, if your Leader Card is blue and your life is 4 or less, draw 1 card and add +10000 to this card's Combo for the duration of the turn.
+BT1-045_PR	Boost Attack Piccolo	PR	Battle	Blue	BT1	12000	2(B)	0	0	Piccolo	Namekian/God	Champa Saga	[Auto] When you Combo with this card, if your Leader Card is blue and your life is 4 or less, draw 1 card and add +10000 to this card's Combo for the duration of the turn.
+BT1-046	Taunting Piccolo	C	Battle	Blue	BT1	10000	2(B)	0	5000	Piccolo	Namekian/God	Resurrection ‘F’ Saga	[Blocker] (When one of your other cards is attacked, you may switch this card to Rest Mode and change the target of the attack to this card)
+BT1-047	Energy Boosted Majin Buu	C	Battle	Blue	BT1	5000	1(B)	0	5000	Majin Buu	Majin	Champa Saga	[Auto] When you play this card, draw 1 card.
+BT1-048	Ultimate Judgment Jaco	C	Battle	Blue	BT1	16000	3(B)	0	5000	Jaco	Galactic Patrol	Champa Saga	[Auto] When you Combo with this card, choose 1 card in your opponent's Combo Area and return it to their hand.
+BT1-049	Mysterious Presence Monaka	UC	Battle	Blue	BT1	15000	3(B)	0	5000	Monaka	Alien	Champa Saga	[Auto] When you play this card, if you do not have any Battle Cards other than this card in play, choose up to 1 of your opponent's Battle Cards. Place that card on top of the opponent's deck, and all cards that were under it in the Drop Area.
+BT1-050	Guardian North Kai	C	Battle	Blue	BT1	5000	1(B)	0	5000	North Kai	God	Battle of Gods Saga	[Blocker] (When one of your other cards is attacked, you may switch this card to Rest Mode and change the target of the attack to this card)
+BT1-051	Result of Training	UC	Extra	Blue	BT1		5(BB)						[Activate Main] During this turn, you may activate your Leader Card's [Awaken] even if you have 5 or more life. Then, choose up to 4 of your energy and switch them to Active Mode.
+BT1-052	Objection	C	Extra	Blue	BT1		2(B)						[Activate Main] Choose up to 1card from your hand, and add it to your energy.
+BT1-052_EP03	Objection	PR	Extra	Blue	BT1		2(B)						[Activate Main] Choose up to 1card from your hand, and add it to your energy.
+BT1-052_PR02	Objection	PR	Extra	Blue	BT1		2(B)						[Activate Main] Choose up to 1card from your hand, and add it to your energy.
+BT1-052_PR03	Objection	PR	Extra	Blue	BT1		2(B)						[Activate Main] Choose up to 1card from your hand, and add it to your energy.
+BT1-053	Senzu Bean	C	Extra	Blue	BT1		1(B)						[Activate Battle] Choose up to 1 of your cards. It gains +5000 power for the duration of the turn. Then, choose up to 2 of your energy and switch them to Active Mode.
+BT1-053_PR	Senzu Bean	PR	Extra	Blue	BT1		1(B)						[Activate Battle] Choose up to 1 of your cards. It gains +5000 power for the duration of the turn. Then, choose up to 2 of your energy and switch them to Active Mode.
+BT1-053_PR02	Senzu Bean	PR	Extra	Blue	BT1		1(B)						[Activate Battle] Choose up to 1 of your cards. It gains +5000 power for the duration of the turn. Then, choose up to 2 of your energy and switch them to Active Mode.
+BT1-053_PR03	Senzu Bean	PR	Extra	Blue	BT1		1(B)						[Activate Battle] Choose up to 1 of your cards. It gains +5000 power for the duration of the turn. Then, choose up to 2 of your energy and switch them to Active Mode.
+BT1-053_PR05	Senzu Bean	PR	Extra	Blue	BT1		1(B)						[Activate Battle] Choose up to 1 of your cards. It gains +5000 power for the duration of the turn. Then, choose up to 2 of your energy and switch them to Active Mode.
+BT1-054	Encouraging Presence Monaka	C	Extra	Blue	BT1		1(B)						[Activate Main] Your Leader Card gains [Double Strike] (This card inflicts 2 damage instead of 1 when attacking) for the duration of the turn. Then, draw 1 card.
+BT1-055	Whis's Coercion	C	Extra	Blue	BT1		1(B)						[Counter Attack] Negate the attack. Then, choose up to 1 of your energy and switch it to Active Mode.
+BT1-055_JP05	Whis's Coercion	PR	Extra	Blue	BT1		1(B)						[Counter Attack] Negate the attack. Then, choose up to 1 of your energy and switch it to Active Mode.
+BT1-055_PR	Whis's Coercion	PR	Extra	Blue	BT1		1(B)						[Counter Attack] Negate the attack. Then, choose up to 1 of your energy and switch it to Active Mode.
+BT1-055_PR02	Whis's Coercion	PR	Extra	Blue	BT1		1(B)						[Counter Attack] Negate the attack. Then, choose up to 1 of your energy and switch it to Active Mode.
+BT1-056	Son Goku / Super Saiyan God Son Goku	R	Leader	Green	BT1	10000 // 15000				Son Goku // Son Goku	Saiyan // Saiyan	Battle of Gods Saga // Battle of Gods Saga	[Double Strike] (This card inflicts 2 damage instead of 1 when attacking) | [Awaken] When your life is at 4 or less : You may draw 2 cards and flip this card over. // [Double Strike] (This card inflicts 2 damage instead of 1 when attacking) | [Auto] When this card attacks, draw 1 card.
+BT1-057	Broly / Broly, The Legendary Super Saiyan	UC	Leader	Green	BT1	10000 // 15000				Broly // Broly	Saiyan // Saiyan	Broly Saga // Broly Saga	[Permanent] This card cannot attack Battle Cards. | [Auto] When this card attacks, both players choose 1 card from their hand and place it in the Drop Area. | [Awaken] When your life is at 4 or less : You may draw 2 cards and flip this card over. // [Permanent] This card cannot attack Battle Cards. | [Auto] When this card attacks, draw 1 card. Then, both players choose 1 card from their hand and 1 card from their Battle Area, and place those cards in their Drop Areas.
+BT1-058	Son Gohan / Full Power Son Gohan	UC	Leader	Green	BT1	10000 // 15000				Son Gohan: Adolescence // Son Gohan: Adolescence	Saiyan/Earthling // Saiyan/Earthling	Battle of Gods Saga // Battle of Gods Saga	[Auto] When this card attacks, if you have more life than your opponent, draw 1 card. | [Awaken] When your life is at 4 or less : You may draw 2 cards and flip this card over. // [Auto] When this card attacks, draw 1 card. | [Activate Main][Once per turn] : Choose all of your opponent's Battle Cards in the Battle Area and KO them.
+BT1-059	Awakening Rage Son Goku	SR	Battle	Green	BT1	25000	6(GG)	1	10000	Son Goku	Saiyan	Frieza Saga	[Evolve] : ＜Son Goku＞ | [Double Strike] | [Permanent] If ＜Krillin＞ is in your Drop Area, this card gains [Triple Strike]. | [Auto] When you play this card, choose any number of your opponent's Battle Cards of which the total cost adds up to 6 or less and KO them.
+BT1-060	Son Goku	C	Battle	Green	BT1	15000	2(G)	0	5000	Son Goku	Saiyan	Battle of Gods Saga	-
+BT1-061	Friend-Summoning Son Gohan	UC	Battle	Green	BT1	10000	2(G)	0	5000	Son Gohan: Youth	Saiyan/Earthling	Frieza Saga	[Auto] When you play this card, look at up to 7 cards from the top of your deck. Choose up to 1 ＜Krillin＞ among them and add it to your hand.
+BT1-062	Son Gohan, Family of Justice	C	Battle	Green	BT1	10000	2(G)	0	5000	Son Gohan: Adolescence	Saiyan/Earthling	Broly Saga	[Blocker] (When one of your other cards is attacked, you may switch this card to Rest Mode and change the target of the attack to this card)
+BT1-063	Son Goten, Family of Justice	C	Battle	Green	BT1	10000	2(GG)	1	5000	Son Goten	Saiyan/Earthling	Broly Saga	[Auto] During your turn, when you Combo with this card, choose up to 1 of your opponent's Battle Cards with an energy cost of 3 or less and KO it.
+BT1-064	Raging Attacker Vegeta	R	Battle	Green	BT1	20000	4(GG)	1	10000	Vegeta	Saiyan	Battle of Gods Saga	[Double Strike] | [Counter Attack] Play this card from your hand. | [Auto] When you play this card, choose up to 1 of your opponent's Battle Cards with an energy cost of 4 or less and KO it.
+BT1-065	Furious Yell Vegeta	UC	Battle	Green	BT1	20000	4(GG)	1	10000	Vegeta	Saiyan	Battle of Gods Saga	[Double Strike] (This card inflicts 2 damage instead of 1 when attacking) | [Activate Main] [Once per turn] Place 1 card from your life to the Drop Area : Choose 1 of your opponent's Battle Cards and KO it.
+BT1-066	Tenacious Vegeta	C	Battle	Green	BT1	10000	2(GG)	0	5000	Vegeta	Saiyan	Battle of Gods Saga	[Revenge] (When this card is attacked, KO the attacking card after the battle) | [Permanent] This card cannot be attacked by a Leader Card.
+BT1-067	Implacable Trunks	UC	Battle	Green	BT1	15000	4(GG)	1	10000	Trunks: Future	Saiyan/Earthling	Android Cell Saga	[Evolve] :＜Trunks: Future＞ (Play this card on top of the specified card) | [Double Strike] (This card inflicts 2 damage instead of 1 when attacking) | [Revenge] (When this card is attacked, KO the attacking card after the battle) | [Auto] When a card evolves into this card, choose up to 1 card from your Drop Area and add it to your hand.
+BT1-068	Slasher Trunks	C	Battle	Green	BT1	10000	1(G)	0	5000	Trunks: Future	Saiyan/Earthling	Android Cell Saga	[Permanent] This card cannot attack Battle Cards.
+BT1-069	Trunks, Protector of Children	C	Battle	Green	BT1	12000	2(G)	0	0	Trunks: Youth	Saiyan/Earthling	Battle of Gods Saga	[Auto] When you Combo with this card, if your Leader Card is green and your life is 4 or less, draw 1 card and add +10000 to this card's Combo for the duration of the turn.
+BT1-069_PR	Trunks, Protector of Children	PR	Battle	Green	BT1	12000	2(G)	0	0	Trunks: Youth	Saiyan/Earthling	Battle of Gods Saga	[Auto] When you Combo with this card, if your Leader Card is green and your life is 4 or less, draw 1 card and add +10000 to this card's Combo for the duration of the turn.
+BT1-070	Super Saiyan Gotenks	R	Battle	Green	BT1	25000	5(GG)	1	10000	Gotenks	Saiyan/Earthling	Battle of Gods Saga	[Evolve] ＜Gotenks＞ | [Double Strike] | [Auto] When you play this card, choose up to 2 of your energy and switch them to Active Mode. Then, draw 1 card.
+BT1-071	Energy Power Gotenks	C	Battle	Green	BT1	15000	3(G)	0	5000	Gotenks	Saiyan/Earthling	Battle of Gods Saga	[Auto] When this card attacks a Leader Card, your opponent chooses 1 card from their hand and places it in the Drop Area.
+BT1-072	Human Shield Krillin	C	Battle	Green	BT1	5000	1(G)	0	5000	Krillin	Earthling	Frieza Saga	[Blocker] (When one of your other cards is attacked, you may switch this card to Rest Mode and change the target of the attack to this card)
+BT1-073	Broly, The Rampaging Horror	SR	Battle	Green	BT1	30000	6(GGGG)	1	10000	Broly	Saiyan	Broly Saga	[Evolve] : ＜Broly＞ | [Double Strike] | [Auto] When you play this card, choose up to 2 cards from your opponent's hand at random and place them in the Drop Area.
+BT1-073_SPR	Broly, The Rampaging Horror	SPR	Battle	Green	BT1	30000	6(GGGG)	1	10000	Broly	Saiyan	Broly Saga	[Evolve] : ＜Broly＞ | [Double Strike] | [Auto] When you play this card, choose up to 2 cards from your opponent's hand at random and place them in the Drop Area.
+BT1-074	Rampaging Lifeform Bio-Broly	UC	Battle	Green	BT1	20000	5(GG)	1	10000	Broly	Saiyan/Bio Warrior	Broly Saga	【Evolve】 : ＜Broly＞ (Play this card on top of the specified card) | [Double Strike] (This card inflicts 2 damage instead of 1 when attacking) | [Auto} When a card evolves into this card, your opponent chooses two cards from their hand, and places them in the Drop Area.
+BT1-075	Rampaging Super Saiyan Broly	C	Battle	Green	BT1	30000	6(GG)	1	10000	Broly	Saiyan	Broly Saga	[Triple Strike] (This card inflicts 3 damage instead of 1 when attacking)
+BT1-076	Broly, Dawn of the Rampage	C	Battle	Green	BT1	5000	1(G)	0	5000	Broly	Saiyan	Broly Saga	[Auto] When you play this card, look at up to 7 cards from the top of your deck and add 1 green ＜Broly＞ among them to your hand. Then, shuffle your deck.
+BT1-076_JP05	Broly, Dawn of the Rampage	PR	Battle	Green	BT1	5000	1(G)	0	5000	Broly	Saiyan	Broly Saga	[Auto] When you play this card, look at up to 7 cards from the top of your deck and add 1 green ＜Broly＞ among them to your hand. Then, shuffle your deck.
+BT1-077	Paragus, Controller of Monsters	C	Battle	Green	BT1	10000	2(G)	0	5000	Paragus	Saiyan	Broly Saga	[Auto] When you play this card, you may place 1 card from your hand in the Drop Area. If you do so, choose and activate 1 {Broly's Ring} from your deck. Then, shuffle your deck.
+BT1-078	Overflowing Bio Warrior Army	C	Battle	Green	BT1	15000	2(GG)	0	5000	Bio Warrior	Bio Warrior	Broly Saga	[Auto] When this card is placed in the Drop Area from the Battle Area, if your Leader Card is ＜Broly＞, you may place 1 card from your hand in the Drop Area. If you do, play this card.
+BT1-079	King Vegeta's Surprise Attack	UC	Extra	Green	BT1		1(G)						[Activate Battle] Choose up to 1 of your Battle Cards. It gains +10000 power and [Revenge] (When this card is attacked, KO the attacking card after the battle) for the duration of the turn.
+BT1-079_PR	King Vegeta's Surprise Attack	PR	Extra	Green	BT1		1(G)						[Activate Battle] Choose up to 1 of your Battle Cards. It gains +10000 power and [Revenge] (When this card is attacked, KO the attacking card after the battle) for the duration of the turn.
+BT1-080	Full Power Energy	C	Extra	Green	BT1		1(G)						[Counter Attack] Negate the attack. Then, choose up to 1 opponent Battle Card with an energy cost of 1 or less and KO that card.
+BT1-080_JP04	Full Power Energy	PR	Extra	Green	BT1		1(G)						[Counter Attack] Negate the attack. Then, choose up to 1 opponent Battle Card with an energy cost of 1 or less and KO that card.
+BT1-081	Broly's Ring	C	Extra	Green	BT1		1(G)						[Field] (Place and activate this card in the Battle Area. It remains in the Battle Area until you activate another [Field]. When you do, place this card in the Drop Area)[Permanent] Your hand is not affected by your Leader Card Broly's skill.
+BT1-082	Family Kamehameha	C	Extra	Green	BT1		1(G)						[Activate Main] Choose up to 1 opponent Battle Card with an energy cost of 2 or less and KO that card.
+BT1-083	Frieza / Ultimate Form Golden Frieza	R	Leader	Yellow	BT1	10000 // 15000				Frieza // Frieza	Frieza Clan/Frieza's Army // Frieza Clan/Frieza's Army	Resurrection ‘F’ Saga // Resurrection ‘F’ Saga	[Activate Main] [Once per turn] Place 1 of your ≪Frieza's Army≫ Battle Cards in the Drop Area : Choose up to 1 of your energy and switch it to Active Mode. Then, draw 1 card. | [Awaken] When your life is at 4 or less : You may draw 2 cards and flip this card over. // [Activate Main] [Once per turn] Place 1 of your ≪Frieza's Army≫ Battle Cards in the Drop Area : Choose up to 2 of your energy and switch them to Active Mode. Then, draw 1 card. | [Auto] When this card attacks, draw 1 card.
+BT1-083_JP11	Frieza / Ultimate Form Golden Frieza	PR	Leader	Yellow	BT1	10000 // 15000				Frieza // Frieza	Frieza Clan/Frieza's Army // Frieza Clan/Frieza's Army	Resurrection ‘F’ Saga // Resurrection ‘F’ Saga	[Activate Main] [Once per turn] Place 1 of your ≪Frieza's Army≫ Battle Cards in the Drop Area : Choose up to 1 of your energy and switch it to Active Mode. Then, draw 1 card. | [Awaken] When your life is at 4 or less : You may draw 2 cards and flip this card over. // [Activate Main] [Once per turn] Place 1 of your ≪Frieza's Army≫ Battle Cards in the Drop Area : Choose up to 2 of your energy and switch them to Active Mode. Then, draw 1 card. | [Auto] When this card attacks, draw 1 card.
+BT1-084	Frieza / Frieza, The Galactic Emperor	UC	Leader	Yellow	BT1	10000 // 15000				Frieza // Frieza	Frieza Clan/Frieza's Army // Frieza Clan/Frieza's Army	Frieza Saga // Frieza Saga	[Auto] At the end of your turn, choose up to 1 of your Battle Cards and switch it to Active Mode. | [Awaken] When your life is at 4 or less : You may draw 2 cards and flip this card over. // [Auto] At the end of your turn, choose up to 2 of your Battle Cards and switch them to Active Mode. | [Auto] When this card attacks, draw 1 card.
+BT1-085	Ginyu / Ginyu, The Malicious Transformation	UC	Leader	Yellow	BT1	10000 // 15000				Ginyu // Ginyu	Ginyu Force/Frieza's Army // Ginyu Force/Frieza's Army	Frieza Saga // Frieza Saga	[Activate Main] [Once per turn] Flip over 1 face-down card in your life : If the flipped card is ≪Ginyu Force≫ but not ＜Ginyu＞, play that card. If not, add it to your hand. | [Awaken] When your life is at 4 or less : You may draw 2 cards and flip this card over. // [Activate Main] [Once per turn] Add 1 card from your life to your hand : This card gains [Double Strike] for the duration of the turn. If there are 2 or more of your ≪Ginyu Force≫ in play, this card gains an additional +5000 power for the duration of the turn. | [Auto] When this card attacks, draw 1 card.
+BT1-086	Golden Frieza, Resurrected Terror	SR	Battle	Yellow	BT1	30000	7(YYY)	1	10000	Frieza	Frieza Clan/Frieza's Army	Resurrection ‘F’ Saga	[Evolve] : ＜Frieza＞ | [Triple Strike] (This card inflicts 3 damage instead of 1 when attacking) | [Auto] When a card evolves into this card, place all Rest Mode Battle Cards except for this card in the Drop Area. Then, choose all Active Mode Battle Cards except for this card and switch them to Rest Mode.
+BT1-086_SPR	Golden Frieza, Resurrected Terror	SPR	Battle	Yellow	BT1	30000	7(YYY)	1	10000	Frieza	Frieza Clan/Frieza's Army	Resurrection ‘F’ Saga	[Evolve] : ＜Frieza＞ | [Triple Strike] (This card inflicts 3 damage instead of 1 when attacking) | [Auto] When a card evolves into this card, place all Rest Mode Battle Cards except for this card in the Drop Area. Then, choose all Active Mode Battle Cards except for this card and switch them to Rest Mode.
+BT1-087	Full-Power Frieza	R	Battle	Yellow	BT1	25000	6(YY)	1	10000	Frieza	Frieza Clan/Frieza's Army	Frieza Saga	[Blocker] | [Triple Strike] (This card inflicts 3 damage instead of 1 when attacking) | [Auto] When you activate this card's [Blocker], switch this card to Active Mode after the battle.
+BT1-088	Frieza, Hellish Terror	C	Battle	Yellow	BT1	15000	4(YY)	1	10000	Frieza	Frieza Clan/Frieza's Army	Frieza Saga	[Evolve] : ＜Frieza＞ (Play this card on top of the specified card) | [Double Strike] (This card inflicts 2 damage instead of 1 when attacking) | [Auto] When a card evolves into this card, choose all of your opponent's cards with [Blocker] and switch them to Rest Mode.
+BT1-089	Avenging Frieza	C	Battle	Yellow	BT1	5000	1(Y)	0	5000	Frieza	Frieza Clan/Frieza's Army	Frieza Saga	[Auto] When you play this card, look at up to 3 cards from the top of your deck. Choose up to 1 《Frieza's Army》 among them with an energy cost of 2 or less and add it to your hand. Then, shuffle your deck.
+BT1-090	Mecha-Frieza, The Returning Terror	UC	Battle	Yellow	BT1	15000	4(YY)	1	10000	Frieza	Frieza Clan/Frieza's Army	Android Cell Saga	[Dual Attack] (Once per turn, when this card attacks, switch this card to Active Mode after the battle) | [Auto] When you play this card, you may place 1 card from your hand in the Drop Area. If you do so, choose up to 2 opponent Rest Mode Battle Cards and KO those cards. Then, this card gains [Double Strike] for the duration of the turn.
+BT1-091	King Cold, Father of the Emperor	R	Battle	Yellow	BT1	15000	4(YYY)	1	10000	King Cold	Frieza Clan	Android Cell Saga	[Double Strike] | [Revenge] (When this card is attacked, KO the attacking card after the battle) | [Counter Battle Card Attack] Play this card from your hand and change the target of the attack to this card. | [Auto] When you play this card, choose up to 1 opponent Battle Card and switch it to Rest Mode.
+BT1-092	Sorbet, The Loyal Commander	UC	Battle	Yellow	BT1	1000	1(Y)	0	5000	Sorbet	Frieza's Army	Resurrection ‘F’ Saga	[Blocker] ] (When one of your other cards is attacked, you may switch this card to Rest Mode and change the target of the attack to this card) | [Activate Battle] [Once per turn] Place 1 card from your hand in the Drop Area : Look at up to 2 cards from the top of your deck. Choose up to 2 ≪Frieza's Army≫ among them and place them in your Combo Area. Place any other cards in the Drop Area.
+BT1-093	Tagoma, The Loyal Warrior	UC	Battle	Yellow	BT1	15000	3(YY)	0	5000	Tagoma	Frieza's Army	Resurrection ‘F’ Saga	[Permanent] If this card is in Rest Mode, your opponent cannot attack your other Battle Cards.
+BT1-094	Shisami, The Loyal Warrior	UC	Battle	Yellow	BT1	15000	4(YY)	1	10000	Shisami	Frieza's Army	Resurrection ‘F’ Saga	[Double Strike] (This card inflicts 2 damage instead of 1 when attacking) | [Auto] When you play this card, choose up to 2 opponent Battle Cards. They cannot be switched to Active Mode during your opponent's next Charge Phase.
+BT1-095	Elite Force Captain Ginyu	SR	Battle	Yellow	BT1	25000	6(YYY)	1	10000	Ginyu	Ginyu Force/Frieza's Army	Frieza Saga	[Auto] When you play this card, choose all of your ≪Ginyu Force≫ Battle Cards. Those cards gain +10000 power and [Double Strike] for the duration of the turn.
+BT1-096	Ginyu Force Recoome	C	Battle	Yellow	BT1	10000	2(Y)	0	5000	Recoome	Ginyu Force/Frieza's Army	Frieza Saga	[Permanent] This card gains +6000 power during your opponent's turn.
+BT1-097	Ginyu Force Burter	C	Battle	Yellow	BT1	10000	2(Y)	0	5000	Burter	Ginyu Force/Frieza's Army	Frieza Saga	[Auto] At the end of your turn, switch this card to Active Mode.
+BT1-098	Ginyu Force Jeice	C	Battle	Yellow	BT1	10000	3(Y)	0	5000	Jeice	Ginyu Force/Frieza's Army	Frieza Saga	[Blocker] (When one of your other cards is attacked, you may switch this card to Rest Mode and change the target of the attack to this card) | [Auto] When you play this card from your hand, look at up to 3 cards from the top of your deck. Choose up to 1 《Ginyu Force》 other than ＜Ginyu＞ among them and play it. Then, shuffle your deck.
+BT1-099	Ginyu Force Guldo	C	Battle	Yellow	BT1	2000	1(Y)	0	5000	Guldo	Ginyu Force/Frieza's Army	Frieza Saga	[Blocker] (When one of your other cards is attacked, you may switch this card to Rest Mode and change the target of the attack to this card) | [Auto] When you play this card, if your Leader Card is 《Frieza's Army》, choose up to 1 of your opponent's Battle Cards with an energy cost of 2 or less and switch it to Rest Mode.
+BT1-100	Dodoria, The Emperor's Attendant	C	Battle	Yellow	BT1	12000	2(Y)	0	0	Dodoria	Frieza's Army	Frieza Saga	[Auto] When you Combo with this card, if your Leader Card is yellow and your life is 4 or less, draw 1 card and add +10000 to this card's Combo for the duration of the turn.
+BT1-100_PR	Dodoria, The Emperor's Attendant	PR	Battle	Yellow	BT1	12000	2(Y)	0	0	Dodoria	Frieza's Army	Frieza Saga	[Auto] When you Combo with this card, if your Leader Card is yellow and your life is 4 or less, draw 1 card and add +10000 to this card's Combo for the duration of the turn.
+BT1-101	Zarbon, The Emperor's Attendant	C	Battle	Yellow	BT1	15000	3(Y)	0	5000	Zarbon	Frieza's Army	Frieza Saga	[Auto] During your opponent's turn, when you Combo with this card, choose up to 1 of your Battle Cards and switch it to Active Mode.
+BT1-102	Appule	C	Battle	Yellow	BT1	15000	2(Y)	0	5000	Appule	Frieza's Army	Frieza Saga	-
+BT1-103	Sui	C	Battle	Yellow	BT1	15000	2(Y)	0	5000	Sui	Frieza's Army	Frieza Saga	-
+BT1-104	Banan	C	Battle	Yellow	BT1	20000	3(Y)	0	5000	Banan	Frieza's Army	Frieza Saga	-
+BT1-105	Cui	C	Battle	Yellow	BT1	12000	2(YY)	0	5000	Cui	Frieza's Army	Frieza Saga	[Blocker] (When one of your other cards is attacked, you may switch this card to Rest Mode and change the target of the attack to this card)
+BT1-106	Recoome Eraser Gun	UC	Extra	Yellow	BT1		4(YY)						[Counter Attack] If your Leader Card is yellow, negate the attack.Afterwards, the opponent's Battle Cards are unable to attack for the duration of the turn.
+BT1-107	Cold Bloodlust	C	Extra	Yellow	BT1		1(Y)						[Counter Play] If your Leader Card is ≪Frieza's Army≫, the Battle Card played has its skill negated for the duration of the turn.
+BT1-107_PR	Cold Bloodlust	PR	Extra	Yellow	BT1		1(Y)						[Counter Play] If your Leader Card is ≪Frieza's Army≫, the Battle Card played has its skill negated for the duration of the turn.
+BT1-108	Bad Ring Laser	C	Extra	Yellow	BT1		1(Y)						[Counter Counter] Place 1 yellow card from your hand in the Drop Area : Negate the [Counter].
+BT1-108_JP05	Bad Ring Laser	PR	Extra	Yellow	BT1		1(Y)						[Counter Counter] Place 1 yellow card from your hand in the Drop Area : Negate the [Counter].
+BT1-109	Frieza's Call	C	Extra	Yellow	BT1		1(Y)						[Activate Main] Choose 1 ≪Frieza's Army≫ card of energy cost 2 or less from your deck, and play it in Rest Mode. Then, shuffle your deck.
+BT1-109_EP03	Frieza's Call	PR	Extra	Yellow	BT1		1(Y)						[Activate Main] Choose 1 ≪Frieza's Army≫ card of energy cost 2 or less from your deck, and play it in Rest Mode. Then, shuffle your deck.
+BT1-110	Crusher Ball	C	Extra	Yellow	BT1		1(Y)						[Counter Play] The Battle Card played is played in Rest Mode.
+BT1-110_JP04	Crusher Ball	PR	Extra	Yellow	BT1		1(Y)						[Counter Play] The Battle Card played is played in Rest Mode.
+BT1-110_PR03	Crusher Ball	PR	Extra	Yellow	BT1		1(Y)						[Counter Play] The Battle Card played is played in Rest Mode.`;
