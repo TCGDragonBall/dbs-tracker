@@ -3352,14 +3352,17 @@ const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata'
   'P-651': { status: 'Limited', date: '3 de julio de 2026' },
 
   // Fusion World Restrictions
-  'FS01-03': { status: 'Limited' },
-  'FB01-015': { status: 'Limited' },
-  'FB01-039': { status: 'Limited' },
-  'FB02-119': { status: 'Limited' },
-  'FS02-14': { status: 'Limited' },
   'FB02-013': { status: 'Banned (BO1)' }, // Kefla SR commonly cited in BO1 digital issues
   'FB02-105': { status: 'Banned (BO1)' }, // Just in case another was hit in BO1
   'FB01-139': { status: 'Banned (BO1)' },
+  'FB01-056': { status: 'Banned' }, // Pilaf
+  'FB01-005': { status: 'Banned' }, // Master Roshi
+  'FB02-031': { status: 'Banned' }, // Ribrianne
+  'FB04-085': { status: 'Limited' }, // Babidi
+  'FB04-094': { status: 'Limited' }, // Majin Buu : Kid
+  'FB04-095': { status: 'Limited' }, // Majin Buu : Kid
+  'SB01-011': { status: 'Limited' }, // Cell
+  'SB01-015': { status: 'Limited' }, // Self-Destruct
   
   // Masters Restrictions
   'BT1-005': { status: 'Banned', date: '31 de marzo de 2023' },
