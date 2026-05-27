@@ -11377,26 +11377,24 @@ export default function TrackerApp() {
               </div>
               
               <div className="space-y-6">
-                {(activeTab !== 'search' || searchQuery.length > 0 || filters.rarities.length > 0 || filters.colors.length > 0 || filters.expansion !== 'Todos' || filters.types.length > 0 || filters.legalStatus.length > 0 || filters.owned !== 'all') && (
-                  <div className="space-y-3">
-                    <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">{t.ownedFilter}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {[
-                        { id: 'all', label: t.allCards },
-                        { id: 'owned', label: t.onlyOwned },
-                        { id: 'not-owned', label: t.onlyNotOwned }
-                      ].map(opt => (
-                        <button 
-                          key={opt.id}
-                          onClick={() => setFilters({...filters, owned: opt.id as any})}
-                          className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all ${filters.owned === opt.id ? 'bg-orange-500 text-white border-orange-500' : 'bg-white/5 text-gray-400 border-white/5'}`}
-                        >
-                          {opt.label}
-                        </button>
-                      ))}
-                    </div>
+                <div className="space-y-3">
+                  <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">{t.ownedFilter}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      { id: 'all', label: t.allCards },
+                      { id: 'owned', label: t.onlyOwned },
+                      { id: 'not-owned', label: t.onlyNotOwned }
+                    ].map(opt => (
+                      <button 
+                        key={opt.id}
+                        onClick={() => setFilters({...filters, owned: opt.id as any})}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all ${filters.owned === opt.id ? 'bg-orange-500 text-white border-orange-500' : 'bg-white/5 text-gray-400 border-white/5'}`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
                   </div>
-                )}
+                </div>
 
                 {availableOptions.colors.length > 0 && (
                   <div className="space-y-3">
