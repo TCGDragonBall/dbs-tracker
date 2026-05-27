@@ -5932,7 +5932,8 @@ const Dashboard = ({
   selectedCardIds,
   handleLongPress,
   toggleCardSelection,
-  isInventoryLoading
+  isInventoryLoading,
+  gameType
 }: { 
   cards: Card[], 
   inventory: InventoryItem[], 
@@ -5944,7 +5945,8 @@ const Dashboard = ({
   selectedCardIds: Set<string>,
   handleLongPress: (id: string) => void,
   toggleCardSelection: (id: string) => void,
-  isInventoryLoading: boolean
+  isInventoryLoading: boolean,
+  gameType: 'masters' | 'fusion'
 }) => {
   const t = translations[lang];
   
@@ -5978,27 +5980,103 @@ const Dashboard = ({
   return (
     <div className="space-y-6 pb-20">
       {/* Sponsor Banner */}
-      <motion.a
-        href="https://montalfan.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        className="block bg-gradient-to-r from-orange-500/20 to-blue-500/20 rounded-2xl p-6 border border-white/10 relative overflow-hidden group shadow-xl"
-      >
-        <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-orange-500/20 transition-all" />
-        <div className="relative z-10 flex flex-col items-center text-center">
-          <p className="text-[10px] font-black text-orange-500 uppercase tracking-widest mb-1 italic">{t.sponsorLabel}</p>
-          <img 
-            src="/assets/montalfan.png" 
-            alt="Montalfan Sponsor"
-            className="h-10 object-contain mb-3 group-hover:scale-110 transition-transform duration-500"
+      {gameType === 'masters' ? (
+        <motion.a
+          href="https://montalfan.com/producto/dragon-ball-super-card-game-ultra-bout-series-04-impact-beyond-dimensions-dbs-b31/"
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
+          className="block bg-gradient-to-r from-orange-600/25 via-[#1E1102]/90 to-[#0B1E36]/90 rounded-2xl p-6 border border-white/10 relative overflow-hidden group shadow-2xl min-h-[140px] flex items-center"
+        >
+          {/* Full background image spanning 100% of the banner */}
+          <div 
+            className="absolute inset-0 opacity-20 bg-cover bg-no-repeat bg-center mix-blend-lighten pointer-events-none transition-opacity duration-700 group-hover:opacity-30 animate-fade-in"
+            style={{ backgroundImage: "url('https://montalfan.com/wp-content/uploads/2026/04/BT31R.png')" }}
           />
-          <span className="text-white font-black text-lg tracking-tight uppercase group-hover:text-orange-400 transition-colors">{t.visitSponsor}</span>
-        </div>
-      </motion.a>
+          
+          {/* Ambient Glows */}
+          <div className="absolute top-0 right-0 w-48 h-48 bg-orange-500/10 rounded-full -mr-12 -mt-12 blur-3xl group-hover:bg-orange-500/25 transition-all duration-700" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/10 rounded-full -ml-12 -mb-12 blur-3xl group-hover:bg-blue-500/25 transition-all duration-700" />
+
+          <div className="relative z-10 w-full flex items-center justify-between gap-4">
+            {/* Left Column: Sponsor & Reservation info - now wider since the box has been removed */}
+            <div className="flex flex-col items-start text-left w-full">
+              <div className="flex items-center gap-2 mb-2">
+                <p className="text-[9px] font-black tracking-widest text-orange-500 uppercase italic">
+                  {lang === 'es' ? 'PATROCINADOR OFICIAL' : 'OFFICIAL SPONSOR'}
+                </p>
+                <div className="h-1.5 w-1.5 bg-orange-500 rounded-full animate-ping" />
+              </div>
+              
+              <img 
+                src="/assets/montalfan.png" 
+                alt="Montalfan Sponsor"
+                className="h-8 object-contain mb-3 group-hover:scale-105 transition-transform duration-500"
+              />
+              
+              <h3 className="text-white font-extrabold text-[#FFF] text-md sm:text-lg md:text-xl tracking-tight leading-tight uppercase mb-1.5 group-hover:text-orange-400 transition-colors">
+                ¡Reserva BT31 Impact Beyond Dimensions!
+              </h3>
+              
+              <p className="text-orange-400 font-extrabold text-[10px] sm:text-[11px] tracking-wider uppercase flex flex-wrap items-center gap-x-2 gap-y-1">
+                <span className="bg-orange-500/20 text-orange-400 border border-orange-500/30 px-1.5 py-0.5 rounded text-[8px] font-bold">CÓDIGO ANULIX</span>
+                <span>para un descuento</span>
+              </p>
+            </div>
+          </div>
+        </motion.a>
+      ) : (
+        <motion.a
+          href="https://montalfan.com/producto/dragon-ball-super-card-game-fusion-world-fb-10-cross-force-booster-box-reserva/"
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
+          className="block bg-gradient-to-r from-red-600/25 via-[#1C0511]/90 to-[#0A1024]/90 rounded-2xl p-6 border border-white/10 relative overflow-hidden group shadow-2xl min-h-[140px] flex items-center"
+        >
+          {/* Full background image spanning 100% of the banner */}
+          <div 
+            className="absolute inset-0 opacity-20 bg-cover bg-no-repeat bg-center mix-blend-lighten pointer-events-none transition-opacity duration-700 group-hover:opacity-30 animate-fade-in"
+            style={{ backgroundImage: "url('https://montalfan.com/wp-content/uploads/2026/04/FB10RR.png')" }}
+          />
+          
+          {/* Ambient Glows */}
+          <div className="absolute top-0 right-0 w-48 h-48 bg-red-500/10 rounded-full -mr-12 -mt-12 blur-3xl group-hover:bg-red-500/25 transition-all duration-700" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 rounded-full -ml-12 -mb-12 blur-3xl group-hover:bg-purple-500/25 transition-all duration-700" />
+
+          <div className="relative z-10 w-full flex items-center justify-between gap-4">
+            {/* Left Column: Sponsor & Reservation info */}
+            <div className="flex flex-col items-start text-left w-full">
+              <div className="flex items-center gap-2 mb-2">
+                <p className="text-[9px] font-black tracking-widest text-red-400 uppercase italic">
+                  {lang === 'es' ? 'PATROCINADOR OFICIAL' : 'OFFICIAL SPONSOR'}
+                </p>
+                <div className="h-1.5 w-1.5 bg-red-500 rounded-full animate-ping" />
+              </div>
+              
+              <img 
+                src="/assets/montalfan.png" 
+                alt="Montalfan Sponsor"
+                className="h-8 object-contain mb-3 group-hover:scale-105 transition-transform duration-500"
+              />
+              
+              <h3 className="text-white font-extrabold text-[#FFF] text-md sm:text-lg md:text-xl tracking-tight leading-tight uppercase mb-1.5 group-hover:text-red-400 transition-colors">
+                ¡Reserva FB10 Cross Force!
+              </h3>
+              
+              <p className="text-red-400 font-extrabold text-[10px] sm:text-[11px] tracking-wider uppercase flex flex-wrap items-center gap-x-2 gap-y-1">
+                <span className="bg-red-500/20 text-red-400 border border-red-500/30 px-1.5 py-0.5 rounded text-[8px] font-bold">CÓDIGO ANULIX</span>
+                <span>para un descuento</span>
+              </p>
+            </div>
+          </div>
+        </motion.a>
+      )}
 
       {/* Main Progress Ring OR Empty State */}
       {isInventoryLoading ? (
@@ -9721,6 +9799,7 @@ export default function TrackerApp() {
               handleLongPress={handleLongPress}
               toggleCardSelection={toggleCardSelection}
               isInventoryLoading={isInventoryLoading}
+              gameType={gameType}
             />
           </div>
         )}
