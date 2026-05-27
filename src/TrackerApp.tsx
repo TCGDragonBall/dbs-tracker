@@ -4705,8 +4705,8 @@ const renderSkillText = (text: string) => {
       );
     }
     
-    // Split by curly brace segments (e.g. {R}) or by uppercase color-cost boundaries (e.g. RRR, BB, G, Y, K)
-    const textParts = part.split(/((?:\{[a-zA-Z0-9]+\})+\s*\d*|\b[RBYGK]+\b)/g);
+    // Split by curly brace segments (e.g. {R}) or by uppercase color-cost boundaries (e.g. RRR, BB, G, Y, K, W) or word boundary/Japanese costs
+    const textParts = part.split(/((?:\{[a-zA-Z0-9]+\})+\s*\d*|\b[RBYGKW]+\b|[白赤青緑黄黒紫])/g);
     
     return (
       <span key={index} className="align-middle inline-block">
@@ -4755,16 +4755,17 @@ const renderSkillText = (text: string) => {
                   </span>
                 );
               }
-            } else if (/^[RBYGK]+$/.test(tPart)) {
+            } else if (/^[RBYGKW]+$/.test(tPart) || /^[白赤青緑黄黒紫]$/.test(tPart)) {
               return (
                 <span key={j} className="inline-flex items-center align-middle mx-1" style={{ transform: 'translateY(-1px)' }}>
                   {tPart.split('').map((colorChar, k) => {
                     let dotBg = "bg-gray-400";
-                    if (colorChar === 'R') dotBg = "bg-[#E62020] border border-[#FF6B6B]";
-                    else if (colorChar === 'B') dotBg = "bg-[#0A5BC4] border border-[#4D94FF]";
-                    else if (colorChar === 'G') dotBg = "bg-[#1C8A33] border border-[#40CC5E]";
-                    else if (colorChar === 'Y') dotBg = "bg-[#D9A100] border border-[#FFCF3D]";
-                    else if (colorChar === 'K') dotBg = "bg-zinc-800 border border-zinc-500/50";
+                    if (colorChar === 'R' || colorChar === '赤') dotBg = "bg-[#E62020] border border-[#FF6B6B]";
+                    else if (colorChar === 'B' || colorChar === '青') dotBg = "bg-[#0A5BC4] border border-[#4D94FF]";
+                    else if (colorChar === 'G' || colorChar === '緑') dotBg = "bg-[#1C8A33] border border-[#40CC5E]";
+                    else if (colorChar === 'Y' || colorChar === '黄') dotBg = "bg-[#D9A100] border border-[#FFCF3D]";
+                    else if (colorChar === 'K' || colorChar === '黒') dotBg = "bg-zinc-800 border border-zinc-500/50";
+                    else if (colorChar === 'W' || colorChar === '白') dotBg = "bg-white border border-gray-300";
                     
                     return (
                       <span key={k} className={`inline-flex items-center justify-center w-3.5 h-3.5 rounded-full ${dotBg} shadow-[0_1px_2px_rgba(0,0,0,0.4)] mr-0.5 select-none`} title={colorChar} />
@@ -5325,7 +5326,8 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
         // 100% Set Completion
         fusionList.push({
           id: `fw_set_completion_${set.id}`,
-          category: 'Sets',
+          category: group.category,
+          subCategory: set.label,
           icon: 'Package',
           title: { es: `Completar al 100%: ${set.id}`, en: `100% Completion: ${set.id}` },
           description: { es: `Colecciona todas las cartas de la expansión ${set.label}.`, en: `Collect all cards from the ${set.label} expansion.` },
@@ -5345,7 +5347,8 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
           if (rarityCards.length > 0) {
             fusionList.push({
               id: `fw_rarity_${set.id}_${rarity}`,
-              category: set.label,
+              category: group.category,
+              subCategory: set.label,
               icon: 'Award',
               title: { 
                 es: `Colección ${rarityNames[rarity]?.es || rarity}: ${set.id}`, 
@@ -7154,21 +7157,23 @@ const AchievementsView = ({
   userAchievements,
   lang, 
   onBack,
-  groups
+  groups,
+  gameType = 'masters'
 }: { 
   cards: Card[],
   inventory: InventoryItem[],
   userAchievements: UserAchievement[],
   lang: 'es' | 'en',
   onBack: () => void,
-  groups: ExpansionGroup[]
+  groups: ExpansionGroup[],
+  gameType?: 'masters' | 'fusion'
 }) => {
   const t = translations[lang];
   const [selectedAchievement, setSelectedAchievement] = useState<AchievementDef | null>(null);
   const [expandedCategories, setExpandedCategories] = useState<string[]>(['General', 'Booster Box']);
   const [expandedSets, setExpandedSets] = useState<string[]>([]);
 
-  const achievementsList = useMemo(() => getAchievementsList(cards, groups), [cards, groups]);
+  const achievementsList = useMemo(() => getAchievementsList(cards, groups, gameType), [cards, groups, gameType]);
 
   const validUserAchievements = useMemo(() => {
     return userAchievements.filter(ua => achievementsList.some(def => def.id === ua.achievementId));
@@ -7179,7 +7184,7 @@ const AchievementsView = ({
 
   // Group achievements by category AND subCategory
   const groupedAchievements = useMemo(() => {
-    const categoriesOrder = ['General', 'Booster Box', 'Themed Booster', 'Evolution Booster', 'Draft Box', 'Starter Deck', 'Expert Deck', 'Expansion Set', 'Promos'];
+    const categoriesOrder = ['General', 'Booster Box', 'Themed Booster', 'Evolution Booster', 'Draft Box', 'Starter Deck', 'Expert Deck', 'Expansion Set', 'Promos', 'Store Events', 'Championship', 'Coleccionismo'];
     const results: { name: string; subs: { name?: string; achievements: AchievementDef[] }[] }[] = [];
     
     categoriesOrder.forEach(catName => {
@@ -7933,6 +7938,10 @@ export default function TrackerApp() {
   const [profileView, setProfileView] = useState<'main' | 'achievements'>('main');
 
   const achievementsList = useMemo(() => getAchievementsList(cards, currentGroups, gameType), [cards, currentGroups, gameType]);
+
+  const currentGameUserAchievements = useMemo(() => {
+    return userAchievements.filter(ua => achievementsList.some(def => def.id === ua.achievementId));
+  }, [userAchievements, achievementsList]);
 
   useEffect(() => {
     safeStorage.setItem('collectionGoal', collectionGoal);
@@ -10504,7 +10513,7 @@ export default function TrackerApp() {
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-black text-orange-500 bg-orange-500/10 px-2 py-1 rounded-lg">
-                        {userAchievements.length}/{achievementsList.length}
+                        {currentGameUserAchievements.length}/{achievementsList.length}
                       </span>
                       <ChevronRight size={20} className="text-gray-600" />
                     </div>
@@ -10660,6 +10669,7 @@ export default function TrackerApp() {
                 userAchievements={userAchievements}
                 lang={lang}
                 groups={currentGroups}
+                gameType={gameType}
                 onBack={() => setProfileView('main')}
               />
             )}
