@@ -18,6 +18,7 @@ import {
   Minus,
   Save,
   CheckCircle2,
+  Trash2,
   LogOut, 
   ChevronRight,
   ChevronLeft,
@@ -7713,7 +7714,7 @@ export default function TrackerApp() {
     setSelectedCardIds(newSelected);
   };
 
-  const handleBulkUpdate = async () => {
+  const handleBulkUpdate = async (action?: 'add' | 'delete') => {
     if (selectedCardIds.size === 0 || !user || isQuotaExceeded) return;
     
     setIsSyncing(true);
@@ -7724,17 +7725,21 @@ export default function TrackerApp() {
       
       let newInventory = [...inventory];
 
-      // Logic check for collector mode toggle
-      const isCollectorToggleOff = collectionGoal === 'collector' && updatedCardIds.every(id => {
-        const item = inventory.find(i => i.cardId === id);
-        return item && item.quantity >= 1;
-      });
+      // Determine if this is a deletion
+      const isDeletion = action === 'delete' || (
+        action === undefined &&
+        collectionGoal === 'collector' && 
+        updatedCardIds.every(id => {
+          const item = inventory.find(i => i.cardId === id);
+          return item && item.quantity >= 1;
+        })
+      );
       
       for (const cardId of updatedCardIds) {
         const existingItem = inventory.find(i => i.cardId === cardId);
         
-        if (isCollectorToggleOff) {
-          // If all selected are already owned, unselect (delete) them all
+        if (isDeletion) {
+          // Unselect (delete) the selected cards
           if (existingItem) {
             const docRef = doc(db, 'inventory', existingItem.id);
             batch.delete(docRef);
@@ -11859,39 +11864,41 @@ export default function TrackerApp() {
                 </button>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3 w-full">
                 {collectionGoal === 'player' && (
                   <div className="flex items-center bg-white/5 border border-white/10 rounded-2xl p-1 shrink-0 overflow-hidden">
                     <button 
                       onClick={() => setBulkQuantity(Math.max(1, bulkQuantity - 1))}
-                      className="w-10 h-10 flex items-center justify-center text-white hover:bg-white/5 transition-colors"
+                      className="w-8 h-8 flex items-center justify-center text-white hover:bg-white/5 transition-colors"
                     >
-                      <Minus size={16} />
+                      <Minus size={14} />
                     </button>
-                    <div className="w-12 text-center">
-                      <span className="text-orange-500 font-black text-lg">{bulkQuantity}</span>
+                    <div className="w-8 text-center">
+                      <span className="text-orange-500 font-black text-sm">{bulkQuantity}</span>
                     </div>
                     <button 
                       onClick={() => setBulkQuantity(Math.min(4, bulkQuantity + 1))}
-                      className="w-10 h-10 flex items-center justify-center text-white hover:bg-white/5 transition-colors"
+                      className="w-8 h-8 flex items-center justify-center text-white hover:bg-white/5 transition-colors"
                     >
-                      <Plus size={16} />
+                      <Plus size={14} />
                     </button>
                   </div>
                 )}
                 
                 <button 
-                  onClick={handleBulkUpdate}
-                  className="flex-1 bg-orange-500 text-white font-black py-4 rounded-2xl shadow-lg db-glow-orange flex items-center justify-center gap-2"
+                  onClick={() => handleBulkUpdate('add')}
+                  className="flex-1 bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white font-black py-4 rounded-2xl shadow-lg db-glow-orange flex items-center justify-center gap-2 transition-all duration-300 text-xs sm:text-xs md:text-sm uppercase tracking-wider"
                 >
-                  <Save size={18} />
-                  {collectionGoal === 'collector' && Array.from(selectedCardIds).every(id => {
-                    const item = inventory.find(i => i.cardId === id);
-                    return item && item.quantity >= 1;
-                  }) 
-                    ? (lang === 'es' ? 'DESMARCAR CARTAS' : 'UNMARK CARDS')
-                    : (lang === 'es' ? 'ACTUALIZAR INVENTARIO' : 'UPDATE INVENTORY')
-                  }
+                  <Plus size={16} />
+                  <span>{collectionGoal === 'player' ? (lang === 'es' ? 'ACTUALIZAR' : 'UPDATE') : (lang === 'es' ? 'MARCAR' : 'MARK')}</span>
+                </button>
+
+                <button 
+                  onClick={() => handleBulkUpdate('delete')}
+                  className="flex-1 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white font-black py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 transition-all duration-300 text-xs sm:text-xs md:text-sm uppercase tracking-wider"
+                >
+                  <Trash2 size={16} />
+                  <span>{lang === 'es' ? 'DESMARCAR' : 'UNMARK'}</span>
                 </button>
               </div>
             </div>
