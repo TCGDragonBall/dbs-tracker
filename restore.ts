@@ -1,3 +1,3 @@
 import { execSync } from 'child_process';
-execSync('git checkout .');
-console.log('Restored git');
+execSync('git -C /app checkout applet/src/TrackerApp.tsx');
+console.log('Restored');

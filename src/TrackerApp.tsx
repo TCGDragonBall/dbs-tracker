@@ -56,9 +56,16 @@ import {
   Diamond,
   Store,
   Coffee,
-  AlertTriangle
+  AlertTriangle,
+  ListTodo,
+  Share2,
+  Copy,
+  Check,
+  Heart,
+  CheckSquare,
+  Square
 } from 'lucide-react';
-import { collection, query, onSnapshot, where, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, getDocFromServer, writeBatch, getCountFromServer } from 'firebase/firestore';
+import { collection, query, onSnapshot, where, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, getDocFromServer, writeBatch, getCountFromServer, getDoc } from 'firebase/firestore';
 import { MultiSelect } from './components/MultiSelect';
 import { ExcelExportModal } from './components/ExcelExportModal';
 import { db, auth, googleProvider, handleFirestoreError, OperationType, isQuotaError } from './firebase';
@@ -66,7 +73,7 @@ import { signInWithPopup, signOut, signInWithEmailAndPassword, createUserWithEma
 import { useAuth } from './AuthContext';
 import emailjs from '@emailjs/browser';
 
-const APP_VERSION = '5.0.17';
+const APP_VERSION = '5.1.0';
 
 const CATEGORY_BG: Record<string, string> = {
   'box': '/fondobox.jpg',
@@ -1188,6 +1195,7 @@ const translations = {
   es: {
     home: 'Inicio',
     collection: 'Colección',
+    wants: 'Listas Wants',
     stats: 'Estadísticas',
     profile: 'Perfil',
     welcome: '¡Bienvenido!',
@@ -1308,6 +1316,7 @@ const translations = {
   en: {
     home: 'Home',
     collection: 'Collection',
+    wants: 'Wants Lists',
     stats: 'Statistics',
     profile: 'Profile',
     welcome: 'Welcome!',
@@ -1482,6 +1491,21 @@ interface InventoryItem {
   quantity: number;
   ownerId: string;
   addedAt?: any;
+}
+
+interface WantsList {
+  id: string;
+  ownerId: string | null;
+  name: string;
+  description?: string;
+  cardIds: string[];
+  acquiredCardIds: string[];
+  cardQuantities?: Record<string, number>;
+  acquiredQuantities?: Record<string, number>;
+  isPublic?: boolean;
+  gameType?: 'masters' | 'fusion' | string;
+  createdAt?: any;
+  updatedAt?: any;
 }
 
 interface UserAchievement {
@@ -3133,6 +3157,7 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'BT16-092_EP14': 'https://tcgplayer-cdn.tcgplayer.com/product/543014_in_800x800.jpg',
   'BT16-125_EP14': 'https://tcgplayer-cdn.tcgplayer.com/product/543015_in_800x800.jpg',
   'SD14-05_EP14': 'https://tcgplayer-cdn.tcgplayer.com/product/543023_in_800x800.jpg',
+  'SD14-05_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/SD14-05_PR.png',
   // Event Pack 15
   'BT13-151_EP15': 'https://tcgplayer-cdn.tcgplayer.com/product/560644_in_800x800.jpg',
   'BT8-065_EP15': 'https://tcgplayer-cdn.tcgplayer.com/product/560634_in_800x800.jpg',
@@ -3605,6 +3630,13 @@ const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata'
 
 const CHANGELOG = [
 // Removed Excel export changes from changelog during staging
+  {
+    version: '5.1.0',
+    date: '28 de mayo de 2026',
+    changes: [
+      { es: '¡Lanzamiento del nuevo Modo Listas! Renombrado el sistema anterior de "Selecciones" a "Tus Listas" en toda la plataforma. Corregida la lógica para que los playsets respeten las reglas propias de copia (1 copia para líderes y cartas SCR/GDR en Masters; 1 copia para líderes en Fusion World), con vinculación en tiempo real de las cantidades obtenidas directamente de tu inventario para ambos modos de colección.', en: 'New List Mode Launch! Renamed the previous "selections" system to "Your Lists" across the platform. Corrected the playset logical system to respect individual copy limits (1 copy for leaders and SCR/GDR in Masters; 1 copy for leaders in Fusion World), linking obtained status directly with local inventory in real-time.' }
+    ]
+  },
   {
     version: '5.0.26',
     date: '22 de mayo de 2026',
@@ -5258,7 +5290,7 @@ const getDeduplicatedStats = (subsetCards: Card[], inventory: InventoryItem[], g
 const getTargetQuantity = (card: Card, goal: 'collector' | 'player') => {
   if (goal === 'collector') return 1;
   const isOneUnitOnly = 
-    card.type.includes('Leader') || 
+    (card.type.includes('Leader') && !card.type.toLowerCase().includes('z-leader')) || 
     card.id.includes('_SLR') || 
     card.type.includes('Marker') || 
     ['SCR', 'GDR', 'LEADER RARE'].includes(card.rarity);
@@ -5953,18 +5985,7 @@ const Dashboard = ({
   
   // Calculate completion based on goal
   const stats = useMemo(() => {
-    let totalNeeded = 0;
-    let totalOwned = 0;
-    
-    cards.forEach(c => {
-      const target = getTargetQuantity(c, collectionGoal);
-      const invItem = inventory.find(i => i.cardId === c.id);
-      const quantity = invItem ? invItem.quantity : 0;
-      const ownedValue = Math.min(quantity, target);
-
-      totalNeeded += target;
-      totalOwned += ownedValue;
-    });
+    const { total: totalNeeded, owned: totalOwned } = getDeduplicatedStats(cards, inventory, collectionGoal);
 
     return {
       totalNeeded,
@@ -6744,7 +6765,7 @@ const CardListItem = ({
           <h4 className={`font-black text-sm truncate ${isOwned ? 'text-gray-900' : 'text-gray-400'}`}>{card.name}</h4>
           {isOwned && collectionGoal === 'player' && (
             <span className={`text-[10px] font-black px-1.5 py-0.5 rounded shadow-sm ${isPlaysetComplete ? 'bg-green-500 text-white' : 'bg-orange-500 text-white'}`}>
-              {quantity > target ? `${target}+` : `${quantity}/${target}`}
+              {`${quantity}/${target}`}
             </span>
           )}
         </div>
@@ -7022,7 +7043,7 @@ const CardItem = ({
           {/* Quantity indicator */}
           {!isMultiSelectMode && isOwned && collectionGoal === 'player' && (
             <div className={`absolute bottom-1 right-1 z-30 px-1.5 py-0.5 rounded shadow-lg text-[10px] font-black ${isPlaysetComplete ? 'bg-green-500 text-white' : 'bg-orange-500 text-white'}`}>
-              {quantity > target ? `${target}+` : `${quantity}/${target}`}
+              {`${quantity}/${target}`}
             </div>
           )}
 
@@ -7069,6 +7090,11 @@ const CollectionIcon = (props: any) => <CustomIcon src="/assets/coleccion.png" {
 const StatsIcon = (props: any) => <CustomIcon src="/assets/stats.png" {...props} />;
 const ProfileIcon = (props: any) => <CustomIcon src="/assets/perfil.png" {...props} />;
 const SearchIcon = (props: any) => <CustomIcon src="/assets/buscar.png" {...props} />;
+const WantsIcon = ({ active, size = 24 }: { active?: boolean, size?: number }) => (
+  <div className="flex items-center justify-center" style={{ width: size, height: size }}>
+    <ListTodo size={size} className={`transition-all duration-300 ${active ? 'text-orange-500 scale-110' : 'text-gray-400 opacity-60'}`} />
+  </div>
+);
 
   const Navbar = ({ activeTab, handleTabChange, lang }: { 
     activeTab: string, 
@@ -7077,10 +7103,11 @@ const SearchIcon = (props: any) => <CustomIcon src="/assets/buscar.png" {...prop
   }) => {
     const t = translations[lang];
     return (
-      <nav className="fixed bottom-0 left-0 right-0 bg-[#1E1E1E]/90 backdrop-blur-xl border-t border-white/5 px-6 py-3 z-50 flex justify-between items-center max-w-md mx-auto rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.5)] sm:max-w-none sm:rounded-none">
+      <nav className="fixed bottom-0 left-0 right-0 bg-[#1E1E1E]/90 backdrop-blur-xl border-t border-white/5 px-4 py-3 z-50 flex justify-between items-center max-w-md mx-auto rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.5)] sm:max-w-none sm:rounded-none">
         {[
           { id: 'home', icon: HomeIcon, label: t.home },
           { id: 'collection', icon: CollectionIcon, label: t.collection },
+          { id: 'wants', icon: WantsIcon, label: t.wants },
           { id: 'search', icon: SearchIcon, label: t.search },
           { id: 'stats', icon: StatsIcon, label: t.stats },
         ].map((tab) => (
@@ -7677,10 +7704,947 @@ export default function TrackerApp() {
 
   const [cards, setCards] = useState<Card[]>([]);
 
+  // Wants Lists States
+  const [wantsLists, setWantsLists] = useState<WantsList[]>([]);
+  const [activeWantsListId, setActiveWantsListId] = useState<string | null>(null);
+  const [isWantsLoading, setIsWantsLoading] = useState(false);
+  const [sharedWantsList, setSharedWantsList] = useState<WantsList | null>(null);
+
+  // Subscribe/Load Wants Lists
+  useEffect(() => {
+    let unsubscribe: () => void = () => {};
+    if (user && !isQuotaExceeded) {
+      setIsWantsLoading(true);
+      console.log("[Firestore] Subscribing to custom lists...");
+      try {
+        const q = query(collection(db, 'lists'), where('ownerId', '==', user.uid));
+        unsubscribe = onSnapshot(q, (snapshot) => {
+          const lists = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as WantsList));
+          setWantsLists(lists);
+          setIsWantsLoading(false);
+        }, (error) => {
+          setIsWantsLoading(false);
+          handleFirestoreError(error, OperationType.LIST, 'lists');
+        });
+      } catch (err) {
+        setIsWantsLoading(false);
+        console.error(err);
+      }
+    } else {
+      setIsWantsLoading(true);
+      const local = safeStorage.getItem('wantsLists');
+      if (local) {
+        try {
+          setWantsLists(JSON.parse(local));
+        } catch (e) {
+          console.error('[Wants] Error parsing local wantsLists', e);
+        }
+      } else {
+        setWantsLists([]);
+      }
+      setIsWantsLoading(false);
+    }
+    return () => unsubscribe();
+  }, [user, isQuotaExceeded]);
+
+  // Deep Link Parser
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const shareListId = params.get('shareList');
+    const hideAcqParam = params.get('hideAcquired') === '1';
+    if (hideAcqParam) {
+      setWantsHideAcquired(true);
+    }
+    if (shareListId && cards.length > 0) {
+      const fetchSharedList = async () => {
+        try {
+          const docRef = doc(db, 'lists', shareListId);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const listData = { id: docSnap.id, ...docSnap.data() } as WantsList;
+            setSharedWantsList(listData);
+            setActiveTab('wants');
+            setActiveWantsListId(listData.id);
+            // Clean up the URL search param without reloading the page
+            const newUrl = window.location.pathname;
+            window.history.replaceState({}, '', newUrl);
+          } else {
+            console.warn('[Wants] Shared list not found in Firestore.');
+          }
+        } catch (e) {
+          console.error('[Wants] Error fetching shared list:', e);
+        }
+      };
+      fetchSharedList();
+    }
+  }, [cards]);
+
+  const handleAddWantsList = async (name: string, description?: string) => {
+    const currentWantsLists = wantsLists.filter(l => l.gameType === gameType || (!l.gameType && gameType === 'masters'));
+    if (currentWantsLists.length >= 10) {
+      alert(lang === 'es' ? 'Has alcanzado el límite máximo de 10 listas para este juego. Elimina alguna lista existente antes de crear una nueva.' : 'You have reached the maximum limit of 10 lists for this game. Please delete an existing list before creating a new one.');
+      return;
+    }
+    const newListId = 'list_' + Date.now();
+    const newList: Omit<WantsList, 'id'> = {
+      ownerId: user ? user.uid : null,
+      name,
+      description: description || '',
+      cardIds: [],
+      acquiredCardIds: [],
+      isPublic: true,
+      gameType,
+    };
+
+    if (user && !isQuotaExceeded) {
+      try {
+        await addDoc(collection(db, 'lists'), {
+          ...newList,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+      } catch (e: any) {
+        handleFirestoreError(e, OperationType.CREATE, 'lists');
+      }
+    } else {
+      const fullList: WantsList = { id: newListId, ...newList };
+      const updated = [...wantsLists, fullList];
+      setWantsLists(updated);
+      safeStorage.setItem('wantsLists', JSON.stringify(updated));
+    }
+  };
+
+  const handleDeleteWantsList = async (listId: string) => {
+    if (user && !isQuotaExceeded && !listId.startsWith('list_')) {
+      try {
+        await deleteDoc(doc(db, 'lists', listId));
+        if (activeWantsListId === listId) {
+          setActiveWantsListId(null);
+        }
+      } catch (e: any) {
+        handleFirestoreError(e, OperationType.DELETE, 'lists');
+      }
+    } else {
+      const updated = wantsLists.filter(l => l.id !== listId);
+      setWantsLists(updated);
+      safeStorage.setItem('wantsLists', JSON.stringify(updated));
+      if (activeWantsListId === listId) {
+        setActiveWantsListId(null);
+      }
+    }
+    if (sharedWantsList?.id === listId) {
+      setSharedWantsList(null);
+    }
+  };
+
+  const handleToggleCardInWantsList = async (listId: string, cardId: string) => {
+    const list = wantsLists.find(l => l.id === listId) || (sharedWantsList?.id === listId ? sharedWantsList : null);
+    if (!list) return;
+
+    const isExist = list.cardIds.includes(cardId);
+    let updatedCardIds = [...list.cardIds];
+    let updatedAcquiredCardIds = [...list.acquiredCardIds];
+
+    if (isExist) {
+      updatedCardIds = updatedCardIds.filter(id => id !== cardId);
+      updatedAcquiredCardIds = updatedAcquiredCardIds.filter(id => id !== cardId);
+    } else {
+      if (updatedCardIds.length >= 50) {
+        alert(lang === 'es' ? 'Límite de 50 cartas por lista alcanzado. ¡Comienza una lista nueva!' : 'Limit of 50 cards per list reached. Start a new list!');
+        return;
+      }
+      updatedCardIds.push(cardId);
+    }
+
+    if (user && !isQuotaExceeded && !listId.startsWith('list_')) {
+      try {
+        await updateDoc(doc(db, 'lists', listId), {
+          cardIds: updatedCardIds,
+          acquiredCardIds: updatedAcquiredCardIds,
+          updatedAt: serverTimestamp()
+        });
+      } catch (e: any) {
+        handleFirestoreError(e, OperationType.UPDATE, 'lists');
+      }
+    } else {
+      const updatedLists = wantsLists.map(l => {
+        if (l.id === listId) {
+          return { ...l, cardIds: updatedCardIds, acquiredCardIds: updatedAcquiredCardIds };
+        }
+        return l;
+      });
+      setWantsLists(updatedLists);
+      safeStorage.setItem('wantsLists', JSON.stringify(updatedLists));
+
+      if (sharedWantsList?.id === listId) {
+        setSharedWantsList({ ...sharedWantsList, cardIds: updatedCardIds, acquiredCardIds: updatedAcquiredCardIds });
+      }
+    }
+  };
+
+  const getCardWantedQty = (list: WantsList, cardId: string) => {
+    if (collectionGoal === 'player') {
+      if (list.cardQuantities?.[cardId] !== undefined) {
+        return list.cardQuantities[cardId];
+      }
+      const card = cards.find(c => c.id === cardId);
+      if (card) {
+        const listGameType = list.gameType || 'masters';
+        const isLeader = card.type === 'Leader' || card.type === 'Z-Leader' || card.type?.toLowerCase().includes('leader');
+        if (listGameType === 'masters') {
+          const isSCRorGDR = card.rarity === 'SCR' || card.rarity === 'GDR' || card.rarity?.toLowerCase() === 'scr' || card.rarity?.toLowerCase() === 'gdr';
+          if (isLeader || isSCRorGDR) {
+            return 1;
+          }
+        } else {
+          // Fusion World
+          if (isLeader) {
+            return 1;
+          }
+        }
+      }
+      return 4;
+    }
+    return list.cardQuantities?.[cardId] ?? 1;
+  };
+
+  const getCardAcquiredQty = (list: WantsList, cardId: string) => {
+    const isSharedFromOther = sharedWantsList?.id === list.id && list.ownerId !== null && list.ownerId !== undefined && list.ownerId !== user?.uid;
+    if (!isSharedFromOther) {
+      const inventoryQty = inventory.find(i => i.cardId === cardId)?.quantity || 0;
+      if (collectionGoal === 'player') {
+        const wantedQty = getCardWantedQty(list, cardId);
+        return Math.min(inventoryQty, wantedQty);
+      } else {
+        // collector mode
+        if (inventoryQty > 0) {
+          return 1;
+        }
+        // Fallback for custom / manual markings
+        if (list.acquiredCardIds?.includes(cardId)) {
+          return 1;
+        }
+        if (list.acquiredQuantities && list.acquiredQuantities[cardId] !== undefined) {
+          return list.acquiredQuantities[cardId] > 0 ? 1 : 0;
+        }
+        return 0;
+      }
+    }
+    if (list.acquiredQuantities && list.acquiredQuantities[cardId] !== undefined) {
+      return list.acquiredQuantities[cardId];
+    }
+    return list.acquiredCardIds.includes(cardId) ? (list.cardQuantities?.[cardId] ?? 1) : 0;
+  };
+
+  const isCardFullyAcquired = (list: WantsList, cardId: string) => {
+    return getCardAcquiredQty(list, cardId) >= getCardWantedQty(list, cardId);
+  };
+
+  const handleUpdateCardWantedQty = async (listId: string, cardId: string, wantedQty: number) => {
+    const list = wantsLists.find(l => l.id === listId) || (sharedWantsList?.id === listId ? sharedWantsList : null);
+    if (!list) return;
+
+    const clampedWanted = Math.max(1, Math.min(20, wantedQty)); // Max 20 copies per card
+    const updatedCardQuantities = { ...(list.cardQuantities || {}) };
+    updatedCardQuantities[cardId] = clampedWanted;
+
+    const updatedAcquiredQuantities = { ...(list.acquiredQuantities || {}) };
+    const currentAcquired = getCardAcquiredQty(list, cardId);
+    let nextAcquired = currentAcquired;
+    if (currentAcquired > clampedWanted) {
+      nextAcquired = clampedWanted;
+    }
+    updatedAcquiredQuantities[cardId] = nextAcquired;
+
+    let updatedAcquiredCardIds = [...list.acquiredCardIds];
+    if (nextAcquired === clampedWanted) {
+      if (!updatedAcquiredCardIds.includes(cardId)) {
+        updatedAcquiredCardIds.push(cardId);
+      }
+    } else {
+      updatedAcquiredCardIds = updatedAcquiredCardIds.filter(id => id !== cardId);
+    }
+
+    if (user && !isQuotaExceeded && !listId.startsWith('list_')) {
+      try {
+        await updateDoc(doc(db, 'lists', listId), {
+          cardQuantities: updatedCardQuantities,
+          acquiredQuantities: updatedAcquiredQuantities,
+          acquiredCardIds: updatedAcquiredCardIds,
+          updatedAt: serverTimestamp()
+        });
+      } catch (e: any) {
+        handleFirestoreError(e, OperationType.UPDATE, 'lists');
+      }
+    } else {
+      const updatedLists = wantsLists.map(l => {
+        if (l.id === listId) {
+          return { ...l, cardQuantities: updatedCardQuantities, acquiredQuantities: updatedAcquiredQuantities, acquiredCardIds: updatedAcquiredCardIds };
+        }
+        return l;
+      });
+      setWantsLists(updatedLists);
+      safeStorage.setItem('wantsLists', JSON.stringify(updatedLists));
+
+      if (sharedWantsList?.id === listId) {
+        setSharedWantsList({ ...sharedWantsList, cardQuantities: updatedCardQuantities, acquiredQuantities: updatedAcquiredQuantities, acquiredCardIds: updatedAcquiredCardIds });
+      }
+    }
+  };
+
+  const handleUpdateCardAcquiredQty = async (listId: string, cardId: string, acquiredQty: number) => {
+    const list = wantsLists.find(l => l.id === listId) || (sharedWantsList?.id === listId ? sharedWantsList : null);
+    if (!list) return;
+
+    const isSharedFromOther = sharedWantsList?.id === list.id && list.ownerId !== null && list.ownerId !== undefined && list.ownerId !== user?.uid;
+    if (!isSharedFromOther) {
+      const currentInventoryQty = inventory.find(i => i.cardId === cardId)?.quantity || 0;
+      const targetQty = Math.max(0, acquiredQty);
+      const delta = targetQty - currentInventoryQty;
+      if (delta !== 0) {
+        await handleUpdateQuantity(cardId, delta);
+      }
+      return;
+    }
+
+    const wantedQty = getCardWantedQty(list, cardId);
+    const clampedAcquired = Math.max(0, Math.min(wantedQty, acquiredQty));
+
+    const updatedAcquiredQuantities = { ...(list.acquiredQuantities || {}) };
+    updatedAcquiredQuantities[cardId] = clampedAcquired;
+
+    let updatedAcquiredCardIds = [...list.acquiredCardIds];
+    if (clampedAcquired === wantedQty) {
+      if (!updatedAcquiredCardIds.includes(cardId)) {
+        updatedAcquiredCardIds.push(cardId);
+      }
+    } else {
+      updatedAcquiredCardIds = updatedAcquiredCardIds.filter(id => id !== cardId);
+    }
+
+    if (user && !isQuotaExceeded && !listId.startsWith('list_')) {
+      try {
+        await updateDoc(doc(db, 'lists', listId), {
+          acquiredQuantities: updatedAcquiredQuantities,
+          acquiredCardIds: updatedAcquiredCardIds,
+          updatedAt: serverTimestamp()
+        });
+      } catch (e: any) {
+        handleFirestoreError(e, OperationType.UPDATE, 'lists');
+      }
+    } else {
+      const updatedLists = wantsLists.map(l => {
+        if (l.id === listId) {
+          return { ...l, acquiredQuantities: updatedAcquiredQuantities, acquiredCardIds: updatedAcquiredCardIds };
+        }
+        return l;
+      });
+      setWantsLists(updatedLists);
+      safeStorage.setItem('wantsLists', JSON.stringify(updatedLists));
+
+      if (sharedWantsList?.id === listId) {
+        setSharedWantsList({ ...sharedWantsList, acquiredQuantities: updatedAcquiredQuantities, acquiredCardIds: updatedAcquiredCardIds });
+      }
+    }
+  };
+
+  const handleToggleCardAcquiredInWantsList = async (listId: string, cardId: string) => {
+    const list = wantsLists.find(l => l.id === listId) || (sharedWantsList?.id === listId ? sharedWantsList : null);
+    if (!list) return;
+
+    const isSharedFromOther = sharedWantsList?.id === list.id && list.ownerId !== null && list.ownerId !== undefined && list.ownerId !== user?.uid;
+    if (!isSharedFromOther) {
+      const wantedQty = getCardWantedQty(list, cardId);
+      const currentAcquired = getCardAcquiredQty(list, cardId);
+      const targetQty = currentAcquired < wantedQty ? wantedQty : 0;
+      const currentInventoryQty = inventory.find(i => i.cardId === cardId)?.quantity || 0;
+      const delta = targetQty - currentInventoryQty;
+      if (delta !== 0) {
+        await handleUpdateQuantity(cardId, delta);
+      }
+      return;
+    }
+
+    const wantedQty = getCardWantedQty(list, cardId);
+    const currentAcquired = getCardAcquiredQty(list, cardId);
+    const nextAcquired = currentAcquired < wantedQty ? wantedQty : 0;
+
+    const updatedAcquiredQuantities = { ...(list.acquiredQuantities || {}) };
+    updatedAcquiredQuantities[cardId] = nextAcquired;
+
+    let updatedAcquiredCardIds = [...list.acquiredCardIds];
+    if (nextAcquired === wantedQty) {
+      if (!updatedAcquiredCardIds.includes(cardId)) {
+        updatedAcquiredCardIds.push(cardId);
+      }
+    } else {
+      updatedAcquiredCardIds = updatedAcquiredCardIds.filter(id => id !== cardId);
+    }
+
+    if (user && !isQuotaExceeded && !listId.startsWith('list_')) {
+      try {
+        await updateDoc(doc(db, 'lists', listId), {
+          acquiredQuantities: updatedAcquiredQuantities,
+          acquiredCardIds: updatedAcquiredCardIds,
+          updatedAt: serverTimestamp()
+        });
+      } catch (e: any) {
+        handleFirestoreError(e, OperationType.UPDATE, 'lists');
+      }
+    } else {
+      const updatedLists = wantsLists.map(l => {
+        if (l.id === listId) {
+          return { ...l, acquiredQuantities: updatedAcquiredQuantities, acquiredCardIds: updatedAcquiredCardIds };
+        }
+        return l;
+      });
+      setWantsLists(updatedLists);
+      safeStorage.setItem('wantsLists', JSON.stringify(updatedLists));
+
+      if (sharedWantsList?.id === listId) {
+        setSharedWantsList({ ...sharedWantsList, acquiredQuantities: updatedAcquiredQuantities, acquiredCardIds: updatedAcquiredCardIds });
+      }
+    }
+  };
+
+  const handleImportWantsList = async (listToImport: WantsList) => {
+    const listGameType = listToImport.gameType || gameType;
+    const currentWantsLists = wantsLists.filter(l => l.gameType === listGameType || (!l.gameType && listGameType === 'masters'));
+    if (currentWantsLists.length >= 10) {
+      alert(lang === 'es' ? 'No puedes importar más de 10 listas para este juego. Por favor elimina alguna lista existente primero.' : 'You cannot import more than 10 lists for this game. Please delete an existing list first.');
+      return;
+    }
+    const importedName = `${listToImport.name} ` + (lang === 'es' ? '(Importada)' : '(Imported)');
+    const newListId = 'list_' + Date.now();
+    const slicedCardIds = listToImport.cardIds.slice(0, 50);
+    const slicedAcquiredCardIds = (listToImport.acquiredCardIds || []).filter(id => slicedCardIds.includes(id));
+
+    const importedCardQuantities: Record<string, number> = {};
+    const importedAcquiredQuantities: Record<string, number> = {};
+    if (listToImport.cardQuantities) {
+      Object.keys(listToImport.cardQuantities).forEach(k => {
+        if (slicedCardIds.includes(k)) {
+          importedCardQuantities[k] = listToImport.cardQuantities[k];
+        }
+      });
+    }
+    if (listToImport.acquiredQuantities) {
+      Object.keys(listToImport.acquiredQuantities).forEach(k => {
+        if (slicedCardIds.includes(k)) {
+          importedAcquiredQuantities[k] = listToImport.acquiredQuantities[k];
+        }
+      });
+    }
+
+    const newList: WantsList = {
+      id: newListId,
+      ownerId: user ? user.uid : null,
+      name: importedName,
+      description: listToImport.description || '',
+      cardIds: slicedCardIds,
+      acquiredCardIds: slicedAcquiredCardIds,
+      cardQuantities: importedCardQuantities,
+      acquiredQuantities: importedAcquiredQuantities,
+      isPublic: true,
+      gameType: listGameType,
+    };
+
+    if (user && !isQuotaExceeded) {
+      try {
+        await addDoc(collection(db, 'lists'), {
+          ownerId: user.uid,
+          name: importedName,
+          description: listToImport.description || '',
+          cardIds: slicedCardIds,
+          acquiredCardIds: slicedAcquiredCardIds,
+          cardQuantities: importedCardQuantities,
+          acquiredQuantities: importedAcquiredQuantities,
+          isPublic: true,
+          gameType: listGameType,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+      } catch (e: any) {
+        handleFirestoreError(e, OperationType.CREATE, 'lists');
+      }
+    } else {
+      const updated = [...wantsLists, newList];
+      setWantsLists(updated);
+      safeStorage.setItem('wantsLists', JSON.stringify(updated));
+    }
+
+    setSharedWantsList(null);
+    setActiveWantsListId(newListId);
+    if (listToImport.cardIds.length > 50) {
+      alert(lang === 'es' ? 'La lista importada ha sido limitada a las primeras 50 cartas.' : 'The imported list was capped at its first 50 cards.');
+    }
+  };
+
+  const [showCopyToast, setShowCopyToast] = useState(false);
+  const handleCopyWantsLink = (listId: string) => {
+    const shareUrl = `${window.location.origin}${window.location.pathname}?shareList=${listId}${wantsHideAcquired ? '&hideAcquired=1' : ''}`;
+    
+    const fallbackCopy = () => {
+      const textArea = document.createElement('textarea');
+      textArea.value = shareUrl;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-9999px';
+      textArea.style.top = '0';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+          setShowCopyToast(true);
+          setTimeout(() => setShowCopyToast(false), 2000);
+        } else {
+          prompt(lang === 'es' ? 'Copia este enlace manualmente:' : 'Copy this link manually:', shareUrl);
+        }
+      } catch (err) {
+        console.error('ExecCommand copy failed:', err);
+        prompt(lang === 'es' ? 'Copia este enlace manualmente:' : 'Copy this link manually:', shareUrl);
+      }
+      document.body.removeChild(textArea);
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(shareUrl)
+        .then(() => {
+          setShowCopyToast(true);
+          setTimeout(() => setShowCopyToast(false), 2000);
+        })
+        .catch(err => {
+          console.warn('Clipboard API write failed, trying fallback...', err);
+          fallbackCopy();
+        });
+    } else {
+      fallbackCopy();
+    }
+  };
+
+  const generateWantsListCanvas = async (list: WantsList, hideAcquired = false): Promise<HTMLCanvasElement | null> => {
+    let listedCards = list.cardIds.map(id => cards.find(c => c.id === id)).filter(Boolean) as Card[];
+    if (hideAcquired) {
+      listedCards = listedCards.filter(c => !isCardFullyAcquired(list, c.id));
+    }
+    if (listedCards.length === 0) return null;
+
+    // Load images with premium global image cache, CORS proxy (images.weserv.nl), and intelligent sequential fallbacks.
+    // TCGPlayer CDN (where some manual images are hosted) has strict DDoS/scraping protections (Cloudflare/Akamai)
+    // that block proxy services. To solve this, we attempt the main URL first, and if that or its proxy fails,
+    // we sequentially fall back to the official dbs-cardgame.com image patterns which support both proxies wonderfully.
+    const imgPromises = listedCards.map(card => {
+      return new Promise<{ id: string; img: HTMLImageElement | null }>(async (resolve) => {
+        const urlAttempts: string[] = [];
+
+        // 1. Add the primary image URL if present
+        if (card.imageUrl) {
+          urlAttempts.push(card.imageUrl);
+        }
+
+        // 2. Add dbs-cardgame.com official site fallback URLs
+        const code = card.cardNumber || '';
+        if (code) {
+          if (gameType === 'fusion') {
+            const base = code.split('_')[0];
+            urlAttempts.push(`https://www.dbs-cardgame.com/fw/images/cards/card/en/${base}.webp`);
+            urlAttempts.push(`https://www.dbs-cardgame.com/fw/images/cards/card/en/${base}_f.webp`);
+          } else {
+            // For Masters, map EVENT PACK / JUDGE PACK / PROMO suffixes dynamically to official PR / base codes
+            const cleanForPr = code.replace(/_[A-Z]+\d+$/, '_PR');
+            urlAttempts.push(`https://www.dbs-cardgame.com/images/cardlist/cardimg/${cleanForPr}.png`);
+
+            const base = code.split('_')[0];
+            urlAttempts.push(`https://www.dbs-cardgame.com/images/cardlist/cardimg/${base}.png`);
+            urlAttempts.push(`https://www.dbs-cardgame.com/images/cardlist/cardimg/${base}_PR.png`);
+          }
+        }
+
+        // Try standard fallback images
+        for (const rawUrl of urlAttempts) {
+          const cleanUrl = rawUrl.trim();
+          if (!cleanUrl) continue;
+
+          // Attempt A: Proxy-assisted load (guarantees no CORS taint, webp compression, speed)
+          try {
+            const img = await new Promise<HTMLImageElement>((res, rej) => {
+              const image = new Image();
+              image.crossOrigin = 'anonymous';
+              image.onload = () => res(image);
+              image.onerror = () => rej();
+              image.src = `https://images.weserv.nl/?url=${encodeURIComponent(cleanUrl)}&w=300&output=webp`;
+            });
+            resolve({ id: card.id, img });
+            return;
+          } catch (e) {
+            // Attempt B: Direct standard load without proxy (in case proxy was blocked or down)
+            try {
+              const img = await new Promise<HTMLImageElement>((res, rej) => {
+                const image = new Image();
+                image.crossOrigin = 'anonymous';
+                image.onload = () => res(image);
+                image.onerror = () => rej();
+                image.src = cleanUrl;
+              });
+              resolve({ id: card.id, img });
+              return;
+            } catch (e2) {
+              // Try the next URL in the fallbacks list
+            }
+          }
+        }
+
+        // If everything failed, resolve with null so we gracefully render the card fallback label
+        console.warn(`All image loading attempts failed for card ${card.id}`);
+        resolve({ id: card.id, img: null });
+      });
+    });
+    const resolvedImgs = await Promise.all(imgPromises);
+    const imgMap = new Map(resolvedImgs.map(item => [item.id, item.img]));
+
+    const cardWidth = 150;
+    const cardHeight = 210;
+    const cardGap = 20;
+    const cols = Math.min(5, listedCards.length);
+    const rows = Math.ceil(listedCards.length / cols);
+    
+    const padding = 40;
+    const headerHeight = 120;
+    const footerHeight = 60;
+    
+    const width = cols * cardWidth + (cols - 1) * cardGap + padding * 2;
+    const height = headerHeight + (rows * cardHeight) + ((rows - 1) * cardGap) + footerHeight + padding * 2;
+    
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error('Could not get Canvas 2D context');
+
+    ctx.fillStyle = '#111827';
+    ctx.fillRect(0, 0, width, height);
+
+    // Simple grid lines overlay
+    ctx.strokeStyle = 'rgba(249, 115, 22, 0.08)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < width; i += 60) {
+      ctx.beginPath();
+      ctx.moveTo(i, 0);
+      ctx.lineTo(i, height);
+      ctx.stroke();
+    }
+    for (let j = 0; j < height; j += 60) {
+      ctx.beginPath();
+      ctx.moveTo(0, j);
+      ctx.lineTo(width, j);
+      ctx.stroke();
+    }
+
+    // Title header
+    const grad = ctx.createLinearGradient(0, 0, width, 0);
+    grad.addColorStop(0, '#f97316');
+    grad.addColorStop(1, '#ea580c');
+    ctx.fillStyle = grad;
+    ctx.fillRect(padding, padding, width - padding * 2, 80);
+
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = 'bold 22px system-ui, -apple-system, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(`${list.name.toUpperCase()}${hideAcquired ? ' (FALTANTES / WANTED)' : ''}`, padding + 20, padding + 40);
+
+    const totalWantedQty = list.cardIds.reduce((sum, id) => sum + getCardWantedQty(list, id), 0);
+    const totalAcquiredQty = list.cardIds.reduce((sum, id) => sum + getCardAcquiredQty(list, id), 0);
+    const progressPercent = totalWantedQty > 0 ? Math.round((totalAcquiredQty / totalWantedQty) * 100) : 0;
+
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = 'bold 14px system-ui, -apple-system, sans-serif';
+    ctx.textAlign = 'right';
+    if (hideAcquired) {
+      ctx.fillText(`${listedCards.length} FALTANTES / MISSING`, width - padding - 20, padding + 40);
+    } else {
+      ctx.fillText(`${totalAcquiredQty} / ${totalWantedQty} COPIAS / COPIES (${progressPercent}%)`, width - padding - 20, padding + 40);
+    }
+
+    // Card Grid rendering
+    listedCards.forEach((card, idx) => {
+      const col = idx % cols;
+      const row = Math.floor(idx / cols);
+      
+      const x = padding + col * (cardWidth + cardGap);
+      const y = padding + headerHeight + row * (cardHeight + cardGap) + 10;
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+      ctx.fillRect(x, y, cardWidth, cardHeight);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x, y, cardWidth, cardHeight);
+
+      const img = imgMap.get(card.id);
+      if (img) {
+        ctx.drawImage(img, x, y, cardWidth, cardHeight);
+      } else {
+        ctx.fillStyle = '#6B7280';
+        ctx.font = 'bold 12px monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(card.cardNumber, x + cardWidth / 2, y + cardHeight / 2);
+      }
+
+      const wantedQty = getCardWantedQty(list, card.id);
+      const acquiredQty = getCardAcquiredQty(list, card.id);
+      const isFullyAcquired = isCardFullyAcquired(list, card.id);
+
+      if (isFullyAcquired) {
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.25)';
+        ctx.fillRect(x, y, cardWidth, cardHeight);
+        
+        ctx.strokeStyle = '#10B981';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(x, y, cardWidth, cardHeight);
+
+        ctx.fillStyle = '#10B981';
+        ctx.beginPath();
+        ctx.arc(x + cardWidth - 18, y + 18, 11, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 12px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('✓', x + cardWidth - 18, y + 18);
+      }
+
+      if (wantedQty > 1) {
+        const isRed = !isFullyAcquired;
+        ctx.fillStyle = isRed ? '#EF4444' : '#10B981';
+        ctx.strokeStyle = isRed ? '#F87171' : '#34D399';
+        ctx.lineWidth = 1.5;
+        
+        const pillX = x + 8;
+        const pillY = y + 8;
+        const pillW = 44;
+        const pillH = 18;
+        const r = 6;
+        
+        ctx.beginPath();
+        if (ctx.roundRect) {
+          ctx.roundRect(pillX, pillY, pillW, pillH, r);
+        } else {
+          ctx.rect(pillX, pillY, pillW, pillH);
+        }
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'black 10px monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`${acquiredQty}/${wantedQty}`, pillX + pillW / 2, pillY + pillH / 2);
+      }
+
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+      ctx.fillRect(x, y + cardHeight - 22, cardWidth, 22);
+      
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '9px monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(card.cardNumber, x + cardWidth / 2, y + cardHeight - 11);
+    });
+
+    ctx.fillStyle = '#6B7280';
+    ctx.font = 'italic 11px system-ui, -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('DRAGON BALL SUPER TCG TRACKER APP • PERSONAL WANTS LIST', width / 2, height - padding - 15);
+
+    return canvas;
+  };
+
+  const exportWantsListAsImage = async (list: WantsList) => {
+    const listCardsCount = wantsHideAcquired 
+      ? list.cardIds.filter(id => !isCardFullyAcquired(list, id)).length 
+      : list.cardIds.length;
+
+    if (listCardsCount === 0) {
+      alert(lang === 'es' ? 'La lista filtrada está vacía.' : 'The filtered list is empty.');
+      return;
+    }
+
+    setIsExportingImage(true);
+    try {
+      const canvas = await generateWantsListCanvas(list, wantsHideAcquired);
+      if (!canvas) return;
+      const dataUrl = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.download = `${list.name.replace(/\s+/g, '_').toLowerCase()}_wants.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (e) {
+      console.error(e);
+      alert('Error exporting lists image');
+    } finally {
+      setIsExportingImage(false);
+    }
+  };
+
+  const shareWantsListAsImage = async (list: WantsList) => {
+    const listCardsCount = wantsHideAcquired 
+      ? list.cardIds.filter(id => !isCardFullyAcquired(list, id)).length 
+      : list.cardIds.length;
+
+    if (listCardsCount === 0) {
+      alert(lang === 'es' ? 'La lista filtrada está vacía.' : 'The filtered list is empty.');
+      return;
+    }
+
+    setIsExportingImage(true);
+    try {
+      const canvas = await generateWantsListCanvas(list, wantsHideAcquired);
+      if (!canvas) {
+        handleCopyWantsLink(list.id);
+        return;
+      }
+
+      canvas.toBlob(async (blob) => {
+        if (!blob) {
+          handleCopyWantsLink(list.id);
+          return;
+        }
+
+        const file = new File([blob], `${list.name.replace(/\s+/g, '_').toLowerCase()}_wants.png`, { type: 'image/png' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              files: [file],
+              title: list.name,
+              text: lang === 'es' ? `¡Mira mi lista "${list.name}"!` : `Check out my list "${list.name}"!`,
+            });
+          } catch (shareErr) {
+            console.warn('Native share failed or dismissed, fallback to copy url', shareErr);
+            handleCopyWantsLink(list.id);
+          }
+        } else {
+          handleCopyWantsLink(list.id);
+        }
+      }, 'image/png');
+    } catch (e) {
+      console.error('Sharing failed, fallback to copy link', e);
+      handleCopyWantsLink(list.id);
+    } finally {
+      setIsExportingImage(false);
+    }
+  };
+
+
 
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [isInventoryLoading, setIsInventoryLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [wantsSearchQuery, setWantsSearchQuery] = useState('');
+  const [wantsFilterExpansion, setWantsFilterExpansion] = useState('Todos');
+  const [wantsFilterColor, setWantsFilterColor] = useState('Todos');
+  const [wantsFilterRarity, setWantsFilterRarity] = useState('Todos');
+  const [wantsSearchLimit, setWantsSearchLimit] = useState(15);
+  const [isWantsCreateModalOpen, setIsWantsCreateModalOpen] = useState(false);
+  const [newWantsListName, setNewWantsListName] = useState('');
+  const [newWantsListDescription, setNewWantsListDescription] = useState('');
+  const [isExportingImage, setIsExportingImage] = useState(false);
+  const [isWantsSearchExpanded, setIsWantsSearchExpanded] = useState(false);
+  const [wantsHideAcquired, setWantsHideAcquired] = useState(false);
+
+  useEffect(() => {
+    setWantsSearchLimit(15);
+  }, [wantsSearchQuery, wantsFilterExpansion, wantsFilterColor, wantsFilterRarity]);
+
+  const allAvailableRarities = useMemo(() => {
+    return ['Todos', ...Array.from(new Set(cards.map(c => c.rarity).filter(Boolean)))];
+  }, [cards]);
+
+  const allAvailableColors = useMemo(() => {
+    return ['Todos', ...Array.from(new Set(cards.map(c => c.color).filter(Boolean)))];
+  }, [cards]);
+
+  const allAvailableExpansions = useMemo(() => {
+    const list: { id: string; label: string }[] = [{ id: 'Todos', label: lang === 'es' ? 'Todas las Colecciones' : 'All Expansions' }];
+    currentGroups.forEach(group => {
+      group.items.forEach(item => {
+        list.push({ id: item.id, label: item.label });
+        if (item.subItems) {
+          item.subItems.forEach(sub => {
+            list.push({ id: sub.id, label: `  ${sub.label}` });
+          });
+        }
+      });
+    });
+    return list;
+  }, [currentGroups, lang]);
+
+  const wantsSearchResults = useMemo(() => {
+    const trimmedQuery = wantsSearchQuery.trim();
+    const queryActive = trimmedQuery.length > 0;
+    const filterExpansionActive = wantsFilterExpansion !== 'Todos';
+    const filterColorActive = wantsFilterColor !== 'Todos';
+    const filterRarityActive = wantsFilterRarity !== 'Todos';
+
+    return cards.filter(card => {
+      if (queryActive) {
+        const q = trimmedQuery.toLowerCase();
+        const normalize = (str: string) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const nq = normalize(trimmedQuery);
+
+        const cardNameMatches = card.name && (card.name.toLowerCase().includes(q) || normalize(card.name).includes(nq));
+        const cardNumberMatches = card.cardNumber && (card.cardNumber.toLowerCase().includes(q) || normalize(card.cardNumber).includes(nq));
+        const cardIdMatches = card.id && card.id.toLowerCase().includes(q);
+
+        if (!cardNameMatches && !cardNumberMatches && !cardIdMatches) {
+          return false;
+        }
+      }
+
+      if (filterExpansionActive) {
+        if (wantsFilterExpansion === 'COL02') {
+          if (card.expansion !== 'COL02') return false;
+        } else if (PACK_ARRAYS[wantsFilterExpansion]) {
+          if (!PACK_ARRAYS[wantsFilterExpansion].includes(card.id)) return false;
+        } else {
+          let matchesExp = card.expansion === wantsFilterExpansion;
+          if (gameType === 'fusion') {
+            if (wantsFilterExpansion.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${wantsFilterExpansion}`]?.includes(card.id)) matchesExp = true;
+            if (wantsFilterExpansion === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(card.id)) matchesExp = true;
+          }
+          if (!matchesExp && gameType === 'fusion' && (wantsFilterExpansion.startsWith('FB') || wantsFilterExpansion.startsWith('FS') || wantsFilterExpansion.startsWith('SB'))) {
+            if (card.cardNumber?.split('_')[0].startsWith(wantsFilterExpansion + '-')) {
+              matchesExp = true;
+            }
+          }
+          if (!matchesExp) return false;
+        }
+      }
+
+      if (filterColorActive) {
+        if (!card.color || card.color.toLowerCase() !== wantsFilterColor.toLowerCase()) {
+          return false;
+        }
+      }
+
+      if (filterRarityActive) {
+        const cleanCardRarity = card.rarity.replace(/\*/g, '');
+        const cleanFilterRarity = wantsFilterRarity.replace(/\*/g, '');
+        if (cleanCardRarity.toLowerCase() !== cleanFilterRarity.toLowerCase()) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }, [cards, wantsSearchQuery, wantsFilterExpansion, wantsFilterColor, wantsFilterRarity, gameType]);
+
+  const hasWantsActiveSearch = useMemo(() => {
+    return wantsSearchQuery.trim().length > 0 || wantsFilterExpansion !== 'Todos' || wantsFilterColor !== 'Todos' || wantsFilterRarity !== 'Todos';
+  }, [wantsSearchQuery, wantsFilterExpansion, wantsFilterColor, wantsFilterRarity]);
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
   const [isFlipped, setIsFlipped] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
@@ -7736,28 +8700,38 @@ export default function TrackerApp() {
       );
       
       for (const cardId of updatedCardIds) {
-        const existingItem = inventory.find(i => i.cardId === cardId);
+        // Find ALL items matching this card ID to handle duplicates properly
+        const matchingItems = inventory.filter(i => i.cardId === cardId);
         
         if (isDeletion) {
-          // Unselect (delete) the selected cards
-          if (existingItem) {
-            const docRef = doc(db, 'inventory', existingItem.id);
+          // Delete all matching documents to fully unmark and clear duplicates
+          matchingItems.forEach(item => {
+            const docRef = doc(db, 'inventory', item.id);
             batch.delete(docRef);
-            newInventory = newInventory.filter(i => i.id !== existingItem.id);
-          }
+            newInventory = newInventory.filter(i => i.id !== item.id);
+          });
         } else {
           const qty = collectionGoal === 'player' ? bulkQuantity : 1;
           
-          if (existingItem) {
-            // If already exists, update document using its ID from local inventory
-            const docRef = doc(db, 'inventory', existingItem.id);
+          if (matchingItems.length > 0) {
+            // Update the first matching document
+            const primaryItem = matchingItems[0];
+            const docRef = doc(db, 'inventory', primaryItem.id);
             batch.update(docRef, { 
               quantity: qty,
               updatedAt: now 
             });
             
-            const index = newInventory.findIndex(i => i.id === existingItem.id);
+            const index = newInventory.findIndex(i => i.id === primaryItem.id);
             if (index > -1) newInventory[index].quantity = qty;
+
+            // Delete any extra duplicates to keep the database and local state perfectly clean
+            for (let k = 1; k < matchingItems.length; k++) {
+              const duplicateItem = matchingItems[k];
+              const dupRef = doc(db, 'inventory', duplicateItem.id);
+              batch.delete(dupRef);
+              newInventory = newInventory.filter(i => i.id !== duplicateItem.id);
+            }
           } else {
             // If not exists, create new doc
             const newDocRef = doc(collection(db, 'inventory'));
@@ -7779,10 +8753,11 @@ export default function TrackerApp() {
 
       await batch.commit();
       
-      // Update denormalized stats if there was a deletion in collector mode
-      // Otherwise, the addition might be handled later via onSnapshot or we can just always update stats
-      const uniqueCards = newInventory.filter(i => i.quantity > 0).length;
+      // Calculate true unique cards based on unique cardId counts, handling any duplicate records safely
+      const uniqueCardIds = new Set(newInventory.filter(i => i.quantity > 0).map(i => i.cardId));
+      const uniqueCards = uniqueCardIds.size;
       const totalCards = newInventory.reduce((sum, i) => sum + i.quantity, 0);
+      
       updateDoc(doc(db, 'users', user.uid), {
         uniqueCards,
         totalCards,
@@ -8925,37 +9900,117 @@ export default function TrackerApp() {
     }
   }, [userAchievements, user, achievementsList, unlockedAchievement, unlockedQueue.length]);
 
-  // AUTO-SYNC STATS ON LOGIN
-  // This ensures that even users who signed up before denormalization was added
-  // get their stats populated in the 'users' document for the ranking.
+  // BACKGROUND FIREBASE INVENTORY DEDUPLICATION
+  // Silently detects and purges any duplicate documents for the same user and same cardId in Firestore,
+  // preventing over-counting, multi-select unmarking inconsistencies, and ghost achievements.
   useEffect(() => {
-    if (user && inventory.length > 0 && profile && !isQuotaExceeded) {
-      if (!profile.lastStatsUpdate || !profile.uniqueCards) {
-        console.log("[Auto-Sync] Backfilling stats for older user profile...");
-        const uniqueCards = inventory.filter(i => i.quantity > 0).length;
-        const totalCards = inventory.reduce((sum, i) => sum + i.quantity, 0);
-        
-        updateDoc(doc(db, 'users', user.uid), {
-          uniqueCards,
-          totalCards,
-          lastStatsUpdate: serverTimestamp()
-        }).catch(err => console.error("Auto-sync failed:", err));
+    if (!user || isInventoryLoading || inventory.length === 0) return;
+
+    const findAndCleanDuplicates = async () => {
+      const cardMap = new Map<string, InventoryItem[]>();
+      inventory.forEach(item => {
+        if (!cardMap.has(item.cardId)) {
+          cardMap.set(item.cardId, []);
+        }
+        cardMap.get(item.cardId)!.push(item);
+      });
+
+      const duplicatesToClean: { keep: InventoryItem; remove: InventoryItem[] }[] = [];
+      cardMap.forEach((items) => {
+        if (items.length > 1) {
+          const sorted = [...items].sort((a, b) => {
+            if (b.quantity !== a.quantity) return b.quantity - a.quantity;
+            return a.id.localeCompare(b.id);
+          });
+          duplicatesToClean.push({
+            keep: sorted[0],
+            remove: sorted.slice(1)
+          });
+        }
+      });
+
+      if (duplicatesToClean.length > 0) {
+        console.log(`[Deduplication] Found ${duplicatesToClean.length} duplicate card structures. Starting cleanup batch...`);
+        const batch = writeBatch(db);
+        let operationsCount = 0;
+
+        for (const dup of duplicatesToClean) {
+          for (const itemToRemove of dup.remove) {
+            batch.delete(doc(db, 'inventory', itemToRemove.id));
+            operationsCount++;
+          }
+          const maxQuantity = Math.max(...dup.remove.map(r => r.quantity), dup.keep.quantity);
+          if (dup.keep.quantity !== maxQuantity) {
+            batch.update(doc(db, 'inventory', dup.keep.id), { quantity: maxQuantity });
+            operationsCount++;
+          }
+          if (operationsCount >= 400) break;
+        }
+
+        if (operationsCount > 0) {
+          try {
+            await batch.commit();
+            console.log(`[Deduplication] Cleaned up ${operationsCount} duplicate elements successfully.`);
+          } catch (err) {
+            console.error("[Deduplication] Failed to commit cleanup batch:", err);
+          }
+        }
       }
+    };
+
+    const timer = setTimeout(findAndCleanDuplicates, 3000);
+    return () => clearTimeout(timer);
+  }, [inventory, user, isInventoryLoading]);
+
+  // UNIFIED REAL-TIME STATS SYNCHRONIZATION
+  // Single source of truth for computing card counts. Deduplicates quantities in real-time,
+  // and debounces writes to the Firestore user profile to prevent any database discrepancies or overcounting.
+  useEffect(() => {
+    if (!user || isInventoryLoading) return;
+
+    const groupedInventory = new Map<string, number>();
+    inventory.forEach(i => {
+      if (i.quantity > 0) {
+        groupedInventory.set(i.cardId, Math.max(groupedInventory.get(i.cardId) || 0, i.quantity));
+      }
+    });
+
+    const realUnique = groupedInventory.size;
+    let realTotal = 0;
+    groupedInventory.forEach(qty => {
+      realTotal += qty;
+    });
+
+    if (profile && (profile.uniqueCards !== realUnique || profile.totalCards !== realTotal)) {
+      console.log(`[StatsSync] Correcting state drift: Unique: ${profile.uniqueCards} -> ${realUnique}, Total: ${profile.totalCards} -> ${realTotal}`);
+
+      const timer = setTimeout(async () => {
+        try {
+          await updateDoc(doc(db, 'users', user.uid), {
+            uniqueCards: realUnique,
+            totalCards: realTotal,
+            lastStatsUpdate: serverTimestamp()
+          });
+          console.log("[StatsSync] Firestore updated successfully with correct counts.");
+        } catch (err) {
+          console.error("Failed to sync profile stats to Firestore:", err);
+        }
+      }, 2500);
+
+      return () => clearTimeout(timer);
     }
-  }, [user?.uid, inventory.length > 0, !!profile, isQuotaExceeded]);
+  }, [inventory, user, isInventoryLoading, profile?.uniqueCards, profile?.totalCards]);
+
   const lastProgressSent = useRef<Record<string, number>>({});
   const lastAchievementCheck = useRef<number>(0);
 
-  // Check achievements logic
+  // DEBOUCED ACHIEVEMENT CHECKER
+  // Avoids old throttles that silently skipped snapshot updates, ensuring that when cards are
+  // unmarked physically, their revoked achievements are 100% reliably removed from Firestore.
   useEffect(() => {
-    if (!user || cards.length === 0 || inventory.length === 0 || isQuotaExceeded) return;
+    if (!user || cards.length === 0 || isQuotaExceeded) return;
 
     const runChecks = async () => {
-      // Throttle checks to once every 5 seconds to avoid hammering the DB
-      const now = Date.now();
-      if (now - lastAchievementCheck.current < 5000) return;
-      lastAchievementCheck.current = now;
-
       if (!achievementsLoaded.current || achievementsList.length === 0) return;
       
       const addingInThisRun = new Set<string>();
@@ -8982,7 +10037,6 @@ export default function TrackerApp() {
                 currentTier: tier || 0,
                 isSeen: false
               });
-              // Add to queue for visual notification
               setUnlockedQueue(prev => {
                 const alreadyQueued = prev.some(a => a.def.id === def.id && a.tier === (tier || 0));
                 if (alreadyQueued || (unlockedAchievement?.def.id === def.id && unlockedAchievement?.tier === (tier || 0))) return prev;
@@ -8994,63 +10048,94 @@ export default function TrackerApp() {
               }
               failedWrites.current.add(def.id);
             }
-          } else if (existing && (
-            (def.type === 'tiered' && tier !== undefined && tier > (existing.currentTier || 0)) ||
-            (progress !== undefined && progress > (existing.currentProgress || 0) && progress < 100)
-          )) {
-            // Update progress silently if it hasn't finished
-            const tierIncreased = tier !== undefined && tier > (existing.currentTier || 0);
-            
-            if (tierIncreased) {
-              const tierKeyUpdate = `${def.id}_tier_${tier}`;
-              if (!processedAchievementIds.current.has(tierKeyUpdate)) {
-                console.log(`[ACHIEVEMENT] Tiering up: ${def.id} to tier ${tier}`);
-                processedAchievementIds.current.add(tierKeyUpdate);
+          } else if (existing) {
+            const currentTierStored = existing.currentTier || 0;
+            const newTier = tier || 0;
+            const progressChanged = progress !== undefined && Math.abs(progress - (existing.currentProgress || 0)) >= 1;
+
+            if (def.type === 'tiered' && newTier !== currentTierStored) {
+              const tierIncreased = newTier > currentTierStored;
+              if (tierIncreased) {
+                const tierKeyUpdate = `${def.id}_tier_${newTier}`;
+                if (!processedAchievementIds.current.has(tierKeyUpdate)) {
+                  console.log(`[ACHIEVEMENT] Tiering up: ${def.id} to tier ${newTier}`);
+                  processedAchievementIds.current.add(tierKeyUpdate);
+                  try {
+                    await updateDoc(doc(db, 'achievements', existing.id), {
+                      currentTier: newTier,
+                      currentProgress: progress,
+                      unlockedAt: serverTimestamp(),
+                      isSeen: false
+                    });
+                    setUnlockedQueue(prev => {
+                      const alreadyQueued = prev.some(a => a.def.id === def.id && a.tier === newTier);
+                      if (alreadyQueued || (unlockedAchievement?.def.id === def.id && unlockedAchievement?.tier === newTier)) return prev;
+                      return [...prev, { def, tier: newTier }];
+                    });
+                  } catch (err) {
+                    if (!handleFirestoreError(err, OperationType.UPDATE, 'achievements')) {
+                      console.error("Failed to update achievement tier, skipping future retries", err);
+                    }
+                    failedWrites.current.add(def.id);
+                  }
+                }
+              } else {
+                console.log(`[ACHIEVEMENT] Tiering down: ${def.id} to tier ${newTier}`);
                 try {
                   await updateDoc(doc(db, 'achievements', existing.id), {
-                    currentTier: tier,
-                    currentProgress: progress,
-                    unlockedAt: serverTimestamp(),
-                    isSeen: false
-                  });
-                  setUnlockedQueue(prev => {
-                    const alreadyQueued = prev.some(a => a.def.id === def.id && a.tier === tier);
-                    if (alreadyQueued || (unlockedAchievement?.def.id === def.id && unlockedAchievement?.tier === tier)) return prev;
-                    return [...prev, { def, tier }];
+                    currentTier: newTier,
+                    currentProgress: progress
                   });
                 } catch (err) {
                   if (!handleFirestoreError(err, OperationType.UPDATE, 'achievements')) {
-                    console.error("Failed to update achievement tier, skipping future retries", err);
+                    console.error("Failed to down-tier achievement, skipping future retries", err);
                   }
                   failedWrites.current.add(def.id);
                 }
               }
-            } else if (progress !== undefined && progress > (existing.currentProgress || 0)) {
-               // Only update if difference is > 1% or it's the first time we update this session
-               const lastSent = lastProgressSent.current[existing.id] || existing.currentProgress || 0;
-               if (Math.abs(progress - lastSent) >= 1 || lastProgressSent.current[existing.id] === undefined) {
-                 try {
-                   lastProgressSent.current[existing.id] = progress;
-                   // Update progress silently without notification
-                   await updateDoc(doc(db, 'achievements', existing.id), {
-                     currentProgress: progress
-                   });
-                 } catch (err) {
-                   if (!handleFirestoreError(err, OperationType.UPDATE, 'achievements')) {
-                     console.error("Failed to update achievement progress, skipping future retries", err);
-                   }
-                   failedWrites.current.add(def.id);
-                 }
-               }
+            } else if (progressChanged) {
+              const lastSent = lastProgressSent.current[existing.id] !== undefined ? lastProgressSent.current[existing.id] : (existing.currentProgress || 0);
+              if (Math.abs(progress - lastSent) >= 1) {
+                try {
+                  lastProgressSent.current[existing.id] = progress;
+                  await updateDoc(doc(db, 'achievements', existing.id), {
+                    currentProgress: progress
+                  });
+                } catch (err) {
+                  if (!handleFirestoreError(err, OperationType.UPDATE, 'achievements')) {
+                    console.error("Failed to update achievement progress, skipping future retries", err);
+                  }
+                  failedWrites.current.add(def.id);
+                }
+              }
+            }
+          }
+        } else {
+          if (existing) {
+            console.log(`[ACHIEVEMENT] Revoking achievement since requirements no longer met: ${def.id}`);
+            try {
+              await deleteDoc(doc(db, 'achievements', existing.id));
+              setUnlockedQueue(prev => prev.filter(item => item.def.id !== def.id));
+              processedAchievementIds.current.delete(def.id);
+              if (def.type === 'tiered' && def.tiers) {
+                for (let t = 0; t < def.tiers.length; t++) {
+                  processedAchievementIds.current.delete(`${def.id}_tier_${t}`);
+                }
+              }
+            } catch (err) {
+              if (!handleFirestoreError(err, OperationType.DELETE, 'achievements')) {
+                console.error("Failed to delete revoked achievement from database", err);
+              }
+              failedWrites.current.add(def.id);
             }
           }
         }
       }
     };
 
-    const timer = setTimeout(runChecks, 5000); // 5 second buffer to prevent hammering
+    const timer = setTimeout(runChecks, 1500);
     return () => clearTimeout(timer);
-  }, [inventory, cards, user, isQuotaExceeded]);
+  }, [inventory, cards, user, isQuotaExceeded, achievementsList, userAchievements]);
 
   const handleLogin = () => {
     if (isQuotaExceeded) {
@@ -9840,6 +10925,38 @@ export default function TrackerApp() {
                       const label = lang === 'es' ? cat.label.es : cat.label.en;
                       const displayLabel = isLocked ? `${label} (Próximamente)` : label;
                       
+                      const IconComponent = cat.icon === 'Package' ? Package : cat.icon === 'Layers' ? Layers : cat.icon === 'Expand' ? Expand : cat.icon === 'Star' ? Star : cat.icon === 'Library' ? Library : Library;
+
+                      // Calculate Level 0 Category Progress dynamically based on nested sets
+                      const subCategoriesList = cat.categories || [];
+                      const groupsForCat = currentGroups.filter((g: any) => subCategoriesList.includes(g.category));
+                      const itemsForCat = groupsForCat.flatMap((g: any) => g.items);
+                      
+                      const cardsInCat = cards.filter(c => {
+                        const tags = getCardTags(c);
+                        return itemsForCat.some((item: any) => {
+                          if (item.id === 'COL02' || item.isGiant) return tags.includes('giant');
+                          if (item.id === 'COL08') return tags.includes('serial');
+                          if (item.id === 'COL05') return tags.includes('event');
+                          if (item.id === 'COL06') return tags.includes('tournament');
+                          if (item.id === 'COL07') return tags.includes('judge');
+                          
+                          const checkItemMatch = (checkItem: any): boolean => {
+                            if (checkItem.id === c.id) return true;
+                            if (c.expansion === checkItem.id) return true;
+                            if (PACK_ARRAYS[checkItem.id] && PACK_ARRAYS[checkItem.id].includes(c.id)) return true;
+                            if (checkItem.id.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
+                            if (checkItem.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
+                            if (checkItem.subItems) return checkItem.subItems.some((subItem: any) => checkItemMatch(subItem));
+                            return false;
+                          };
+                          return checkItemMatch(item);
+                        });
+                      });
+                      
+                      const { total: catTotal, owned: catOwned } = getDeduplicatedStats(cardsInCat, inventory, collectionGoal);
+                      const catProgress = catTotal > 0 ? Math.round((catOwned / catTotal) * 100) : 0;
+
                       return (
                         <motion.button
                           key={cat.id}
@@ -9858,7 +10975,7 @@ export default function TrackerApp() {
                             }
                             window.scrollTo(0, 0);
                           }}
-                          className={`group relative bg-[#1E1E1E] p-6 rounded-2xl border border-white/5 overflow-hidden shadow-2xl flex flex-col items-start gap-4 transition-all ${isLocked ? 'opacity-50 grayscale cursor-not-allowed' : 'hover:border-orange-500/30'}`}
+                          className={`group relative bg-[#1E1E1E] p-6 rounded-2xl border border-white/5 overflow-hidden shadow-2xl flex flex-col justify-between gap-6 transition-all min-h-[140px] text-left ${isLocked ? 'opacity-50 grayscale cursor-not-allowed' : 'hover:border-orange-500/30'}`}
                         >
                           {bgImage && (
                             <>
@@ -9870,295 +10987,167 @@ export default function TrackerApp() {
                                 style={{ contentVisibility: 'auto' }}
                                 className={`absolute inset-0 w-full h-full object-cover z-0 ${['decks', 'expansions', 'promos', 'energy-markers', 'store-events', 'championship'].includes(cat.id) ? 'object-[50%_25%]' : 'object-center'} opacity-15 pointer-events-none grayscale group-hover:grayscale-0 transition-all duration-500`}
                               />
-                              <div className="absolute inset-0 z-1 bg-gradient-to-b from-transparent to-[#1E1E1E]/60 pointer-events-none" />
+                              <div className="absolute inset-0 z-1 bg-gradient-to-b from-transparent to-[#1E1E1E]/80 pointer-events-none" />
                             </>
                           )}
-                          <div className="relative z-10 w-full flex flex-col items-start gap-4">
-                            <div className="w-14 h-14" />
-                            <div className="space-y-1">
-                              <h3 className="text-xl font-black text-white uppercase italic tracking-tighter text-left">
-                                {displayLabel}
-                              </h3>
-                            </div>
+                          
+                          <div className="relative z-10 w-full flex flex-col items-start text-left">
+                            <span className="text-[10px] font-black text-orange-500 uppercase tracking-wider leading-none mb-1">{lang === 'es' ? 'Categoría' : 'Category'}</span>
+                            <h3 className="text-xl font-black text-white group-hover:text-orange-500 transition-colors uppercase italic leading-tight">{displayLabel}</h3>
+                            {isLocked && <span className="text-[7px] bg-white/10 text-gray-500 px-1.5 py-0.5 rounded mt-1 font-bold">SOON</span>}
                           </div>
+
+                          {!isLocked && (
+                            <div className="relative z-10 w-full flex items-center justify-between mt-auto pt-2 border-t border-white/5">
+                              <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">{lang === 'es' ? 'PROGRESO' : 'PROGRESS'}</span>
+                              <div className="flex items-center gap-3">
+                                <p className="text-sm font-black text-white">{catProgress}%</p>
+                                <div className="w-24 h-2 bg-gray-800 rounded-full overflow-hidden border border-white/5">
+                                  <div className="h-full bg-gradient-to-r from-orange-500 to-amber-500" style={{ width: `${catProgress}%` }} />
+                                </div>
+                              </div>
+                            </div>
+                          )}
                         </motion.button>
                       );
                     })}
                   </div>
-                ) : (
-                  /* Level 1: Categories and Subcategories */
-                  <div className="space-y-6">
-                    <section className="space-y-4">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex flex-col">
-                          <h3 className="text-xl font-black text-white uppercase italic tracking-tighter">
-                            {(() => {
-                              const cat = currentCategories.find(c => c.id === currentCollectionCategory);
-                              if (!cat) return '';
-                              
-                              if (currentCollectionSubCategory) {
-                                // Find readable label for subcategory
-                                for (const group of currentGroups) {
-                                  if (cat.categories.includes(group.category)) {
-                                    const item = group.items.find(i => i.id === currentCollectionSubCategory || i.label === currentCollectionSubCategory);
-                                    if (item) {
-                                      if (typeof item.label === 'string') return item.label;
-                                      return item.label[lang];
-                                    }
-                                    
-                                    // Search in subItems
-                                    for (const it of group.items) {
-                                      const sub = it.subItems?.find(s => s.id === currentCollectionSubCategory);
-                                      if (sub) return sub.label;
-                                    }
-                                  }
-                                }
-                                return currentCollectionSubCategory;
-                              }
-                              
-                              return cat.label[lang];
-                            })()}
-                          </h3>
-                        </div>
-                        <button 
-                          onClick={() => {
-                            if (currentCollectionSubCategory) {
-                              let parentLabel = null;
-                              const findParent = (items, currentLabel, currentParentLabel) => {
-                                for (const item of items) {
-                                  if (item.label === currentLabel) {
-                                    parentLabel = currentParentLabel;
-                                    return true;
-                                  }
-                                  if (item.subItems) {
-                                    if (findParent(item.subItems, currentLabel, item.label)) return true;
-                                  }
-                                }
-                                return false;
-                              };
-                              for (const group of currentGroups) {
-                                if (findParent(group.items, currentCollectionSubCategory, null)) break;
-                              }
-                              if (parentLabel && parentLabel !== 'Store Events' && parentLabel !== 'Championship' && parentLabel !== 'Coleccionismo' && parentLabel !== 'Promos') {
-                                setCurrentCollectionSubCategory(parentLabel);
+                ) : currentCollectionSubCategory === null ? (
+                  /* Level 1: Subcategories of the selected main category */
+                  (() => {
+                    const category = currentCategories.find(c => c.id === currentCollectionCategory);
+                    if (!category) return null;
+                    const isStoreEvents = currentCollectionCategory === 'store-events';
+                    const isChampionship = currentCollectionCategory === 'championship';
+                    const isColeccionismo = currentCollectionCategory === 'coleccionismo';
+
+                    const subcategories = isColeccionismo
+                      ? (currentGroups.find(g => g.category === 'Coleccionismo')?.items.filter(i => !i.isSubItem).map(i => i.label) || []) as string[]
+                      : isStoreEvents
+                      ? (currentGroups.find(g => g.category === 'Store Events')?.items.map(i => i.label) || []) as string[]
+                      : isChampionship
+                      ? (currentGroups.find(g => g.category === 'Championship')?.items.map(i => i.label) || []) as string[]
+                      : category.categories;
+
+                    return (
+                      <div className={`grid ${(isStoreEvents || isChampionship || isColeccionismo) ? 'grid-cols-1' : 'grid-cols-2'} gap-4`}>
+                        {subcategories.map(sub => {
+                          const expansionItem = isColeccionismo 
+                            ? currentGroups.find(g => g.category === 'Coleccionismo')?.items.find(i => i.label === sub)
+                            : isStoreEvents 
+                            ? currentGroups.find(g => g.category === 'Store Events')?.items.find(i => i.label === sub)
+                            : isChampionship
+                            ? currentGroups.find(g => g.category === 'Championship')?.items.find(i => i.label === sub)
+                            : null;
+
+                          let itemsInSub: any[] = [];
+                          if (isColeccionismo || isStoreEvents || isChampionship) {
+                            if (expansionItem) {
+                              if (expansionItem.subItems) {
+                                itemsInSub = expansionItem.subItems;
                               } else {
-                                setCurrentCollectionSubCategory(null);
+                                itemsInSub = [expansionItem];
                               }
                             } else {
-                              setCurrentCollectionCategory(null);
+                              const directItem = currentGroups.find(g => g.category === 'Coleccionismo' || g.category === 'Store Events' || g.category === 'Championship')?.items.find(i => i.label === sub);
+                              if (directItem) {
+                                itemsInSub = directItem.subItems || [directItem];
+                              }
                             }
-                          }}
-                          className="bg-white/5 p-2 rounded-xl text-gray-500 hover:text-orange-500 transition-colors"
-                        >
-                          <ChevronLeft size={24} />
-                        </button>
-                      </div>
+                          } else {
+                            const group = currentGroups.find(g => g.category === sub);
+                            if (group) {
+                              itemsInSub = group.items;
+                            }
+                          }
 
-                      <div className="space-y-4">
-                        {(() => {
-                          const category = currentCategories.find(c => c.id === currentCollectionCategory);
-                          if (!category) return null;
+                          const cardsInSub = cards.filter(c => {
+                            const tags = getCardTags(c);
+                            return itemsInSub.some((item: any) => {
+                              if (item.id === 'COL02' || item.isGiant) return tags.includes('giant');
+                              if (item.id === 'COL08') return tags.includes('serial');
+                              if (item.id === 'COL05') return tags.includes('event');
+                              if (item.id === 'COL06') return tags.includes('tournament');
+                              if (item.id === 'COL07') return tags.includes('judge');
+                              
+                              const checkItemMatch = (checkItem: any): boolean => {
+                                if (checkItem.id === c.id) return true;
+                                if (c.expansion === checkItem.id) return true;
+                                if (PACK_ARRAYS[checkItem.id] && PACK_ARRAYS[checkItem.id].includes(c.id)) return true;
+                                if (checkItem.id.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
+                                if (checkItem.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
+                                if (checkItem.subItems) return checkItem.subItems.some((subItem: any) => checkItemMatch(subItem));
+                                return false;
+                              };
+                              return checkItemMatch(item);
+                            });
+                          });
 
-                          // DIRECT LIST (Expansions, Playmats, Fusion Boxes, Championship, Anniversary)
-                          if (!currentCollectionSubCategory && (['expansions', 'playmats', 'anniversary', 'serial-cards', 'sleeves'].includes(currentCollectionCategory || '') || (['box', 'decks'].includes(currentCollectionCategory || '') && gameType === 'fusion'))) {
-                             const sets = (currentGroups
-                              .filter(g => category.categories.includes(g.category))
-                              .flatMap(g => g.items)) as ExpansionItem[];
-                             
-                             return (
-                               <div className="space-y-4">
-                                 {sets.map(set => {
-                                   if (set.subItems) {
-                                     const fallbackBg = set.subItems[0] ? SET_BG[set.subItems[0].id] : undefined;
-                                     let internalCardFallback: string | undefined;
-                                     if (!fallbackBg && !SET_BG[set.id] && set.subItems[0]) {
-                                       const firstSubItemId = set.subItems[0].id;
-                                       const cardsInSubSet = cards.filter(c => c.expansion === firstSubItemId || (PACK_ARRAYS[firstSubItemId] && PACK_ARRAYS[firstSubItemId].includes(c.id)) || (firstSubItemId.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${firstSubItemId}`]?.includes(c.id)) || (firstSubItemId === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)));
-                                       const firstCardImage = cardsInSubSet[0]?.imageUrl;
-                                       internalCardFallback = firstCardImage ? (firstCardImage.startsWith('http') || firstCardImage.startsWith('/') ? firstCardImage : `/${firstCardImage}`) : undefined;
-                                     }
-                                     const bgImage = SET_BG[set.id] || fallbackBg || internalCardFallback || CATEGORY_BG[currentCollectionCategory || ''];
-                                     const fallbackBgPos = set.subItems[0] ? SET_BG_POS[set.subItems[0].id] : undefined;
-                                     const bgPos = SET_BG_POS[set.id] || fallbackBgPos || (['decks', 'expansions', 'promos', 'energy-markers', 'store-events', 'championship'].includes(currentCollectionCategory || '') ? 'bg-[50%_25%]' : 'bg-center');
+                          const { total: subTotal, owned: subOwned } = getDeduplicatedStats(cardsInSub, inventory, collectionGoal);
+                          const subProgress = subTotal > 0 ? Math.round((subOwned / subTotal) * 100) : 0;
 
-                                     return (
-                                       <button 
-                                         key={set.id}
-                                         onClick={() => setCurrentCollectionSubCategory(set.label)}
-                                         className="relative w-full p-5 bg-[#1E1E1E] rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all flex items-center justify-between group shadow-xl overflow-hidden text-left"
-                                       >
-                                         {bgImage && (
-                                           <img 
-                                             src={bgImage}
-                                             loading="lazy"
-                                             alt=""
-                                             className={`absolute inset-0 w-full h-full object-cover z-0 ${bgPos.replace('bg-[50%_25%]', 'object-[50%_25%]').replace('bg-center', 'object-center').replace('bg-top', 'object-top')} opacity-15 pointer-events-none grayscale group-hover:grayscale-0 transition-all duration-500`}
-                                           />
-                                         )}
-                                         <div className="relative z-10 flex items-center flex-1 mr-4">
-                                           <span className="text-xs font-black text-white group-hover:text-orange-500 transition-colors uppercase tracking-tight italic text-left">{set.label}</span>
-                                         </div>
-                                         <ChevronRight size={20} className="text-gray-700 group-hover:text-orange-400" />
-                                       </button>
-                                     );
-                                   }
-                                   
-                                   const cardsInSet = cards.filter(c => c.expansion === set.id || (PACK_ARRAYS[set.id] && PACK_ARRAYS[set.id].includes(c.id)) || (set.id.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${set.id}`]?.includes(c.id)) || (set.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)));
-                                  let neededInSet = 0;
-                                  let ownedInSet = 0;
-                                  cardsInSet.forEach(c => {
-                                    const target = getTargetQuantity(c, collectionGoal);
-                                    const quantity = inventory.find(i => i.cardId === c.id)?.quantity || 0;
-                                    neededInSet += target;
-                                    ownedInSet += Math.min(quantity, target);
-                                  });
-                                  const progress = neededInSet > 0 ? Math.round((ownedInSet / neededInSet) * 100) : 0;
-                                  
-                                  const firstCard = cardsInSet[0];
-                                  const firstCardImage = firstCard ? firstCard.imageUrl : undefined;
-                                  const cardFallback = firstCardImage ? (firstCardImage.startsWith('http') || firstCardImage.startsWith('/') ? firstCardImage : `/${firstCardImage}`) : undefined;
-                                  
-                                  const bgImage = SET_BG[set.id] || cardFallback || CATEGORY_BG[currentCollectionCategory || ''];
-                                  const bgPos = SET_BG_POS[set.id] || (['decks', 'expansions', 'promos', 'energy-markers', 'store-events', 'championship'].includes(currentCollectionCategory || '') ? 'bg-[50%_25%]' : 'bg-center');
+                          let subBgImage = undefined;
+                          if (cardsInSub.length > 0) {
+                            subBgImage = cardsInSub[0].imageUrl;
+                            if (subBgImage && !subBgImage.startsWith('http') && !subBgImage.startsWith('/')) {
+                              subBgImage = '/' + subBgImage;
+                            }
+                          }
 
-                                  return (
-                                    <button 
-                                      key={set.id}
-                                      onClick={() => setFilters({...filters, expansion: set.id})}
-                                      className="relative w-full p-5 bg-[#1E1E1E] rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all flex items-center justify-between group shadow-xl overflow-hidden text-left"
-                                    >
-                                      {bgImage && (
-                                        <img 
-                                          src={bgImage}
-                                          loading="lazy"
-                                          alt=""
-                                          className={`absolute inset-0 w-full h-full object-cover z-0 ${bgPos.replace('bg-[50%_25%]', 'object-[50%_25%]').replace('bg-center', 'object-center').replace('bg-top', 'object-top')} opacity-15 pointer-events-none grayscale group-hover:grayscale-0 transition-all duration-500`}
-                                        />
-                                      )}
-                                      <div className="relative z-10 flex items-center flex-1 mr-4">
+                          const isLocked = expansionItem?.locked;
 
-                                        <span className="text-xs font-black text-white group-hover:text-orange-500 transition-colors uppercase tracking-tight italic text-left">{set.label}</span>
-                                      </div>
-                                      <div className="flex items-center gap-4">
-                                        <div className="text-right">
-                                          <p className="text-[12px] font-black text-gray-400">{progress}%</p>
-                                          <div className="w-20 h-1.5 bg-gray-800 rounded-full mt-1.5 overflow-hidden">
-                                            <div className="h-full bg-orange-500" style={{ width: `${progress}%` }} />
-                                          </div>
-                                        </div>
-                                        <ChevronRight size={20} className="text-gray-700 group-hover:text-orange-400" />
-                                      </div>
-                                    </button>
-                                  );
-                                })}
+                          return (
+                            <motion.button
+                              key={sub}
+                              whileHover={!isLocked ? { y: -4 } : {}}
+                              whileTap={!isLocked ? { scale: 0.98 } : {}}
+                              disabled={isLocked}
+                              onClick={() => {
+                                if (isLocked) return;
+                                setCurrentCollectionSubCategory(sub);
+                                window.scrollTo(0, 0);
+                              }}
+                              className={`group relative bg-[#1E1E1E] p-6 rounded-2xl border border-white/5 overflow-hidden shadow-2xl flex flex-col justify-between gap-6 transition-all min-h-[140px] text-left ${isLocked ? 'opacity-50 grayscale cursor-not-allowed' : 'hover:border-orange-500/30'}`}
+                            >
+                              {subBgImage && (
+                                <>
+                                  <img 
+                                    src={subBgImage}
+                                    loading="lazy"
+                                    decoding="async"
+                                    alt=""
+                                    style={{ contentVisibility: 'auto' }}
+                                    className="absolute inset-0 w-full h-full object-cover z-0 object-[50%_25%] opacity-15 pointer-events-none grayscale group-hover:grayscale-0 transition-all duration-500"
+                                  />
+                                  <div className="absolute inset-0 z-1 bg-gradient-to-b from-transparent to-[#1E1E1E]/80 pointer-events-none" />
+                                </>
+                              )}
+                              
+                              <div className="relative z-10 w-full flex flex-col items-start text-left">
+                                <span className="text-[10px] font-black text-orange-500 uppercase tracking-wider leading-none mb-1">{lang === 'es' ? 'Colección' : 'Collection'}</span>
+                                <h3 className="text-lg font-black text-white group-hover:text-orange-500 transition-colors uppercase italic leading-tight">{sub}</h3>
+                                {isLocked && <span className="text-[7px] bg-white/10 text-gray-500 px-1.5 py-0.5 rounded mt-1 font-bold">SOON</span>}
                               </div>
-                            );
-                          }
-                             // SUBCATEGORY GRID (Box, Decks, Coleccionismo, Tournament)
-                          if (!currentCollectionSubCategory) {
-                             const isColeccionismo = currentCollectionCategory === 'coleccionismo';
-                             const isStoreEvents = currentCollectionCategory === 'store-events';
-                             const isChampionship = currentCollectionCategory === 'championship';
-                              
-                             const subcategories = isColeccionismo
-                               ? (currentGroups.find(g => g.category === 'Coleccionismo')?.items.filter(i => !i.isSubItem).map(i => i.label) || []) as string[]
-                                : isStoreEvents
-                                ? (currentGroups.find(g => g.category === 'Store Events')?.items.map(i => i.label) || []) as string[]
-                                : isChampionship
-                                ? (currentGroups.find(g => g.category === 'Championship')?.items.map(i => i.label) || []) as string[]
-                                : category.categories;
-                             
-                             const Icon = currentCollectionCategory === 'box' ? Package : 
-                                          currentCollectionCategory === 'decks' ? Layers : 
-                                          currentCollectionCategory === 'store-events' ? Store : 
-                                          currentCollectionCategory === 'championship' ? Trophy : 
-                                          currentCollectionCategory === 'coleccionismo' ? Diamond : Library;
-                              
-                              return (
-                               <div className={`grid ${(isStoreEvents || isChampionship || isColeccionismo) ? 'grid-cols-1' : 'grid-cols-2'} gap-4`}>
-                                 {subcategories.map(sub => {
-                                   const expansionItem = isColeccionismo 
-                                     ? currentGroups.find(g => g.category === 'Coleccionismo')?.items.find(i => i.label === sub)
-                                     : isStoreEvents 
-                                     ? currentGroups.find(g => g.category === 'Store Events')?.items.find(i => i.label === sub)
-                                     : isChampionship
-                                     ? currentGroups.find(g => g.category === 'Championship')?.items.find(i => i.label === sub)
-                                     : null;
-                                   
-                                   const isLocked = expansionItem?.locked;
-                                   const group = !isColeccionismo ? currentGroups.find(g => g.category === sub) : null;
-                                   
-                                   const searchBoxId = expansionItem ? expansionItem.id : (group?.items?.[0] ? group.items[0].id : null);
-                                   let cardFallback: string | undefined;
-                                   if (searchBoxId) {
-                                     let targetIdForCards = searchBoxId;
-                                     if (expansionItem?.subItems?.[0]) {
-                                       targetIdForCards = expansionItem.subItems[0].id;
-                                     } else if (group?.items?.[0]?.subItems?.[0]) {
-                                       targetIdForCards = group.items[0].subItems[0].id;
-                                     }
-                                     const cardsInSet = cards.filter(c => c.expansion === targetIdForCards || (PACK_ARRAYS[targetIdForCards] && PACK_ARRAYS[targetIdForCards].includes(c.id)) || (targetIdForCards.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${targetIdForCards}`]?.includes(c.id)) || (targetIdForCards === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)));
-                                     const firstCard = cardsInSet[0];
-                                     const firstCardImage = firstCard ? firstCard.imageUrl : undefined;
-                                     cardFallback = firstCardImage ? (firstCardImage.startsWith('http') || firstCardImage.startsWith('/') ? firstCardImage : `/${firstCardImage}`) : undefined;
-                                   }
 
-                                   const bgImage = (expansionItem && SET_BG[expansionItem.id]) || (expansionItem?.subItems?.[0] && SET_BG[expansionItem.subItems[0].id]) || (group && group.items[0] && SET_BG[group.items[0].id]) || cardFallback || CATEGORY_BG[currentCollectionCategory || ''];
-                                   const bgPos = (expansionItem && SET_BG_POS[expansionItem.id]) || (expansionItem?.subItems?.[0] && SET_BG_POS[expansionItem.subItems[0].id]) || (group && group.items[0] && SET_BG_POS[group.items[0].id]) || (['decks', 'expansions', 'promos', 'energy-markers', 'store-events', 'championship'].includes(currentCollectionCategory || '') ? 'bg-[50%_25%]' : 'bg-center');
-
-                                   return (
-                                     <motion.button
-                                       key={sub}
-                                       whileHover={isLocked ? {} : { y: -2 }}
-                                       whileTap={isLocked ? {} : { scale: 0.98 }}
-                                       disabled={isLocked}
-                                       onClick={() => {
-                                          if (isColeccionismo || isStoreEvents || isChampionship) {
-                                            if (expansionItem) {
-                                              if (expansionItem.subItems && expansionItem.subItems.length > 0) {
-                                                setCurrentCollectionSubCategory(sub);
-                                              } else {
-                                                setFilters({...filters, expansion: expansionItem.id});
-                                              }
-                                            }
-                                          } else {
-                                            const group = currentGroups.find(g => g.category === sub);
-                                            if (group && group.items.length === 1 && (!group.items[0].subItems || group.items[0].subItems.length === 0)) {
-                                              setFilters({...filters, expansion: group.items[0].id});
-                                            } else {
-                                              setCurrentCollectionSubCategory(sub);
-                                            }
-                                          }
-                                          window.scrollTo(0, 0);
-                                       }}
-                                       className={`relative bg-[#1E1E1E] p-6 rounded-2xl border border-white/5 flex flex-col items-start gap-4 shadow-2xl transition-all overflow-hidden ${isLocked ? 'opacity-50 cursor-not-allowed' : 'hover:border-orange-500/30 group'}`}
-                                     >
-                                       {bgImage && (
-                                         <>
-                                           <img 
-                                             src={bgImage}
-                                             loading="lazy"
-                                             decoding="async"
-                                             alt=""
-                                             style={{ contentVisibility: 'auto' }}
-                                             className={`absolute inset-0 w-full h-full object-cover z-0 ${bgPos.replace('bg-[50%_25%]', 'object-[50%_25%]').replace('bg-center', 'object-center').replace('bg-top', 'object-top')} opacity-20 pointer-events-none grayscale group-hover:grayscale-0 transition-all duration-500`}
-                                           />
-                                           <div className="absolute inset-0 z-1 bg-gradient-to-br from-[#1E1E1E]/40 to-transparent pointer-events-none" />
-                                         </>
-                                       )}
-                                       <div className="relative z-10 w-full flex flex-col items-start gap-4">
-                                         <div className="w-12 h-12" />
-                                         <div className="flex flex-col items-start">
-                                           <span className="text-xs font-black text-white uppercase tracking-tighter italic text-left leading-tight group-hover:text-orange-500 transition-colors">{sub}</span>
-                                           {isLocked && <span className="text-[7px] bg-white/10 text-gray-500 px-1.5 py-0.5 rounded mt-1 font-bold">SOON</span>}
-                                         </div>
-                                       </div>
-                                     </motion.button>
-                                   );
-                                 })}
-                               </div>
-                             );
-                          }
+                              {!isLocked && (
+                                <div className="relative z-10 w-full flex items-center justify-between mt-auto pt-2 border-t border-white/5">
+                                  <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">{lang === 'es' ? 'PROGRESO' : 'PROGRESS'}</span>
+                                  <div className="flex items-center gap-3">
+                                    <p className="text-sm font-black text-white">{subProgress}%</p>
+                                    <div className="w-24 h-2 bg-gray-800 rounded-full overflow-hidden border border-white/5">
+                                      <div className="h-full bg-gradient-to-r from-orange-500 to-amber-500" style={{ width: `${subProgress}%` }} />
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                            </motion.button>
+                          );
+                        })}
+                      </div>
+                    );
+                  })()
+                ) : (
+                  (() => {
 
                           // LEVEL 2 LIST OF SETS
                             const isColeccionismo = currentCollectionCategory === 'coleccionismo';
@@ -10227,14 +11216,7 @@ export default function TrackerApp() {
                                  const isExpandable = !!item.subItems && item.subItems.length > 0;
                                  const isExpanded = expandedCategories.includes(item.id);
 
-                                 let neededInSet = 0;
-                                 let ownedInSet = 0;
-                                 cardsInSet.forEach(c => {
-                                   const target = getTargetQuantity(c, collectionGoal);
-                                   const quantity = inventory.find(i => i.cardId === c.id)?.quantity || 0;
-                                   neededInSet += target;
-                                   ownedInSet += Math.min(quantity, target);
-                                 });
+                                 const { total: neededInSet, owned: ownedInSet } = getDeduplicatedStats(cardsInSet, inventory, collectionGoal);
                                  const progress = neededInSet > 0 ? Math.round((ownedInSet / neededInSet) * 100) : 0;
                                  
                                  const firstCard = cardsInSet[0];
@@ -10329,16 +11311,30 @@ export default function TrackerApp() {
                                            exit={{ height: 0, opacity: 0 }}
                                            className="bg-black/20 border-t border-white/5 p-3 space-y-1"
                                          >
-                                           {(item.subItems || []).map(sub => (
-                                             <button
-                                               key={sub.id}
-                                               onClick={() => setFilters({...filters, expansion: sub.id})}
-                                               className="w-full p-4 rounded-2xl hover:bg-orange-500/10 transition-all flex items-center justify-between group"
-                                             >
-                                               <span className="text-sm font-black text-gray-300 group-hover:text-orange-500 transition-colors uppercase italic">{sub.label}</span>
-                                               <ChevronRight size={16} className="text-gray-700 group-hover:text-orange-500" />
-                                             </button>
-                                           ))}
+                                           {(item.subItems || []).map(sub => {
+                                              const cardsInSub = cards.filter(c => c.expansion === sub.id || (PACK_ARRAYS[sub.id] && PACK_ARRAYS[sub.id].includes(c.id)) || (sub.id.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${sub.id}`]?.includes(c.id)) || (sub.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)));
+                                              const { total: neededInSub, owned: ownedInSub } = getDeduplicatedStats(cardsInSub, inventory, collectionGoal);
+                                              const subProgress = neededInSub > 0 ? Math.round((ownedInSub / neededInSub) * 100) : 0;
+
+                                              return (
+                                                <button
+                                                  key={sub.id}
+                                                  onClick={() => setFilters({...filters, expansion: sub.id})}
+                                                  className="w-full p-4 rounded-2xl hover:bg-orange-500/10 transition-all flex items-center justify-between group text-left"
+                                                >
+                                                  <span className="text-sm font-black text-gray-300 group-hover:text-orange-500 transition-colors uppercase italic">{sub.label}</span>
+                                                  <div className="flex items-center gap-4">
+                                                    <div className="text-right">
+                                                      <p className="text-[10px] font-black text-gray-400">{subProgress}%</p>
+                                                      <div className="w-12 h-1 bg-gray-800 rounded-full mt-1 overflow-hidden">
+                                                        <div className="h-full bg-orange-500" style={{ width: `${subProgress}%` }} />
+                                                      </div>
+                                                    </div>
+                                                    <ChevronRight size={16} className="text-gray-700 group-hover:text-orange-500" />
+                                                  </div>
+                                                </button>
+                                              );
+                                            })}
                                          </motion.div>
                                        )}
                                     </AnimatePresence>
@@ -10347,12 +11343,8 @@ export default function TrackerApp() {
                                })}
                             </div>
                           );
-                        })()}
+                        })())}
                       </div>
-                    </section>
-                  </div>
-                )}
-              </div>
             ) : (
               <div className="space-y-6">
                 <div className="flex justify-between items-center bg-[#1E1E1E] p-4 rounded-2xl border border-white/5 shadow-xl">
@@ -10441,6 +11433,811 @@ export default function TrackerApp() {
             )}
           </div>
         )}
+
+        {activeTab === 'wants' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="pb-24 space-y-6"
+          >
+            {/* Link Copy Confirmation Toast */}
+            <AnimatePresence>
+              {showCopyToast && (
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 50 }}
+                  className="fixed bottom-24 left-1/2 -translate-x-1/2 bg-emerald-500 text-white px-6 py-3 rounded-full font-black text-xs uppercase tracking-widest z-50 shadow-2xl flex items-center gap-2 border border-emerald-400 text-center"
+                >
+                  <Check size={16} />
+                  <span>{lang === 'es' ? '¡ENLACE COPIADO!' : 'LINK COPIED!'}</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {activeWantsListId ? (
+              // --- DETAIL VIEW OF A WANT LIST ---
+              (() => {
+                const list = wantsLists.find(l => l.id === activeWantsListId) || (sharedWantsList?.id === activeWantsListId ? sharedWantsList : null);
+                if (!list) {
+                  return (
+                    <div className="text-center py-12 bg-[#1E1E1E]/50 border border-white/5 rounded-3xl p-6">
+                      <p className="text-gray-400 font-bold mb-4">
+                        {lang === 'es' ? 'La lista no existe o no tienes permiso para verla.' : 'The list does not exist or you do not have permission to view it.'}
+                      </p>
+                      <button
+                        onClick={() => { setActiveWantsListId(null); setWantsSearchQuery(''); }}
+                        className="px-6 py-3 bg-orange-500 hover:bg-orange-600 font-bold text-white rounded-2xl transition-all"
+                      >
+                        {lang === 'es' ? 'Volver a mis Listas' : 'Back to My Lists'}
+                      </button>
+                    </div>
+                  );
+                }
+
+                const listCards = list.cardIds.map(id => cards.find(c => c.id === id)).filter(Boolean) as Card[];
+                const visibleListCards = wantsHideAcquired
+                  ? listCards.filter(c => !isCardFullyAcquired(list, c.id))
+                  : listCards;
+                const acquiredCount = list.cardIds.filter(id => isCardFullyAcquired(list, id)).length;
+                const totalCount = list.cardIds.length;
+                const progressWidth = totalCount > 0 ? (acquiredCount / totalCount) * 100 : 0;
+
+                const totalWantedQty = list.cardIds.reduce((sum, id) => sum + getCardWantedQty(list, id), 0);
+                const totalAcquiredQty = list.cardIds.reduce((sum, id) => sum + getCardAcquiredQty(list, id), 0);
+                const progressPercent = totalWantedQty > 0 ? Math.round((totalAcquiredQty / totalWantedQty) * 100) : 0;
+
+                const inlineSearchResults = wantsSearchQuery.length >= 2 ? cards.filter(c =>
+                  c.name.toLowerCase().includes(wantsSearchQuery.toLowerCase()) ||
+                  c.cardNumber.toLowerCase().includes(wantsSearchQuery.toLowerCase())
+                ).slice(0, 5) : [];
+
+                const isAnotherOwner = list.ownerId && list.ownerId !== user?.uid;
+
+                return (
+                  <div className="space-y-6">
+                    {/* Header Controls */}
+                    <div className="flex items-center justify-between">
+                      <button
+                        onClick={() => {
+                          setActiveWantsListId(null);
+                          setWantsSearchQuery('');
+                          setSharedWantsList(null);
+                        }}
+                        className="flex items-center gap-1 text-xs font-black uppercase text-orange-500 tracking-widest hover:text-orange-400 bg-orange-500/10 p-2.5 px-4 rounded-xl border border-orange-500/20 active:scale-95 transition-all animate-fade-in"
+                      >
+                        <ChevronLeft size={16} />
+                        <span>{lang === 'es' ? 'VOLVER' : 'BACK'}</span>
+                      </button>
+
+                      {isAnotherOwner && (
+                        <span className="text-[10px] font-black uppercase bg-blue-500/10 text-blue-400 border border-blue-500/20 px-3 py-1.5 rounded-full">
+                          {lang === 'es' ? 'LISTA DE OTRO USUARIO' : 'OTHER USER\'S LIST'}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Want List Main Info Card */}
+                    <div className="bg-[#1E1E1E]/50 border border-white/5 rounded-3xl p-6 backdrop-blur-xl relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl -mr-8 -mt-8 pointer-events-none" />
+
+                      <h2 className="text-2xl font-black text-white leading-tight mb-2 tracking-tight uppercase italic flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <span>{list.name}</span>
+                        <span className="text-[10px] text-gray-400 normal-case not-italic font-black bg-white/5 px-2.5 py-1.5 rounded-xl border border-white/5 uppercase tracking-widest">
+                          {totalCount} / 50 {lang === 'es' ? 'cartas' : 'cards'}
+                        </span>
+                      </h2>
+                      {list.description && (
+                        <p className="text-gray-400 text-sm mb-6 whitespace-pre-wrap">{list.description}</p>
+                      )}
+
+                      {/* Progress Statistics */}
+                      <div className="space-y-3 border-t border-white/5 pt-4">
+                        <div className="flex justify-between items-center text-xs font-black tracking-widest">
+                          <span className="text-gray-400 uppercase">{lang === 'es' ? 'CONSEGUIDAS' : 'ACQUIRED'}</span>
+                          <span className="text-white bg-white/5 px-2.5 py-1 rounded-lg">
+                            {collectionGoal === 'player' ? (
+                              <span>{totalAcquiredQty} / {totalWantedQty} ({progressPercent}%) {lang === 'es' ? 'COPIAS' : 'COPIES'}</span>
+                            ) : (
+                              <span>{acquiredCount} / {totalCount} ({Math.round(progressWidth)}%)</span>
+                            )}
+                          </span>
+                        </div>
+
+                        <div className="w-full bg-white/5 rounded-full h-2.5 overflow-hidden border border-white/10 p-0.5">
+                          <div
+                            className="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-300"
+                            style={{ width: `${collectionGoal === 'player' ? progressPercent : progressWidth}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Export / Share Actions */}
+                      <div className="grid grid-cols-2 gap-3 mt-6 border-t border-white/5 pt-5">
+                        <button
+                          onClick={() => shareWantsListAsImage(list)}
+                          disabled={isExportingImage}
+                          className="flex items-center justify-center gap-2 p-3.5 bg-white/5 hover:bg-white/10 disabled:opacity-50 text-white rounded-2xl border border-white/10 font-bold text-xs uppercase tracking-wider active:scale-95 transition-all text-center text-ellipsis overflow-hidden"
+                        >
+                          {isExportingImage ? <RefreshCw size={16} className="animate-spin" /> : <Share2 size={16} className="text-orange-500 shrink-0" />}
+                          <span className="truncate">{isExportingImage ? (lang === 'es' ? 'CREANDO...' : 'CREATING...') : (lang === 'es' ? 'COMPARTIR' : 'SHARE')}</span>
+                        </button>
+                        <button
+                          onClick={() => exportWantsListAsImage(list)}
+                          disabled={isExportingImage}
+                          className="flex items-center justify-center gap-2 p-3.5 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white rounded-2xl font-black text-xs uppercase tracking-wider active:scale-95 transition-all text-center text-ellipsis overflow-hidden"
+                        >
+                          {isExportingImage ? <RefreshCw size={16} className="animate-spin" /> : <Download size={16} className="shrink-0" />}
+                          <span className="truncate">{isExportingImage ? (lang === 'es' ? 'CREANDO...' : 'CREATING...') : (lang === 'es' ? 'DESCARGAR' : 'DOWNLOAD')}</span>
+                        </button>
+                      </div>
+
+                      {isAnotherOwner && (
+                        <div className="mt-5 p-4 bg-blue-500/10 border-2 border-blue-500/30 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+                          <div>
+                            <p className="text-xs font-black uppercase text-blue-400 tracking-wider mb-1">
+                              {lang === 'es' ? '¿Te gusta esta lista?' : 'Do you like this list?'}
+                            </p>
+                            <p className="text-[10px] text-gray-400">
+                              {lang === 'es' ? 'Guárdala en tus colecciones para editarla y hacerle seguimiento.' : 'Save it locally/online to edit and track it yourself.'}
+                            </p>
+                          </div>
+                          <button
+                            onClick={() => handleImportWantsList(list)}
+                            className="bg-blue-500 hover:bg-blue-600 text-white font-black text-xs uppercase tracking-widest px-4 py-2.5 rounded-xl transition-all shadow-md active:scale-95 shrink-0"
+                          >
+                            {lang === 'es' ? 'GUARDAR EN MI APP' : 'SAVE TO MY APP'}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {!isAnotherOwner && (
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-1">
+                        <button
+                          onClick={() => setIsWantsSearchExpanded(!isWantsSearchExpanded)}
+                          className={`flex items-center justify-center gap-2 px-5 py-3 rounded-2xl font-black text-xs uppercase tracking-widest transition-all ${
+                            isWantsSearchExpanded
+                              ? 'bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20'
+                              : 'bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-500/15'
+                          } active:scale-95 shrink-0`}
+                        >
+                          {isWantsSearchExpanded ? <X size={14} /> : <Plus size={14} />}
+                          <span>
+                            {isWantsSearchExpanded
+                              ? (lang === 'es' ? 'OCULTAR BUSCADOR' : 'CLOSE SEARCH')
+                              : (lang === 'es' ? 'AÑADIR CARTAS A LA LISTA' : 'ADD CARDS TO LIST')}
+                          </span>
+                        </button>
+                        
+                        {!isWantsSearchExpanded && (
+                          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest text-left hidden sm:inline">
+                            {lang === 'es' ? 'Abre el motor de catálogo para incorporar nuevas cartas' : 'Open the catalog engine to query and append cards'}
+                          </span>
+                        )}
+                      </div>
+                    )}
+
+                    <AnimatePresence>
+                      {!isAnotherOwner && isWantsSearchExpanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="bg-[#1E1E1E]/50 border border-white/5 rounded-3xl p-5 backdrop-blur-sm space-y-4">
+                            <div className="flex justify-between items-center gap-2">
+                              <span className="text-[10px] font-black text-orange-500 uppercase tracking-widest pl-1">
+                                {lang === 'es' ? 'Buscador de Cartas' : 'Card search'}
+                              </span>
+                              <button
+                                onClick={() => setIsWantsSearchExpanded(false)}
+                                className="p-1.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors text-[10px] font-black uppercase tracking-widest flex items-center gap-1 border border-white/5"
+                              >
+                                <X size={12} />
+                                <span>{lang === 'es' ? 'CERRAR' : 'CLOSE'}</span>
+                              </button>
+                            </div>
+
+                            <div className="flex flex-col gap-1.5 text-left">
+                              <div className="relative">
+                                <input
+                                  type="text"
+                                  placeholder={lang === 'es' ? 'Buscar por nombre, código... (ej. FB01-001)' : 'Search by name, code... (e.g. FB01-001)'}
+                                  value={wantsSearchQuery}
+                                  onChange={(e) => setWantsSearchQuery(e.target.value)}
+                                  className="w-full bg-[#121212] border border-white/10 rounded-2xl px-12 py-3.5 text-sm text-white focus:ring-2 focus:ring-orange-500 outline-none transition-all placeholder:text-gray-500"
+                                />
+                                <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+                                {wantsSearchQuery && (
+                                  <button
+                                    onClick={() => setWantsSearchQuery('')}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors"
+                                  >
+                                    <X size={18} />
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Combined Select Dropdowns */}
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                              {/* Expansion Filter */}
+                              <div className="flex flex-col gap-1.5 text-left">
+                                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">
+                                  {lang === 'es' ? 'Colección' : 'Expansion'}
+                                </span>
+                                <select
+                                  value={wantsFilterExpansion}
+                                  onChange={(e) => setWantsFilterExpansion(e.target.value)}
+                                  className="w-full bg-[#121212] text-xs text-white border border-white/10 rounded-xl px-3 py-3 outline-none focus:ring-2 focus:ring-orange-500 transition-all font-bold cursor-pointer"
+                                >
+                                  {allAvailableExpansions.map(exp => (
+                                    <option key={exp.id} value={exp.id} className="bg-[#1E1E1E]">
+                                      {exp.label}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+
+                              {/* Color Filter */}
+                              <div className="flex flex-col gap-1.5 text-left">
+                                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">
+                                  {lang === 'es' ? 'Color' : 'Color'}
+                                </span>
+                                <select
+                                  value={wantsFilterColor}
+                                  onChange={(e) => setWantsFilterColor(e.target.value)}
+                                  className="w-full bg-[#121212] text-xs text-white border border-white/10 rounded-xl px-3 py-3 outline-none focus:ring-2 focus:ring-orange-500 transition-all font-bold cursor-pointer"
+                                >
+                                  <option value="Todos" className="bg-[#1E1E1E]">
+                                    {lang === 'es' ? 'Todos los Colores' : 'All Colors'}
+                                  </option>
+                                  {allAvailableColors.filter(c => c !== 'Todos').map(color => (
+                                    <option key={color} value={color} className="bg-[#1E1E1E]">
+                                      {color}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+
+                              {/* Rarity Filter */}
+                              <div className="flex flex-col gap-1.5 text-left">
+                                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">
+                                  {lang === 'es' ? 'Rareza' : 'Rarity'}
+                                </span>
+                                <select
+                                  value={wantsFilterRarity}
+                                  onChange={(e) => setWantsFilterRarity(e.target.value)}
+                                  className="w-full bg-[#121212] text-xs text-white border border-white/10 rounded-xl px-3 py-3 outline-none focus:ring-2 focus:ring-orange-500 transition-all font-bold cursor-pointer"
+                                >
+                                  <option value="Todos" className="bg-[#1E1E1E]">
+                                    {lang === 'es' ? 'Todas las Rarezas' : 'All Rarities'}
+                                  </option>
+                                  {allAvailableRarities.filter(r => r !== 'Todos').map(rarity => (
+                                    <option key={rarity} value={rarity} className="bg-[#1E1E1E]">
+                                      {rarity.replace(/\*/g, '★')}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+                            </div>
+
+                            {/* Clear Search & Filter State button */}
+                            {hasWantsActiveSearch && (
+                              <div className="flex justify-end pt-1">
+                                <button
+                                  onClick={() => {
+                                    setWantsSearchQuery('');
+                                    setWantsFilterExpansion('Todos');
+                                    setWantsFilterColor('Todos');
+                                    setWantsFilterRarity('Todos');
+                                  }}
+                                  className="text-[10px] font-black text-orange-500 uppercase tracking-widest hover:underline active:scale-95 transition-all flex items-center gap-1.5 bg-orange-500/10 px-3 py-1.5 rounded-full border border-orange-500/20"
+                                >
+                                  <X size={10} />
+                                  <span>{lang === 'es' ? 'LIMPIAR BÚSQUEDA' : 'CLEAR SEARCH'}</span>
+                                </button>
+                              </div>
+                            )}
+
+                            {/* Results list */}
+                            {true && (
+                              <div className="space-y-4 pt-4 border-t border-white/5">
+                                <div className="flex justify-between items-center px-1">
+                                  <h4 className="text-[10px] font-black text-gray-500 uppercase tracking-widest">
+                                    {hasWantsActiveSearch
+                                      ? (lang === 'es' ? 'RESULTADOS DE BÚSQUEDA' : 'SEARCH RESULTS')
+                                      : (lang === 'es' ? 'CATÁLOGO DE CARTAS' : 'CARD CATALOG')} ({wantsSearchResults.length})
+                                  </h4>
+                                </div>
+
+                                {wantsSearchResults.length > 0 ? (
+                                  <div className="space-y-4">
+                                    <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3.5 max-h-[360px] overflow-y-auto p-1.5 custom-scrollbar bg-[#121212]/30 border border-white/5 rounded-2xl">
+                                      {wantsSearchResults.slice(0, wantsSearchLimit).map((card) => {
+                                        const isIncluded = list.cardIds.includes(card.id);
+                                        return (
+                                          <div
+                                            key={card.id}
+                                            onClick={() => handleToggleCardInWantsList(list.id, card.id)}
+                                            className={`bg-[#121212] border rounded-2xl p-2.5 relative overflow-hidden transition-all flex flex-col group/search-card cursor-pointer select-none border-white/10 hover:border-orange-500/50 ${
+                                              isIncluded ? 'border-orange-500 bg-orange-500/[0.04]' : ''
+                                            }`}
+                                          >
+                                            <div className="absolute top-1.5 right-1.5 z-20">
+                                              <div
+                                                className={`p-1.5 rounded-full border transition-all ${
+                                                  isIncluded
+                                                    ? 'bg-orange-500 text-white border-orange-400'
+                                                    : 'bg-black/60 text-white/50 border-white/10 group-hover/search-card:text-white'
+                                                }`}
+                                              >
+                                                {isIncluded ? <Check size={10} /> : <Plus size={10} />}
+                                              </div>
+                                            </div>
+
+                                            <div className="relative pt-[140%] overflow-hidden rounded-xl">
+                                              <img
+                                                src={card.imageUrl}
+                                                alt={card.name}
+                                                className="absolute inset-0 w-full h-full object-cover rounded-xl shadow transition-transform duration-500 group-hover/search-card:scale-105"
+                                                referrerPolicy="no-referrer"
+                                              />
+                                            </div>
+
+                                            <div className="text-left pt-2 flex-1 flex flex-col justify-between">
+                                              <div>
+                                                <p className="text-[11px] font-black tracking-tight text-white line-clamp-1 leading-tight mb-0.5">
+                                                  {card.name}
+                                                </p>
+                                                <p className="text-[9px] text-orange-500 font-extrabold uppercase tracking-widest flex items-center justify-between">
+                                                  <span>{card.cardNumber}</span>
+                                                  <span className="text-gray-400 text-[8px]">{card.rarity.replace(/\*/g, '')}</span>
+                                                </p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+
+                                    {wantsSearchResults.length > wantsSearchLimit && (
+                                      <div className="flex justify-center pt-1">
+                                        <button
+                                          onClick={() => setWantsSearchLimit(prev => prev + 15)}
+                                          className="px-5 py-2 bg-white/5 hover:bg-white/10 text-white border border-white/10 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all active:scale-95"
+                                        >
+                                          {lang === 'es' ? 'CARGAR MÁS RESULTADOS' : 'LOAD MORE RESULTS'}
+                                        </button>
+                                      </div>
+                                    )}
+                                  </div>
+                                ) : (
+                                  <div className="text-center py-8 bg-[#121212]/30 border border-white/5 rounded-2xl p-4">
+                                    <p className="text-xs text-gray-500">
+                                      {lang === 'es' ? 'No se encontraron cartas con los filtros seleccionados' : 'No cards found with the selected filters'}
+                                    </p>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+
+                    {listCards.length > 0 ? (
+                      <div className="space-y-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/5 pb-3">
+                          <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest flex items-center gap-1.5">
+                            <span>{lang === 'es' ? 'CARTAS REGISTRADAS' : 'REGISTERED CARDS'}</span>
+                            <span className="text-orange-500 font-black">
+                              ({wantsHideAcquired ? visibleListCards.length : listCards.length} / {totalCount})
+                            </span>
+                          </h3>
+
+                          {/* Switch toggle control */}
+                          <div className="flex items-center gap-2 bg-white/5 p-1.5 px-3 rounded-xl border border-white/5">
+                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                              {lang === 'es' ? 'Compartir/Ver sólo faltantes' : 'Share/Show missing only'}
+                            </span>
+                            <button
+                              onClick={() => setWantsHideAcquired(!wantsHideAcquired)}
+                              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                                wantsHideAcquired ? 'bg-orange-500' : 'bg-white/11'
+                              }`}
+                            >
+                              <span
+                                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                                  wantsHideAcquired ? 'translate-x-5' : 'translate-x-0'
+                                }`}
+                              />
+                            </button>
+                          </div>
+                        </div>
+
+                        {visibleListCards.length === 0 ? (
+                          <div className="text-center py-16 bg-[#1E1E1E]/20 border border-white/5 rounded-3xl p-6">
+                            <div className="w-12 h-12 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                              <Check size={20} />
+                            </div>
+                            <h4 className="text-sm font-black text-white uppercase tracking-wider mb-1">
+                              {lang === 'es' ? '¡LISTA COMPLETADA!' : 'LIST COMPLETED!'}
+                            </h4>
+                            <p className="text-xs text-gray-400 max-w-[280px] mx-auto leading-relaxed text-balance">
+                              {lang === 'es'
+                                ? '¡Felicidades! Tienes todas las cartas registradas en esta lista.'
+                                : 'Congratulations! You have obtained all the cards in this list.'}
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="grid grid-cols-2 md:grid-cols-5 gap-3.5 pb-8">
+                            {visibleListCards.map((card) => {
+                              const wantedQty = getCardWantedQty(list, card.id);
+                              const acquiredQty = getCardAcquiredQty(list, card.id);
+                              const isAcquired = isCardFullyAcquired(list, card.id);
+                              const inventoryQty = inventory.find(i => i.cardId === card.id)?.quantity || 0;
+                              const isOwnedInInventory = inventoryQty > 0;
+
+                              return (
+                                <div
+                                  key={card.id}
+                                  className={`bg-[#1E1E1E]/50 border rounded-3xl p-3 relative overflow-hidden transition-all flex flex-col group/want-card ${
+                                    isAcquired ? 'border-emerald-500/30' : 'border-white/5 hover:border-white/20'
+                                  }`}
+                                >
+                                  {isAcquired && (
+                                    <div className="absolute top-[28%] left-0 right-0 h-0.5 bg-emerald-500/20 z-20 pointer-events-none" />
+                                  )}
+
+                                  <div className="absolute top-2.5 right-2.5 z-20 flex gap-1.5">
+                                    {isOwnedInInventory && (
+                                      <span className="text-[8px] font-black uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded-full flex items-center justify-center" title={lang === 'es' ? 'En Colección' : 'In Collection'}>
+                                        <Gem size={8} />
+                                      </span>
+                                    )}
+                                    <button
+                                      onClick={() => handleToggleCardAcquiredInWantsList(list.id, card.id)}
+                                      className={`p-1.5 rounded-full backdrop-blur-md border hover:scale-110 active:scale-95 transition-all ${
+                                        isAcquired
+                                          ? 'bg-emerald-500 text-white border-emerald-400'
+                                          : 'bg-black/40 text-white/50 border-white/10 hover:text-white'
+                                      }`}
+                                    >
+                                      <Check size={12} />
+                                    </button>
+                                  </div>
+
+                                  <div
+                                    onClick={() => setSelectedCard(card)}
+                                    className={`relative pt-[140%] overflow-hidden rounded-xl cursor-pointer ${
+                                      isAcquired ? 'opacity-40 grayscale group-hover/want-card:opacity-60 transition-opacity' : ''
+                                    }`}
+                                  >
+                                    <img
+                                      src={card.imageUrl}
+                                      alt={card.name}
+                                      className="absolute inset-0 w-full h-full object-cover rounded-xl shadow-md transition-transform duration-500 group-hover/want-card:scale-105"
+                                      referrerPolicy="no-referrer"
+                                    />
+                                    {(collectionGoal === 'player' || wantedQty > 1) && (
+                                      <div className="absolute bottom-2 left-2 z-10 bg-[#000000]/85 backdrop-blur-md px-2 py-0.5 rounded-lg text-[9px] font-black text-white border border-white/10 shadow-lg flex items-center gap-1">
+                                        <span className={isAcquired ? 'text-emerald-400 font-black' : 'text-gray-200'}>
+                                          {acquiredQty} / {wantedQty}
+                                        </span>
+                                      </div>
+                                    )}
+                                  </div>
+
+                                  <div className="text-left pt-2 flex-1 flex flex-col justify-between">
+                                    <div>
+                                      <p className={`text-[11px] font-black tracking-tight text-white line-clamp-1 leading-tight mb-0.5 ${isAcquired ? 'line-through text-gray-400' : ''}`}>
+                                        {card.name}
+                                      </p>
+                                      <p className="text-[9px] text-orange-500 font-extrabold uppercase tracking-widest mb-1.5 flex items-center justify-between">
+                                        <span>{card.cardNumber}</span>
+                                        <span className="text-gray-400 text-[8px]">{card.rarity.replace(/\*/g, '')}</span>
+                                      </p>
+
+                                      {/* Quantity Editors for Owner */}
+                                      {!isAnotherOwner && (
+                                        <div className="mt-1.5 mb-2.5 space-y-1 bg-white/5 rounded-2xl p-1.5 border border-white/5">
+                                          {/* Wanted Select */}
+                                          <div className="flex items-center justify-between text-[10px] py-0.5">
+                                            <span className="text-gray-400 font-bold uppercase tracking-wider scale-90 origin-left">
+                                              {lang === 'es' ? 'Faltan:' : 'Need:'}
+                                            </span>
+                                            <div className="flex items-center gap-1 px-1 rounded-md bg-black/30">
+                                              <button
+                                                onClick={(e) => { e.stopPropagation(); handleUpdateCardWantedQty(list.id, card.id, wantedQty - 1); }}
+                                                className="text-gray-400 hover:text-white px-1 active:scale-95 text-xs font-bold"
+                                              >
+                                                -
+                                              </button>
+                                              <span className="text-white font-extrabold text-[10px] min-w-[10px] text-center">
+                                                {wantedQty}
+                                              </span>
+                                              <button
+                                                onClick={(e) => { e.stopPropagation(); handleUpdateCardWantedQty(list.id, card.id, wantedQty + 1); }}
+                                                className="text-gray-400 hover:text-white px-1 active:scale-95 text-xs font-bold"
+                                              >
+                                                +
+                                              </button>
+                                            </div>
+                                          </div>
+
+                                          {/* Got Select */}
+                                          <div className="flex items-center justify-between text-[10px] py-0.5 border-t border-white/5">
+                                            <span className="text-gray-400 font-bold uppercase tracking-wider scale-90 origin-left">
+                                              {lang === 'es' ? 'Tengo:' : 'Got:'}
+                                            </span>
+                                            <div className="flex items-center gap-1 px-1 rounded-md bg-black/30">
+                                              <button
+                                                onClick={(e) => { e.stopPropagation(); handleUpdateCardAcquiredQty(list.id, card.id, acquiredQty - 1); }}
+                                                className="text-gray-400 hover:text-white px-1 active:scale-95 text-xs font-bold"
+                                              >
+                                                -
+                                              </button>
+                                              <span className={`font-extrabold text-[10px] min-w-[10px] text-center ${isAcquired ? 'text-emerald-400' : 'text-white'}`}>
+                                                {acquiredQty}
+                                              </span>
+                                              <button
+                                                onClick={(e) => { e.stopPropagation(); handleUpdateCardAcquiredQty(list.id, card.id, acquiredQty + 1); }}
+                                                className="text-gray-400 hover:text-white px-1 active:scale-95 text-xs font-bold"
+                                              >
+                                                +
+                                              </button>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      )}
+                                    </div>
+
+                                    {!isAnotherOwner && (
+                                      <button
+                                        onClick={() => handleToggleCardInWantsList(list.id, card.id)}
+                                        className="w-full text-center text-[9px] font-black text-gray-500 uppercase tracking-widest hover:text-red-400 p-1.5 rounded-lg bg-white/0 hover:bg-red-500/10 transition-all border border-transparent hover:border-red-500/10 flex items-center justify-center gap-1 mt-1.5"
+                                      >
+                                        <Trash2 size={10} />
+                                        <span>{lang === 'es' ? 'DESMARCAR' : 'UNMARK'}</span>
+                                      </button>
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="text-center py-20 bg-[#1E1E1E]/30 border border-white/5 rounded-3xl p-6 opacity-80">
+                        <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-4 mx-auto text-orange-500">
+                          <ListTodo size={28} />
+                        </div>
+                        <h3 className="text-base font-black text-white uppercase italic tracking-wider mb-2">{lang === 'es' ? 'Lista vacía' : 'Empty List'}</h3>
+                        <p className="text-xs text-gray-400 max-w-[280px] mx-auto leading-relaxed">
+                          {lang === 'es'
+                            ? 'Busca cartas arriba para empezar a construir tu lista, o hazlo navegando por la colección y tocando "Añadir a lista" en los detalles de las cartas.'
+                            : 'Search cards above to start building your custom list, or do so from any card detail modal as you browse through the catalogs.'}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()
+            ) : (
+              // --- DIRECTORY/LIST DIRECTORY VIEW ---
+              (() => {
+                const currentWantsLists = wantsLists.filter(l => l.gameType === gameType || (!l.gameType && gameType === 'masters'));
+                return (
+                  <div className="space-y-6 animate-fade-in">
+                    <div className="bg-[#1E1E1E]/50 border border-white/5 rounded-3xl p-6 backdrop-blur-xl relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-6">
+                      <div className="text-center sm:text-left">
+                        <h2 className="text-2xl font-black text-white italic tracking-tight uppercase mb-2 flex flex-wrap items-center gap-2.5 justify-center sm:justify-start">
+                          <span>{lang === 'es' ? 'TUS LISTAS' : 'YOUR LISTS'}</span>
+                          <span className="text-[11px] not-italic bg-orange-500/10 text-orange-400 border border-orange-500/20 px-2.5 py-0.5 rounded-lg font-mono tracking-normal font-bold">
+                            {currentWantsLists.length}/10
+                          </span>
+                        </h2>
+                        <p className="text-gray-400 text-sm max-w-sm leading-relaxed">
+                          {lang === 'es'
+                            ? 'Crea listas personalizadas de rarezas, personajes o metas específicas para hacerles seguimiento físico y compartirlas.'
+                            : 'Create personalized lists (wants, priorities, or specific characters) to track acquisitions physically and export high-fidelity collages.'}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => setIsWantsCreateModalOpen(true)}
+                        className="bg-orange-500 hover:bg-orange-600 text-white font-black text-xs uppercase tracking-widest px-6 py-4 rounded-2xl transition-all shadow-md active:scale-95 flex items-center gap-2 shrink-0 border border-orange-400/20"
+                      >
+                        <Plus size={16} />
+                        <span>{lang === 'es' ? 'CREAR LISTA' : 'CREATE LIST'}</span>
+                      </button>
+                    </div>
+
+                    {currentWantsLists.length > 0 ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {currentWantsLists.map((list) => {
+                          const totalCards = list.cardIds.length;
+                          const acquiredCards = list.cardIds.filter(id => isCardFullyAcquired(list, id)).length;
+                          
+                          const totalWantedQty = list.cardIds.reduce((sum, id) => sum + getCardWantedQty(list, id), 0);
+                          const totalAcquiredQty = list.cardIds.reduce((sum, id) => sum + getCardAcquiredQty(list, id), 0);
+                          const progressPercent = totalWantedQty > 0 ? (totalAcquiredQty / totalWantedQty) * 100 : 0;
+                          
+                          const progress = totalCards > 0 ? (acquiredCards / totalCards) * 100 : 0;
+
+                          return (
+                            <div
+                              key={list.id}
+                              onClick={() => {
+                                setActiveWantsListId(list.id);
+                                setWantsSearchQuery('');
+                              }}
+                              className="bg-[#1E1E1E]/50 border border-white/5 rounded-3xl p-5 hover:border-white/10 hover:bg-[#1E1E1E]/75 transition-all text-left flex flex-col justify-between relative cursor-pointer group/list-row overflow-hidden pb-6"
+                            >
+                              <div className="space-y-2">
+                                <div className="flex items-start justify-between gap-3">
+                                  <h3 className="text-base font-black text-white group-hover/list-row:text-orange-500 transition-colors uppercase leading-none italic tracking-tight">
+                                    {list.name}
+                                  </h3>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      if (confirm(lang === 'es' ? '¿Quieres borrar esta lista permanentemente?' : 'Delete list permanently?')) {
+                                        handleDeleteWantsList(list.id);
+                                      }
+                                    }}
+                                    className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors active:scale-90"
+                                  >
+                                    <Trash2 size={15} />
+                                  </button>
+                                </div>
+
+                                {list.description && (
+                                  <p className="text-gray-400 text-xs line-clamp-2 leading-relaxed">
+                                    {list.description}
+                                  </p>
+                                )}
+                              </div>
+
+                              <div className="mt-5 space-y-2 border-t border-white/5 pt-4">
+                                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-gray-500">
+                                  <span>{totalCards} {lang === 'es' ? 'CARTAS REGISTRADAS' : 'CARDS ADDED'}</span>
+                                  <span className="text-white bg-white/5 px-2 py-0.5 rounded">
+                                    {collectionGoal === 'player' ? (
+                                      <span>{totalAcquiredQty} / {totalWantedQty} ({Math.round(progressPercent)}%) {lang === 'es' ? 'COPIAS' : 'COPIES'}</span>
+                                    ) : (
+                                      <span>{acquiredCards} / {totalCards} ({Math.round(progress)}%)</span>
+                                    )}
+                                  </span>
+                                </div>
+                                <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden p-[1px] border border-white/5">
+                                  <div
+                                    className="bg-gradient-to-r from-orange-500 to-amber-400 h-full rounded-full transition-all duration-300"
+                                    style={{ width: `${collectionGoal === 'player' ? progressPercent : progress}%` }}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="text-center py-20 bg-[#1E1E1E]/30 border border-white/5 rounded-3xl p-6">
+                        <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-5 mx-auto text-orange-500/40">
+                          <ListTodo size={36} />
+                        </div>
+                        <h3 className="text-lg font-black text-white uppercase italic mb-2">{lang === 'es' ? 'Ninguna lista creada' : 'No Selections Found'}</h3>
+                        <p className="text-sm text-gray-400 max-w-sm mx-auto mb-8 leading-relaxed">
+                          {lang === 'es'
+                            ? 'Empieza creando tu primera lista de Wants. Puedes añadir cartas directamente buscando dentro de la propia lista o navegando por el catálogo principal.'
+                            : 'Start by building your first curated wants selection. You can define priorities, missing rarities, and tick cards off anytime.'}
+                        </p>
+                        <button
+                          onClick={() => setIsWantsCreateModalOpen(true)}
+                          className="bg-orange-500 hover:bg-orange-600 border border-orange-400/20 text-white font-black text-xs uppercase tracking-widest px-6 py-3.5 rounded-2xl transition-all shadow-md active:scale-95"
+                        >
+                          {lang === 'es' ? 'CREAR NUEVA LISTA' : 'CREATE FIRST LIST'}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()
+            )}
+          </motion.div>
+        )}
+
+        {/* --- CUSTOM LIST CREATION MODAL --- */}
+        <AnimatePresence>
+          {isWantsCreateModalOpen && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.6 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsWantsCreateModalOpen(false)}
+                className="fixed inset-0 bg-black z-[100]"
+              />
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                className="fixed inset-x-4 top-1/2 -translate-y-1/2 bg-[#1E1E1E] rounded-3xl border border-white/10 shadow-2xl p-6 z-[110] max-w-md mx-auto space-y-5"
+              >
+                <div className="flex justify-between items-center pb-2 border-b border-white/5">
+                  <h3 className="text-lg font-black text-white uppercase tracking-tight italic flex items-center gap-2">
+                    <ListTodo className="text-orange-500" size={20} />
+                    <span>{lang === 'es' ? 'NUEVA LISTA' : 'NEW LIST'}</span>
+                  </h3>
+                  <button
+                    onClick={() => setIsWantsCreateModalOpen(false)}
+                    className="p-1.5 hover:bg-white/5 rounded-lg text-gray-500 hover:text-white transition-colors"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+
+                <div className="space-y-4 text-left">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black uppercase text-gray-400 tracking-wider">
+                      {lang === 'es' ? 'Nombre de la Lista' : 'List Name'}
+                    </label>
+                    <input
+                      type="text"
+                      maxLength={80}
+                      placeholder={lang === 'es' ? 'Ej. Mis Rarezas Secretas, Playsets BT03...' : 'e.g. My Secret Rares, BT03 playsets...'}
+                      value={newWantsListName}
+                      onChange={(e) => setNewWantsListName(e.target.value)}
+                      className="w-full bg-[#121212] border border-white/10 rounded-2xl px-4 py-3.5 text-sm text-white focus:ring-2 focus:ring-orange-500 outline-none transition-all placeholder:text-gray-600"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black uppercase text-gray-400 tracking-wider">
+                      {lang === 'es' ? 'Descripción (Opcional)' : 'Description (Optional)'}
+                    </label>
+                    <textarea
+                      maxLength={500}
+                      rows={3}
+                      placeholder={lang === 'es' ? 'Añade una descripción sobre los objetivos de esta lista...' : 'Describe the targets or goal of this custom curation...'}
+                      value={newWantsListDescription}
+                      onChange={(e) => setNewWantsListDescription(e.target.value)}
+                      className="w-full bg-[#121212] border border-white/10 rounded-2xl p-4 text-sm text-white focus:ring-2 focus:ring-orange-500 outline-none transition-all placeholder:text-gray-600 resize-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 pt-2">
+                  <button
+                    onClick={() => setIsWantsCreateModalOpen(false)}
+                    className="p-3.5 bg-white/5 hover:bg-white/10 text-white rounded-2xl font-bold text-xs uppercase tracking-wider transition-colors active:scale-95"
+                  >
+                    {lang === 'es' ? 'CANCELAR' : 'CANCEL'}
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (!newWantsListName.trim()) {
+                        alert(lang === 'es' ? 'Por favor escribe un nombre válido' : 'Please provide a valid list name');
+                        return;
+                      }
+                      handleAddWantsList(newWantsListName.trim(), newWantsListDescription.trim());
+                      setNewWantsListName('');
+                      setNewWantsListDescription('');
+                      setIsWantsCreateModalOpen(false);
+                    }}
+                    className="p-3.5 bg-orange-500 hover:bg-orange-600 border border-orange-400/10 text-white rounded-2xl font-black text-xs uppercase tracking-wider transition-colors active:scale-95"
+                  >
+                    {lang === 'es' ? 'CREAR LISTA' : 'CREATE LIST'}
+                  </button>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
 
         {activeTab === 'search' && (
           <div className="space-y-6">
@@ -11212,6 +13009,72 @@ export default function TrackerApp() {
                       <Plus size={20} />
                     </button>
                   </div>
+
+                  {(() => {
+                    const currentWantsLists = wantsLists.filter(l => l.gameType === gameType || (!l.gameType && gameType === 'masters'));
+                    if (currentWantsLists.length === 0) return null;
+                    return (
+                      <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 w-full relative z-10 text-left space-y-2.5">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-1">
+                            <ListTodo size={12} className="text-orange-500" />
+                            <span>{lang === 'es' ? 'MIS LISTAS DE WANTS' : 'MY WANTS LISTS'}</span>
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-1.5 max-h-32 overflow-y-auto">
+                          {currentWantsLists.map(list => {
+                            const hasCard = list.cardIds.includes(selectedCard.id);
+                            const wantedQty = getCardWantedQty(list, selectedCard.id);
+                            return (
+                              <div
+                                key={list.id}
+                                className={`w-full p-2.5 rounded-xl text-xs flex items-center justify-between transition-all border ${
+                                  hasCard
+                                    ? 'bg-orange-500/10 border-orange-500/20 text-orange-400 font-bold'
+                                    : 'bg-white/0 border-transparent hover:bg-white/5 text-gray-400'
+                                }`}
+                              >
+                                <button
+                                  onClick={() => handleToggleCardInWantsList(list.id, selectedCard.id)}
+                                  className="truncate text-left flex-1 max-w-[170px] hover:text-white transition-all font-bold"
+                                >
+                                  {list.name}
+                                </button>
+                                
+                                <div className="flex items-center gap-1.5 shrink-0 font-black">
+                                  {hasCard && (
+                                    <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-black/40 border border-white/5 mr-1.5 animate-fade-in">
+                                      <button
+                                        onClick={(e) => { e.stopPropagation(); handleUpdateCardWantedQty(list.id, selectedCard.id, wantedQty - 1); }}
+                                        className="text-gray-400 hover:text-white px-1 active:scale-95 text-[10px]"
+                                      >
+                                        -
+                                      </button>
+                                      <span className="text-white text-[10px] min-w-[8px] text-center">
+                                        {wantedQty}
+                                      </span>
+                                      <button
+                                        onClick={(e) => { e.stopPropagation(); handleUpdateCardWantedQty(list.id, selectedCard.id, wantedQty + 1); }}
+                                        className="text-gray-400 hover:text-white px-1 active:scale-95 text-[10px]"
+                                      >
+                                        +
+                                      </button>
+                                    </div>
+                                  )}
+                                  <button
+                                    onClick={() => handleToggleCardInWantsList(list.id, selectedCard.id)}
+                                    className="text-[9px] font-black tracking-widest uppercase transition-all"
+                                  >
+                                    {hasCard ? (lang === 'es' ? '✓ DENTRO' : '✓ SAVED') : (lang === 'es' ? '+ AÑADIR' : '+ ADD')}
+                                  </button>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })()}
 
                   {(() => {
                     const displaySourceProduct = CARD_METADATA[selectedCard.id]?.sourceProduct || selectedCard.sourceProduct;

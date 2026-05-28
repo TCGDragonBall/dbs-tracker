@@ -81,6 +81,22 @@
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["uid", "email"]
+    },
+    "WantsList": {
+      "title": "WantsList",
+      "description": "User customized list of target cards",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "cardIds": { "type": "array", "items": { "type": "string" } },
+        "acquiredCardIds": { "type": "array", "items": { "type": "string" } },
+        "isPublic": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "name", "cardIds", "acquiredCardIds"]
     }
   },
   "firestore": {
@@ -111,6 +127,10 @@
     "/admins/{userId}": {
       "schema": { "type": "object", "properties": { "role": { "type": "string" } } },
       "description": "Admin users list"
+    },
+    "/lists/{listId}": {
+      "schema": "WantsList",
+      "description": "Custom wants lists"
     }
   }
 }

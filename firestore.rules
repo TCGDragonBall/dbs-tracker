@@ -110,6 +110,27 @@ service cloud.firestore {
              (data.timestamp == request.time || data.timestamp == null);
     }
 
+    function isValidListForCreate(data) {
+      return data.keys().hasAll(['ownerId', 'name', 'cardIds', 'acquiredCardIds', 'createdAt', 'updatedAt']) &&
+             data.ownerId == request.auth.uid &&
+             data.name is string && data.name.size() <= 100 &&
+             (!('description' in data) || (data.description is string && data.description.size() <= 600)) &&
+             data.cardIds is list && data.cardIds.size() <= 100 &&
+             data.acquiredCardIds is list && data.acquiredCardIds.size() <= 100 &&
+             (!('isPublic' in data) || (data.isPublic is bool)) &&
+             (data.createdAt == request.time || data.createdAt == null) &&
+             (data.updatedAt == request.time || data.updatedAt == null);
+    }
+
+    function isValidListForUpdate(data) {
+      return data.name is string && data.name.size() <= 100 &&
+             (!('description' in data) || (data.description is string && data.description.size() <= 600)) &&
+             data.cardIds is list && data.cardIds.size() <= 100 &&
+             data.acquiredCardIds is list && data.acquiredCardIds.size() <= 100 &&
+             (!('isPublic' in data) || (data.isPublic is bool)) &&
+             (!('updatedAt' in data) || data.updatedAt == request.time || (existing() != null && data.updatedAt == existing().updatedAt));
+    }
+
     // --- Collection Matches ---
 
     match /cards/{cardId} {
@@ -160,6 +181,16 @@ service cloud.firestore {
     match /admins/{userId} {
       allow read: if isVerifiedUser();
       allow write: if isAdmin();
+    }
+
+    match /lists/{listId} {
+      allow get: if resource.data.isPublic == true || (isSignedIn() && (resource.data.ownerId == request.auth.uid || isAdmin()));
+      allow list: if isVerifiedUser() && (resource.data.ownerId == request.auth.uid || resource.data.isPublic == true || isAdmin());
+      allow create: if isVerifiedUser() && isValidListForCreate(incoming()) && isValidId(listId);
+      allow update: if isOwner(existing().ownerId) &&
+                      isValidListForUpdate(incoming()) &&
+                      incoming().diff(existing()).affectedKeys().hasOnly(['name', 'description', 'cardIds', 'acquiredCardIds', 'isPublic', 'updatedAt']);
+      allow delete: if isOwner(existing().ownerId) || isAdmin();
     }
 
     match /test/connection {
