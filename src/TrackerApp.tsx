@@ -5273,7 +5273,7 @@ const getDeduplicatedStats = (subsetCards: Card[], inventory: InventoryItem[], g
       total += target;
       owned += ownedValue;
     });
-    return { total, owned };
+    return { total, owned: Math.max(0, Math.min(owned, total)) };
   }
 
   const baseMap = new Map<string, { needed: number; owned: number }>();
@@ -5298,7 +5298,7 @@ const getDeduplicatedStats = (subsetCards: Card[], inventory: InventoryItem[], g
     total += v.needed;
     owned += Math.min(v.owned, v.needed);
   });
-  return { total, owned };
+  return { total, owned: Math.max(0, Math.min(owned, total)) };
 };
 
 const getTargetQuantity = (card: Card, goal: 'collector' | 'player') => {
@@ -6004,7 +6004,7 @@ const Dashboard = ({
     return {
       totalNeeded,
       totalOwned,
-      percentage: totalNeeded > 0 ? Math.round((totalOwned / totalNeeded) * 100) : 0
+      percentage: totalNeeded > 0 ? Math.min(100, Math.round((totalOwned / totalNeeded) * 100)) : 0
     };
   }, [cards, inventory, collectionGoal]);
 
@@ -6296,7 +6296,7 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
         name: rarity,
         owned,
         total,
-        percentage: total > 0 ? Math.round((owned / total) * 100) : 0
+        percentage: total > 0 ? Math.min(100, Math.round((owned / total) * 100)) : 0
       };
     }).sort((a, b) => b.total - a.total);
   }, [cards, inventory, collectionGoal]);
@@ -6315,7 +6315,7 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
         name: color,
         owned,
         total,
-        percentage: total > 0 ? Math.round((owned / total) * 100) : 0
+        percentage: total > 0 ? Math.min(100, Math.round((owned / total) * 100)) : 0
       };
     }).filter(c => c.total > 0);
   }, [cards, inventory, collectionGoal, gameType]);
@@ -6344,7 +6344,7 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
         name: type,
         owned,
         total,
-        percentage: total > 0 ? Math.round((owned / total) * 100) : 0
+        percentage: total > 0 ? Math.min(100, Math.round((owned / total) * 100)) : 0
       };
     }).sort((a, b) => b.total - a.total);
   }, [cards, inventory, collectionGoal, gameType]);
@@ -9997,7 +9997,7 @@ export default function TrackerApp() {
     return {
       needed: dedupNeeded,
       owned: dedupOwned,
-      percentage: rawNeeded > 0 ? Math.round((rawOwned / rawNeeded) * 100) : 0,
+      percentage: rawNeeded > 0 ? Math.min(100, Math.round((rawOwned / rawNeeded) * 100)) : 0,
       rawNeeded,
       rawOwned
     };
@@ -11459,7 +11459,7 @@ export default function TrackerApp() {
                       });
                       
                       const { total: catTotal, owned: catOwned } = getDeduplicatedStats(cardsInCat, inventory, collectionGoal);
-                      const catProgress = catTotal > 0 ? Math.round((catOwned / catTotal) * 100) : 0;
+                      const catProgress = catTotal > 0 ? Math.min(100, Math.round((catOwned / catTotal) * 100)) : 0;
 
                       return (
                         <motion.button
@@ -11588,7 +11588,7 @@ export default function TrackerApp() {
                           });
 
                           const { total: subTotal, owned: subOwned } = getDeduplicatedStats(cardsInSub, inventory, collectionGoal);
-                          const subProgress = subTotal > 0 ? Math.round((subOwned / subTotal) * 100) : 0;
+                          const subProgress = subTotal > 0 ? Math.min(100, Math.round((subOwned / subTotal) * 100)) : 0;
 
                           let subBgImage = undefined;
                           if (cardsInSub.length > 0) {
@@ -11721,7 +11721,7 @@ export default function TrackerApp() {
                                  const isExpanded = expandedCategories.includes(item.id);
 
                                  const { total: neededInSet, owned: ownedInSet } = getDeduplicatedStats(cardsInSet, inventory, collectionGoal);
-                                 const progress = neededInSet > 0 ? Math.round((ownedInSet / neededInSet) * 100) : 0;
+                                 const progress = neededInSet > 0 ? Math.min(100, Math.round((ownedInSet / neededInSet) * 100)) : 0;
                                  
                                  const firstCard = cardsInSet[0];
                                  let firstCardImage = firstCard ? firstCard.imageUrl : undefined;
@@ -11818,7 +11818,7 @@ export default function TrackerApp() {
                                            {(item.subItems || []).map(sub => {
                                               const cardsInSub = cards.filter(c => c.expansion === sub.id || (PACK_ARRAYS[sub.id] && PACK_ARRAYS[sub.id].includes(c.id)) || (sub.id.startsWith('FB') && sub.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${sub.id}`]?.includes(c.id)) || (sub.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)));
                                               const { total: neededInSub, owned: ownedInSub } = getDeduplicatedStats(cardsInSub, inventory, collectionGoal);
-                                              const subProgress = neededInSub > 0 ? Math.round((ownedInSub / neededInSub) * 100) : 0;
+                                              const subProgress = neededInSub > 0 ? Math.min(100, Math.round((ownedInSub / neededInSub) * 100)) : 0;
 
                                               return (
                                                 <button
@@ -11985,11 +11985,11 @@ export default function TrackerApp() {
                   : listCards;
                 const acquiredCount = list.cardIds.filter(id => isCardFullyAcquired(list, id)).length;
                 const totalCount = list.cardIds.length;
-                const progressWidth = totalCount > 0 ? (acquiredCount / totalCount) * 100 : 0;
+                const progressWidth = totalCount > 0 ? Math.min(100, (acquiredCount / totalCount) * 100) : 0;
 
                 const totalWantedQty = list.cardIds.reduce((sum, id) => sum + getCardWantedQty(list, id), 0);
                 const totalAcquiredQty = list.cardIds.reduce((sum, id) => sum + getCardAcquiredQty(list, id), 0);
-                const progressPercent = totalWantedQty > 0 ? Math.round((totalAcquiredQty / totalWantedQty) * 100) : 0;
+                const progressPercent = totalWantedQty > 0 ? Math.min(100, Math.round((totalAcquiredQty / totalWantedQty) * 100)) : 0;
 
                 const inlineSearchResults = wantsSearchQuery.length >= 2 ? cards.filter(c =>
                   c.name.toLowerCase().includes(wantsSearchQuery.toLowerCase()) ||
@@ -12569,9 +12569,9 @@ export default function TrackerApp() {
                           
                           const totalWantedQty = list.cardIds.reduce((sum, id) => sum + getCardWantedQty(list, id), 0);
                           const totalAcquiredQty = list.cardIds.reduce((sum, id) => sum + getCardAcquiredQty(list, id), 0);
-                          const progressPercent = totalWantedQty > 0 ? (totalAcquiredQty / totalWantedQty) * 100 : 0;
+                          const progressPercent = totalWantedQty > 0 ? Math.min(100, (totalAcquiredQty / totalWantedQty) * 100) : 0;
                           
-                          const progress = totalCards > 0 ? (acquiredCards / totalCards) * 100 : 0;
+                          const progress = totalCards > 0 ? Math.min(100, (acquiredCards / totalCards) * 100) : 0;
 
                           return (
                             <div
