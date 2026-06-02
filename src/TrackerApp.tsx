@@ -73,7 +73,7 @@ import { signInWithPopup, signOut, signInWithEmailAndPassword, createUserWithEma
 import { useAuth } from './AuthContext';
 import emailjs from '@emailjs/browser';
 
-const APP_VERSION = '5.1.0';
+const APP_VERSION = '5.2.0';
 
 const CATEGORY_BG: Record<string, string> = {
   'box': '/fondobox.jpg',
@@ -3630,6 +3630,15 @@ const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata'
 
 const CHANGELOG = [
 // Removed Excel export changes from changelog during staging
+  {
+    version: '5.2.0',
+    date: '2 de junio de 2026',
+    changes: [
+      { es: 'Incorporada la nueva colección Dragon Ball Super Card Game Fusion World: FB10 Ultimate Squad.', en: 'Added the new Dragon Ball Super Card Game Fusion World set: FB10 Ultimate Squad.' },
+      { es: 'Actualizados de forma detallada todos los últimos Energy Markers y marcadores físicos en el catálogo.', en: 'Detailed update for all the latest Energy Markers and physical markers in the catalog.' },
+      { es: 'Optimización de las estadísticas de progreso global con límite del 100% para prevenir desbordamientos visuales de interfaz.', en: 'Optimization of global progress statistics with a 100% cap to prevent visual layout overflows.' }
+    ]
+  },
   {
     version: '5.1.0',
     date: '28 de mayo de 2026',
@@ -11436,27 +11445,29 @@ export default function TrackerApp() {
                       const groupsForCat = currentGroups.filter((g: any) => subCategoriesList.includes(g.category));
                       const itemsForCat = groupsForCat.flatMap((g: any) => g.items);
                       
-                      const cardsInCat = cards.filter(c => {
-                        const tags = getCardTags(c);
-                        return itemsForCat.some((item: any) => {
-                          if (item.id === 'COL02' || item.isGiant) return tags.includes('giant');
-                          if (item.id === 'COL08') return tags.includes('serial');
-                          if (item.id === 'COL05') return tags.includes('event');
-                          if (item.id === 'COL06') return tags.includes('tournament');
-                          if (item.id === 'COL07') return tags.includes('judge');
-                          
-                          const checkItemMatch = (checkItem: any): boolean => {
-                            if (checkItem.id === c.id) return true;
-                            if (c.expansion === checkItem.id) return true;
-                            if (PACK_ARRAYS[checkItem.id] && PACK_ARRAYS[checkItem.id].includes(c.id)) return true;
-                            if (checkItem.id.startsWith('FB') && checkItem.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
-                            if (checkItem.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
-                            if (checkItem.subItems) return checkItem.subItems.some((subItem: any) => checkItemMatch(subItem));
-                            return false;
-                          };
-                          return checkItemMatch(item);
+                      const cardsInCat = cat.id === 'energy-markers'
+                        ? cards.filter(c => c.expansion === (gameType === 'fusion' ? 'ENM_FW' : 'ENM'))
+                        : cards.filter(c => {
+                          const tags = getCardTags(c);
+                          return itemsForCat.some((item: any) => {
+                            if (item.id === 'COL02' || item.isGiant) return tags.includes('giant');
+                            if (item.id === 'COL08') return tags.includes('serial');
+                            if (item.id === 'COL05') return tags.includes('event');
+                            if (item.id === 'COL06') return tags.includes('tournament');
+                            if (item.id === 'COL07') return tags.includes('judge');
+                            
+                            const checkItemMatch = (checkItem: any): boolean => {
+                              if (checkItem.id === c.id) return true;
+                              if (c.expansion === checkItem.id) return true;
+                              if (PACK_ARRAYS[checkItem.id] && PACK_ARRAYS[checkItem.id].includes(c.id)) return true;
+                              if (checkItem.id.startsWith('FB') && checkItem.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
+                              if (checkItem.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
+                              if (checkItem.subItems) return checkItem.subItems.some((subItem: any) => checkItemMatch(subItem));
+                              return false;
+                            };
+                            return checkItemMatch(item);
+                          });
                         });
-                      });
                       
                       const { total: catTotal, owned: catOwned } = getDeduplicatedStats(cardsInCat, inventory, collectionGoal);
                       const catProgress = catTotal > 0 ? Math.min(100, Math.round((catOwned / catTotal) * 100)) : 0;
