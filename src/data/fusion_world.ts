@@ -1801,6 +1801,168 @@ FB09-122_AA	Gogeta (Alt)	SCR**	Battle	Yellow	FB09
 FB09-123	Gogeta : GT	SCR	Battle	Black	FB09
 FB09-123_A	Gogeta : GT (Alt)	SCR*	Battle	Black	FB09
 FB09-123_AA	Gogeta : GT (Alt)	SCR**	Battle	Black	FB09
+FB10-001	Son Goku	L	Leader	Red	FB10
+FB10-001_A	Son Goku (Alt)	L*	Leader	Red	FB10
+FB10-002	Upa	C	Battle	Red	FB10
+FB10-003	King Yemma	C	Battle	Red	FB10
+FB10-004	North Kai	C	Battle	Red	FB10
+FB10-005	Krillin	UC	Battle	Red	FB10
+FB10-006	Krillin	R	Battle	Red	FB10
+FB10-006_A	Krillin (Alt)	R*	Battle	Red	FB10
+FB10-007	Android 8	C	Battle	Red	FB10
+FB10-008	Android 17	UC	Battle	Red	FB10
+FB10-009	Suno	C	Battle	Red	FB10
+FB10-010	Son Goku	UC	Battle	Red	FB10
+FB10-011	Son Goku	SR	Battle	Red	FB10
+FB10-011_A	Son Goku (Alt)	SR*	Battle	Red	FB10
+FB10-012	Son Goku : BR	R	Battle	Red	FB10
+FB10-013	Son Gohan : Youth	UC	Battle	Red	FB10
+FB10-013_A	Son Gohan : Youth (Alt)	UC*	Battle	Red	FB10
+FB10-014	Everyone on Earth	R	Battle	Red	FB10
+FB10-014_A	Everyone on Earth (Alt)	R*	Battle	Red	FB10
+FB10-015	Dende	C	Battle	Red	FB10
+FB10-016	Vegeta	UC	Battle	Red	FB10
+FB10-017	Vegeta : BR	R	Battle	Red	FB10
+FB10-018	Bora	C	Battle	Red	FB10
+FB10-019	Majin Buu : Good	C	Battle	Red	FB10
+FB10-020	Hercule	UC	Battle	Red	FB10
+FB10-021	Hercule	SR	Battle	Red	FB10
+FB10-021_A	Hercule (Alt)	SR*	Battle	Red	FB10
+FB10-022	The Savior's Roar	UC	Extra	Red	FB10
+FB10-023	Thanks, Dragon Ball!!!	R	Extra	Red	FB10
+FB10-024	Super Genki-dama	SR	Extra	Red	FB10
+FB10-024_A	Super Genki-dama (Alt)	SR*	Extra	Red	FB10
+FB10-025	Vegito	L	Leader	Blue	FB10
+FB10-025_A	Vegito (Alt)	L*	Leader	Blue	FB10
+FB10-026	Syn Shenron	UC	Battle	Blue	FB10
+FB10-027	Gowasu	C	Battle	Blue	FB10
+FB10-028	Shin	C	Battle	Blue	FB10
+FB10-029	Omega Shenron	R	Battle	Blue	FB10
+FB10-030	Son Goku	C	Battle	Blue	FB10
+FB10-031	Son Goku	UC	Battle	Blue	FB10
+FB10-032	Son Goku	SR	Battle	Blue	FB10
+FB10-032_A	Son Goku (Alt)	SR*	Battle	Blue	FB10
+FB10-033	Trunks : Future	C	Battle	Blue	FB10
+FB10-034	Trunks : Future	UC	Battle	Blue	FB10
+FB10-035	Trunks : Future	R	Battle	Blue	FB10
+FB10-036	Bulma	C	Battle	Blue	FB10
+FB10-037	Vegeta	C	Battle	Blue	FB10
+FB10-038	Vegeta	UC	Battle	Blue	FB10
+FB10-039	Vegeta	SR	Battle	Blue	FB10
+FB10-039_A	Vegeta (Alt)	SR*	Battle	Blue	FB10
+FB10-040	Vegito	SR	Battle	Blue	FB10
+FB10-040_A	Vegito (Alt)	SR*	Battle	Blue	FB10
+FB10-041	Vegito	UC	Battle	Blue	FB10
+FB10-041_A	Vegito (Alt)	UC*	Battle	Blue	FB10
+FB10-042	Mai : Future	C	Battle	Blue	FB10
+FB10-043	Mai : Future	R	Battle	Blue	FB10
+FB10-044	Saiyan Prince	C	Extra	Blue	FB10
+FB10-045	Final Kamehameha	R	Extra	Blue	FB10
+FB10-046	Vegito Blue's Arrival	UC	Extra	Blue	FB10
+FB10-047	Potara	R	Extra	Blue	FB10
+FB10-047_A	Potara (Alt)	R*	Extra	Blue	FB10
+FB10-048	Ice Ray	UC	Extra	Blue	FB10
+FB10-049	Son Gohan : Adolescence/Piccolo	L	Leader	Green	FB10
+FB10-049_A	Son Gohan : Adolescence/Piccolo (Alt)	L*	Leader	Green	FB10
+FB10-050	Son Gohan (Great Ape)	UC	Battle	Green	FB10
+FB10-051	Kami	C	Battle	Green	FB10
+FB10-052	Son Goku	UC	Battle	Green	FB10
+FB10-052_A	Son Goku (Alt)	UC*	Battle	Green	FB10
+FB10-053	Son Gohan : Childhood	C	Battle	Green	FB10
+FB10-054	Son Gohan : Childhood	UC	Battle	Green	FB10
+FB10-055	Son Gohan : Childhood	R	Battle	Green	FB10
+FB10-056	Son Gohan : Adolescence	C	Battle	Green	FB10
+FB10-057	Son Gohan : Adolescence/Piccolo	R	Battle	Green	FB10
+FB10-057_A	Son Gohan : Adolescence/Piccolo (Alt)	R*	Battle	Green	FB10
+FB10-058	Son Gohan : Future	R	Battle	Green	FB10
+FB10-059	Son Gohan : Future	SR	Battle	Green	FB10
+FB10-059_A	Son Gohan : Future (Alt)	SR*	Battle	Green	FB10
+FB10-060	Son Gohan : Youth	C	Battle	Green	FB10
+FB10-061	Turles	UC	Battle	Green	FB10
+FB10-062	Turles	R	Battle	Green	FB10
+FB10-063	Nail	C	Battle	Green	FB10
+FB10-064	Videl	SR	Battle	Green	FB10
+FB10-064_A	Videl (Alt)	SR*	Battle	Green	FB10
+FB10-065	Piccolo	C	Battle	Green	FB10
+FB10-066	Piccolo	C	Battle	Green	FB10
+FB10-067	Piccolo	R	Battle	Green	FB10
+FB10-068	Piccolo	UC	Battle	Green	FB10
+FB10-069	Piccolo	UC	Battle	Green	FB10
+FB10-070	Piccolo	SR	Battle	Green	FB10
+FB10-070_A	Piccolo (Alt)	SR*	Battle	Green	FB10
+FB10-071	Grueling Training	C	Extra	Green	FB10
+FB10-072	Desperate Sacrifice	UC	Extra	Green	FB10
+FB10-073	Boujack	L	Leader	Yellow	FB10
+FB10-073_A	Boujack (Alt)	L*	Leader	Yellow	FB10
+FB10-074	Angira	C	Battle	Yellow	FB10
+FB10-075	Kakuja	C	Battle	Yellow	FB10
+FB10-076	Gokua	UC	Battle	Yellow	FB10
+FB10-077	Gokua	R	Battle	Yellow	FB10
+FB10-078	Zangya	SR	Battle	Yellow	FB10
+FB10-078_A	Zangya (Alt)	SR*	Battle	Yellow	FB10
+FB10-079	Zangya	UC	Battle	Yellow	FB10
+FB10-079_A	Zangya (Alt)	UC*	Battle	Yellow	FB10
+FB10-080	Slug	UC	Battle	Yellow	FB10
+FB10-081	Slug	R	Battle	Yellow	FB10
+FB10-081_A	Slug (Alt)	R*	Battle	Yellow	FB10
+FB10-082	Slug	SR	Battle	Yellow	FB10
+FB10-082_A	Slug (Alt)	SR*	Battle	Yellow	FB10
+FB10-083	Zeiun	C	Battle	Yellow	FB10
+FB10-084	Dorodabo	C	Battle	Yellow	FB10
+FB10-085	Bido	C	Battle	Yellow	FB10
+FB10-086	Bido	UC	Battle	Yellow	FB10
+FB10-087	Bujin	C	Battle	Yellow	FB10
+FB10-088	Bujin	UC	Battle	Yellow	FB10
+FB10-089	Vegeta	UC	Battle	Yellow	FB10
+FB10-090	Vegeta	R	Battle	Yellow	FB10
+FB10-091	Boujack	R	Battle	Yellow	FB10
+FB10-091_A	Boujack (Alt)	R*	Battle	Yellow	FB10
+FB10-092	Boujack	SR	Battle	Yellow	FB10
+FB10-092_A	Boujack (Alt)	SR*	Battle	Yellow	FB10
+FB10-093	Medamacha	C	Battle	Yellow	FB10
+FB10-094	Galaxy Soldiers' Invasion	UC	Extra	Yellow	FB10
+FB10-095	Loyal Shield	R	Extra	Yellow	FB10
+FB10-096	Psychic Boundary	C	Extra	Yellow	FB10
+FB10-097	Cell	L	Leader	Black	FB10
+FB10-097_A	Cell (Alt)	L*	Leader	Black	FB10
+FB10-098	Krillin	UC	Battle	Black	FB10
+FB10-099	Richest Bigwig in Ginger Town	C	Battle	Black	FB10
+FB10-100	Android 17	C	Battle	Black	FB10
+FB10-101	Android 17	R	Battle	Black	FB10
+FB10-102	Android 17/Android 18	SR	Battle	Black	FB10
+FB10-102_A	Android 17/Android 18 (Alt)	SR*	Battle	Black	FB10
+FB10-103	Android 18	UC	Battle	Black	FB10
+FB10-104	Android 18	R	Battle	Black	FB10
+FB10-104_A	Android 18 (Alt)	R*	Battle	Black	FB10
+FB10-105	Spy Robot	C	Battle	Black	FB10
+FB10-106	Cell	C	Battle	Black	FB10
+FB10-107	Cell	C	Battle	Black	FB10
+FB10-108	Cell	SR	Battle	Black	FB10
+FB10-108_A	Cell (Alt)	SR*	Battle	Black	FB10
+FB10-109	Cell	C	Battle	Black	FB10
+FB10-110	Cell	UC	Battle	Black	FB10
+FB10-111	Cell	SR	Battle	Black	FB10
+FB10-111_A	Cell (Alt)	SR*	Battle	Black	FB10
+FB10-112	Cell	R	Battle	Black	FB10
+FB10-112_A	Cell (Alt)	R*	Battle	Black	FB10
+FB10-113	Cell	UC	Battle	Black	FB10
+FB10-113_A	Cell (Alt)	UC*	Battle	Black	FB10
+FB10-114	Cell Jr.	UC	Battle	Black	FB10
+FB10-115	Son Goku	R	Battle	Black	FB10
+FB10-116	Piccolo	C	Battle	Black	FB10
+FB10-117	Cell Games	UC	Extra	Black	FB10
+FB10-118	Cell's Kamehameha	R	Extra	Black	FB10
+FB10-119	Cell's Solar Flare	UC	Extra	Black	FB10
+FB10-120	Cell's Egg	C	Extra	Black	FB10
+FB10-121	Vegito	SCR	Battle	Blue	FB10
+FB10-121_A	Vegito (Alt)	SCR*	Battle	Blue	FB10
+FB10-121_AA	Vegito (Alt)	SCR**	Battle	Blue	FB10
+FB10-122	Son Gohan : Childhood	SCR	Battle	Green	FB10
+FB10-122_A	Son Gohan : Childhood (Alt)	SCR*	Battle	Green	FB10
+FB10-122_AA	Son Gohan : Childhood (Alt)	SCR**	Battle	Green	FB10
+FB10-123	Cell	SCR	Battle	Black	FB10
+FB10-123_A	Cell (Alt)	SCR*	Battle	Black	FB10
+FB10-123_AA	Cell (Alt)	SCR**	Battle	Black	FB10
 FB01-085_A_SB01	Son Goku (Alt)	C*	Battle	Green	SB01
 FB01-088_A_SB01	Son Gohan : Childhood (Alt)	C*	Battle	Green	SB01
 FB01-101_A_SB01	Instant Kamehameha (Alt)	C*	Extra	Green	SB01
@@ -2415,6 +2577,16 @@ E-139	Energy Marker E-139	PR	Marker	Multi	ENM_FW
 E-140	Energy Marker E-140	PR	Marker	Multi	ENM_FW
 E-141	Energy Marker E-141	PR	Marker	Multi	ENM_FW
 E-142	Energy Marker E-142	PR	Marker	Multi	ENM_FW
+E-143	Energy Marker E-143	PR	Marker	Multi	ENM_FW
+E-143_A	Energy Marker E-143 (Alt)	PR*	Marker	Multi	ENM_FW
+E-144	Energy Marker E-144	PR	Marker	Multi	ENM_FW
+E-144_A	Energy Marker E-144 (Alt)	PR*	Marker	Multi	ENM_FW
+E-145	Energy Marker E-145	PR	Marker	Multi	ENM_FW
+E-145_A	Energy Marker E-145 (Alt)	PR*	Marker	Multi	ENM_FW
+E-146	Energy Marker E-146	PR	Marker	Multi	ENM_FW
+E-146_A	Energy Marker E-146 (Alt)	PR*	Marker	Multi	ENM_FW
+E-147	Energy Marker E-147	PR	Marker	Multi	ENM_FW
+E-147_A	Energy Marker E-147 (Alt)	PR*	Marker	Multi	ENM_FW
 PM01	Official Playmat & Card Set Limited Edition 01	PR	Playmat	Neutral	PM01
 PM02	Official Playmat 40th Anniversary ver.	PR	Playmat	Neutral	PM02
 FB02-102_CP2	Cell Games Arena	R	Extra	Green	CP02

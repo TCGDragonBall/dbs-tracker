@@ -684,7 +684,7 @@ const FUSION_EXPANSION_GROUPS: ExpansionGroup[] = [
       { id: 'FB07', label: 'FB07: WISH FOR SHENRON', sub: 'Main Set', locked: false },
       { id: 'FB08', label: 'FB08: SAIYAN’S PRIDE', sub: 'Main Set', locked: false },
       { id: 'FB09', label: 'FB09: DUAL EVOLUTION', sub: 'Main Set', locked: false },
-      { id: 'FB10', label: 'FB10: CROSS FORCE (Próximamente)', sub: 'Main Set', locked: true },
+      { id: 'FB10', label: 'FB10: CROSS FORCE', sub: 'Main Set', locked: false },
       { id: 'FB11', label: 'FB11: BRIGHTNESS OF HOPE (Próximamente)', sub: 'Main Set', locked: true },
       { id: 'SB01', label: 'SB01: Manga booster 01', sub: 'Special Set', locked: false },
       { id: 'SB02', label: 'SB02: Manga booster 02', sub: 'Special Set', locked: false },
@@ -3953,7 +3953,7 @@ const CHANGELOG = [
     date: '8 de mayo de 2026',
     changes: [
       { es: 'Activada la categoría de Energy Markers en la sección de Fusion World.', en: 'Activated the Energy Markers category in the Fusion World section.' },
-      { es: 'Listado completo de Energy Markers disponibles (E01-01 a E-142) con versiones alternativas ya accesible.', en: 'Full list of available Energy Markers (E01-01 to E-142) with alternative versions now accessible.' }
+      { es: 'Listado completo de Energy Markers disponibles (E01-01 a E-147) con versiones alternativas ya accesible.', en: 'Full list of available Energy Markers (E01-01 to E-147) with alternative versions now accessible.' }
     ]
   },
   {
@@ -5262,27 +5262,41 @@ const getCardTags = (card: Card) => {
 };
 
 const getDeduplicatedStats = (subsetCards: Card[], inventory: InventoryItem[], goal: 'collector' | 'player') => {
+  if (goal === 'collector') {
+    let total = 0;
+    let owned = 0;
+    subsetCards.forEach(c => {
+      const target = getTargetQuantity(c, goal);
+      const invItem = inventory.find(i => i.cardId === c.id);
+      const quantity = invItem ? invItem.quantity : 0;
+      const ownedValue = Math.min(quantity, target);
+      total += target;
+      owned += ownedValue;
+    });
+    return { total, owned };
+  }
+
   const baseMap = new Map<string, { needed: number; owned: number }>();
   subsetCards.forEach(c => {
     const baseId = c.cardNumber.split('_')[0];
-    const isAlt = isAlternative(c.id) && c.rarity !== 'SPR' && c.rarity !== 'GDR';
     const target = getTargetQuantity(c, goal);
     const invItem = inventory.find(i => i.cardId === c.id);
     const quantity = invItem ? invItem.quantity : 0;
-    const ownedValue = Math.min(quantity, target);
+
     if (!baseMap.has(baseId)) {
-      baseMap.set(baseId, { needed: isAlt ? 0 : target, owned: ownedValue });
+      baseMap.set(baseId, { needed: target, owned: quantity });
     } else {
       const existing = baseMap.get(baseId)!;
-      if (!isAlt && existing.needed === 0) existing.needed = target;
-      existing.owned = Math.max(existing.owned, ownedValue);
+      existing.needed = Math.max(existing.needed, target);
+      existing.owned += quantity;
     }
   });
+
   let total = 0;
   let owned = 0;
   baseMap.forEach(v => {
     total += v.needed;
-    owned += v.owned;
+    owned += Math.min(v.owned, v.needed);
   });
   return { total, owned };
 };
@@ -5793,7 +5807,7 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
           if (targetSetId === 'COL07') return tags.includes('judge');
           if (PACK_ARRAYS[targetSetId]) return PACK_ARRAYS[targetSetId].includes(c.id);
           if (c.expansion === targetSetId) return true;
-          if (targetSetId.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${targetSetId}`]?.includes(c.id)) return true;
+          if (targetSetId.startsWith('FB') && targetSetId !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${targetSetId}`]?.includes(c.id)) return true;
           if (targetSetId === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
           return false;
         };
@@ -5876,7 +5890,7 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
               if (targetSetId === 'COL07') return tags.includes('judge');
               if (PACK_ARRAYS[targetSetId]) return PACK_ARRAYS[targetSetId].includes(c.id);
               if (c.expansion === targetSetId) return true;
-              if (targetSetId.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${targetSetId}`]?.includes(c.id)) return true;
+              if (targetSetId.startsWith('FB') && targetSetId !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${targetSetId}`]?.includes(c.id)) return true;
               if (targetSetId === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
               return false;
             };
@@ -5913,7 +5927,7 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
               if (targetSetId === 'COL07') return tags.includes('judge');
               if (PACK_ARRAYS[targetSetId]) return PACK_ARRAYS[targetSetId].includes(c.id);
               if (c.expansion === targetSetId) return true;
-              if (targetSetId.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${targetSetId}`]?.includes(c.id)) return true;
+              if (targetSetId.startsWith('FB') && targetSetId !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${targetSetId}`]?.includes(c.id)) return true;
               if (targetSetId === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
               return false;
             };
@@ -6245,6 +6259,7 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
   isInventoryLoading: boolean
 }) => {
   const t = translations[lang];
+  const [showScoreExpl, setShowScoreExpl] = useState(false);
 
   const achievementStats = useMemo(() => {
     const visible = achievementsList.filter(a => !a.hidden);
@@ -6336,84 +6351,573 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
 
   const filteredChartData = achievementChartData.filter(d => d.value > 0 || d.name === t.remaining);
 
+  // Creative extra Statistics:
+  const collectorScore = useMemo(() => {
+    let score = 0;
+    inventory.forEach(item => {
+      if (item.quantity <= 0) return;
+      const card = cards.find(c => c.id === item.cardId);
+      if (!card) return;
+      let multiplier = 5;
+      const rarity = (card.rarity || '').toUpperCase().trim();
+      
+      if (rarity === 'C' || rarity === 'UC') {
+        multiplier = 10;
+      } else if (rarity === 'R') {
+        multiplier = 30;
+      } else if (['SR', 'PR', 'RLR'].includes(rarity)) {
+        multiplier = 100;
+      } else if (['SPR', 'LEADER RARE', 'L'].includes(rarity) || rarity.includes('*')) {
+        multiplier = 250;
+      } else if (rarity.startsWith('SCR')) {
+        multiplier = 750;
+      } else if (rarity === 'GDR') {
+        multiplier = 2500;
+      }
+      
+      score += item.quantity * multiplier;
+    });
+    return score;
+  }, [cards, inventory]);
+
+  const collectorTier = useMemo(() => {
+    const s = collectorScore;
+    if (s < 500) {
+      return { 
+        title: lang === 'es' ? 'Recluta Z' : 'Z Recruit', 
+        desc: lang === 'es' ? '¡Tu viaje de combate acaba de comenzar!' : 'Your fighting journey has just begun!', 
+        color: 'text-gray-400 bg-gray-500/10 border-gray-500/20' 
+      };
+    }
+    if (s < 2500) {
+      return { 
+        title: lang === 'es' ? 'Guerrero Z' : 'Z Warrior', 
+        desc: lang === 'es' ? 'Defendiendo la Tierra con orgullo.' : 'Proudly defending Earth.', 
+        color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' 
+      };
+    }
+    if (s < 8000) {
+      return { 
+        title: lang === 'es' ? 'Super Saiyan' : 'Super Saiyan', 
+        desc: lang === 'es' ? 'Despertando el poder legendario de la raza.' : 'Awakening legendary race power.', 
+        color: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20 border-b-2' 
+      };
+    }
+    if (s < 20000) {
+      return { 
+        title: lang === 'es' ? 'Super Saiyan God' : 'Super Saiyan God', 
+        desc: lang === 'es' ? 'Sintiendo el milagroso Ki de los Dioses.' : 'Sensing the miraculous Ki of gods.', 
+        color: 'text-red-400 bg-red-400/10 border-red-500/20 border-b-2' 
+      };
+    }
+    if (s < 50500) {
+      return { 
+        title: lang === 'es' ? 'Ultra Instinto' : 'Ultra Instinct', 
+        desc: lang === 'es' ? 'Tu cuerpo reacciona de forma automática.' : 'Your body reacts completely automatically.', 
+        color: 'text-cyan-400 bg-cyan-400/10 border-cyan-500/20 shadow-cyan-500/10 border-b-2' 
+      };
+    }
+    return { 
+      title: lang === 'es' ? 'Omni-Rey del Tracker' : 'Tracker Omni-King', 
+      desc: lang === 'es' ? '¡El coleccionista absoluto definitivo de la galaxia!' : 'The ultimate absolute collector of the galaxy!', 
+      color: 'text-purple-400 bg-purple-500/10 border-purple-500/20 shadow-purple-500/10 border-b-2' 
+    };
+  }, [collectorScore, lang]);
+
+  const characterStats = useMemo(() => {
+    const charMap = new Map<string, { uniqueCount: number; ownedCount: number; img?: string }>();
+    inventory.forEach(item => {
+      if (item.quantity <= 0) return;
+      const card = cards.find(c => c.id === item.cardId);
+      if (!card || !card.character) return;
+      
+      const chars = card.character.split('/').map(c => c.trim()).filter(Boolean);
+      chars.forEach(char => {
+        const existing = charMap.get(char) || { uniqueCount: 0, ownedCount: 0 };
+        existing.uniqueCount += 1;
+        existing.ownedCount += item.quantity;
+        if (!existing.img && card.imageUrl) {
+          existing.img = card.imageUrl;
+        }
+        charMap.set(char, existing);
+      });
+    });
+    
+    return Array.from(charMap.entries())
+      .map(([name, data]) => ({ name, ...data }))
+      .sort((a, b) => b.ownedCount - a.ownedCount)
+      .slice(0, 5);
+  }, [cards, inventory]);
+
+  const eraStats = useMemo(() => {
+    const eraMap = new Map<string, { uniqueCount: number; ownedCount: number }>();
+    inventory.forEach(item => {
+      if (item.quantity <= 0) return;
+      const card = cards.find(c => c.id === item.cardId);
+      if (!card || !card.era) return;
+      const era = card.era.trim();
+      const existing = eraMap.get(era) || { uniqueCount: 0, ownedCount: 0 };
+      existing.uniqueCount += 1;
+      existing.ownedCount += item.quantity;
+      eraMap.set(era, existing);
+    });
+    return Array.from(eraMap.entries())
+      .map(([name, data]) => ({ name, ...data }))
+      .sort((a, b) => b.ownedCount - a.ownedCount)
+      .slice(0, 3);
+  }, [cards, inventory]);
+
+  const topCharacterMessage = useMemo(() => {
+    if (characterStats.length === 0) return '';
+    const top = characterStats[0].name.toLowerCase();
+    if (top.includes('goku')) {
+      return lang === 'es' ? '¡Tu colección vibra con la energía infinita de Goku!' : 'Your collection vibrates with Goku’s infinite energy!';
+    }
+    if (top.includes('vegeta')) {
+      return lang === 'es' ? '¡El orgullo inquebrantable del príncipe Vegeta domina tus filas!' : 'The unbreakable pride of Prince Vegeta dominates your ranks!';
+    }
+    if (top.includes('cell')) {
+      return lang === 'es' ? '¡Has alcanzado la perfección de Cell en el inventario!' : 'You have achieved Cell’s perfection in your inventory!';
+    }
+    if (top.includes('frieza') || top.includes('freezer')) {
+      return lang === 'es' ? '¡El tirano universal Freezer gobierna tus posesiones!' : 'The universal tyrant Frieza rules over your possessions!';
+    }
+    if (top.includes('gohan')) {
+      return lang === 'es' ? '¡El increíble poder latente de Gohan desborda tus álbumes!' : 'Gohan’s incredible latent power overflows your albums!';
+    }
+    if (top.includes('trunks')) {
+      return lang === 'es' ? '¡El guerrero del futuro Trunks protege tu colección!' : 'The future warrior Trunks protects your collection!';
+    }
+    if (top.includes('broly')) {
+      return lang === 'es' ? '¡Un poder descontrolado de Broly sacude tu estantería!' : 'Broly’s uncontrolled power shakes your shelves!';
+    }
+    return lang === 'es' 
+      ? `¡${characterStats[0].name} es tu guardián más leal y lidera tu colección!` 
+      : `${characterStats[0].name} is your most loyal guardian, leading your collection!`;
+  }, [characterStats, lang]);
+
+  const favoriteColorInfo = useMemo(() => {
+    if (colorData.length === 0) return null;
+    const sorted = [...colorData].sort((a, b) => b.percentage - a.percentage || b.owned - a.owned);
+    const top = sorted[0];
+    const colorColors: Record<string, string> = {
+      Red: 'from-red-600/20 to-red-950/40 border-red-500/30 text-red-400',
+      Blue: 'from-blue-600/20 to-blue-950/40 border-blue-500/30 text-blue-400',
+      Green: 'from-emerald-600/20 to-emerald-950/40 border-emerald-500/30 text-emerald-400',
+      Yellow: 'from-yellow-600/10 to-yellow-950/20 border-yellow-500/30 text-yellow-400',
+      Black: 'from-neutral-700/20 to-neutral-900/40 border-neutral-600/30 text-white',
+      Multi: 'from-purple-600/20 to-purple-950/40 border-purple-500/30 text-purple-400',
+      White: 'from-slate-500/10 to-slate-800/20 border-slate-400/30 text-slate-400'
+    };
+    return {
+      ...top,
+      style: colorColors[top.name] || 'from-gray-600/20 to-gray-950/40'
+    };
+  }, [colorData]);
+
   return (
-    <div className="space-y-8 pb-32">
+    <div className="space-y-6 pb-32">
       {isInventoryLoading ? (
-        <div className="bg-[#1E1E1E] rounded-3xl p-16 shadow-xl flex flex-col items-center justify-center mt-4">
+        <div className="bg-[#1E1E1E]/80 rounded-3xl p-16 shadow-xl flex flex-col items-center justify-center mt-4 border border-white/5 backdrop-blur-md">
           <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-orange-500 mb-4"></div>
+          <p className="text-xs font-black text-gray-400 uppercase tracking-widest">{lang === 'es' ? 'CARGANDO ESTADÍSTICAS...' : 'LOADING STATS...'}</p>
         </div>
       ) : inventory.length === 0 ? (
         <div className="bg-[#1E1E1E] rounded-3xl p-8 shadow-xl border border-dashed border-orange-500/30 flex flex-col items-center text-center opacity-80 mt-4">
           <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-6">
-            <BarChart3 size={36} className="text-gray-500" />
+            <BarChart3 size={36} className="text-gray-500 animate-pulse" />
           </div>
-          <h3 className="text-xl font-black text-white mb-2">Sin datos disponibles</h3>
+          <h3 className="text-xl font-black text-white mb-2">{lang === 'es' ? 'Sin datos disponibles' : 'No data available'}</h3>
           <p className="text-gray-400 text-sm max-w-[280px]">
              {lang === 'es' ? 'Aún no hay datos que analizar. Empieza a añadir cartas a tu colección para ver estadísticas detalladas sobre su rareza, colores y tipos.' : 'No data available yet. Start adding cards to your collection to see detailed statistics on rarity, colors and types.'}
           </p>
         </div>
       ) : (
         <>
-          <div className="bg-[#1E1E1E] rounded-3xl p-6 shadow-xl border border-white/5">
-            <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-6">{t.colorProgress}</h3>
-            
-            <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-              {colorData.map((stat) => (
-                <div key={stat.name} className="flex items-center justify-between border-b border-white/5 pb-2">
-                  <div className="flex flex-col">
-                    <p className="text-xs font-black text-white italic uppercase tracking-tighter">
-                      {(t as any).colorNames?.[stat.name] || stat.name}
+          {/* Top Quick Overview row (Collector Score & Quick Stats) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Collector Score Card */}
+            <div className="relative overflow-hidden bg-gradient-to-br from-[#1E1C1A] to-[#141211] p-5 rounded-3xl border border-orange-500/20 shadow-2xl flex flex-col justify-between group">
+              <div className="absolute top-0 right-0 w-36 h-36 bg-orange-500/5 rounded-full -mr-12 -mt-12 blur-3xl transition-all duration-700 group-hover:scale-125 pointer-events-none" />
+              <div className="absolute -bottom-2 -left-2 w-24 h-24 bg-yellow-500/5 rounded-full blur-2xl pointer-events-none" />
+              
+              <div className="flex justify-between items-start z-10">
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <p className="text-[10px] font-black tracking-widest text-orange-500 uppercase">
+                      {lang === 'es' ? 'PUNTUACIÓN DE PODER' : 'COLLECTOR POWER SCORE'}
                     </p>
-                    <p className="text-[9px] text-gray-500 font-bold uppercase">{stat.owned} / {stat.total}</p>
+                    <button 
+                      onClick={() => setShowScoreExpl(!showScoreExpl)}
+                      className="text-gray-500 hover:text-orange-400 p-0.5 rounded transition-all cursor-pointer"
+                      title={lang === 'es' ? 'Ver relación de puntos' : 'See points breakdown'}
+                    >
+                      <Info size={11} className={showScoreExpl ? 'text-orange-400' : 'text-gray-500'} />
+                    </button>
                   </div>
-                  <p className={`text-xs font-black italic ${stat.percentage === 100 ? 'text-green-500' : 'text-orange-500'}`}>{stat.percentage}%</p>
+                  <p className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-orange-400 to-amber-500 italic uppercase tracking-tighter mt-1">
+                    {collectorScore.toLocaleString()} <span className="text-xs font-black text-gray-500">pts</span>
+                  </p>
                 </div>
-              ))}
+                <div className="p-2.5 bg-orange-500/10 rounded-2xl border border-orange-500/20 shadow-inner">
+                  <Trophy className="text-orange-400 animate-pulse" size={24} />
+                </div>
+              </div>
+
+              {showScoreExpl && (
+                <div className="mt-4 z-10 bg-black/40 p-3.5 rounded-2xl border border-white/5 text-[10px] text-gray-400 leading-normal space-y-1.5 animate-fadeIn">
+                  <p className="font-bold text-gray-300 uppercase border-b border-white/5 pb-1 mb-1">
+                    {lang === 'es' ? 'Fórmula de Puntos:' : 'Point System Breakdown:'}
+                  </p>
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-1 font-mono">
+                    <div className="flex justify-between"><span>Común/Uncom (C/UC):</span> <span className="text-yellow-400 font-bold">10 pts</span></div>
+                    <div className="flex justify-between"><span>Rara (R):</span> <span className="text-yellow-400 font-bold">30 pts</span></div>
+                    <div className="flex justify-between"><span>Super Rara (SR/Promo):</span> <span className="text-yellow-400 font-bold">100 pts</span></div>
+                    <div className="flex justify-between"><span>Especial (SPR/L/*):</span> <span className="text-yellow-400 font-bold">250 pts</span></div>
+                    <div className="flex justify-between"><span>Secreta (SCR):</span> <span className="text-yellow-400 font-bold">750 pts</span></div>
+                    <div className="flex justify-between"><span>God Rare (GDR):</span> <span className="text-yellow-400 font-bold">2500 pts</span></div>
+                  </div>
+                  <p className="text-[8.5px] italic text-gray-500 pt-1 border-t border-white/5">
+                    {lang === 'es' ? '* Los puntos se multiplican según la cantidad de copias que tengas de cada carta.' : '* Points are multiplied based on the number of copies owned of each card.'}
+                  </p>
+                </div>
+              )}
+
+              <div className="mt-6 z-10 flex flex-col gap-2 bg-white/5 p-3 rounded-2xl border border-white/5">
+                <div className="flex items-center gap-2">
+                  <div className={`px-2.5 py-0.5 text-[10px] font-black uppercase rounded-lg border italic ${collectorTier.color}`}>
+                    {collectorTier.title}
+                  </div>
+                </div>
+                <p className="text-[10px] text-gray-400 font-semibold italic">
+                  "{collectorTier.desc}"
+                </p>
+              </div>
+            </div>
+
+            {/* Quick Stats Grid */}
+            <div className="grid grid-cols-2 gap-3">
+              {/* Total Owned Cards Card */}
+              <div className="bg-[#1E1E1E]/80 backdrop-blur-sm p-4 rounded-2xl border border-white/5 shadow-xl flex flex-col justify-between relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/5 rounded-full blur-2xl pointer-events-none" />
+                <div className="flex justify-between items-start">
+                  <span className="text-[9px] font-black text-gray-500 uppercase tracking-wider">
+                    {lang === 'es' ? 'SOPORTES FÍSICOS' : 'PHYSICAL CARDS'}
+                  </span>
+                  <div className="p-1.5 bg-blue-500/10 rounded-xl border border-blue-500/20">
+                    <Layers className="text-blue-400" size={14} />
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <p className="text-2xl font-black text-white italic">
+                    {inventory.reduce((sum, item) => sum + item.quantity, 0)}
+                  </p>
+                  <p className="text-[8px] font-bold text-gray-500 uppercase tracking-tighter mt-0.5">
+                    {lang === 'es' ? 'Cartas totales en álbumes' : 'Total cards in albums'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Achievements Percentage */}
+              <div className="bg-[#1E1E1E]/80 backdrop-blur-sm p-4 rounded-2xl border border-white/5 shadow-xl flex flex-col justify-between relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-16 h-16 bg-purple-500/5 rounded-full blur-2xl pointer-events-none" />
+                <div className="flex justify-between items-start">
+                  <span className="text-[9px] font-black text-gray-500 uppercase tracking-wider">
+                    {lang === 'es' ? 'LOGROS' : 'ACHIEVEMENTS'}
+                  </span>
+                  <div className="p-1.5 bg-purple-500/10 rounded-xl border border-purple-500/20">
+                    <Award className="text-purple-400" size={14} />
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <p className="text-2xl font-black text-white italic">
+                    {achievementStats.unlockedTotal} <span className="text-xs text-gray-500">/ {achievementStats.total}</span>
+                  </p>
+                  <p className="text-[8px] font-bold text-gray-500 uppercase tracking-tighter mt-0.5">
+                    {Math.round((achievementStats.unlockedTotal / (achievementStats.total || 1)) * 100)}% {lang === 'es' ? 'Completado' : 'Completed'}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
+          {/* Tus Favoritos: Character & Color Spotlight Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Top 5 Characters Display */}
+            {characterStats.length > 0 && (
+              <div className="bg-[#1E1E1E] p-5 rounded-3xl border border-white/5 shadow-xl relative overflow-hidden flex flex-col justify-between group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/5 rounded-full -mr-16 -mt-16 blur-2xl pointer-events-none transition-transform duration-700 group-hover:scale-125" />
+                
+                <div>
+                  <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4">
+                    {lang === 'es' ? '★ TOP 5 PERSONAJES DE TU COLECCIÓN' : '★ TOP 5 CHARACTERS IN COLLECTION'}
+                  </h3>
+                  
+                  <div className="space-y-3.5">
+                    {characterStats.map((char, i) => {
+                      let barColor = 'bg-orange-500';
+                      let badgeStyle = 'bg-orange-500/10 text-orange-400 border-orange-500/20';
+                      const nameLower = char.name.toLowerCase();
+                      if (nameLower.includes('goku')) {
+                        barColor = 'bg-gradient-to-r from-orange-400 to-amber-500';
+                        badgeStyle = 'bg-orange-500/20 text-orange-400 border-orange-500/30';
+                      } else if (nameLower.includes('vegeta')) {
+                        barColor = 'bg-gradient-to-r from-blue-400 to-indigo-500';
+                        badgeStyle = 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+                      } else if (nameLower.includes('gohan')) {
+                        barColor = 'bg-gradient-to-r from-purple-400 to-red-500';
+                        badgeStyle = 'bg-purple-500/20 text-purple-400 border-purple-500/30';
+                      } else if (nameLower.includes('cell')) {
+                        barColor = 'bg-gradient-to-r from-green-400 to-emerald-600';
+                        badgeStyle = 'bg-green-500/20 text-green-400 border-green-500/30';
+                      } else if (nameLower.includes('frieza') || nameLower.includes('freezer')) {
+                        barColor = 'bg-gradient-to-r from-fuchsia-400 to-purple-600';
+                        badgeStyle = 'bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500/30';
+                      } else if (nameLower.includes('trunks')) {
+                        barColor = 'bg-gradient-to-r from-cyan-400 to-blue-500';
+                        badgeStyle = 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30';
+                      } else if (nameLower.includes('broly')) {
+                        barColor = 'bg-gradient-to-r from-lime-400 to-green-500';
+                        badgeStyle = 'bg-lime-500/20 text-lime-400 border-lime-500/30';
+                      }
+                      
+                      const topCount = characterStats[0].ownedCount || 1;
+                      const barWidth = Math.max(15, Math.round((char.ownedCount / topCount) * 100));
+
+                      return (
+                        <div key={char.name} className="flex flex-col gap-1.5 p-1 bg-white/[0.01] hover:bg-white/[0.03] rounded-xl transition-all">
+                          <div className="flex justify-between items-center text-xs font-bold">
+                            <div className="flex items-center gap-2">
+                              <span className="text-[10px] text-gray-500 font-mono">#{i + 1}</span>
+                              <span className="text-white uppercase tracking-tight">{char.name}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 font-mono">
+                              <span className="text-gray-400 text-[10px]">{char.ownedCount} copias</span>
+                              <span className={`text-[9px] px-1.5 py-0.5 rounded-md border font-black uppercase tracking-tight ${badgeStyle}`}>{char.uniqueCount} u.</span>
+                            </div>
+                          </div>
+                          <div className="w-full h-2.5 bg-white/5 rounded-full overflow-hidden p-[1px]">
+                            <div 
+                              className={`h-full ${barColor} rounded-full transition-all duration-1000`}
+                              style={{ width: `${barWidth}%` }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-white/5">
+                  <p className="text-[10px] text-gray-400 font-medium italic leading-relaxed">
+                    "{topCharacterMessage}"
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Combined Sagas and Dominant Element Panel */}
+            <div className="space-y-4">
+              {/* Sagas/Eras analytics */}
+              {eraStats.length > 0 && (
+                <div className="bg-[#1E1E1E] p-5 rounded-3xl border border-white/5 shadow-xl relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full -mr-16 -mt-16 blur-2xl pointer-events-none" />
+                  <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4">
+                    {lang === 'es' ? '⚡ SAGAS MÁS RECOLECTADAS' : '⚡ MOST COLLECTED SAGAS'}
+                  </h3>
+                  
+                  <div className="space-y-3">
+                    {eraStats.map((era, i) => {
+                      const topEraCount = eraStats[0].ownedCount || 1;
+                      const barWidth = Math.max(15, Math.round((era.ownedCount / topEraCount) * 100));
+                      
+                      return (
+                        <div key={era.name} className="flex flex-col gap-1.5">
+                          <div className="flex justify-between text-[11px] font-bold text-gray-300">
+                            <span className="truncate max-w-[200px] uppercase font-semibold text-white">{era.name}</span>
+                            <span className="font-mono text-orange-400">{era.ownedCount} c.</span>
+                          </div>
+                          <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                            <div 
+                              className="h-full bg-gradient-to-r from-orange-500 to-yellow-400 rounded-full"
+                              style={{ width: `${barWidth}%` }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Lucky / Dominant Element Spotlight Card */}
+              {favoriteColorInfo && (
+                <div className="bg-[#1E1E1E] p-5 rounded-3xl border border-white/5 shadow-xl relative overflow-hidden flex flex-col justify-between">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-500/5 rounded-full -mr-16 -mt-16 blur-2xl pointer-events-none" />
+                  
+                  <div>
+                    <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4">
+                      {lang === 'es' ? '⚡ COLOR PREDOMINANTE' : '⚡ DOMINANT ELEMENT'}
+                    </h3>
+                    
+                    <div className="flex gap-4 items-center">
+                      <div className={`h-14 w-14 rounded-2xl flex flex-col items-center justify-center border bg-gradient-to-br ${favoriteColorInfo.style} shadow-lg`}>
+                        <Zap size={18} className="text-white animate-bounce" />
+                        <span className="text-[8px] font-black uppercase mt-1 text-white">
+                          {(t as any).colorNames?.[favoriteColorInfo.name] || favoriteColorInfo.name}
+                        </span>
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-base font-black text-white italic leading-none uppercase">
+                          {(t as any).colorNames?.[favoriteColorInfo.name] || favoriteColorInfo.name}
+                        </h4>
+                        <p className="text-[10px] text-gray-400 font-semibold mt-1">
+                          {lang === 'es' ? 'Tienes el ' : 'You own '}<span className="text-green-400 font-black">{favoriteColorInfo.percentage}%</span> {lang === 'es' ? 'de las cartas de este color.' : 'of all cards in this color.'}
+                        </p>
+                        <p className="text-[9px] text-gray-500 uppercase mt-0.5">
+                          {favoriteColorInfo.owned} de {favoriteColorInfo.total} {lang === 'es' ? 'modelos obtenidos' : 'models owned'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-white/5">
+                    <p className="text-[10px] text-gray-400 font-medium italic leading-relaxed">
+                      {lang === 'es' ? 'Este elemento lidera tu mazo y define el núcleo estratégico principal de tu bóveda.' : 'This power guides your deck and forms the principal strategic nucleus of your vault.'}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Color & General Progress bar section (Refined, visually compelling layout) */}
           <div className="bg-[#1E1E1E] rounded-3xl p-6 shadow-xl border border-white/5">
-            <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-6">{t.distributionByType}</h3>
+            <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-5 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+              {t.colorProgress}
+            </h3>
             
-            <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+              {colorData.map((stat) => {
+                let barColor = 'bg-orange-500';
+                if (stat.name === 'Red') barColor = 'bg-red-500';
+                else if (stat.name === 'Blue') barColor = 'bg-blue-500';
+                else if (stat.name === 'Green') barColor = 'bg-emerald-500';
+                else if (stat.name === 'Yellow') barColor = 'bg-yellow-400';
+                else if (stat.name === 'Black') barColor = 'bg-zinc-600';
+                else if (stat.name === 'White') barColor = 'bg-slate-300';
+                else if (stat.name === 'Multi') barColor = 'bg-gradient-to-r from-red-500 via-emerald-500 to-blue-500';
+
+                return (
+                  <div key={stat.name} className="flex flex-col gap-2 p-1.5 rounded-xl hover:bg-white/[0.02] transition-colors">
+                    <div className="flex justify-between items-baseline">
+                      <div className="flex items-center gap-2">
+                        <span className={`w-2.5 h-2.5 rounded-full ${barColor}`} />
+                        <span className="text-xs font-black text-white italic uppercase tracking-tighter">
+                          {(t as any).colorNames?.[stat.name] || stat.name}
+                        </span>
+                      </div>
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-[9px] text-gray-500 font-bold uppercase">{stat.owned} / {stat.total}</span>
+                        <span className={`text-xs font-black italic ${stat.percentage === 100 ? 'text-green-500' : 'text-orange-400'}`}>{stat.percentage}%</span>
+                      </div>
+                    </div>
+                    {/* Visual custom themed progress bar */}
+                    <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden shadow-inner border border-white/[0.02]">
+                      <div 
+                        className={`h-full ${barColor} rounded-full transition-all duration-1000`} 
+                        style={{ width: `${stat.percentage}%` }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Type Distribution Display */}
+          <div className="bg-[#1E1E1E] rounded-3xl p-6 shadow-xl border border-white/5">
+            <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-5 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+              {t.distributionByType}
+            </h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
               {typeData.map((stat) => (
-                <div key={stat.name} className="flex items-center justify-between border-b border-white/5 pb-2">
-                  <div className="flex flex-col">
-                    <p className="text-xs font-black text-white italic uppercase tracking-tighter">
+                <div key={stat.name} className="flex flex-col gap-2 p-1.5 rounded-xl hover:bg-white/[0.02] transition-colors">
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-xs font-black text-white italic uppercase tracking-tighter">
                       {(t as any).typeNames?.[stat.name] || stat.name}
-                    </p>
-                    <p className="text-[9px] text-gray-500 font-bold uppercase">{stat.owned} / {stat.total}</p>
+                    </span>
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-[9px] text-gray-500 font-bold uppercase">{stat.owned} / {stat.total}</span>
+                      <span className={`text-xs font-black italic ${stat.percentage === 100 ? 'text-green-500' : 'text-orange-400'}`}>{stat.percentage}%</span>
+                    </div>
                   </div>
-                  <p className={`text-xs font-black italic ${stat.percentage === 100 ? 'text-green-500' : 'text-orange-500'}`}>{stat.percentage}%</p>
+                  <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden shadow-inner border border-white/[0.02]">
+                    <div 
+                      className="h-full bg-blue-500 rounded-full transition-all duration-1000 progress-glow-blue" 
+                      style={{ width: `${stat.percentage}%` }}
+                    />
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
+          {/* Rarity & Completion Levels */}
           <div className="bg-[#1E1E1E] rounded-3xl p-6 shadow-xl border border-white/5">
-            <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-6">{t.distributionByRarity}</h3>
+            <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-5 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-purple-500" />
+              {t.distributionByRarity}
+            </h3>
             
-            <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-              {rarityData.map((stat) => (
-                <div key={stat.name} className="flex items-center justify-between border-b border-white/5 pb-2">
-                  <div className="flex flex-col">
-                    <p className="text-xs font-black text-white italic uppercase tracking-tighter">{stat.name}</p>
-                    <p className="text-[9px] text-gray-500 font-bold uppercase">{stat.owned} / {stat.total}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+              {rarityData.map((stat) => {
+                let barColor = 'bg-purple-500';
+                if (stat.name === 'C') barColor = 'bg-gray-400';
+                else if (stat.name === 'UC') barColor = 'bg-blue-400';
+                else if (stat.name === 'R') barColor = 'bg-slate-300';
+                else if (stat.name === 'SR') barColor = 'bg-yellow-500';
+                else if (stat.name === 'SPR') barColor = 'bg-orange-500';
+                else if (stat.name.startsWith('SCR')) barColor = 'bg-gradient-to-r from-purple-500 via-pink-500 to-red-500';
+                else if (stat.name === 'GDR') barColor = 'bg-gradient-to-r from-amber-400 via-yellow-300 to-yellow-600 animate-pulse';
+
+                return (
+                  <div key={stat.name} className="flex flex-col gap-2 p-1.5 rounded-xl hover:bg-white/[0.02] transition-colors">
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-xs font-black text-white italic uppercase tracking-tighter">
+                        {stat.name}
+                      </span>
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-[9px] text-gray-500 font-bold uppercase">{stat.owned} / {stat.total}</span>
+                        <span className={`text-xs font-black italic ${stat.percentage === 100 ? 'text-green-500' : 'text-orange-400'}`}>{stat.percentage}%</span>
+                      </div>
+                    </div>
+                    <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden shadow-inner border border-white/[0.02]">
+                      <div 
+                        className={`h-full ${barColor} rounded-full transition-all duration-1000`} 
+                        style={{ width: `${stat.percentage}%` }}
+                      />
+                    </div>
                   </div>
-                  <p className={`text-xs font-black italic ${stat.percentage === 100 ? 'text-green-500' : 'text-orange-500'}`}>{stat.percentage}%</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
-          {/* Achievement Stats Section */}
-          <div className="bg-[#1E1E1E] rounded-2xl p-6 shadow-xl border border-white/5 overflow-hidden relative">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full -mr-16 -mt-16 blur-2xl" />
+          {/* Achievement Stats Section with Sparkles and custom styling */}
+          <div className="bg-[#1E1E1E] rounded-3xl p-6 shadow-xl border border-white/5 overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full -mr-16 -mt-16 blur-2xl pointer-events-none" />
             
-            <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-6">{t.achievementStats}</h3>
+            <h3 className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-6 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-purple-500" />
+              {t.achievementStats}
+            </h3>
             
-            <div className="flex flex-col items-center">
-              <div className="w-full h-48 mb-6">
+            <div className="flex flex-col md:flex-row gap-8 items-center justify-around">
+              <div className="relative w-48 h-48 flex-shrink-0">
                 {achievementStats.total > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
@@ -6421,8 +6925,8 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
                         data={filteredChartData}
                         cx="50%"
                         cy="50%"
-                        innerRadius={50}
-                        outerRadius={70}
+                        innerRadius={55}
+                        outerRadius={75}
                         paddingAngle={5}
                         dataKey="value"
                       >
@@ -6437,27 +6941,27 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
                     <Trophy size={32} className="opacity-20 mb-2" />
                   </div>
                 )}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pt-8">
+                <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
                   <Trophy size={20} className="text-orange-500 mb-1" />
-                  <p className="text-lg font-black text-white italic leading-none">{achievementStats.unlockedTotal}</p>
-                  <p className="text-[8px] text-gray-500 font-bold uppercase">Total</p>
+                  <p className="text-xl font-black text-white italic leading-none">{achievementStats.unlockedTotal}</p>
+                  <p className="text-[8px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Total</p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 w-full">
-                <div className="bg-white/5 p-3 rounded-2xl border border-white/5 flex flex-col items-center">
-                  <span className="text-[8px] font-black text-orange-500 uppercase mb-1">{t.visibleAchievements}</span>
-                  <p className="text-xl font-black text-white italic leading-tight">
-                    {achievementStats.visibleUnlocked}<span className="text-xs text-gray-600 font-bold">/{achievementStats.visibleTotal}</span>
+              <div className="flex flex-col gap-4 w-full md:max-w-xs justify-center">
+                <div className="bg-white/5 p-4 rounded-2xl border border-white/5 flex flex-col items-center hover:bg-white/[0.08] transition-colors">
+                  <span className="text-[9px] font-black text-orange-500 uppercase tracking-widest mb-1">{t.visibleAchievements}</span>
+                  <p className="text-2xl font-black text-white italic leading-tight">
+                    {achievementStats.visibleUnlocked}<span className="text-sm text-gray-500 font-bold"> / {achievementStats.visibleTotal}</span>
                   </p>
                 </div>
-                <div className="bg-white/5 p-3 rounded-2xl border border-white/5 flex flex-col items-center">
-                  <div className="flex items-center gap-1 mb-1">
-                    <span className="text-[8px] font-black text-purple-500 uppercase">{t.hiddenAchievements}</span>
-                    <div className="w-1 h-1 bg-purple-500 rounded-full animate-pulse" />
+                <div className="bg-white/5 p-4 rounded-2xl border border-white/5 flex flex-col items-center hover:bg-white/[0.08] transition-colors">
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <span className="text-[9px] font-black text-purple-500 uppercase tracking-widest">{t.hiddenAchievements}</span>
+                    <div className="w-1.5 h-1.5 bg-purple-500 rounded-full animate-pulse" />
                   </div>
-                  <p className="text-xl font-black text-white italic leading-tight">
-                    {achievementStats.hiddenUnlocked}<span className="text-xs text-gray-600 font-bold">/{achievementStats.hiddenTotal}</span>
+                  <p className="text-2xl font-black text-white italic leading-tight">
+                    {achievementStats.hiddenUnlocked}<span className="text-sm text-gray-500 font-bold"> / {achievementStats.hiddenTotal}</span>
                   </p>
                 </div>
               </div>
@@ -8612,7 +9116,7 @@ export default function TrackerApp() {
         } else {
           let matchesExp = card.expansion === wantsFilterExpansion;
           if (gameType === 'fusion') {
-            if (wantsFilterExpansion.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${wantsFilterExpansion}`]?.includes(card.id)) matchesExp = true;
+            if (wantsFilterExpansion.startsWith('FB') && wantsFilterExpansion !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${wantsFilterExpansion}`]?.includes(card.id)) matchesExp = true;
             if (wantsFilterExpansion === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(card.id)) matchesExp = true;
           }
           if (!matchesExp && gameType === 'fusion' && (wantsFilterExpansion.startsWith('FB') || wantsFilterExpansion.startsWith('FS') || wantsFilterExpansion.startsWith('SB'))) {
@@ -9212,7 +9716,7 @@ export default function TrackerApp() {
       else {
         matchesExpansion = card.expansion === filters.expansion && !isGiant;
         if (!matchesExpansion && filters.expansion) {
-          if (filters.expansion.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${filters.expansion}`]?.includes(card.id)) matchesExpansion = true;
+          if (filters.expansion.startsWith('FB') && filters.expansion !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${filters.expansion}`]?.includes(card.id)) matchesExpansion = true;
           if (filters.expansion === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(card.id)) matchesExpansion = true;
           
           if (gameType === 'fusion' && (filters.expansion.startsWith('FB') || filters.expansion.startsWith('FS') || filters.expansion.startsWith('SB'))) {
@@ -9361,7 +9865,7 @@ export default function TrackerApp() {
         else {
           let matchesExp = card.expansion === filters.expansion && !isGiant;
           if (!matchesExp) {
-            if (filters.expansion.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${filters.expansion}`]?.includes(card.id)) matchesExp = true;
+            if (filters.expansion.startsWith('FB') && filters.expansion !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${filters.expansion}`]?.includes(card.id)) matchesExp = true;
             if (filters.expansion === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(card.id)) matchesExp = true;
             if (gameType === 'fusion' && (filters.expansion.startsWith('FB') || filters.expansion.startsWith('FS') || filters.expansion.startsWith('SB'))) {
               if (card.cardNumber.split('_')[0].startsWith(filters.expansion + '-')) matchesExp = true;
@@ -10911,7 +11415,7 @@ export default function TrackerApp() {
                            if (group.items[0].subItems && group.items[0].subItems.length > 0) {
                              firstId = group.items[0].subItems[0].id;
                            }
-                           const firstCards = cards.filter(c => c.expansion === firstId || (PACK_ARRAYS[firstId] && PACK_ARRAYS[firstId].includes(c.id)) || (firstId.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${firstId}`]?.includes(c.id)) || (firstId === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)));
+                           const firstCards = cards.filter(c => c.expansion === firstId || (PACK_ARRAYS[firstId] && PACK_ARRAYS[firstId].includes(c.id)) || (firstId.startsWith('FB') && firstId !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${firstId}`]?.includes(c.id)) || (firstId === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)));
                            if (firstCards.length > 0) {
                              bgImage = firstCards[0].imageUrl;
                              if (bgImage && !bgImage.startsWith('http') && !bgImage.startsWith('/')) {
@@ -10945,7 +11449,7 @@ export default function TrackerApp() {
                             if (checkItem.id === c.id) return true;
                             if (c.expansion === checkItem.id) return true;
                             if (PACK_ARRAYS[checkItem.id] && PACK_ARRAYS[checkItem.id].includes(c.id)) return true;
-                            if (checkItem.id.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
+                            if (checkItem.id.startsWith('FB') && checkItem.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
                             if (checkItem.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
                             if (checkItem.subItems) return checkItem.subItems.some((subItem: any) => checkItemMatch(subItem));
                             return false;
@@ -11074,7 +11578,7 @@ export default function TrackerApp() {
                                 if (checkItem.id === c.id) return true;
                                 if (c.expansion === checkItem.id) return true;
                                 if (PACK_ARRAYS[checkItem.id] && PACK_ARRAYS[checkItem.id].includes(c.id)) return true;
-                                if (checkItem.id.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
+                                if (checkItem.id.startsWith('FB') && checkItem.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
                                 if (checkItem.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
                                 if (checkItem.subItems) return checkItem.subItems.some((subItem: any) => checkItemMatch(subItem));
                                 return false;
@@ -11200,7 +11704,7 @@ export default function TrackerApp() {
                                      if (checkItem.id === c.id) return true;
                                      if (c.expansion === checkItem.id) return true;
                                      if (PACK_ARRAYS[checkItem.id] && PACK_ARRAYS[checkItem.id].includes(c.id)) return true;
-                                     if (checkItem.id.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
+                                     if (checkItem.id.startsWith('FB') && checkItem.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
                                      if (checkItem.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
                                      if (checkItem.subItems) return checkItem.subItems.some((sub: any) => checkItemMatch(sub));
                                      return false;
@@ -11223,7 +11727,7 @@ export default function TrackerApp() {
                                  let firstCardImage = firstCard ? firstCard.imageUrl : undefined;
                                  if (!firstCardImage && item.subItems?.[0]) {
                                    const subId = item.subItems[0].id;
-                                   const fallbackCards = cards.filter(c => c.expansion === subId || (PACK_ARRAYS[subId] && PACK_ARRAYS[subId].includes(c.id)) || (subId.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${subId}`]?.includes(c.id)) || (subId === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)));
+                                   const fallbackCards = cards.filter(c => c.expansion === subId || (PACK_ARRAYS[subId] && PACK_ARRAYS[subId].includes(c.id)) || (subId.startsWith('FB') && subId !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${subId}`]?.includes(c.id)) || (subId === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)));
                                    firstCardImage = fallbackCards[0]?.imageUrl;
                                  }
                                  const cardFallback = firstCardImage ? (firstCardImage.startsWith('http') || firstCardImage.startsWith('/') ? firstCardImage : `/${firstCardImage}`) : undefined;
@@ -11312,7 +11816,7 @@ export default function TrackerApp() {
                                            className="bg-black/20 border-t border-white/5 p-3 space-y-1"
                                          >
                                            {(item.subItems || []).map(sub => {
-                                              const cardsInSub = cards.filter(c => c.expansion === sub.id || (PACK_ARRAYS[sub.id] && PACK_ARRAYS[sub.id].includes(c.id)) || (sub.id.startsWith('FB') && PACK_ARRAYS[`FP_RELEASE_${sub.id}`]?.includes(c.id)) || (sub.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)));
+                                              const cardsInSub = cards.filter(c => c.expansion === sub.id || (PACK_ARRAYS[sub.id] && PACK_ARRAYS[sub.id].includes(c.id)) || (sub.id.startsWith('FB') && sub.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${sub.id}`]?.includes(c.id)) || (sub.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)));
                                               const { total: neededInSub, owned: ownedInSub } = getDeduplicatedStats(cardsInSub, inventory, collectionGoal);
                                               const subProgress = neededInSub > 0 ? Math.round((ownedInSub / neededInSub) * 100) : 0;
 
