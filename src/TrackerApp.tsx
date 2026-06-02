@@ -6046,9 +6046,9 @@ const Dashboard = ({
           <div className="absolute top-0 right-0 w-48 h-48 bg-orange-500/10 rounded-full -mr-12 -mt-12 blur-3xl group-hover:bg-orange-500/25 transition-all duration-700" />
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/10 rounded-full -ml-12 -mb-12 blur-3xl group-hover:bg-blue-500/25 transition-all duration-700" />
 
-          <div className="relative z-10 w-full flex items-center justify-between gap-4">
-            {/* Left Column: Sponsor & Reservation info - now wider since the box has been removed */}
-            <div className="flex flex-col items-start text-left w-full">
+          <div className="relative z-10 w-full flex flex-row items-center justify-between gap-4">
+            {/* Left Column: Sponsor & Reservation info */}
+            <div className="flex flex-col items-start text-left flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-2">
                 <p className="text-[9px] font-black tracking-widest text-orange-500 uppercase italic">
                   {lang === 'es' ? 'PATROCINADOR OFICIAL' : 'OFFICIAL SPONSOR'}
@@ -6062,7 +6062,7 @@ const Dashboard = ({
                 className="h-8 object-contain mb-3 group-hover:scale-105 transition-transform duration-500"
               />
               
-              <h3 className="text-white font-extrabold text-[#FFF] text-md sm:text-lg md:text-xl tracking-tight leading-tight uppercase mb-1.5 group-hover:text-orange-400 transition-colors">
+              <h3 className="text-white font-extrabold text-[#FFF] text-md sm:text-lg md:text-xl tracking-tight leading-tight uppercase mb-1.5 group-hover:text-orange-400 transition-colors truncate w-full">
                 ¡Reserva BT31 Impact Beyond Dimensions!
               </h3>
               
@@ -6070,6 +6070,16 @@ const Dashboard = ({
                 <span className="bg-orange-500/20 text-orange-400 border border-orange-500/30 px-1.5 py-0.5 rounded text-[8px] font-bold">CÓDIGO ANULIX</span>
                 <span>para un descuento</span>
               </p>
+            </div>
+
+            {/* Right Column: Release Date badge */}
+            <div className="flex flex-col items-end text-right shrink-0">
+              <span className="text-[9px] font-black tracking-widest text-orange-400/70 uppercase">
+                {lang === 'es' ? 'SALIDA' : 'RELEASES'}
+              </span>
+              <span className="text-white font-black text-xs sm:text-sm md:text-md tracking-tight uppercase bg-orange-500/20 text-orange-400 border border-orange-500/30 px-2.5 sm:px-3 py-1 rounded-xl shadow-[0_0_15px_rgba(249,115,22,0.15)] mt-1 whitespace-nowrap">
+                {lang === 'es' ? '3 de Julio' : 'July 3rd'}
+              </span>
             </div>
           </div>
         </motion.a>
@@ -6094,9 +6104,9 @@ const Dashboard = ({
           <div className="absolute top-0 right-0 w-48 h-48 bg-red-500/10 rounded-full -mr-12 -mt-12 blur-3xl group-hover:bg-red-500/25 transition-all duration-700" />
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 rounded-full -ml-12 -mb-12 blur-3xl group-hover:bg-purple-500/25 transition-all duration-700" />
 
-          <div className="relative z-10 w-full flex items-center justify-between gap-4">
+          <div className="relative z-10 w-full flex flex-row items-center justify-between gap-4">
             {/* Left Column: Sponsor & Reservation info */}
-            <div className="flex flex-col items-start text-left w-full">
+            <div className="flex flex-col items-start text-left flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-2">
                 <p className="text-[9px] font-black tracking-widest text-red-400 uppercase italic">
                   {lang === 'es' ? 'PATROCINADOR OFICIAL' : 'OFFICIAL SPONSOR'}
@@ -6110,7 +6120,7 @@ const Dashboard = ({
                 className="h-8 object-contain mb-3 group-hover:scale-105 transition-transform duration-500"
               />
               
-              <h3 className="text-white font-extrabold text-[#FFF] text-md sm:text-lg md:text-xl tracking-tight leading-tight uppercase mb-1.5 group-hover:text-red-400 transition-colors">
+              <h3 className="text-white font-extrabold text-[#FFF] text-md sm:text-lg md:text-xl tracking-tight leading-tight uppercase mb-1.5 group-hover:text-red-400 transition-colors truncate w-full">
                 ¡Reserva FB10 Cross Force!
               </h3>
               
@@ -6118,6 +6128,16 @@ const Dashboard = ({
                 <span className="bg-red-500/20 text-red-400 border border-red-500/30 px-1.5 py-0.5 rounded text-[8px] font-bold">CÓDIGO ANULIX</span>
                 <span>para un descuento</span>
               </p>
+            </div>
+
+            {/* Right Column: Release Date badge */}
+            <div className="flex flex-col items-end text-right shrink-0">
+              <span className="text-[9px] font-black tracking-widest text-red-400/70 uppercase">
+                {lang === 'es' ? 'SALIDA' : 'RELEASES'}
+              </span>
+              <span className="text-white font-black text-xs sm:text-sm md:text-md tracking-tight uppercase bg-red-500/20 text-red-300 border border-red-500/30 px-2.5 sm:px-3 py-1 rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.15)] mt-1 whitespace-nowrap">
+                {lang === 'es' ? '12 de Junio' : 'June 12th'}
+              </span>
             </div>
           </div>
         </motion.a>
@@ -6283,7 +6303,7 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
       hiddenTotal: hidden.length,
       hiddenUnlocked: unlockedHidden.length,
       total: achievementsList.length,
-      unlockedTotal: userAchievements.filter(ua => achievementsList.some(def => def.id === ua.achievementId)).length
+      unlockedTotal: achievementsList.filter(def => userAchievements.some(ua => ua.achievementId === def.id)).length
     };
   }, [achievementsList, userAchievements]);
 
@@ -7798,7 +7818,16 @@ const AchievementsView = ({
   const achievementsList = useMemo(() => getAchievementsList(cards, groups, gameType), [cards, groups, gameType]);
 
   const validUserAchievements = useMemo(() => {
-    return userAchievements.filter(ua => achievementsList.some(def => def.id === ua.achievementId));
+    const seen = new Set<string>();
+    return userAchievements.filter(ua => {
+      if (achievementsList.some(def => def.id === ua.achievementId)) {
+        if (!seen.has(ua.achievementId)) {
+          seen.add(ua.achievementId);
+          return true;
+        }
+      }
+      return false;
+    });
   }, [userAchievements, achievementsList]);
 
   const unlockedCount = validUserAchievements.length;
@@ -9514,7 +9543,16 @@ export default function TrackerApp() {
   const achievementsList = useMemo(() => getAchievementsList(cards, currentGroups, gameType), [cards, currentGroups, gameType]);
 
   const currentGameUserAchievements = useMemo(() => {
-    return userAchievements.filter(ua => achievementsList.some(def => def.id === ua.achievementId));
+    const seen = new Set<string>();
+    return userAchievements.filter(ua => {
+      if (achievementsList.some(def => def.id === ua.achievementId)) {
+        if (!seen.has(ua.achievementId)) {
+          seen.add(ua.achievementId);
+          return true;
+        }
+      }
+      return false;
+    });
   }, [userAchievements, achievementsList]);
 
   useEffect(() => {
@@ -9534,6 +9572,11 @@ export default function TrackerApp() {
     setExpandedCategories([]);
     setSearchQuery('');
     setFilters({ rarities: [], colors: [], expansion: 'Todos', types: [], legalStatus: [], alternatives: DEFAULT_ALTERNATIVES, traits: [], characters: [], eras: [], owned: 'all' });
+    setActiveWantsListId(null);
+    setWantsSearchQuery('');
+    setWantsFilterExpansion('Todos');
+    setWantsFilterColor('Todos');
+    setWantsFilterRarity('Todos');
   }, [gameType]);
 
   const recentlyAddedCards = useMemo(() => {
@@ -10530,12 +10573,25 @@ export default function TrackerApp() {
       
       for (const def of achievementsList) {
         const { earned, progress, tier } = def.check(cards, inventory);
-        const existing = userAchievementsRef.current.find(a => a.achievementId === def.id);
+        const allMatching = userAchievementsRef.current.filter(a => a.achievementId === def.id);
+        const existing = allMatching[0];
 
         if (earned) {
           const tierKey = tier !== undefined ? `${def.id}_tier_${tier}` : def.id;
           
           if (failedWrites.current.has(def.id)) continue;
+
+          // Heal/clean up any database duplicates for this achievement in the background
+          if (allMatching.length > 1) {
+            console.log(`[ACHIEVEMENT] Cleaning up ${allMatching.length - 1} duplicate achievements for: ${def.id}`);
+            for (let idx = 1; idx < allMatching.length; idx++) {
+              try {
+                await deleteDoc(doc(db, 'achievements', allMatching[idx].id));
+              } catch (err) {
+                console.error("Failed to clean up duplicate achievement", err);
+              }
+            }
+          }
 
           if (!existing && !addingInThisRun.has(def.id) && !processedAchievementIds.current.has(tierKey)) {
             console.log(`[ACHIEVEMENT] Unlocking unique: ${def.id}`);
@@ -10624,22 +10680,23 @@ export default function TrackerApp() {
             }
           }
         } else {
-          if (existing) {
-            console.log(`[ACHIEVEMENT] Revoking achievement since requirements no longer met: ${def.id}`);
-            try {
-              await deleteDoc(doc(db, 'achievements', existing.id));
-              setUnlockedQueue(prev => prev.filter(item => item.def.id !== def.id));
-              processedAchievementIds.current.delete(def.id);
-              if (def.type === 'tiered' && def.tiers) {
-                for (let t = 0; t < def.tiers.length; t++) {
-                  processedAchievementIds.current.delete(`${def.id}_tier_${t}`);
+          if (allMatching.length > 0) {
+            console.log(`[ACHIEVEMENT] Revoking achievement and cleaning up ${allMatching.length} entries for: ${def.id}`);
+            for (const item of allMatching) {
+              try {
+                await deleteDoc(doc(db, 'achievements', item.id));
+              } catch (err) {
+                if (!handleFirestoreError(err, OperationType.DELETE, 'achievements')) {
+                  console.error("Failed to delete revoked achievement from database", err);
                 }
               }
-            } catch (err) {
-              if (!handleFirestoreError(err, OperationType.DELETE, 'achievements')) {
-                console.error("Failed to delete revoked achievement from database", err);
+            }
+            setUnlockedQueue(prev => prev.filter(item => item.def.id !== def.id));
+            processedAchievementIds.current.delete(def.id);
+            if (def.type === 'tiered' && def.tiers) {
+              for (let t = 0; t < def.tiers.length; t++) {
+                processedAchievementIds.current.delete(`${def.id}_tier_${t}`);
               }
-              failedWrites.current.add(def.id);
             }
           }
         }
