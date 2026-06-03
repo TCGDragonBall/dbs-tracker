@@ -6734,7 +6734,17 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
                 </p>
               </div>
 
-              
+              <button
+                type="button"
+                onClick={() => {
+                  setCustomTitle(collectorTier.title);
+                  setShowShareCardModal(true);
+                }}
+                className="mt-3 w-full py-2.5 bg-orange-500/10 hover:bg-orange-500/20 active:scale-95 border border-orange-500/30 text-orange-400 font-black text-[10px] uppercase rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-lg shadow-orange-500/5 z-10"
+              >
+                <Share2 size={12} className="text-orange-400" />
+                {lang === 'es' ? 'Compartir Tarjeta de Poder' : 'Share Power Card'}
+              </button>
             </div>
 
             {/* Quick Stats Grid */}
@@ -7139,6 +7149,7 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
                     <button 
                       onClick={() => {
                         setShowShareCardModal(false);
+                        setCopiedText(false);
                       }} 
                       className="text-gray-400 hover:text-white p-1 rounded-lg bg-white/5 hover:bg-white/10 cursor-pointer"
                     >
