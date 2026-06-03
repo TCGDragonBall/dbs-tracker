@@ -72,6 +72,511 @@ import { db, auth, googleProvider, handleFirestoreError, OperationType, isQuotaE
 import { signInWithPopup, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useAuth } from './AuthContext';
 import emailjs from '@emailjs/browser';
+import html2canvas from 'html2canvas';
+
+const resolveCssValue = (value: string): string => {
+  let resolved = value.trim();
+  
+  const localThemeVars: Record<string, string> = {
+    '--color-db-orange': '#FF8C00',
+    '--color-db-blue': '#0047AB',
+    '--color-db-dark': '#121212',
+    '--color-db-card': '#1E1E1E',
+  };
+
+  let varMatch = resolved.match(/var\((--[^,)]+)(?:,\s*([^)]+))?\)/);
+  let limit = 0; // prevent infinite loops
+  while (varMatch && limit < 10) {
+    limit++;
+    const varName = varMatch[1].trim();
+    const fallback = varMatch[2] ? varMatch[2].trim() : '';
+    
+    let fetched = '';
+    try {
+      fetched = window.getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+      if (!fetched && document.body) {
+        fetched = window.getComputedStyle(document.body).getPropertyValue(varName).trim();
+      }
+    } catch (e) {
+      console.warn('Error reading computed style for variable:', varName, e);
+    }
+
+    if (!fetched && localThemeVars[varName]) {
+      fetched = localThemeVars[varName];
+    }
+
+    const replacement = fetched || fallback || 'transparent';
+    resolved = resolved.replace(varMatch[0], replacement);
+    varMatch = resolved.match(/var\((--[^,)]+)(?:,\s*([^)]+))?\)/);
+  }
+  return resolved;
+};
+
+const parseColorToRgba = (colorStr: string): { r: number; g: number; b: number; a: number } => {
+  let str = colorStr.trim().toLowerCase();
+  
+  // Resolve outer var(...)
+  str = resolveCssValue(str);
+
+  const namedColors: Record<string, string> = {
+    transparent: 'rgba(0,0,0,0)',
+    white: '#ffffff',
+    black: '#000000',
+    red: '#ff0000',
+    green: '#00ff00',
+    blue: '#0000ff',
+    gray: '#808080',
+    currentcolor: 'rgba(255,255,255,1)'
+  };
+  if (namedColors[str]) {
+    str = namedColors[str];
+  }
+
+  // Hex colors
+  if (str.startsWith('#')) {
+    let hex = str.substring(1);
+    let r = 0, g = 0, b = 0, a = 1;
+    if (hex.length === 3 || hex.length === 4) {
+      r = parseInt(hex[0] + hex[0], 16) || 0;
+      g = parseInt(hex[1] + hex[1], 16) || 0;
+      b = parseInt(hex[2] + hex[2], 16) || 0;
+      if (hex.length === 4) {
+        a = (parseInt(hex[3] + hex[3], 16) || 0) / 255;
+      }
+    } else if (hex.length === 6 || hex.length === 8) {
+      r = parseInt(hex.substring(0, 2), 16) || 0;
+      g = parseInt(hex.substring(2, 4), 16) || 0;
+      b = parseInt(hex.substring(4, 6), 16) || 0;
+      if (hex.length === 8) {
+        a = (parseInt(hex.substring(6, 8), 16) || 0) / 255;
+      }
+    }
+    return { r, g, b, a };
+  }
+
+  // rgb/rgba
+  if (str.startsWith('rgb(') || str.startsWith('rgba(')) {
+    const content = str.substring(str.indexOf('(') + 1, str.length - 1).trim();
+    const normalized = content.replace(/\s*\/\s*/, ',').replace(/\s+/g, ',');
+    const parts = normalized.split(',');
+    const r = parseInt(parts[0]) || 0;
+    const g = parseInt(parts[1]) || 0;
+    const b = parseInt(parts[2]) || 0;
+    let a = 1;
+    if (parts.length >= 4) {
+      const aStr = parts[3];
+      if (aStr.includes('%')) {
+        a = parseFloat(aStr) / 100;
+      } else {
+        a = parseFloat(aStr);
+      }
+    }
+    return { r, g, b, a: isNaN(a) ? 1 : a };
+  }
+
+  // oklch
+  if (str.startsWith('oklch(')) {
+    const parenthesized = str.substring(str.indexOf('(') + 1, str.length - 1).trim();
+    const normalized = parenthesized.replace(/\s*\/\s*/, ' ').replace(/\s+/g, ' ');
+    const args = normalized.split(' ');
+    
+    let lStr = args[0] || '0.5';
+    let cStr = args[1] || '0';
+    let hStr = args[2] || '0';
+    let aStr = args[3];
+
+    // Check for nested variables or fallback
+    let l = parseFloat(lStr);
+    if (lStr.includes('%')) l = l / 100;
+    let c = parseFloat(cStr);
+    let h = parseFloat(hStr);
+    let alpha = 1;
+    if (aStr) {
+      alpha = aStr.includes('%') ? parseFloat(aStr) / 100 : parseFloat(aStr);
+    }
+
+    if (isNaN(l)) l = 0.5;
+    if (isNaN(c)) c = 0.05;
+    if (isNaN(h)) h = 180;
+    if (isNaN(alpha)) alpha = 1;
+
+    // Convert L, C, H to RGB
+    const hRad = (h * Math.PI) / 180;
+    const a = c * Math.cos(hRad);
+    const b = c * Math.sin(hRad);
+
+    const l_ = l + 0.3963377774 * a + 0.2158037573 * b;
+    const m_ = l - 0.1055613458 * a - 0.0638541728 * b;
+    const s_ = l - 0.0894841775 * a - 1.2914855480 * b;
+
+    const l_3 = l_ * l_ * l_;
+    const m_3 = m_ * m_ * m_;
+    const s_3 = s_ * s_ * s_;
+
+    let rgbR = 4.0767416621 * l_3 - 3.3077115913 * m_3 + 0.2309699292 * s_3;
+    let rgbG = -1.2684380046 * l_3 + 2.6097574011 * m_3 - 0.3413193965 * s_3;
+    let rgbB = -0.0041960863 * l_3 - 0.7034186147 * m_3 + 1.7076147010 * s_3;
+
+    const gamma = (val: number) => {
+      if (val <= 0.0031308) return 12.92 * val;
+      return 1.055 * Math.pow(val, 1 / 2.4) - 0.055;
+    };
+
+    rgbR = Math.max(0, Math.min(1, gamma(rgbR)));
+    rgbG = Math.max(0, Math.min(1, gamma(rgbG)));
+    rgbB = Math.max(0, Math.min(1, gamma(rgbB)));
+
+    return {
+      r: Math.round(rgbR * 255),
+      g: Math.round(rgbG * 255),
+      b: Math.round(rgbB * 255),
+      a: alpha
+    };
+  }
+
+  // oklab
+  if (str.startsWith('oklab(')) {
+    const parenthesized = str.substring(str.indexOf('(') + 1, str.length - 1).trim();
+    const normalized = parenthesized.replace(/\s*\/\s*/, ' ').replace(/\s+/g, ' ');
+    const args = normalized.split(' ');
+    
+    let lStr = args[0] || '0.5';
+    let aStrVal = args[1] || '0';
+    let bStrVal = args[2] || '0';
+    let aStr = args[3];
+
+    let l = parseFloat(lStr);
+    if (lStr.includes('%')) l = l / 100;
+    let a = parseFloat(aStrVal);
+    let b = parseFloat(bStrVal);
+    let alpha = 1;
+    if (aStr) {
+      alpha = aStr.includes('%') ? parseFloat(aStr) / 100 : parseFloat(aStr);
+    }
+
+    if (isNaN(l)) l = 0.5;
+    if (isNaN(a)) a = 0;
+    if (isNaN(b)) b = 0;
+    if (isNaN(alpha)) alpha = 1;
+
+    const l_ = l + 0.3963377774 * a + 0.2158037573 * b;
+    const m_ = l - 0.1055613458 * a - 0.0638541728 * b;
+    const s_ = l - 0.0894841775 * a - 1.2914855480 * b;
+
+    const l_3 = l_ * l_ * l_;
+    const m_3 = m_ * m_ * m_;
+    const s_3 = s_ * s_ * s_;
+
+    let rgbR = 4.0767416621 * l_3 - 3.3077115913 * m_3 + 0.2309699292 * s_3;
+    let rgbG = -1.2684380046 * l_3 + 2.6097574011 * m_3 - 0.3413193965 * s_3;
+    let rgbB = -0.0041960863 * l_3 - 0.7034186147 * m_3 + 1.7076147010 * s_3;
+
+    const gamma = (val: number) => {
+      if (val <= 0.0031308) return 12.92 * val;
+      return 1.055 * Math.pow(val, 1 / 2.4) - 0.055;
+    };
+
+    rgbR = Math.max(0, Math.min(1, gamma(rgbR)));
+    rgbG = Math.max(0, Math.min(1, gamma(rgbG)));
+    rgbB = Math.max(0, Math.min(1, gamma(rgbB)));
+
+    return {
+      r: Math.round(rgbR * 255),
+      g: Math.round(rgbG * 255),
+      b: Math.round(rgbB * 255),
+      a: alpha
+    };
+  }
+
+  // color(display-p3)
+  if (str.startsWith('color(') && str.includes('display-p3')) {
+    const parenthesized = str.substring(str.indexOf('(') + 1, str.length - 1).trim();
+    const args = parenthesized.replace('display-p3', '').trim().replace(/\s+/g, ' ').split(' ');
+    const rVal = parseFloat(args[0]) || 0;
+    const gVal = parseFloat(args[1]) || 0;
+    const bVal = parseFloat(args[2]) || 0;
+    let alpha = 1;
+    if (args.length >= 4) {
+      alpha = args[3].includes('%') ? parseFloat(args[3]) / 100 : parseFloat(args[3]);
+    }
+    return {
+      r: Math.round(Math.max(0, Math.min(1, rVal)) * 255),
+      g: Math.round(Math.max(0, Math.min(1, gVal)) * 255),
+      b: Math.round(Math.max(0, Math.min(1, bVal)) * 255),
+      a: isNaN(alpha) ? 1 : alpha
+    };
+  }
+
+  return { r: 120, g: 120, b: 120, a: 1 };
+};
+
+const resolveColorMix = (innerContent: string): string => {
+  const parts: string[] = [];
+  let current = '';
+  let depth = 0;
+  for (let i = 0; i < innerContent.length; i++) {
+    const char = innerContent[i];
+    if (char === '(') depth++;
+    else if (char === ')') depth--;
+    
+    if (char === ',' && depth === 0) {
+      parts.push(current.trim());
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+  if (current.trim()) {
+    parts.push(current.trim());
+  }
+
+  if (parts.length < 2) {
+    return 'rgba(120, 120, 120, 0.5)';
+  }
+
+  const p1 = parts[0];
+  const p2 = parts[1];
+
+  const weightMatch1 = p1.match(/([\d.]+)%$/);
+  let w1 = 0.5;
+  let colorStr1 = p1;
+  if (weightMatch1) {
+    w1 = parseFloat(weightMatch1[1]) / 100;
+    colorStr1 = p1.substring(0, p1.lastIndexOf(weightMatch1[0])).trim();
+  }
+
+  const weightMatch2 = p2.match(/([\d.]+)%$/);
+  let w2 = 1 - w1;
+  let colorStr2 = p2;
+  if (weightMatch2) {
+    w2 = parseFloat(weightMatch2[1]) / 100;
+    colorStr2 = p2.substring(0, p2.lastIndexOf(weightMatch2[0])).trim();
+    if (!weightMatch1) {
+      w1 = 1 - w2;
+    }
+  }
+
+  const sum = w1 + w2;
+  if (sum > 0) {
+    w1 = w1 / sum;
+    w2 = w2 / sum;
+  }
+
+  try {
+    const c1 = parseColorToRgba(colorStr1);
+    const c2 = parseColorToRgba(colorStr2);
+
+    const r = Math.round(c1.r * w1 + c2.r * w2);
+    const g = Math.round(c1.g * w1 + c2.g * w2);
+    const b = Math.round(c1.b * w1 + c2.b * w2);
+    const a = c1.a * w1 + c2.a * w2;
+
+    return a === 1 ? `rgb(${r}, ${g}, ${b})` : `rgba(${r}, ${g}, ${b}, ${parseFloat(a.toFixed(3))})`;
+  } catch (err) {
+    console.error('Error in resolveColorMix:', err, { colorStr1, colorStr2 });
+    return 'rgba(120, 120, 120, 0.5)';
+  }
+};
+
+const replaceModernColors = (cssText: string): string => {
+  let result = cssText;
+
+  // 1. Process oklch(...)
+  let idx = result.indexOf('oklch(');
+  while (idx !== -1) {
+    let depth = 1;
+    let j = idx + 6;
+    while (j < result.length && depth > 0) {
+      if (result[j] === '(') depth++;
+      else if (result[j] === ')') depth--;
+      j++;
+    }
+    if (depth === 0) {
+      const matchedPart = result.substring(idx, j);
+      const parsedColor = parseColorToRgba(matchedPart);
+      const rgbaStr = parsedColor.a === 1 ? `rgb(${parsedColor.r}, ${parsedColor.g}, ${parsedColor.b})` : `rgba(${parsedColor.r}, ${parsedColor.g}, ${parsedColor.b}, ${parsedColor.a})`;
+      result = result.substring(0, idx) + rgbaStr + result.substring(j);
+      idx = result.indexOf('oklch(', idx + rgbaStr.length);
+    } else {
+      break;
+    }
+  }
+
+  // 2. Process oklab(...)
+  idx = result.indexOf('oklab(');
+  while (idx !== -1) {
+    let depth = 1;
+    let j = idx + 6;
+    while (j < result.length && depth > 0) {
+      if (result[j] === '(') depth++;
+      else if (result[j] === ')') depth--;
+      j++;
+    }
+    if (depth === 0) {
+      const matchedPart = result.substring(idx, j);
+      const parsedColor = parseColorToRgba(matchedPart);
+      const rgbaStr = parsedColor.a === 1 ? `rgb(${parsedColor.r}, ${parsedColor.g}, ${parsedColor.b})` : `rgba(${parsedColor.r}, ${parsedColor.g}, ${parsedColor.b}, ${parsedColor.a})`;
+      result = result.substring(0, idx) + rgbaStr + result.substring(j);
+      idx = result.indexOf('oklab(', idx + rgbaStr.length);
+    } else {
+      break;
+    }
+  }
+
+  // 3. Process color(display-p3 ...)
+  idx = result.indexOf('color(display-p3');
+  while (idx !== -1) {
+    let depth = 1;
+    let j = idx + 16;
+    while (j < result.length && depth > 0) {
+      if (result[j] === '(') depth++;
+      else if (result[j] === ')') depth--;
+      j++;
+    }
+    if (depth === 0) {
+      const matchedPart = result.substring(idx, j);
+      const parsedColor = parseColorToRgba(matchedPart);
+      const rgbaStr = parsedColor.a === 1 ? `rgb(${parsedColor.r}, ${parsedColor.g}, ${parsedColor.b})` : `rgba(${parsedColor.r}, ${parsedColor.g}, ${parsedColor.b}, ${parsedColor.a})`;
+      result = result.substring(0, idx) + rgbaStr + result.substring(j);
+      idx = result.indexOf('color(display-p3', idx + rgbaStr.length);
+    } else {
+      break;
+    }
+  }
+
+  // 4. Process color-mix(...)
+  let mixMatch = result.match(/color-mix\(\s*in\s+srgb\s*,/i);
+  while (mixMatch && mixMatch.index !== undefined) {
+    const startIdx = mixMatch.index;
+    const matchLen = mixMatch[0].length;
+    let depth = 1;
+    let j = startIdx + matchLen;
+    while (j < result.length && depth > 0) {
+      if (result[j] === '(') depth++;
+      else if (result[j] === ')') depth--;
+      j++;
+    }
+    if (depth === 0) {
+      const innerContent = result.substring(startIdx + matchLen, j - 1).trim();
+      const rgbaStr = resolveColorMix(innerContent);
+      result = result.substring(0, startIdx) + rgbaStr + result.substring(j);
+      mixMatch = result.match(/color-mix\(\s*in\s+srgb\s*,/i);
+    } else {
+      break;
+    }
+  }
+
+  return result;
+};
+
+const sanitizeInlineStyles = (element: HTMLElement) => {
+  const restoredInlineStyles: { element: HTMLElement; originalStyle: string }[] = [];
+  
+  const traverseAndSanitize = (el: HTMLElement) => {
+    const styleAttr = el.getAttribute('style');
+    if (styleAttr && (styleAttr.includes('oklch') || styleAttr.includes('oklab') || styleAttr.includes('display-p3') || styleAttr.includes('color-mix'))) {
+      restoredInlineStyles.push({ element: el, originalStyle: styleAttr });
+      el.setAttribute('style', replaceModernColors(styleAttr));
+    }
+    
+    for (let i = 0; i < el.children.length; i++) {
+      const child = el.children[i];
+      if (child instanceof HTMLElement) {
+        traverseAndSanitize(child);
+      }
+    }
+  };
+  
+  traverseAndSanitize(element);
+  return restoredInlineStyles;
+};
+
+const isSameOrigin = (urlStr: string) => {
+  try {
+    const url = new URL(urlStr, window.location.origin);
+    return url.origin === window.location.origin;
+  } catch (e) {
+    return false;
+  }
+};
+
+const safeHtml2Canvas = async (element: HTMLElement, options?: any) => {
+  const originalCheck: { sheet: any; disabled: boolean }[] = [];
+  const tempStyles: HTMLStyleElement[] = [];
+  let restoredInlineStyles: { element: HTMLElement; originalStyle: string }[] = [];
+
+  try {
+    const allSheets: any[] = [];
+    if (document.styleSheets) {
+      allSheets.push(...Array.from(document.styleSheets));
+    }
+    if ((document as any).adoptedStyleSheets) {
+      allSheets.push(...Array.from((document as any).adoptedStyleSheets));
+    }
+
+    for (const sheet of allSheets) {
+      try {
+        if (sheet.cssRules) {
+          let cssText = '';
+          const rules = Array.from(sheet.cssRules);
+          for (const rule of rules) {
+            cssText += (rule as any).cssText + '\n';
+          }
+
+          if (
+            cssText.includes('oklch') ||
+            cssText.includes('oklab') ||
+            cssText.includes('color-mix') ||
+            cssText.includes('display-p3')
+          ) {
+            const sanitizedCss = replaceModernColors(cssText);
+
+            const tempStyle = document.createElement('style');
+            tempStyle.textContent = sanitizedCss;
+            tempStyle.setAttribute('data-html2canvas-temp', 'true');
+            document.head.appendChild(tempStyle);
+            tempStyles.push(tempStyle);
+
+            originalCheck.push({ sheet, disabled: sheet.disabled });
+            sheet.disabled = true;
+          }
+        }
+      } catch (sheetError) {
+        console.warn('Skipping CORS stylesheet scanning or error:', sheetError);
+      }
+    }
+
+    restoredInlineStyles = sanitizeInlineStyles(element);
+
+    return await html2canvas(element, options);
+  } finally {
+    for (const item of originalCheck) {
+      try {
+        item.sheet.disabled = item.disabled;
+      } catch (e) {
+        console.error('Error restoring stylesheet disabled status:', e);
+      }
+    }
+
+    for (const item of restoredInlineStyles) {
+      try {
+        item.element.setAttribute('style', item.originalStyle);
+      } catch (e) {
+        console.error('Error restoring inline style:', e);
+      }
+    }
+
+    for (const style of tempStyles) {
+      if (style.parentNode) {
+        try {
+          style.parentNode.removeChild(style);
+        } catch (e) {
+          console.error('Error removing temp style:', e);
+        }
+      }
+    }
+  }
+};
 
 const APP_VERSION = '5.2.0';
 
@@ -845,6 +1350,14 @@ const FUSION_EXPANSION_GROUPS: ExpansionGroup[] = [
             subItems: [
               { id: 'TP10_NORMAL_VIEW', label: 'Tournament Pack 10', sub: 'Normal' }
             ]
+          },
+          {
+            id: 'TP11_FOLDER',
+            label: 'Tournament Pack 11',
+            sub: 'TP11',
+            subItems: [
+              { id: 'TP11_NORMAL_VIEW', label: 'Tournament Pack 11', sub: 'Normal' }
+            ]
           }
         ]
       },
@@ -1581,6 +2094,7 @@ const SET_METADATA: Record<string, { sourceProduct: string; releaseDate?: string
   'TP08': { sourceProduct: 'Tournament Pack 08' },
   'TP09': { sourceProduct: 'Tournament Pack 09' },
   'TP10': { sourceProduct: 'Tournament Pack 10' },
+  'TP11': { sourceProduct: 'Tournament Pack 11' },
   'UB24-1': { sourceProduct: 'Ultimate Battle 2024 Vol.1' },
   'UB24-2': { sourceProduct: 'Ultimate Battle 2024 Vol.2' },
   'UB24-3': { sourceProduct: 'Ultimate Battle 2024 Vol.3' },
@@ -2502,6 +3016,11 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'SB01-053_LP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/SB01-053_p2.webp?v1',
   'FP-034_LP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FP-034_p2.webp?v1',
   'FP-045_LP01': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FP-045_p2.webp?v1',
+  'FP-086': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/05/01/wZvjplOv3TLn7QT5/EN_FW_FP-086_Battle_PR_PARA_dummy.webp',
+  'FP-087': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/05/01/MJlyBfrct6YlKKl5/EN_FW_FP-087_Battle_PR_PARA_dummy.webp',
+  'FP-088': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/05/01/OXaNH3Tyf06G8waT/EN_FW_FP-088_Battle_PR_PARA_dummy.webp',
+  'FP-089': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/05/01/toGfQwtXtjGgGOBU/EN_FW_FP-089_Battle_PR_PARA_dummy.webp',
+  'FP-090': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/05/01/hhpAAwxYhh0BxzX3/EN_FW_FP-090_Battle_PR_PARA_dummy.webp',
   'FP-044': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FP-044.webp?v1',
   'FP-044_W': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FP-044_p1.webp?v1',
   'FP-045': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FP-045.webp?v1',
@@ -4834,7 +5353,7 @@ const isAlternative = (cardId: string) => {
 };
 
 const isVirtualSet = (setId: string) => {
-  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'EP01', 'EP02', 'EP03', 'EP04', 'EP05', 'EP06', 'EP07', 'EP08', 'EP09', 'EP10', 'EP11', 'EP13', 'EP14', 'EP15', 'EP16', 'EP17', 'EP18', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP05', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'PLAYMATS_FOLDER', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_');
+  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'EP01', 'EP02', 'EP03', 'EP04', 'EP05', 'EP06', 'EP07', 'EP08', 'EP09', 'EP10', 'EP11', 'EP13', 'EP14', 'EP15', 'EP16', 'EP17', 'EP18', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP05', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'PLAYMATS_FOLDER', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_');
 };
 
 const EVENT_PACK_01 = [
@@ -4988,6 +5507,7 @@ const TOURNAMENT_PACK_08_WINNER = ['FP-052_W', 'FP-053_W', 'FP-054_W', 'FP-055_W
 const TOURNAMENT_PACK_09_NORMAL = ['FP-063', 'FP-064', 'FP-065', 'FP-066', 'FP-067'];
 const TOURNAMENT_PACK_09_WINNER = ['FP-063_W', 'FP-064_W', 'FP-065_W', 'FP-066_W', 'FP-067_W'];
 const TOURNAMENT_PACK_10_NORMAL = ['FP-070', 'FP-071', 'FP-072', 'FP-073', 'FP-074'];
+const TOURNAMENT_PACK_11_NORMAL = ['FP-086', 'FP-087', 'FP-088', 'FP-089', 'FP-090'];
 const ULTIMATE_BATTLE_2024_V3 = ['FB03-093_UB_V3_T8', 'FS03-10_UB_V3_W'];
 const ULTIMATE_BATTLE_2025_V1 = ['FB04-114_UB_V1_T8', 'FB03-121_UB_V1_W', 'FB01-089_UB_V1_W', 'FS01-08_UB_V1_W'];
 const ULTIMATE_BATTLE_2025_V2 = ['FB05-080_UB_V2_T8', 'FB05-030_UB_V2_W'];
@@ -5101,6 +5621,7 @@ const PACK_ARRAYS: Record<string, string[]> = {
   TP08: [...TOURNAMENT_PACK_08_NORMAL, ...TOURNAMENT_PACK_08_WINNER],
   TP09: [...TOURNAMENT_PACK_09_NORMAL, ...TOURNAMENT_PACK_09_WINNER],
   TP10: TOURNAMENT_PACK_10_NORMAL,
+  TP11: TOURNAMENT_PACK_11_NORMAL,
   TP01_NORMAL_VIEW: TOURNAMENT_PACK_01_NORMAL,
   TP01_WINNER_VIEW: TOURNAMENT_PACK_01_WINNER,
   TP02_NORMAL_VIEW: TOURNAMENT_PACK_02_NORMAL,
@@ -5120,6 +5641,7 @@ const PACK_ARRAYS: Record<string, string[]> = {
   TP09_NORMAL_VIEW: TOURNAMENT_PACK_09_NORMAL,
   TP09_WINNER_VIEW: TOURNAMENT_PACK_09_WINNER,
   TP10_NORMAL_VIEW: TOURNAMENT_PACK_10_NORMAL,
+  TP11_NORMAL_VIEW: TOURNAMENT_PACK_11_NORMAL,
   UB_2024_V1: ULTIMATE_BATTLE_2024_V1,
   UB_2024_V2: ULTIMATE_BATTLE_2024_V2,
   UB_2024_V3: ULTIMATE_BATTLE_2024_V3,
@@ -6289,6 +6811,13 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
 }) => {
   const t = translations[lang];
   const [showScoreExpl, setShowScoreExpl] = useState(false);
+  const [showShareCardModal, setShowShareCardModal] = useState(false);
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+  const [copiedText, setCopiedText] = useState(false);
+  const [customTitle, setCustomTitle] = useState('');
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const { user, profile } = useAuth();
 
   const achievementStats = useMemo(() => {
     const visible = achievementsList.filter(a => !a.hidden);
@@ -6453,6 +6982,92 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
     };
   }, [collectorScore, lang]);
 
+  const tierConfig = useMemo(() => {
+    const s = collectorScore;
+    if (s < 500) {
+      return {
+        bg: 'from-zinc-950 via-neutral-900 to-black',
+        borderColor: 'border-zinc-500/50',
+        textColor: 'text-zinc-400',
+        textGradient: 'from-zinc-400 via-zinc-300 to-zinc-500',
+        glow: 'shadow-zinc-500/10',
+        accentColor: 'text-zinc-400 bg-zinc-500/10 border-zinc-500/20',
+        tierName: lang === 'es' ? 'Recruto Z' : 'Z Recruit',
+        themeName: lang === 'es' ? 'Metal Templado' : 'Tempered Metal',
+        auraColor: 'rgba(115, 115, 115, 0.15)',
+        stars: 1,
+      };
+    }
+    if (s < 2500) {
+      return {
+        bg: 'from-emerald-950 via-[#0a1e12] to-black',
+        borderColor: 'border-emerald-500/50',
+        textColor: 'text-emerald-400',
+        textGradient: 'from-emerald-400 via-emerald-300 to-teal-500',
+        glow: 'shadow-emerald-500/20',
+        accentColor: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20',
+        tierName: lang === 'es' ? 'Guerrero Z' : 'Z Warrior',
+        themeName: lang === 'es' ? 'Holográfico Esmeralda' : 'Emerald Holographic',
+        auraColor: 'rgba(16, 185, 129, 0.2)',
+        stars: 2,
+      };
+    }
+    if (s < 8000) {
+      return {
+        bg: 'from-amber-950 via-yellow-900/40 to-black',
+        borderColor: 'border-yellow-500/60',
+        textColor: 'text-yellow-400',
+        textGradient: 'from-yellow-300 via-orange-400 to-amber-500',
+        glow: 'shadow-yellow-500/30 shadow-[0_0_20px_rgba(234,179,8,0.25)]',
+        accentColor: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20 border-b-2',
+        tierName: lang === 'es' ? 'Super Saiyan' : 'Super Saiyan',
+        themeName: lang === 'es' ? 'Aura Dorada Saiyan' : 'Golden Saiyan Aura',
+        auraColor: 'rgba(234, 179, 8, 0.35)',
+        stars: 3,
+      };
+    }
+    if (s < 20000) {
+      return {
+        bg: 'from-red-950 via-rose-950/55 to-black',
+        borderColor: 'border-red-500/60',
+        textColor: 'text-red-400',
+        textGradient: 'from-red-400 via-rose-450 to-red-500',
+        glow: 'shadow-red-500/30 shadow-[0_0_20px_rgba(239,68,68,0.25)]',
+        accentColor: 'text-red-400 bg-red-400/10 border-red-500/20 border-b-2',
+        tierName: lang === 'es' ? 'Super Saiyan God' : 'Super Saiyan God',
+        themeName: lang === 'es' ? 'Fuego Divino' : 'Divine Fire',
+        auraColor: 'rgba(239, 68, 68, 0.4)',
+        stars: 4,
+      };
+    }
+    if (s < 50500) {
+      return {
+        bg: 'from-cyan-950 via-sky-950/60 to-black',
+        borderColor: 'border-cyan-400/60',
+        textColor: 'text-cyan-400',
+        textGradient: 'from-cyan-300 via-sky-200 to-cyan-450',
+        glow: 'shadow-cyan-400/30 shadow-[0_0_25px_rgba(34,211,238,0.3)]',
+        accentColor: 'text-cyan-400 bg-cyan-400/10 border-cyan-500/20 shadow-cyan-500/10 border-b-2',
+        tierName: lang === 'es' ? 'Ultra Instinto' : 'Ultra Instinct',
+        themeName: lang === 'es' ? 'Energía Plateada Instinto' : 'Silver Instinct Energy',
+        auraColor: 'rgba(34, 211, 238, 0.45)',
+        stars: 5,
+      };
+    }
+    return {
+      bg: 'from-purple-950 via-indigo-950/60 to-black',
+      borderColor: 'border-fuchsia-500/80',
+      textColor: 'text-fuchsia-400',
+      textGradient: 'from-fuchsia-400 via-purple-300 to-indigo-400',
+      glow: 'shadow-fuchsia-500/40 shadow-[0_0_30px_rgba(217,70,239,0.35)]',
+      accentColor: 'text-purple-400 bg-purple-500/10 border-purple-500/20 shadow-purple-500/10 border-b-2',
+      tierName: lang === 'es' ? 'Omni-Rey del Tracker' : 'Tracker Omni-King',
+      themeName: lang === 'es' ? 'Cosmos Absoluto' : 'Absolute Cosmos',
+      auraColor: 'rgba(217, 70, 239, 0.5)',
+      stars: 6,
+    };
+  }, [collectorScore, lang]);
+
   const characterStats = useMemo(() => {
     const charMap = new Map<string, { uniqueCount: number; ownedCount: number; img?: string }>();
     inventory.forEach(item => {
@@ -6460,7 +7075,9 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
       const card = cards.find(c => c.id === item.cardId);
       if (!card || !card.character) return;
       
-      const chars = card.character.split('/').map(c => c.trim()).filter(Boolean);
+      const chars = card.character.split('/')
+        .map(c => c.trim())
+        .filter(c => c && c !== '-' && c.toLowerCase() !== 'n/a' && c.toLowerCase() !== 'none' && c.toLowerCase() !== 'null' && c.toLowerCase() !== 'no-character');
       chars.forEach(char => {
         const existing = charMap.get(char) || { uniqueCount: 0, ownedCount: 0 };
         existing.uniqueCount += 1;
@@ -6485,6 +7102,7 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
       const card = cards.find(c => c.id === item.cardId);
       if (!card || !card.era) return;
       const era = card.era.trim();
+      if (!era || era === '-' || era.toLowerCase() === 'n/a' || era.toLowerCase() === 'none' || era.toLowerCase() === 'null') return;
       const existing = eraMap.get(era) || { uniqueCount: 0, ownedCount: 0 };
       existing.uniqueCount += 1;
       existing.ownedCount += item.quantity;
@@ -6622,6 +7240,18 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
                   "{collectorTier.desc}"
                 </p>
               </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setCustomTitle(collectorTier.title);
+                  setShowShareCardModal(true);
+                }}
+                className="mt-3 w-full py-2.5 bg-orange-500/10 hover:bg-orange-500/20 active:scale-95 border border-orange-500/30 text-orange-400 font-black text-[10px] uppercase rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-lg shadow-orange-500/5 z-10"
+              >
+                <Share2 size={12} className="text-orange-400" />
+                {lang === 'es' ? 'Compartir Tarjeta de Poder' : 'Share Power Card'}
+              </button>
             </div>
 
             {/* Quick Stats Grid */}
@@ -6996,6 +7626,297 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
               </div>
             </div>
           </div>
+
+          {/* Share Player Card Modal */}
+          <AnimatePresence>
+            {showShareCardModal && (
+              <>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setShowShareCardModal(false)}
+                  className="fixed inset-0 bg-black/85 backdrop-blur-md z-[200]"
+                />
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                  className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-lg bg-[#141211] rounded-3xl p-6 z-[210] border border-white/10 shadow-2xl overflow-y-auto max-h-[90vh] custom-scrollbar"
+                >
+                  <div className="flex justify-between items-center mb-4">
+                    <div>
+                      <h3 className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-orange-400 to-amber-500 italic uppercase tracking-tighter">
+                        {lang === 'es' ? 'TARJETA DE PODER DE COLECCIONISTA' : 'COLLECTOR POWER CARD'}
+                      </h3>
+                      <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-0.5">
+                        {lang === 'es' ? 'Descarga o comparte tus estadísticas con la comunidad' : 'Download or share your stats with the community'}
+                      </p>
+                    </div>
+                    <button 
+                      onClick={() => {
+                        setShowShareCardModal(false);
+                        setCopiedText(false);
+                      }} 
+                      className="text-gray-400 hover:text-white p-1 rounded-lg bg-white/5 hover:bg-white/10 cursor-pointer"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
+
+                  <div className="flex flex-col md:flex-row gap-6 items-center justify-center my-4">
+                    {/* The TCG Card for html2canvas */}
+                    <div 
+                      ref={cardRef}
+                      className={`relative w-[310px] h-[450px] bg-gradient-to-b ${tierConfig.bg} rounded-[2rem] border-4 ${tierConfig.borderColor} p-4 shadow-2xl flex flex-col justify-between overflow-hidden ${tierConfig.glow}`}
+                      style={{ fontFamily: 'Inter, sans-serif' }}
+                    >
+                      {/* Holographic Sheen/Foil layer */}
+                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.04] to-transparent pointer-events-none z-10" />
+                      {/* Scanlines / Retro TCG grid line style */}
+                      <div 
+                        className="absolute inset-0 opacity-[0.07] pointer-events-none" 
+                        style={{
+                          backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.4) 50%, rgba(0, 0, 0, 0.6) 50%)',
+                          backgroundSize: '100% 4px'
+                        }}
+                      />
+                      
+                      {/* TCG Card Header */}
+                      <div className="flex justify-between items-center z-10 border-b border-white/5 pb-1.5">
+                        <div className="flex items-center gap-1">
+                          <Trophy className="text-orange-400" size={10} />
+                          <span className="text-[8px] font-black text-gray-400 tracking-widest uppercase">DBS Tracker Level</span>
+                        </div>
+                        <div className="flex items-center gap-1 bg-white/5 px-1.5 py-0.5 rounded-md border border-white/10">
+                          <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+                          <span className="text-[7.5px] font-black text-white px-0.5 uppercase tracking-wider">{gameType}</span>
+                        </div>
+                      </div>
+
+                      {/* TCG Centerpiece - Avatar and Tier Ring */}
+                      <div className="flex flex-col items-center justify-center py-2 relative z-10">
+                        {/* Interactive Sparkle background / Aura effect */}
+                        <div 
+                          className="absolute w-32 h-32 rounded-full filter blur-2xl opacity-40 animate-pulse pointer-events-none"
+                          style={{ backgroundColor: tierConfig.auraColor }}
+                        />
+                        
+                        <div className="relative z-10">
+                          {/* Inner gold frame ring */}
+                          <div className={`p-1 rounded-full border-2 ${tierConfig.borderColor} bg-black/40 ${tierConfig.glow}`}>
+                            <div className="w-20 h-20 rounded-full overflow-hidden border border-white/10 relative bg-[#121110] flex items-center justify-center">
+                              {profile?.photoURL || user?.photoURL ? (
+                                <img 
+                                  src={profile?.photoURL || user?.photoURL} 
+                                  alt="Avatar" 
+                                  className="w-full h-full object-cover"
+                                  referrerPolicy="no-referrer"
+                                  crossOrigin="anonymous"
+                                  onError={(e) => {
+                                    // Soft fallback to initials inside error callback to handle CORS issues elegantly
+                                    (e.target as HTMLElement).style.display = 'none';
+                                    const sibling = (e.target as HTMLElement).nextElementSibling;
+                                    if (sibling) sibling.removeAttribute('style');
+                                  }}
+                                />
+                              ) : null}
+                              <div 
+                                className="w-full h-full flex items-center justify-center font-black text-2xl text-transparent bg-clip-text bg-gradient-to-b from-yellow-300 via-orange-400 to-amber-500 italic"
+                                style={{ display: (profile?.photoURL || user?.photoURL) ? 'none' : 'flex' }}
+                              >
+                                {(profile?.displayName || user?.displayName || 'Z')[0].toUpperCase()}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Stars matching rank */}
+                        <div className="flex gap-1 mt-2.5 z-10 bg-black/60 px-2 py-0.5 rounded-full border border-white/5 backdrop-blur-sm">
+                          {Array.from({ length: tierConfig.stars }).map((_, i) => (
+                            <Star key={i} size={8.5} className="fill-yellow-400 text-yellow-400 animate-pulse" />
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Character Plate (Name) */}
+                      <div className="z-10 text-center relative px-2">
+                        <div className="text-[7.5px] font-black text-orange-500 tracking-widest uppercase">
+                          {customTitle.trim() || collectorTier.title}
+                        </div>
+                        <h4 className="text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400 italic uppercase tracking-tight leading-tight mt-0.5 truncate border-none">
+                          {profile?.displayName || user?.displayName || user?.email?.split('@')[0] || (lang === 'es' ? 'GUERRERO Z' : 'Z FIGHTER')}
+                        </h4>
+                      </div>
+
+                      {/* Main Power Score Block */}
+                      <div className="z-10 bg-black/50 border border-white/5 rounded-2xl p-2 text-center mt-1 relative overflow-hidden backdrop-blur-sm">
+                        <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-yellow-500/5 pointer-events-none" />
+                        <span className="text-[7.5px] font-black text-gray-500 uppercase tracking-widest block mb-0.5">
+                          {lang === 'es' ? 'NIVEL DE PODER DE COMBATE' : 'COMBAT POWER LEVEL'}
+                        </span>
+                        <div className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-orange-400 to-amber-500 italic uppercase tracking-tighter filter drop-shadow-[0_2px_8px_rgba(234,179,8,0.2)]">
+                          {collectorScore.toLocaleString()} <span className="text-[9px] font-black tracking-normal text-gray-400">PTS</span>
+                        </div>
+                        <div className={`mt-1 font-black italic uppercase text-[8px] tracking-wide inline-block px-2 py-0.5 rounded-full border ${tierConfig.accentColor}`}>
+                          {tierConfig.tierName}
+                        </div>
+                      </div>
+
+                      {/* Itemized stats grid */}
+                      <div className="z-10 grid grid-cols-2 gap-1.5 mt-2 bg-black/60 p-2.5 rounded-2xl border border-white/5 text-[8px] text-gray-400 font-mono">
+                        <div>
+                          <span className="text-gray-500 block text-[6.5px] tracking-wider uppercase font-sans font-bold">{lang === 'es' ? 'COLECCIÓN' : 'COLLECTION'}</span>
+                          <span className="text-gray-200 font-bold">{inventory.reduce((sum, item) => sum + item.quantity, 0)} {lang === 'es' ? 'unidades' : 'items'}</span>
+                        </div>
+                        <div>
+                          <span className="text-gray-500 block text-[6.5px] tracking-wider uppercase font-sans font-bold">{lang === 'es' ? 'LOGROS' : 'ACHIEVEMENTS'}</span>
+                          <span className="text-gray-200 font-bold">{achievementStats.unlockedTotal} / {achievementStats.total}</span>
+                        </div>
+                        <div>
+                          <span className="text-gray-500 block text-[6.5px] tracking-wider uppercase font-sans font-bold">{lang === 'es' ? 'GUARDIÁN' : 'GUARDIAN'}</span>
+                          <span className="text-gray-200 font-bold truncate block max-w-full uppercase">{characterStats[0]?.name || '-'}</span>
+                        </div>
+                        <div>
+                          <span className="text-gray-500 block text-[6.5px] tracking-wider uppercase font-sans font-bold">{lang === 'es' ? 'ENERGÍA' : 'AURAKEY'}</span>
+                          <span className="text-gray-200 font-bold uppercase">{favoriteColorInfo ? ((translations[lang] as any).colorNames?.[favoriteColorInfo.name] || favoriteColorInfo.name) : '-'}</span>
+                        </div>
+                      </div>
+
+                      {/* Footer legalities & watermark */}
+                      <div className="flex justify-between items-center z-10 pt-1.5 mt-1 border-t border-white/5">
+                        <span className="text-[5.5px] text-zinc-500 tracking-wider">© B.S./S., T.A. LEVEL UP</span>
+                        <span className="text-[6px] font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 tracking-tighter">DBS-TRACKER.APP</span>
+                      </div>
+                    </div>
+
+                    {/* Interactive Customization Controls */}
+                    <div className="w-full flex-grow flex flex-col gap-4">
+                      {/* Name Plate customization */}
+                      <div>
+                        <label className="text-[10px] text-gray-500 font-black uppercase tracking-wider block mb-1">
+                          {lang === 'es' ? 'Editar Rango/Título' : 'Edit Level Title'}
+                        </label>
+                        <input
+                          type="text"
+                          maxLength={28}
+                          value={customTitle}
+                          onChange={(e) => setCustomTitle(e.target.value)}
+                          placeholder={collectorTier.title}
+                          className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:ring-1 focus:ring-orange-500 transition-all font-semibold"
+                        />
+                      </div>
+
+                      {/* Stats sharing information */}
+                      <div className="bg-white/5 p-3 rounded-2xl border border-white/5 text-[10px] text-gray-400 leading-normal">
+                        <p className="font-bold text-gray-300 uppercase pb-1 mb-1 border-b border-white/5 flex items-center gap-1.5">
+                          <Zap size={10} className="text-orange-400 animate-pulse" />
+                          {lang === 'es' ? 'INFORMACIÓN:' : 'CARD INFORMATION:'}
+                        </p>
+                        {lang === 'es' ? (
+                          <span>La tarjeta se genera dinámicamente según tus estadísticas actuales. Puedes personalizar el título libremente para asombrar a tus compañeros de batalla.</span>
+                        ) : (
+                          <span>The card is dynamically generated based on your current stats. You can freely customize the tier title to impress your fellow battle partners.</span>
+                        )}
+                      </div>
+
+                      {/* Action buttons */}
+                      <div className="flex flex-col gap-2 mt-2">
+                        {/* Download button */}
+                        <button
+                          onClick={async () => {
+                            if (!cardRef.current || isGeneratingImage) return;
+                            setIsGeneratingImage(true);
+                            setCopiedText(false);
+                            
+                            try {
+                              // Ensure layout calculations are finalized
+                              await new Promise(r => setTimeout(r, 200));
+                              
+                              const canvas = await safeHtml2Canvas(cardRef.current, {
+                                useCORS: true,
+                                backgroundColor: '#141211',
+                                scale: 2, // Ultra HD crispness
+                                logging: false,
+                              });
+                              
+                              const url = canvas.toDataURL('image/png');
+                              const link = document.createElement('a');
+                              link.download = `dbs-tracker-power-card-${user?.displayName || 'warrior'}.png`;
+                              link.href = url;
+                              link.click();
+                            } catch (err) {
+                              console.error('Failed to generate sharing image', err);
+                              alert(lang === 'es' ? 'Error al generar o exportar la tarjeta de compartir (problema de permisos o imagen de perfil).' : 'Failed to generate or export sharing card image (permission or profile picture issue).');
+                            } finally {
+                              setIsGeneratingImage(false);
+                            }
+                          }}
+                          disabled={isGeneratingImage}
+                          className="w-full py-3 bg-gradient-to-r from-yellow-500 via-orange-500 to-amber-600 text-white font-black text-xs uppercase rounded-xl flex items-center justify-center gap-2 shadow-lg hover:shadow-orange-500/20 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
+                        >
+                          {isGeneratingImage ? (
+                            <>
+                              <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                              <span>{lang === 'es' ? 'GENERANDO TARJETA...' : 'GENERATING CARD...'}</span>
+                            </>
+                          ) : (
+                            <>
+                              <Download size={14} />
+                              <span>{lang === 'es' ? 'DESCARGAR TARJETA (PNG)' : 'DOWNLOAD CARD (PNG)'}</span>
+                            </>
+                          )}
+                        </button>
+
+                        {/* Copy share text button */}
+                        <button
+                          onClick={() => {
+                            const shareText = lang === 'es' ? 
+`🏆 ¡Mi Nivel de Poder como Coleccionista de Dragon Ball Super en DBS Tracker es de ${collectorScore.toLocaleString()} PTS! ⚡
+
+🌟 Rango: ${customTitle.trim() || collectorTier.title}
+🗂️ Cartas Físicas: ${inventory.reduce((sum, item) => sum + item.quantity, 0)} coleccionadas
+🏅 Logros Desbloqueados: ${achievementStats.unlockedTotal} de ${achievementStats.total}
+🥋 Personaje Guardián: ${characterStats[0]?.name || '-'}
+🎨 Elemento de Poder: ${favoriteColorInfo ? (((translations[lang] as any).colorNames?.[favoriteColorInfo.name]) || favoriteColorInfo.name) : '-'}
+
+¡Calcula tu puntuación de poder de coleccionista en DBS Tracker! 👇
+` :
+`🏆 My Dragon Ball Super Collector Power Score on DBS Tracker is ${collectorScore.toLocaleString()} PTS! ⚡
+
+🌟 Rank: ${customTitle.trim() || collectorTier.title}
+🗂️ Physical Cards: ${inventory.reduce((sum, item) => sum + item.quantity, 0)} collected
+🏅 Achievements: ${achievementStats.unlockedTotal} of ${achievementStats.total}
+🥋 Guardian Character: ${characterStats[0]?.name || '-'}
+🎨 Power Element: ${favoriteColorInfo ? (((translations[lang] as any).colorNames?.[favoriteColorInfo.name]) || favoriteColorInfo.name) : '-'}
+
+Check your collector score and tier on DBS Tracker now! 👇
+`;
+                            navigator.clipboard.writeText(shareText + window.location.origin);
+                            setCopiedText(true);
+                            setTimeout(() => setCopiedText(false), 2000);
+                          }}
+                          className="w-full py-3 bg-white/5 hover:bg-white/10 active:scale-95 text-white font-black text-xs uppercase rounded-xl flex items-center justify-center gap-2 border border-white/10 transition-all cursor-pointer"
+                        >
+                          {copiedText ? (
+                            <>
+                              <Check size={14} className="text-green-400" />
+                              <span className="text-green-400">{lang === 'es' ? '¡COPIADO CON ÉXITO!' : 'COPIED TO CLIPBOARD!'}</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy size={13} />
+                              <span>{lang === 'es' ? 'COPIAR TEXTO ESTADÍSTICAS' : 'COPY STATS TEXT'}</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
         </>
       )}
     </div>
@@ -10230,7 +11151,7 @@ export default function TrackerApp() {
           } else {
             // General Parallel Art Replacement
             let finalCode = cleanCode.replace(/_AA$/, '_p2').replace(/_A$/, '_p1');
-            let postfix = imageCode.startsWith('E-') || imageCode.startsWith('E01-') || imageCode.startsWith('E02-') || imageCode.startsWith('E03-') || expansion === 'FP' || imageCode.includes('_') ? '?v1' : '';
+            let postfix = imageCode.startsWith('FP-') || imageCode.startsWith('E-') || imageCode.startsWith('E01-') || imageCode.startsWith('E02-') || imageCode.startsWith('E03-') || expansion === 'FP' || imageCode.includes('_') ? '?v1' : '';
 
             if (type === 'Leader') {
               const base = cleanCode.replace(/_AA$/, '').replace(/_A$/, '');

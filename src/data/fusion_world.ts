@@ -2181,6 +2181,11 @@ FP-078	Son Goku	PR	Battle	Black	FP
 FP-079	Gogeta : BR	PR	Battle	Red	FP
 FP-080	Gogeta	PR	Battle	Yellow	FP
 FP-081	Gogeta : GT	PR	Battle	Black	FP
+FP-086	Son Goku	PR	Battle	Red	TP11
+FP-087	Vegeta	PR	Battle	Blue	TP11
+FP-088	Son Gohan : Childhood	PR	Battle	Green	TP11
+FP-089	Zangya	PR	Battle	Yellow	TP11
+FP-090	Cell	PR	Battle	Black	TP11
 FP-091	Son Goku	PR	Battle	Red	FP
 FB01-107_A_SB02	Ginyu (Alt)	UC*	Battle	Yellow	SB02
 FB01-108_A_SB02	Ginyu (Alt)	R*	Battle	Yellow	SB02
