@@ -8,8 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist",
-    "lint": "tsc --noEmit && eslint .",
-    "postbuild": "npx -y tsx -e \"const fs=require('fs'); const path=require('path'); const d='dist/assets'; if(fs.existsSync(d)){ fs.readdirSync(d).filter(f=>f.endsWith('.css')).forEach(f=>{ let c = fs.readFileSync(path.join(d,f), 'utf8'); c = c.replace(/[a-zA-Z0-9-]+:[^;{}]*(?:color-mix|lab|lch|oklab|oklch)\\([^;{}]*;?/gi, ''); fs.writeFileSync(path.join(d,f), c); }) }\""
+    "lint": "tsc --noEmit && eslint ."
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

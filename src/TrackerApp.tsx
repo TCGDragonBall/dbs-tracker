@@ -6734,7 +6734,17 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
                 </p>
               </div>
 
-              
+              <button
+                type="button"
+                onClick={() => {
+                  setCustomTitle(collectorTier.title);
+                  setShowShareCardModal(true);
+                }}
+                className="mt-3 w-full py-2.5 bg-orange-500/10 hover:bg-orange-500/20 active:scale-95 border border-orange-500/30 text-orange-400 font-black text-[10px] uppercase rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-lg shadow-orange-500/5 z-10"
+              >
+                <Zap size={12} className="text-orange-400" />
+                {lang === 'es' ? 'Ver Tarjeta de Poder' : 'View Power Card'}
+              </button>
             </div>
 
             {/* Quick Stats Grid */}
@@ -7304,12 +7314,7 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
 
                       {/* Action buttons */}
                       <div className="flex flex-col gap-2 mt-2">
-                        {/* Download button removed */}
-                        <div className="w-full py-3 bg-white/5 border border-white/10 text-gray-400 font-bold text-[10px] uppercase rounded-xl flex items-center justify-center text-center px-4">
-                          {lang === 'es' 
-                            ? 'Haz una captura de pantalla para compartir tu nivel de poder.' 
-                            : 'Take a screenshot to share your power level.'}
-                        </div>
+
 
                         
                       </div>
