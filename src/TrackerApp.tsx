@@ -74,7 +74,7 @@ import { useAuth } from './AuthContext';
 import emailjs from '@emailjs/browser';
 
 
-const APP_VERSION = '5.2.0';
+const APP_VERSION = '5.3.0';
 
 const CATEGORY_BG: Record<string, string> = {
   'box': '/fondobox.jpg',
@@ -890,7 +890,8 @@ const FUSION_EXPANSION_GROUPS: ExpansionGroup[] = [
             sub: '2026',
             subItems: [
               { id: 'UB26-1', label: 'Ultimate Battle 2026 VOL 1', sub: 'Vol.1' },
-              { id: 'UB26-2', label: 'Ultimate Battle 2026 VOL 2', sub: 'Vol.2' }
+              { id: 'UB26-2', label: 'Ultimate Battle 2026 VOL 2', sub: 'Vol.2' },
+              { id: 'UB26-3', label: 'Ultimate Battle 2026 VOL 3', sub: 'Vol.3' }
             ]
           }
         ]
@@ -1600,6 +1601,7 @@ const SET_METADATA: Record<string, { sourceProduct: string; releaseDate?: string
   'UB25-5': { sourceProduct: 'Ultimate Battle 2025 Vol.5' },
   'UB26-1': { sourceProduct: 'Ultimate Battle 2026 Vol.1' },
   'UB26-2': { sourceProduct: 'Ultimate Battle 2026 Vol.2' },
+  'UB26-3': { sourceProduct: 'Ultimate Battle 2026 Vol.3' },
   'CH26_W1_FOLDER': { sourceProduct: 'Championship 2026 Wave 1' },
   'AS2026': { sourceProduct: '2nd Anniversary Set' },
   '40TH_ANNIV_V2': { sourceProduct: '40th Anniversary Vol.2' },
@@ -2620,6 +2622,10 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'FP-077_RE_FB09': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/02/26/ho0JjheiREB9v30p/EN_FW_FP-077_Battle_PR_PARA_dummy_s.webp',
   'FP-091': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/04/30/XnHG9LMnxO2F4MpO/EN_FW_FP-091_Battle_PR_dummy_s.webp',
   'FP-091_RE_FB10': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/04/30/7VVx66xxeKkSe9eB/EN_FW_FP-091_Battle_PR_PARA_dummy_s.webp',
+  'FP-092': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/04/30/9h8JVsE5XXne8vQ7/%E5%8F%82%E5%8A%A0%E8%B3%9E_EN_FW_FP-092_Battle_PR_dummy_s%202.webp',
+  'FP-092_UB26_3': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/04/30/9h8JVsE5XXne8vQ7/%E5%8F%82%E5%8A%A0%E8%B3%9E_EN_FW_FP-092_Battle_PR_dummy_s%202.webp',
+  'FB09-096_UB_26_V3_T8': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/04/30/g5gWYc5QWYCCWKwt/BEST8_EN_FW_FB09-096_Extra_SR_PARA_dummy_s.webp',
+  'FB10-040_UB_26_V3_W': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/04/30/1oIYeI4ohKiIOmeI/WINNER_EN_FW_FB10-040_Battle_SR_PARA_dummy_s.webp',
   'FB09-006_LP26_W1': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/03/09/2Gqf5eVowva4C95a/EN_FW_FB09-006_Battle_R_PARA_dummy_s.webp',
   'FB09-008_LP26_W1': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/03/09/SxhFuCyaGnqs6Z3A/EN_FW_FB09-008_Battle_C_PARA_dummy_s.webp',
   'FB09-009_LP26_W1': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/03/09/XsSj4chJcT8xXPtA/EN_FW_FB09-009_Battle_UC_PARA_dummy_s.webp',
@@ -3645,6 +3651,13 @@ const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata'
 
 const CHANGELOG = [
 // Removed Excel export changes from changelog during staging
+  {
+    version: '5.3.0',
+    date: '5 de junio de 2026',
+    changes: [
+      { es: 'Añadidas las nuevas cartas promocionales del Ultimate Battle 2026 Vol. 3 (Participation Promo FP-092, Top 8 Extra FB09-096_UB_26_V3_T8 y Winner Battle FB10-040_UB_26_V3_W).', en: 'Added new promo cards for Ultimate Battle 2026 Vol. 3 (Participation Promo FP-092, Top 8 Extra FB09-096_UB_26_V3_T8, and Winner Battle FB10-040_UB_26_V3_W).' }
+    ]
+  },
   {
     version: '5.2.0',
     date: '2 de junio de 2026',
@@ -4849,7 +4862,7 @@ const isAlternative = (cardId: string) => {
 };
 
 const isVirtualSet = (setId: string) => {
-  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'EP01', 'EP02', 'EP03', 'EP04', 'EP05', 'EP06', 'EP07', 'EP08', 'EP09', 'EP10', 'EP11', 'EP13', 'EP14', 'EP15', 'EP16', 'EP17', 'EP18', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP05', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'PLAYMATS_FOLDER', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_');
+  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'EP01', 'EP02', 'EP03', 'EP04', 'EP05', 'EP06', 'EP07', 'EP08', 'EP09', 'EP10', 'EP11', 'EP13', 'EP14', 'EP15', 'EP16', 'EP17', 'EP18', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP05', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', 'UB26-3', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'PLAYMATS_FOLDER', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_');
 };
 
 const EVENT_PACK_01 = [
@@ -5011,6 +5024,7 @@ const ULTIMATE_BATTLE_2025_V4 = ['SB01-018_UB_V4_W', 'FP-041_UB_V4_T8'];
 const ULTIMATE_BATTLE_2025_V5 = ['SB02-007_40TH_W', 'FB07-104_40TH_T8'];
 const ULTIMATE_BATTLE_2026_V1 = ['FB07-035_UB_26_V1_W', 'FB08-024_UB_26_V1_T8'];
 const ULTIMATE_BATTLE_2026_V2 = ['FS11-07_UB_26_V2_W', 'FB09-010_UB_26_V2_T8'];
+const ULTIMATE_BATTLE_2026_V3 = ['FB10-040_UB_26_V3_W', 'FB09-096_UB_26_V3_T8', 'FP-092_UB26_3'];
 
 const LIMITED_PACK_26_01 = [
   'FB09-006_LP26_W1', 'FB09-008_LP26_W1', 'FB09-009_LP26_W1', 'FB09-023_LP26_W1',
@@ -5147,6 +5161,7 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'UB25-5': ULTIMATE_BATTLE_2025_V5,
   'UB26-1': ULTIMATE_BATTLE_2026_V1,
   'UB26-2': ULTIMATE_BATTLE_2026_V2,
+  'UB26-3': ULTIMATE_BATTLE_2026_V3,
   'CH26_W1_FOLDER': [...LIMITED_PACK_26_01, ...CHAMPIONSHIP_2026_W1_TOP, 'PM-CH26-W1'],
   LP26_W1_VIEW: LIMITED_PACK_26_01,
   CH26_W1_TOP_VIEW: CHAMPIONSHIP_2026_W1_TOP,

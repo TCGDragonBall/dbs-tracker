@@ -2875,6 +2875,9 @@ FP-080_AS2_W	Gogeta (Winner 2nd Anniversary Set)	PR*	Battle	Yellow	AS2026
 FP-081_AS2_W	Gogeta : GT (Winner 2nd Anniversary Set)	PR*	Battle	Black	AS2026
 FB09-010_UB_26_V2_T8	Pan (Top 8 Ultimate Battle 2026 Vol 2)	R*	Battle	Red	UB26-2
 FS11-07_UB_26_V2_W	Piccolo (Winner Ultimate Battle 2026 Vol 2)	SR*	Battle	Yellow	UB26-2
+FB09-096_UB_26_V3_T8	Warrior Who Defeats the Evil Demon (Top 8 Ultimate Battle 2026 Vol 3)	SR*	Extra	Yellow	UB26-3
+FB10-040_UB_26_V3_W	Vegito (Winner Ultimate Battle 2026 Vol 3)	SR*	Battle	Blue	UB26-3
+FP-092_UB26_3	Son Goku (Participation Ultimate Battle 2026 Vol 3)	PR*	Battle	Red	UB26-3
 FP-077_RE_FB09	Goku Black (Winner Release Event FB09)	PR*	Battle	Black	FP_RELEASE_FB09
 FB09-006_LP26_W1	Gogeta : BR (Limited Pack 26/27 Wave 1)	R*	Battle	Red	LP26_W1
 FB09-008_LP26_W1	Son Goku : BR (Limited Pack 26/27 Wave 1)	C*	Battle	Red	LP26_W1
