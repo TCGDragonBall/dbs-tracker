@@ -3401,7 +3401,6 @@ const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata'
   // Fusion World Restrictions
   'FB02-013': { status: 'Banned (BO1)' }, // Kefla SR commonly cited in BO1 digital issues
   'FB02-105': { status: 'Banned (BO1)' }, // Just in case another was hit in BO1
-  'FB01-139': { status: 'Banned (BO1)' },
   'FB01-056': { status: 'Banned' }, // Pilaf
   'FB01-005': { status: 'Banned' }, // Master Roshi
   'FB02-031': { status: 'Banned' }, // Ribrianne
