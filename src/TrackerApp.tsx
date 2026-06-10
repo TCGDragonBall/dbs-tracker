@@ -8523,6 +8523,25 @@ export default function TrackerApp() {
     return lastSelection !== today;
   });
   const [showQuotaDetails, setShowQuotaDetails] = useState(false);
+  const [deletingWantsList, setDeletingWantsList] = useState<WantsList | null>(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [activePolicyDoc, setActivePolicyDoc] = useState<'privacy' | 'terms' | 'cookies' | null>(null);
+  const [showCookieBanner, setShowCookieBanner] = useState(() => {
+    return !safeStorage.getItem('cookie_consent_accepted');
+  });
+
+  // States for landing page interactive demo
+  const [landingDemoTab, setLandingDemoTab] = useState<'binder' | 'wants' | 'stats' | 'achievements'>('binder');
+  const [landingDemoInv, setLandingDemoInv] = useState<Record<string, number>>({
+    'FB10-040_UB_26_V3_W': 1,
+    'FB09-096_UB_26_V3_T8': 0,
+    'FP-092_UB26_3': 1
+  });
+  const [landingDemoWants, setLandingDemoWants] = useState<Record<string, boolean>>({
+    'FB09-096_UB_26_V3_T8': true,
+    'FP-092_UB26_3': false
+  });
+  const [landingActiveList, setLandingActiveList] = useState<'deck_red' | 'deck_blue'>('deck_red');
 
   const handleGameSelect = (type: 'masters' | 'fusion') => {
     setGameType(type);
@@ -11460,102 +11479,1033 @@ export default function TrackerApp() {
     </div>
   );
 
-  if (!user) return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6 text-center relative overflow-hidden">
-      <div 
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-40 blur-sm"
-        style={{ backgroundImage: 'url("/fondo portada.jpg")' }}
-      />
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#121212]/30 to-[#121212]/90" />
-      
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="max-w-sm w-full relative z-10"
-      >
-        <>
-          <div className="w-32 h-32 rounded-3xl mx-auto mb-8 flex items-center justify-center shadow-[0_0_50px_rgba(234,88,12,0.4)] overflow-hidden border-2 border-white/10">
-            <img 
-              src="/portada.jpg" 
-              alt="DBS Tracker" 
-              className="w-full h-full object-cover"
-              referrerPolicy="no-referrer"
-            />
+  if (!user) {
+    // Mini helper list for card details in the unauthenticated landing interactive playground mockup
+    const demoCardList = [
+      {
+        id: 'FB10-040_UB_26_V3_W',
+        name: 'Vegito (Winner Ultimate Battle 3)',
+        img: 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/04/30/1oIYeI4ohKiIOmeI/WINNER_EN_FW_FB10-040_Battle_SR_PARA_dummy_s.webp',
+        rarity: 'SR*',
+        color: 'blue'
+      },
+      {
+        id: 'FB09-096_UB_26_V3_T8',
+        name: 'Warrior Who Defeats the Evil Demon (Top 8)',
+        img: 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/04/30/g5gWYc5QWYCCWKwt/BEST8_EN_FW_FB09-096_Extra_SR_PARA_dummy_s.webp',
+        rarity: 'SR*',
+        color: 'yellow'
+      },
+      {
+        id: 'FP-092_UB26_3',
+        name: 'Son Goku (Participation Battle)',
+        img: 'https://www.dbs-cardgame.com/fw/bccard/en/news/2026/04/30/9h8JVsE5XXne8vQ7/%E5%8F%82%E5%8A%A0%E8%B3%9E_EN_FW_FP-092_Battle_PR_dummy_s%202.webp',
+        rarity: 'PR*',
+        color: 'red'
+      }
+    ];
+
+    // Calculate progression metrics for the landing dashboard demo
+    const totalDemoCards = demoCardList.length * 4;
+    const currentDemoRegistered = Object.values(landingDemoInv).reduce((sum, val) => sum + Math.min(val, 4), 0);
+    const demoProgressPercentage = Math.round((currentDemoRegistered / totalDemoCards) * 100);
+
+    return (
+      <div className="min-h-screen bg-[#070707] text-gray-100 flex flex-col relative overflow-x-hidden font-sans select-none">
+        {/* Ambient background blur elements */}
+        <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-500/10 via-black to-black opacity-95" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-600/5 rounded-full blur-[120px] pointer-events-none z-0" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-[120px] pointer-events-none z-0" />
+        
+        {/* Navigation Header */}
+        <header className="relative z-20 border-b border-white/[0.06] bg-black/40 backdrop-blur-md px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl overflow-hidden shadow-[0_0_20px_rgba(249,115,22,0.3)] border border-orange-500/30">
+              <img src="/portada.jpg" alt="DBS Tracker" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+            </div>
+            <div>
+              <span className="text-xl font-black tracking-tight uppercase italic text-white flex items-center gap-1.5">
+                DBS<span className="text-orange-500">TRACKER</span>
+                <span className="text-[9px] font-mono tracking-widest bg-orange-500/15 text-orange-400 px-1.5 py-0.5 rounded border border-orange-500/20 font-black mb-1">PRO</span>
+              </span>
+            </div>
           </div>
-          <h1 className="text-4xl font-black text-white mb-4 tracking-tight uppercase italic drop-shadow-lg">DBS<span className="text-orange-500">TRACKER</span></h1>
-          <p className="text-gray-300 mb-8 leading-relaxed px-4 text-sm font-medium drop-shadow-md">Gestiona tu colección de Dragon Ball Super Card Game con estilo. Inventario en tiempo real, seguimiento de colecciones y más.</p>
-          <div className="flex flex-col gap-4 w-full">
-            {/FBAN|FBAV|Instagram|WhatsApp|Line|LinkedIn|Snapchat|Viber|Threads/i.test(navigator.userAgent) && (
-              <div className="bg-red-500/20 border border-red-500/50 p-4 rounded-xl text-left mb-2">
-                <div className="flex items-start gap-3">
-                  <AlertTriangle className="text-red-500 shrink-0 mt-0.5" size={20} />
+          
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              onClick={() => {
+                const targetLang = lang === 'es' ? 'en' : 'es';
+                setLang(targetLang);
+                safeStorage.setItem('lang', targetLang);
+              }}
+              className="flex items-center gap-1.5 bg-white/5 hover:bg-white/10 active:scale-95 text-xs text-white/90 px-3 py-1.5 rounded-xl border border-white/10 transition-all font-black uppercase tracking-wider"
+            >
+              <Globe size={13} className="text-orange-500 animate-pulse" />
+              {lang === 'es' ? 'English' : 'Español'}
+            </button>
+            <button
+              onClick={() => setShowLoginModal(true)}
+              className="flex items-center gap-1.5 bg-orange-600 hover:bg-orange-500 active:scale-95 text-xs text-white px-3.5 py-1.5 rounded-xl border border-orange-500/50 transition-all font-black uppercase tracking-wider shadow-md shadow-orange-950/40"
+            >
+              <User size={13} />
+              {lang === 'es' ? 'Iniciar Sesión' : 'Sign In'}
+            </button>
+          </div>
+        </header>
+
+        {/* Core Layout Main Section */}
+        <main className="flex-1 relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 flex flex-col items-center justify-center">
+          
+          <div className="w-full max-w-4xl mx-auto flex flex-col justify-center space-y-8">
+            
+            {/* Centered Promotional Showcase / Interactive Playground */}
+            <section className="w-full flex flex-col justify-center space-y-6">
+              
+              <div className="text-center flex flex-col items-center">
+                <span className="inline-flex items-center gap-1.5 text-xs font-black text-orange-400 bg-orange-500/10 border border-orange-500/20 px-2.5 py-1 rounded-full uppercase tracking-widest mb-3">
+                  <Zap size={12} className="text-orange-400" />
+                  {lang === 'es' ? 'COMPAÑERO DE COLECCIÓN NO OFICIAL' : 'UNOFFICIAL COLLECTION COMPANION'}
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-black text-white uppercase italic tracking-tight leading-[1.1] mb-4">
+                  {lang === 'es' ? 'Lleva tu álbum de' : 'Organize your entire'} <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-amber-300 drop-shadow-[0_2px_10px_rgba(249,115,22,0.2)]">
+                    Dragon Ball Super
+                  </span> <br />
+                  {lang === 'es' ? 'al siguiente nivel' : 'collection with premium style'}
+                </h2>
+                <p className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-xl font-medium text-center">
+                  {lang === 'es'
+                    ? 'Únete a miles de coleccionistas y jugadores en la herramienta más estética para Fusion World y Masters. Gestiona tu binder, realiza un seguimiento de sets completos y comparte tus listas de deseos.'
+                    : 'The premier companion app for DBSCG. Track your binder, discover promos and alternate cards, analyze collection curves, and synchronize your wants list in high contrast.'}
+                </p>
+              </div>
+
+              {/* DYNAMIC BENTO BOX PLAYGROUND */}
+              <div className="bg-[#111111]/90 border border-white/[0.08] rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-md flex flex-col transition-all">
+                
+                {/* Simulated Navigation Bar */}
+                <div className="flex border-b border-white/[0.06] bg-black/40 overflow-x-auto scrollbar-none antialiased">
+                  <button
+                    onClick={() => setLandingDemoTab('binder')}
+                    className={`flex-1 py-3.5 px-4 flex items-center justify-center gap-2 font-black text-[10px] sm:text-xs uppercase tracking-wider transition-all border-b-2 min-w-[110px] ${
+                      landingDemoTab === 'binder'
+                        ? 'border-orange-500 text-white bg-white/[0.02]'
+                        : 'border-transparent text-white/50 hover:text-white/80'
+                    }`}
+                  >
+                    <Library size={13} className={landingDemoTab === 'binder' ? 'text-orange-500' : ''} />
+                    {lang === 'es' ? 'Archivador' : 'Binder'}
+                  </button>
+                  <button
+                    onClick={() => setLandingDemoTab('wants')}
+                    className={`flex-1 py-3.5 px-4 flex items-center justify-center gap-2 font-black text-[10px] sm:text-xs uppercase tracking-wider transition-all border-b-2 min-w-[110px] ${
+                      landingDemoTab === 'wants'
+                        ? 'border-orange-500 text-white bg-white/[0.02]'
+                        : 'border-transparent text-white/50 hover:text-white/80'
+                    }`}
+                  >
+                    <CheckSquare size={13} className={landingDemoTab === 'wants' ? 'text-orange-500' : ''} />
+                    {lang === 'es' ? 'Listas Wants' : 'Wants Lists'}
+                  </button>
+                  <button
+                    onClick={() => setLandingDemoTab('stats')}
+                    className={`flex-1 py-3.5 px-4 flex items-center justify-center gap-2 font-black text-[10px] sm:text-xs uppercase tracking-wider transition-all border-b-2 min-w-[110px] ${
+                      landingDemoTab === 'stats'
+                        ? 'border-orange-500 text-white bg-white/[0.02]'
+                        : 'border-transparent text-white/50 hover:text-white/80'
+                    }`}
+                  >
+                    <BarChart3 size={13} className={landingDemoTab === 'stats' ? 'text-orange-500' : ''} />
+                    {lang === 'es' ? 'Métricas' : 'Stats'}
+                  </button>
+                  <button
+                    onClick={() => setLandingDemoTab('achievements')}
+                    className={`flex-1 py-3.5 px-4 flex items-center justify-center gap-2 font-black text-[10px] sm:text-xs uppercase tracking-wider transition-all border-b-2 min-w-[110px] ${
+                      landingDemoTab === 'achievements'
+                        ? 'border-orange-500 text-white bg-white/[0.02]'
+                        : 'border-transparent text-white/50 hover:text-white/80'
+                    }`}
+                  >
+                    <Trophy size={13} className={landingDemoTab === 'achievements' ? 'text-orange-500' : ''} />
+                    {lang === 'es' ? 'Logros' : 'Achievements'}
+                  </button>
+                </div>
+
+                {/* Simulated Playground Body */}
+                <div className="p-4 sm:p-6 bg-gradient-to-b from-[#131313] to-[#0a0a0a] min-h-[310px] flex flex-col justify-between">
+                  <AnimatePresence mode="wait">
+                    
+                    {/* SIMULATED WORKFLOW 1: INTERACTIVE CHECKLIST */}
+                    {landingDemoTab === 'binder' && (
+                      <motion.div
+                        key="demo-binder"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="space-y-4 flex-1 flex flex-col justify-between"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="text-[11px] font-black uppercase text-orange-400 tracking-wider flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 px-2 py-0.5 rounded">
+                              <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping"></span>
+                              {lang === 'es' ? 'Archivador Interactivo (Demo)' : 'Interactive Binder Playground'}
+                            </h4>
+                            <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest">
+                              {lang === 'es' ? 'Simulador' : 'Simulated View'}
+                            </span>
+                          </div>
+                          <p className="text-xs text-gray-400">
+                            {lang === 'es'
+                              ? 'Pulsa + / - en las cartas del Ultimate Battle 2026 Vol 3 para ver cómo reacciona tu porcentaje de progreso de forma dinámica.'
+                              : 'Click + / - on these real Ultimate Battle 2026 Vol 3 promos to see your digital binder completion rate update instantaneously.'}
+                          </p>
+                        </div>
+
+                        {/* Interactive cards row */}
+                        <div className="grid grid-cols-3 gap-3 my-2">
+                          {demoCardList.map((card) => {
+                            const qty = landingDemoInv[card.id] || 0;
+                            return (
+                              <div
+                                key={card.id}
+                                className={`relative rounded-2xl overflow-hidden border p-2 flex flex-col justify-between transition-all bg-black/40 ${
+                                  qty > 0 
+                                    ? 'border-orange-500/40 bg-orange-950/10 shadow-[0_0_15px_rgba(249,115,22,0.15)]' 
+                                    : 'border-white/5 opacity-80 hover:opacity-100 hover:border-white/10'
+                                }`}
+                              >
+                                {/* Card image wrapper */}
+                                <div className="aspect-[3/4.2] w-full rounded-xl overflow-hidden bg-white/5 relative mb-2 flex items-center justify-center border border-white/5 group">
+                                  <img 
+                                    src={card.img} 
+                                    alt={card.name} 
+                                    className="w-full h-full object-cover transition-transform group-hover:scale-105" 
+                                    referrerPolicy="no-referrer"
+                                  />
+                                  {qty > 0 && (
+                                    <div className="absolute top-1 right-1 px-1.5 py-0.5 bg-orange-600 border border-orange-400 text-[10px] font-black italic rounded text-white flex items-center justify-center shadow-lg">
+                                      x{qty}
+                                    </div>
+                                  )}
+                                </div>
+
+                                <div className="space-y-0.5">
+                                  <div className="text-[10px] font-black text-gray-300 truncate tracking-tight">{card.name}</div>
+                                  <div className="text-[8px] font-mono font-bold text-gray-500 tracking-wider">
+                                    {card.id.split('_')[0]} • {card.rarity}
+                                  </div>
+                                  <div className="flex items-center gap-1.5 pt-2">
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setLandingDemoInv(prev => ({
+                                          ...prev,
+                                          [card.id]: Math.max(0, (prev[card.id] || 0) - 1)
+                                        }));
+                                      }}
+                                      className="flex-1 py-1 rounded bg-white/5 hover:bg-white/10 text-white border border-white/5 active:scale-90 transition-all font-black text-xs flex justify-center items-center"
+                                    >
+                                      -
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setLandingDemoInv(prev => ({
+                                          ...prev,
+                                          [card.id]: Math.min(4, (prev[card.id] || 0) + 1)
+                                        }));
+                                      }}
+                                      className="flex-1 py-1 rounded bg-orange-500 hover:bg-orange-600 text-white active:scale-90 transition-all font-black text-xs flex justify-center items-center font-bold"
+                                    >
+                                      +
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        {/* Interactive progress tracker bar */}
+                        <div className="border-t border-white/[0.06] pt-3.5 mt-2">
+                          <div className="flex justify-between items-center text-xs mb-1.5">
+                            <span className="font-bold text-gray-300">
+                              {lang === 'es' ? 'Progreso de tu Álbum (DBSCG)' : 'Your Binder Progress (DBSCG)'}
+                            </span>
+                            <span className="font-black font-mono text-orange-400 bg-orange-500/10 border border-orange-500/20 px-2 py-0.5 rounded leading-none text-xs">
+                              {demoProgressPercentage}%
+                            </span>
+                          </div>
+                          <div className="w-full h-2.5 bg-black rounded-full overflow-hidden border border-white/[0.08] p-0.5">
+                            <div 
+                              className="h-full bg-gradient-to-r from-orange-600 to-amber-500 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(249,115,22,0.5)]"
+                              style={{ width: `${demoProgressPercentage}%` }}
+                            />
+                          </div>
+                          <div className="flex justify-between text-[9px] text-gray-400 mt-1 font-mono uppercase tracking-wider">
+                            <span>{currentDemoRegistered} {lang === 'es' ? 'Marcadas' : 'Checked'}</span>
+                            <span>{totalDemoCards} {lang === 'es' ? 'Máximo Playsets (4x)' : 'Playset limit (4x)'}</span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* SIMULATED WORKFLOW 2: WANTS CHECKLISTS */}
+                    {landingDemoTab === 'wants' && (
+                      <motion.div
+                        key="demo-wants"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="space-y-4 flex-1 flex flex-col justify-between"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="text-[11px] font-black uppercase text-orange-400 tracking-wider flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 px-2 py-0.5 rounded">
+                              <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+                              {lang === 'es' ? 'Tus Listas de Deseos' : 'Your Custom Checklists'}
+                            </h4>
+                            <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest">
+                              {lang === 'es' ? 'Wants' : 'Wants'}
+                            </span>
+                          </div>
+                          <p className="text-xs text-gray-400">
+                            {lang === 'es'
+                              ? 'Crea listas independientes de deseos para tus mazos favoritos. Marca o desmarca cartas para comprarlas o cambiarlas fácilmente.'
+                              : "Assemble clean custom checklists of cards needed for deck building or tracking list additions."}
+                          </p>
+                        </div>
+
+                        {/* List switcher buttons */}
+                        <div className="flex gap-2 bg-black/60 p-1 rounded-xl self-start">
+                          <button
+                            type="button"
+                            onClick={() => setLandingActiveList('deck_red')}
+                            className={`px-3 py-1 text-[9.5px] font-black uppercase rounded-lg border transition-all ${
+                              landingActiveList === 'deck_red'
+                                ? 'bg-orange-500 text-white border-orange-400'
+                                : 'bg-transparent text-gray-400 border-transparent hover:text-white'
+                            }`}
+                          >
+                            🟥 {lang === 'es' ? 'Mazo Goku GT' : 'Red Goku Deck'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setLandingActiveList('deck_blue')}
+                            className={`px-3 py-1 text-[9.5px] font-black uppercase rounded-lg border transition-all ${
+                              landingActiveList === 'deck_blue'
+                                ? 'bg-orange-500 text-white border-orange-400'
+                                : 'bg-transparent text-gray-400 border-transparent hover:text-white'
+                            }`}
+                          >
+                            🟦 {lang === 'es' ? 'Promos Ultimate' : 'Ultimate Promos'}
+                          </button>
+                        </div>
+
+                        {/* Simulated Wants item checklist rows */}
+                        <div className="space-y-1.5 py-1 flex-1 flex flex-col justify-center">
+                          {demoCardList.map((card) => {
+                            // Filter according to list
+                            const belongs = landingActiveList === 'deck_red' 
+                              ? card.id !== 'FB10-040_UB_26_V3_W' 
+                              : card.id !== 'FP-092_UB26_3';
+                            if (!belongs) return null;
+
+                            const isWanted = landingDemoWants[card.id] || false;
+                            const isOwned = landingDemoInv[card.id] > 0;
+
+                            return (
+                              <div 
+                                key={card.id}
+                                className={`flex items-center justify-between bg-black/40 border p-2 rounded-xl transition-all ${
+                                  isOwned 
+                                    ? 'border-emerald-500/10 bg-emerald-500/5' 
+                                    : 'border-white/[0.04]'
+                                }`}
+                              >
+                                <div className="flex items-center gap-3 truncate">
+                                  <div className="w-8 h-11 bg-white/5 rounded-lg overflow-hidden flex-shrink-0 border border-white/10 shadow">
+                                    <img src={card.img} alt={card.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                                  </div>
+                                  <div className="text-left truncate">
+                                    <h5 className="text-[10px] sm:text-[11px] font-black text-white truncate max-w-[140px] sm:max-w-[180px]">{card.name}</h5>
+                                    <p className="text-[9px] text-gray-500 font-mono tracking-wider">{card.id.split('_')[0]}</p>
+                                  </div>
+                                </div>
+
+                                <div className="flex items-center gap-1.5">
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setLandingDemoWants(prev => ({
+                                        ...prev,
+                                        [card.id]: !isWanted
+                                      }));
+                                    }}
+                                    className={`text-[9.5px] font-black uppercase px-3 py-1 rounded-lg transition-all active:scale-95 border ${
+                                      isWanted
+                                        ? 'bg-orange-500 text-white border-orange-400'
+                                        : 'bg-white/5 border-white/10 text-gray-300 hover:text-white'
+                                    }`}
+                                  >
+                                    {isWanted ? (lang === 'es' ? 'DESMARCAR' : 'UNMARK') : (lang === 'es' ? 'MARCAR' : 'MARK')}
+                                  </button>
+                                  {isOwned && (
+                                    <span className="text-[8.5px] font-black text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded uppercase font-mono tracking-tighter shrink-0">
+                                      {lang === 'es' ? 'ÁLBUM ✓' : 'OWNED ✓'}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        <p className="text-[10px] text-center text-gray-500 font-medium italic">
+                          {lang === 'es' 
+                            ? '💡 Las listas son flexibles y se actualizan al instante de forma independiente.' 
+                            : '💡 Lists are fully flexible and let you toggle card requirements at matching speeds.'}
+                        </p>
+                      </motion.div>
+                    )}
+
+                    {/* SIMULATED WORKFLOW 3: METRICS & GRAPHS */}
+                    {landingDemoTab === 'stats' && (
+                      <motion.div
+                        key="demo-stats"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="space-y-4 flex-1 flex flex-col justify-between"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="text-[11px] font-black uppercase text-orange-400 tracking-wider flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 px-2 py-0.5 rounded">
+                              <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+                              {lang === 'es' ? 'Estadísticas de Coleccionista' : 'Collector Analytics'}
+                            </h4>
+                            <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest">
+                              {lang === 'es' ? 'Panel Visual' : 'Dashboard'}
+                            </span>
+                          </div>
+                          <p className="text-xs text-gray-400">
+                            {lang === 'es'
+                              ? 'Organiza y analiza visualmente tu binder. Con gráficos interactivos que detallan tus faltantes, repetidas y ratios de juego.'
+                              : "Review real-time dashboards mapping out your rarity gaps, color distributions, and binders fulfillment curves."}
+                          </p>
+                        </div>
+
+                        {/* Interactive UI stats meters */}
+                        <div className="grid grid-cols-2 gap-4 py-2 flex-1 items-center">
+                          {/* Radial Progress representation */}
+                          <div className="bg-black/25 border border-white/5 rounded-2xl p-4 flex flex-col items-center justify-center relative">
+                            <div className="relative w-24 h-24 flex items-center justify-center">
+                              <svg className="w-full h-full transform -rotate-90">
+                                <circle
+                                  cx="48"
+                                  cy="48"
+                                  r="40"
+                                  className="stroke-white/5 fill-transparent"
+                                  strokeWidth="6"
+                                />
+                                <circle
+                                  cx="48"
+                                  cy="48"
+                                  r="40"
+                                  className="stroke-orange-500 fill-transparent transition-all duration-700"
+                                  strokeWidth="6"
+                                  strokeDasharray={2 * Math.PI * 40}
+                                  strokeDashoffset={2 * Math.PI * 40 * (1 - demoProgressPercentage / 100)}
+                                  strokeLinecap="round"
+                                />
+                              </svg>
+                              <div className="absolute flex flex-col items-center justify-center">
+                                <span className="text-xl font-black text-white">{demoProgressPercentage}%</span>
+                                <span className="text-[8px] font-black text-gray-500 uppercase tracking-widest">{lang === 'es' ? 'ALBUM' : 'BINDER'}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Linear progress breakdown */}
+                          <div className="bg-black/25 border border-white/5 rounded-2xl p-4 space-y-3.5 flex flex-col justify-center">
+                            <div className="space-y-1">
+                              <div className="flex justify-between text-[10px] text-gray-300 font-bold leading-none uppercase">
+                                <span>Winner Promos</span>
+                                <span>{landingDemoInv['FB10-040_UB_26_V3_W'] ? '100%' : '0%'}</span>
+                              </div>
+                              <div className="w-full h-1.5 bg-black rounded-full overflow-hidden">
+                                <div className="h-full bg-blue-500 rounded-full transition-all duration-500" style={{ width: landingDemoInv['FB10-040_UB_26_V3_W'] ? '100%' : '0%' }}></div>
+                              </div>
+                            </div>
+                            <div className="space-y-1">
+                              <div className="flex justify-between text-[10px] text-gray-300 font-bold leading-none uppercase">
+                                <span>Top 8 Cards</span>
+                                <span>{landingDemoInv['FB09-096_UB_26_V3_T8'] ? '100%' : '0%'}</span>
+                              </div>
+                              <div className="w-full h-1.5 bg-black rounded-full overflow-hidden">
+                                <div className="h-full bg-yellow-500 rounded-full transition-all duration-500" style={{ width: landingDemoInv['FB09-096_UB_26_V3_T8'] ? '100%' : '0%' }}></div>
+                              </div>
+                            </div>
+                            <div className="space-y-1">
+                              <div className="flex justify-between text-[10px] text-gray-300 font-bold leading-none uppercase">
+                                <span>Participation</span>
+                                <span>{Math.round(((landingDemoInv['FP-092_UB26_3'] || 0) / 4) * 100)}%</span>
+                              </div>
+                              <div className="w-full h-1.5 bg-black rounded-full overflow-hidden">
+                                <div className="h-full bg-red-500 rounded-full transition-all duration-500" style={{ width: `${Math.round(((landingDemoInv['FP-092_UB26_3'] || 0) / 4) * 100)}%` }}></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <p className="text-[9px] text-center text-orange-400 bg-orange-500/5 border border-orange-500/10 p-2 rounded-xl font-bold uppercase tracking-wider">
+                          {lang === 'es' 
+                            ? '📈 Se reestructura automáticamente al cambiar tus filtros de playset.' 
+                            : '📈 Dashboards restructure instantenously upon altering binder filter options.'}
+                        </p>
+                      </motion.div>
+                    )}
+
+                    {/* SIMULATED WORKFLOW 4: TROPHY BADGES CABINET */}
+                    {landingDemoTab === 'achievements' && (
+                      <motion.div
+                        key="demo-achievements"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="space-y-4 flex-1 flex flex-col justify-between"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="text-[11px] font-black uppercase text-orange-400 tracking-wider flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 px-2 py-0.5 rounded">
+                              <Trophy size={11} className="text-orange-400 animate-pulse" />
+                              {lang === 'es' ? 'Logros de Coleccionista' : 'Collector Milestones'}
+                            </h4>
+                            <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest">
+                              {lang === 'es' ? 'Retos' : 'Unlockables'}
+                            </span>
+                          </div>
+                          <p className="text-xs text-gray-400">
+                            {lang === 'es'
+                              ? 'Consigue medallas virtuales con tu progreso. ¡Añade cartas en la pestaña anterior para desbloquear estos logros!'
+                              : "Earn dynamic trophies as your collection grows. Increment card quantities in the Archivador tab to activate them!"}
+                          </p>
+                        </div>
+
+                        {/* Interactive Medals Display Board */}
+                        <div className="grid grid-cols-3 gap-3 py-1 flex-1 items-center">
+                          {/* Rookie Collector Medal */}
+                          {(() => {
+                            const isUnlocked = currentDemoRegistered >= 1;
+                            return (
+                              <div className={`relative bg-black/20 border rounded-2xl p-3.5 flex flex-col items-center text-center transition-all ${
+                                isUnlocked 
+                                  ? 'border-yellow-500/30 bg-gradient-to-b from-yellow-500/5 to-transparent shadow-[0_0_15px_rgba(234,179,8,0.1)]' 
+                                  : 'border-white/5 opacity-40'
+                              }`}>
+                                <div className={`w-11 h-11 rounded-full flex items-center justify-center mb-2.5 border-2 ${
+                                  isUnlocked 
+                                    ? 'bg-yellow-500/10 border-yellow-500 text-yellow-400 animate-bounce' 
+                                    : 'bg-white/5 border-gray-600 text-gray-500'
+                                }`}>
+                                  <Trophy size={18} />
+                                </div>
+                                <h5 className="text-[9.5px] font-black text-white uppercase tracking-tight truncate max-w-full">
+                                  {lang === 'es' ? 'Iniciado' : 'Rookie'}
+                                </h5>
+                                <p className="text-[7.5px] text-gray-400 mt-1 leading-snug">
+                                  {lang === 'es' ? 'Registra una carta' : 'Own first card'}
+                                </p>
+                                <span className={`text-[6.5px] font-black uppercase mt-2 px-1.5 py-0.5 rounded ${
+                                  isUnlocked ? 'bg-yellow-500/20 text-yellow-300' : 'bg-black/40 text-gray-500'
+                                }`}>
+                                  {isUnlocked ? (lang === 'es' ? 'CONSEGUIDO ✓' : 'UNLOCKED ✓') : (lang === 'es' ? 'BLOQUEADO' : 'LOCKED')}
+                                </span>
+                              </div>
+                            );
+                          })()}
+
+                          {/* Master Playset Medal */}
+                          {(() => {
+                            const isUnlocked = Object.values(landingDemoInv).some(qty => qty === 4);
+                            return (
+                              <div className={`relative bg-black/20 border rounded-2xl p-3.5 flex flex-col items-center text-center transition-all ${
+                                isUnlocked 
+                                  ? 'border-orange-500/30 bg-gradient-to-b from-orange-500/5 to-transparent shadow-[0_0_15px_rgba(249,115,22,0.1)]' 
+                                  : 'border-white/5 opacity-40'
+                              }`}>
+                                <div className={`w-11 h-11 rounded-full flex items-center justify-center mb-2.5 border-2 ${
+                                  isUnlocked 
+                                    ? 'bg-orange-500/10 border-orange-500 text-orange-400' 
+                                    : 'bg-white/5 border-gray-600 text-gray-500'
+                                }`}>
+                                  <Award size={18} />
+                                </div>
+                                <h5 className="text-[9.5px] font-black text-white uppercase tracking-tight truncate max-w-full">
+                                  {lang === 'es' ? 'Playset' : 'Playset'}
+                                </h5>
+                                <p className="text-[7.5px] text-gray-400 mt-1 leading-snug">
+                                  {lang === 'es' ? 'Consigue x4 copias' : 'Reach x4 playset'}
+                                </p>
+                                <span className={`text-[6.5px] font-black uppercase mt-2 px-1.5 py-0.5 rounded ${
+                                  isUnlocked ? 'bg-orange-500/20 text-orange-300' : 'bg-black/40 text-gray-500'
+                                }`}>
+                                  {isUnlocked ? (lang === 'es' ? 'CONSEGUIDO ✓' : 'UNLOCKED ✓') : (lang === 'es' ? 'BLOQUEADO' : 'LOCKED')}
+                                </span>
+                              </div>
+                            );
+                          })()}
+
+                          {/* Epic Hunter Medal */}
+                          {(() => {
+                            const isUnlocked = currentDemoRegistered >= 4;
+                            return (
+                              <div className={`relative bg-black/20 border rounded-2xl p-3.5 flex flex-col items-center text-center transition-all ${
+                                isUnlocked 
+                                  ? 'border-blue-500/30 bg-gradient-to-b from-blue-500/5 to-transparent shadow-[0_0_15px_rgba(59,130,246,0.1)]' 
+                                  : 'border-white/5 opacity-40'
+                              }`}>
+                                <div className={`w-11 h-11 rounded-full flex items-center justify-center mb-2.5 border-2 ${
+                                  isUnlocked 
+                                    ? 'bg-blue-500/10 border-blue-500 text-blue-400' 
+                                    : 'bg-white/5 border-gray-600 text-gray-500'
+                                }`}>
+                                  <Zap size={18} />
+                                </div>
+                                <h5 className="text-[9.5px] font-black text-white uppercase tracking-tight truncate max-w-full">
+                                  {lang === 'es' ? 'Cazador' : 'Hunter'}
+                                </h5>
+                                <p className="text-[7.5px] text-gray-400 mt-1 leading-snug">
+                                  {lang === 'es' ? 'Reúne 4 cartas' : 'Gather 4 cards'}
+                                </p>
+                                <span className={`text-[6.5px] font-black uppercase mt-2 px-1.5 py-0.5 rounded ${
+                                  isUnlocked ? 'bg-blue-500/20 text-blue-300' : 'bg-black/40 text-gray-500'
+                                }`}>
+                                  {isUnlocked ? (lang === 'es' ? 'CONSEGUIDO ✓' : 'UNLOCKED ✓') : (lang === 'es' ? 'BLOQUEADO' : 'LOCKED')}
+                                </span>
+                              </div>
+                            );
+                          })()}
+                        </div>
+
+                        <p className="text-[9px] text-center text-orange-400 bg-orange-500/5 border border-orange-500/10 p-2 rounded-xl font-bold uppercase tracking-wider">
+                          {lang === 'es' 
+                            ? '✨ ¡Completa la colección entera para conseguir los Logros del juego real!' 
+                            : '✨ Complete your full digital binders inside the dashboard to secure final Achievements!'}
+                        </p>
+                      </motion.div>
+                    )}
+
+                  </AnimatePresence>
+                </div>
+
+              </div>
+
+              {/* Badges footer */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="bg-white/[0.02]/80 border border-white/5 p-4 rounded-xl flex items-start gap-3 text-left">
+                  <div className="w-8 h-8 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center shrink-0">
+                    <Swords className="text-orange-400" size={15} />
+                  </div>
                   <div>
-                    <h3 className="text-red-400 font-bold text-sm mb-1">{lang === 'es' ? 'Aviso importante' : 'Important Notice'}</h3>
-                    <p className="text-gray-300 text-xs leading-relaxed">
-                      {lang === 'es' 
-                        ? 'Parece que has abierto la app desde WhatsApp o similar. Para poder iniciar sesión con Google y evitar errores, por favor abre este enlace en el navegador normal de tu móvil (Safari o Chrome) usando el menú superior.' 
-                        : 'You seem to be using an embedded browser. To sign in with Google without errors, please open this app in your normal browser (Safari or Chrome) using the top menu.'}
-                    </p>
+                    <h4 className="text-xs font-black text-white uppercase mb-0.5">{lang === 'es' ? 'Doble Formato' : 'Dual Engine'}</h4>
+                    <p className="text-[10px] text-gray-400 leading-normal">{lang === 'es' ? 'Configuraciones de Fusion World y Masters por separado.' : 'Fusion World & Masters separated layouts in parallel.'}</p>
+                  </div>
+                </div>
+
+                <div className="bg-white/[0.02]/80 border border-white/5 p-4 rounded-xl flex items-start gap-3 text-left">
+                  <div className="w-8 h-8 rounded-lg bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center shrink-0">
+                    <Award className="text-yellow-400" size={15} />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-black text-white uppercase mb-0.5">{lang === 'es' ? 'Retos y Logros' : 'Trophy Badges'}</h4>
+                    <p className="text-[10px] text-gray-400 leading-normal">{lang === 'es' ? 'Completa tareas y acumula medallas en tu estantería virtual.' : 'Earn permanent collectible achievement pins inside your profile.'}</p>
+                  </div>
+                </div>
+
+                <div className="bg-white/[0.02]/80 border border-white/5 p-4 rounded-xl flex items-start gap-3 text-left">
+                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
+                    <Zap className="text-blue-400" size={15} />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-black text-white uppercase mb-0.5">{lang === 'es' ? 'Sincronizado' : 'Cloud Dynamic'}</h4>
+                    <p className="text-[10px] text-gray-400 leading-normal">{lang === 'es' ? 'Fácil guardado en la nube y sincronización multiplataforma automática.' : 'Real-time cloud backup with automatic cross-platform synchronization.'}</p>
                   </div>
                 </div>
               </div>
-            )}
-            <button
-              onClick={handleLogin}
-              className="w-full py-3.5 bg-white text-black font-black rounded-xl hover:bg-gray-100 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 shadow-xl uppercase tracking-tighter"
-            >
-              <img src="https://www.google.com/favicon.ico" className="w-5 h-5" alt="Google" />
-              Entrar con Google
-            </button>
 
-            <div className="flex items-center gap-4 my-2">
-              <div className="h-px bg-white/10 flex-1"></div>
-              <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">{lang === 'es' ? 'O usa tu email' : 'Or use email'}</span>
-              <div className="h-px bg-white/10 flex-1"></div>
-            </div>
+            </section>
 
-            <form onSubmit={handleEmailSubmit} className="flex flex-col gap-3">
-              <input
-                type="email"
-                placeholder="Email"
-                value={emailAuth.email}
-                onChange={e => setEmailAuth(p => ({...p, email: e.target.value}))}
-                className="w-full px-4 py-3 bg-black/40 border-2 border-white/5 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
-                autoComplete="email"
-              />
-              <input
-                type="password"
-                placeholder={lang === 'es' ? 'Contraseña' : 'Password'}
-                value={emailAuth.password}
-                onChange={e => setEmailAuth(p => ({...p, password: e.target.value}))}
-                className="w-full px-4 py-3 bg-black/40 border-2 border-white/5 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
-                autoComplete="current-password"
-              />
-              {emailAuth.error && (
-                <p className="text-red-400 text-xs font-bold text-center">{emailAuth.error}</p>
-              )}
-              <button
-                type="submit"
-                className="w-full py-3.5 bg-orange-600 text-white font-black rounded-xl hover:bg-orange-500 hover:scale-[1.02] active:scale-95 transition-all shadow-xl uppercase tracking-tighter mt-1"
-              >
-                {emailAuth.isLogin ? (lang === 'es' ? 'Entrar' : 'Sign In') : (lang === 'es' ? 'Crear cuenta' : 'Create Account')}
-              </button>
-            </form>
-            
-            <button
-              type="button"
-              onClick={() => setEmailAuth(p => ({...p, isLogin: !p.isLogin, error: ''}))}
-              className="mt-2 text-xs font-bold text-gray-400 hover:text-white transition-colors underline decoration-white/20 underline-offset-4"
-            >
-              {emailAuth.isLogin 
-                ? (lang === 'es' ? '¿No tienes cuenta? Regístrate aquí' : "Don't have an account? Sign up here")
-                : (lang === 'es' ? '¿Ya tienes cuenta? Entra aquí' : "Already have an account? Sign in here")}
-            </button>
           </div>
-        </>
-      </motion.div>
-    </div>
-  );
+
+        </main>
+
+        {/* LOGIN MODAL */}
+        <AnimatePresence>
+          {showLoginModal && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md"
+              onClick={() => setShowLoginModal(false)}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ type: 'spring', duration: 0.4 }}
+                className="w-full max-w-sm bg-[#101010]/95 border border-white/10 rounded-3xl p-6 sm:p-8 shadow-[0_25px_60px_rgba(0,0,0,0.85)] relative"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Close Button */}
+                <button
+                  onClick={() => setShowLoginModal(false)}
+                  className="absolute top-4 right-4 text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 p-2 rounded-xl border border-white/5 transition-all outline-none"
+                >
+                  <X size={15} />
+                </button>
+
+                <div>
+                  <div className="w-20 h-20 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-[0_0_30px_rgba(234,88,12,0.35)] overflow-hidden border-2 border-white/10">
+                    <img 
+                      src="/portada.jpg" 
+                      alt="DBS Tracker Logo" 
+                      className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+
+                  <h3 className="text-2xl font-black text-white text-center uppercase italic tracking-tight mb-1">
+                    {emailAuth.isLogin 
+                      ? (lang === 'es' ? 'Iniciar Sesión' : 'Sign In') 
+                      : (lang === 'es' ? 'Crear Cuenta' : 'Create Account')}
+                  </h3>
+                  <p className="text-xs text-gray-400 text-center mb-6 max-w-xs mx-auto">
+                    {lang === 'es'
+                      ? 'Inicia sesión para poder guardar, ordenar y recuperar tu colección desde cualquier móvil u ordenador.'
+                      : 'Keep details, stats, achievements and cards backups updated seamlessly across all your devices.'}
+                  </p>
+                  
+                  <div className="flex flex-col gap-4 w-full">
+                    {/FBAN|FBAV|Instagram|WhatsApp|Line|LinkedIn|Snapchat|Viber|Threads/i.test(navigator.userAgent) && (
+                      <div className="bg-red-500/20 border border-red-500/50 p-3 rounded-xl text-left mb-2">
+                        <div className="flex items-start gap-2.5">
+                          <AlertTriangle className="text-red-500 shrink-0 mt-0.5" size={16} />
+                          <div>
+                            <h3 className="text-red-400 font-bold text-xs mb-0.5">{lang === 'es' ? 'Aviso importante' : 'Important Notice'}</h3>
+                            <p className="text-gray-300 text-[10px] leading-relaxed">
+                              {lang === 'es' 
+                                ? 'Has abierto la app desde WhatsApp o similar. Para poder unirte o iniciar sesión con Google correctamente, haz clic en los tres puntos superiores y ábrelo en Safari o Chrome.' 
+                                : 'You are inside an embedded web view. To avoid issues with Google Auth, consider opening in standard Chrome or Safari.'}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={handleLogin}
+                      className="w-full py-3.5 bg-white text-black font-black rounded-xl hover:bg-gray-150 hover:scale-[1.01] active:scale-95 transition-all flex items-center justify-center gap-3 shadow-md uppercase tracking-tight text-xs"
+                    >
+                      <img src="https://www.google.com/favicon.ico" className="w-4 h-4" alt="Google Logo" />
+                      {lang === 'es' ? 'Entrar con Google' : 'Sign in with Google'}
+                    </button>
+
+                    <div className="flex items-center gap-3 my-1">
+                      <div className="h-px bg-white/10 flex-1"></div>
+                      <span className="text-[9px] font-black text-gray-500 uppercase tracking-widest leading-none">
+                        {lang === 'es' ? 'O usa tu correo' : 'OR USER EMAIL'}
+                      </span>
+                      <div className="h-px bg-white/10 flex-1"></div>
+                    </div>
+
+                    <form onSubmit={handleEmailSubmit} className="flex flex-col gap-3">
+                      <input
+                        type="email"
+                        placeholder="Email"
+                        value={emailAuth.email}
+                        onChange={e => setEmailAuth(p => ({...p, email: e.target.value}))}
+                        className="w-full px-4 py-2.5 bg-black/40 border-2 border-white/5 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+                        autoComplete="email"
+                      />
+                      <input
+                        type="password"
+                        placeholder={lang === 'es' ? 'Contraseña' : 'Password'}
+                        value={emailAuth.password}
+                        onChange={e => setEmailAuth(p => ({...p, password: e.target.value}))}
+                        className="w-full px-4 py-2.5 bg-black/40 border-2 border-white/5 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+                        autoComplete="current-password"
+                      />
+                      {emailAuth.error && (
+                        <p className="text-red-400 text-[11px] font-bold text-center">{emailAuth.error}</p>
+                      )}
+                      
+                      <button
+                        type="submit"
+                        className="w-full py-3 bg-orange-600 text-white font-black rounded-xl hover:bg-orange-500 hover:scale-[1.01] active:scale-95 transition-all shadow-md uppercase tracking-tight text-xs border border-orange-500/50 mt-1"
+                      >
+                        {emailAuth.isLogin ? (lang === 'es' ? 'Entrar' : 'Sign In') : (lang === 'es' ? 'Registrarme' : 'Sign Up')}
+                      </button>
+                    </form>
+                    
+                    <button
+                      type="button"
+                      onClick={() => setEmailAuth(p => ({...p, isLogin: !p.isLogin, error: ''}))}
+                      className="mt-1 text-[11.5px] font-bold text-gray-400 hover:text-white transition-colors underline decoration-white/20 underline-offset-4 text-center"
+                    >
+                      {emailAuth.isLogin 
+                        ? (lang === 'es' ? '¿No tienes cuenta? Registrate aquí' : "Don't have an account? Sign up here")
+                        : (lang === 'es' ? '¿Ya tienes cuenta? Entra aquí' : "Already have an account? Sign in here")}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-4 border-t border-white/[0.05] text-center">
+                  <p className="text-[10px] text-gray-500 font-semibold leading-normal">
+                    {lang === 'es'
+                      ? 'DBSCG Tracker es una herramienta gratuita y sin ánimo de lucro diseñada para fans. Las marcas, nombres e imágenes pertenecen a Bandai Co., Ltd.'
+                      : 'DBSCG Tracker is a free fan-made companion. Intellectual attributes and visual card files belong to Bandai Co., Ltd.'}
+                  </p>
+                </div>
+
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Footer with Legal Links */}
+        <footer className="relative z-20 border-t border-white/[0.05] bg-black/60 backdrop-blur-md py-6 px-4 mt-auto">
+          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+            <div className="flex items-center gap-2">
+              <span className="font-extrabold text-gray-400">DBSCG TRACKER</span>
+              <span>© {new Date().getFullYear()}</span>
+            </div>
+            
+            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 font-bold text-gray-400">
+              <button 
+                onClick={() => setActivePolicyDoc('terms')}
+                className="hover:text-orange-500 hover:underline transition-colors outline-none cursor-pointer"
+              >
+                {lang === 'es' ? 'Aviso Legal' : 'Legal Notice'}
+              </button>
+              <button 
+                onClick={() => setActivePolicyDoc('privacy')}
+                className="hover:text-orange-500 hover:underline transition-colors outline-none cursor-pointer"
+              >
+                {lang === 'es' ? 'Política de Privacidad' : 'Privacy Policy'}
+              </button>
+              <button 
+                onClick={() => setActivePolicyDoc('cookies')}
+                className="hover:text-orange-500 hover:underline transition-colors outline-none cursor-pointer"
+              >
+                {lang === 'es' ? 'Política de Cookies' : 'Cookie Policy'}
+              </button>
+            </div>
+          </div>
+        </footer>
+
+        {/* LEGAL DOCUMENT MODAL */}
+        <AnimatePresence>
+          {activePolicyDoc && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md"
+              onClick={() => setActivePolicyDoc(null)}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ type: 'spring', duration: 0.4 }}
+                className="w-full max-w-2xl bg-[#121212] border border-white/10 rounded-3xl p-6 sm:p-8 shadow-[0_25px_60px_rgba(0,0,0,0.85)] max-h-[85vh] flex flex-col relative"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Close Button */}
+                <button
+                  onClick={() => setActivePolicyDoc(null)}
+                  className="absolute top-4 right-4 text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 p-2 rounded-xl border border-white/5 transition-all outline-none"
+                >
+                  <X size={15} />
+                </button>
+
+                <div className="flex items-center gap-3 mb-6 border-b border-white/5 pb-4">
+                  <div className="p-2 bg-orange-500/10 rounded-xl text-orange-500">
+                    <Shield size={20} />
+                  </div>
+                  <div className="text-left">
+                    <h3 className="text-lg font-black text-white uppercase tracking-wider">
+                      {activePolicyDoc === 'privacy' && (lang === 'es' ? 'Política de Privacidad' : 'Privacy Policy')}
+                      {activePolicyDoc === 'terms' && (lang === 'es' ? 'Aviso Legal y Condiciones' : 'Legal Notice & Conditions')}
+                      {activePolicyDoc === 'cookies' && (lang === 'es' ? 'Política de Cookies' : 'Cookie Policy')}
+                    </h3>
+                    <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">
+                      {lang === 'es' ? 'DBSCG Tracker - Documentación Oficial' : 'DBSCG Tracker - Official Policy Documentation'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="overflow-y-auto pr-2 flex-1 space-y-5 text-gray-300 text-xs sm:text-sm leading-relaxed custom-scrollbar bg-black/30 border border-white/5 p-4 sm:p-6 rounded-2xl text-left">
+                  {activePolicyDoc === 'privacy' && (
+                    <>
+                      <section>
+                        <h4 className="text-white font-bold mb-1">{lang === 'es' ? '1. Información sobre el Responsable' : '1. Information About the Controller'}</h4>
+                        <p>
+                          {lang === 'es' 
+                            ? 'DBSCG Tracker es una plataforma web de código abierto creada por y para fans del juego de cartas coleccionables Dragon Ball Super Card Game. El tratamiento de los datos personales recopilados se realiza conforme al Reglamento General de Protección de Datos (RGPD) de la UE.'
+                            : 'DBSCG Tracker is an open-source web platform created by and for fans of the Dragon Ball Super Card Game. The processing of any collected personal data is carried out in accordance with the EU General Data Protection Regulation (GDPR).'}
+                        </p>
+                      </section>
+                      <section>
+                        <h4 className="text-white font-bold mb-1">{lang === 'es' ? '2. Datos que Recopilamos' : '2. Data We Collect'}</h4>
+                        <p>
+                          {lang === 'es'
+                            ? 'Para habilitar las funciones de seguimiento, sincronización e inicio de sesión guardamos: Dirección de correo electrónico, nombre para mostrar, medallas virtuales conseguidas, listas de deseos (Wants) e inventario de cartas guardadas en el binder. No recopilamos datos financieros directos ni información sensible.'
+                            : 'To enable tracking, synchronization, and authentication features, we store: Email address, display name, virtual achievement medals, wants list configuration, and saved cards inventory inside your binder. We do not collect financial accounts or sensitive personal details.'}
+                        </p>
+                      </section>
+                      <section>
+                        <h4 className="text-white font-bold mb-1">{lang === 'es' ? '3. Finalidad del Tratamiento' : '3. Purpose of Processing'}</h4>
+                        <p>
+                          {lang === 'es'
+                            ? 'Los datos se utilizan exclusivamente para permitir el funcionamiento de tus binders virtuales y listas de deseos, asegurar la persistencia entre dispositivos del usuario y proteger el servicio técnico contra abusos o ataques.'
+                            : 'Your data is processed exclusively to manage virtual card binders and wants lists, guarantee reliable persistent storage across your devices, and protect our servers from abuse or attacks.'}
+                        </p>
+                      </section>
+                      <section>
+                        <h4 className="text-white font-bold mb-1">{lang === 'es' ? '4. Conservación y Derechos ARCO' : '4. Data Retention and ARCO Rights'}</h4>
+                        <p>
+                          {lang === 'es'
+                            ? 'Los datos se conservan de forma indefinida mientras la cuenta se mantenga activa. Puedes ejercer tus derechos de acceso, rectificación, cancelación y oposición (derechos ARCO), así como la eliminación definitiva de tu usuario e inventario completo eliminando tu cuenta directamente en el perfil o contactando con el administrador.'
+                            : 'Data is retained indefinitely while your account remains active. You can exercise your GDPR rights of Access, Rectification, Erasure, and Objection (ARCO rights), including permanently deleting your complete profile and collection record, directly from your profile settings or by contacting the admin.'}
+                        </p>
+                      </section>
+                    </>
+                  )}
+
+                  {activePolicyDoc === 'terms' && (
+                    <>
+                      <section>
+                        <h4 className="text-white font-bold mb-1">{lang === 'es' ? '1. Propiedad Intelectual y Cláusula de Limitación' : '1. Intellectual Property & Disclaimer'}</h4>
+                        <p>
+                          {lang === 'es'
+                            ? 'DBSCG Tracker es una herramienta web completamente NO OFICIAL y gratuita creada con fines recreativos y educativos para la comunidad de Dragon Ball Super Card Game (incluyendo formatos Fusion World y Masters). Las marcas, nombres de productos, personajes y archivos gráficos de las cartas son propiedad de Bandai Co., Ltd., Bird Studio/Shueisha y Toei Animation.'
+                            : 'DBSCG Tracker is a completely UNOFFICIAL and free web tracker built for recreational and educational community purposes for the Dragon Ball Super Card Game (including Fusion World & Masters formats). Product names, trademarks, characters, and card graphic depictions belong to Bandai Co., Ltd., Bird Studio/Shueisha, and Toei Animation.'}
+                        </p>
+                      </section>
+                      <section>
+                        <h4 className="text-white font-bold mb-1">{lang === 'es' ? '2. Condiciones Generales de Uso' : '2. General Terms of Use'}</h4>
+                        <p>
+                          {lang === 'es'
+                            ? 'El acceso y uso de esta plataforma implica la aceptación íntegra de estas condiciones. Queda prohibido el uso de robots, scrapers automáticos o cualquier software de saturación de peticiones para sustraer información del catálogo o inundar los servidores de base de datos.'
+                            : 'Accessing and using this platform constitutes full acceptance of these terms. Using automated scripts, bots, scrapers, or crash-inducing tools to crawl the catalog page or flood the cloud database servers is strictly prohibited.'}
+                        </p>
+                      </section>
+                      <section>
+                        <h4 className="text-white font-bold mb-1">{lang === 'es' ? '3. Exclusión de Responsabilidades' : '3. Limitation of Liability'}</h4>
+                        <p>
+                          {lang === 'es'
+                            ? 'Esta herramienta gratuita se ofrece "tal cual", sin garantías sobre su disponibilidad continua, exactitud absoluta de precios/cartas o permanencia de base de datos. No nos responsabilizamos de ningún daño derivado del uso o inaccesibilidad temporal de la web.'
+                            : 'This free tool is offered on an "as-is" basis, with no guarantees of uninterrupted uptime, absolute catalog accuracy, or permanent database stability. We assume no liability for any potential data discrepancy or temporary system downtime.'}
+                        </p>
+                      </section>
+                    </>
+                  )}
+
+                  {activePolicyDoc === 'cookies' && (
+                    <>
+                      <section>
+                        <h4 className="text-white font-bold mb-1">{lang === 'es' ? '1. ¿Qué son las Cookies?' : '1. What Are Cookies?'}</h4>
+                        <p>
+                          {lang === 'es'
+                            ? 'Las cookies son pequeños fragmentos de texto que los sitios web envían al navegador y que se almacenan en el dispositivo del usuario. También empleamos tecnologías similares de almacenamiento local de HTML5 (localStorage) para proporcionarte una carga óptima y sin retrasos.'
+                            : 'Cookies are short snippets of text sent to your browser by visited websites and stored on your device. We also deploy HTML5 Local Storage (localStorage) capabilities to deliver high performance and lag-free application loads.'}
+                        </p>
+                      </section>
+                      <section>
+                        <h4 className="text-white font-bold mb-1">{lang === 'es' ? '2. Cookies Técnicas que Empleamos' : '2. Technical Cookies We Use'}</h4>
+                        <p>
+                          {lang === 'es'
+                            ? 'Este sitio web ÚNICAMENTE utiliza cookies de naturaleza estrictamente técnica y de almacenamiento funcional necesario para: persistencia de tus credenciales de inicio sesión de Firebase (evitar tener que registrarte cada vez), idioma preferente elegido, filtro dinámico de juego (Masters / Fusion) y el registro del propio consentimiento de aceptación de este aviso de cookies.'
+                            : 'This platform EXCLUSIVELY uses cookies and local identifiers of a strictly technical and functional nature to: secure Firebase user active log-in tokens, persist your active language preferences, store selected default game filters (Masters or Fusion World), and record your confirmation parameter for this cookie consent banner.'}
+                        </p>
+                      </section>
+                      <section>
+                        <h4 className="text-white font-bold mb-1">{lang === 'es' ? '3. Terceros y Rastreo' : '3. Third-party & Profiling'}</h4>
+                        <p>
+                          {lang === 'es'
+                            ? 'Totalmente comprometidos con tu privacidad: no integramos cookies de segmentación comercial, píxeles de Facebook, cookies analíticas de rastreo invasivo, ni compartimos identificadores con anunciantes de ningún tipo. Es una navegación limpia.'
+                            : 'Committed to ultimate privacy: we do not integrate any tracking cookies, Facebook marketing pixels, Google Analytics invasive profiling, or advertising trackers. Your data stays localized and your navigation clean.'}
+                        </p>
+                      </section>
+                    </>
+                  )}
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-white/5 flex justify-end">
+                  <button
+                    onClick={() => setActivePolicyDoc(null)}
+                    className="bg-white/5 hover:bg-white/10 text-white font-bold text-xs uppercase px-5 py-2.5 rounded-xl border border-white/10 transition-all active:scale-95 cursor-pointer"
+                  >
+                    {lang === 'es' ? 'Cerrar Documento' : 'Close Document'}
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* COOKIE CONSENT BANNER */}
+        <AnimatePresence>
+          {showCookieBanner && (
+            <motion.div
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 100, opacity: 0 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-md z-50 bg-[#141414] border border-white/10 rounded-2xl p-5 shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-md flex flex-col gap-4 text-left"
+            >
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-orange-500/10 rounded-lg text-orange-400 shrink-0">
+                  <Info size={18} />
+                </div>
+                <div>
+                  <h4 className="text-sm font-black text-white uppercase tracking-wider mb-1">
+                    {lang === 'es' ? 'Uso de Cookies' : 'Cookie Usage'}
+                  </h4>
+                  <p className="text-xs text-gray-400 leading-relaxed">
+                    {lang === 'es'
+                      ? 'Utilizamos cookies técnicas y almacenamiento local para recordar tu idioma, guardar tus sesiones de inicio y recordar tus preferencias. No utilizamos cookies de marketing ni rastreo.'
+                      : 'We use technical cookies and local storage to remember your language, secure your sign-in sessions, and save preferences. No marketing or tracking cookies are used.'}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center justify-end gap-3 border-t border-white/5 pt-3">
+                <button
+                  onClick={() => setActivePolicyDoc('cookies')}
+                  className="text-xs font-bold text-gray-400 hover:text-white transition-colors underline underline-offset-4 cursor-pointer outline-none"
+                >
+                  {lang === 'es' ? 'Saber más' : 'Read Policy'}
+                </button>
+                <button
+                  onClick={() => {
+                    safeStorage.setItem('cookie_consent_accepted', 'true');
+                    setShowCookieBanner(false);
+                  }}
+                  className="bg-orange-600 hover:bg-orange-500 active:scale-95 text-xs text-white px-4 py-2 rounded-xl font-black uppercase tracking-wider border border-orange-500/50 transition-all shadow-md cursor-pointer"
+                >
+                  {lang === 'es' ? 'Aceptar' : 'Accept'}
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  }
 
   if (profile && !profile.hasAcceptedTerms) {
     return (
@@ -13103,9 +14053,7 @@ export default function TrackerApp() {
                                   <button
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                      if (confirm(lang === 'es' ? '¿Quieres borrar esta lista permanentemente?' : 'Delete list permanently?')) {
-                                        handleDeleteWantsList(list.id);
-                                      }
+                                      setDeletingWantsList(list);
                                     }}
                                     className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors active:scale-90"
                                   >
@@ -14857,6 +15805,77 @@ export default function TrackerApp() {
                   </>
                 )}
               </button>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Delete Wants List Confirmation Modal */}
+      <AnimatePresence>
+        {deletingWantsList && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setDeletingWantsList(null)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150]"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-sm bg-[#181818] rounded-3xl p-6 sm:p-8 z-[160] border border-white/10 shadow-2xl overflow-hidden text-center"
+            >
+              <div className="mx-auto w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-5 text-red-500 animate-pulse">
+                <AlertTriangle size={32} />
+              </div>
+
+              <h3 className="text-xl font-black text-white uppercase italic tracking-tight mb-2">
+                {lang === 'es' ? '¿ELIMINAR LISTA?' : 'DELETE LIST?'}
+              </h3>
+
+              <p className="text-sm text-gray-400 mb-6 leading-relaxed">
+                {lang === 'es' ? (
+                  <>
+                    ¿Estás seguro de que deseas eliminar permanentemente la lista{' '}
+                    <span className="text-white font-bold block mt-1.5 px-3 py-1.5 bg-white/5 rounded-xl border border-white/5 truncate">
+                      {deletingWantsList.name}
+                    </span>{' '}
+                    con todo su progreso registrado? Esta acción no se puede deshacer.
+                  </>
+                ) : (
+                  <>
+                    Are you sure you want to permanently delete the list{' '}
+                    <span className="text-white font-bold block mt-1.5 px-3 py-1.5 bg-white/5 rounded-xl border border-white/5 truncate">
+                      {deletingWantsList.name}
+                    </span>{' '}
+                    and all of its tracked progress? This action cannot be undone.
+                  </>
+                )}
+              </p>
+
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setDeletingWantsList(null)}
+                  className="w-full py-3.5 bg-white/5 hover:bg-white/10 text-gray-300 font-bold rounded-2xl border border-white/5 active:scale-[0.98] transition-all text-xs uppercase tracking-wider"
+                >
+                  {lang === 'es' ? 'CANCELAR' : 'CANCEL'}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleDeleteWantsList(deletingWantsList.id);
+                    setDeletingWantsList(null);
+                  }}
+                  className="w-full py-3.5 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white font-black rounded-2xl shadow-lg shadow-red-900/20 active:scale-[0.98] transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2"
+                >
+                  <Trash2 size={15} />
+                  {lang === 'es' ? 'ELIMINAR' : 'DELETE'}
+                </button>
+              </div>
             </motion.div>
           </>
         )}
