@@ -1199,6 +1199,7 @@ import { bt28Data } from './data/bt28';
 import { bt29Data } from './data/bt29';
 import { bt30Data } from './data/bt30';
 import { fusionWorldData } from './data/fusion_world';
+import { initGA, trackPageView, trackEvent } from './utils/analytics';
 
 // --- Types ---
 const translations = {
@@ -9704,6 +9705,11 @@ export default function TrackerApp() {
     }
   }, [user]);
 
+  // Initialize Google Analytics on app mount
+  useEffect(() => {
+    initGA();
+  }, []);
+
   // Check changelog visibility on entry
   useEffect(() => {
     const lastSeenVersion = safeStorage.getItem('lastSeenVersion');
@@ -9724,6 +9730,103 @@ export default function TrackerApp() {
       }
     }
   }, [user]);
+
+  // Dynamic SEO Title & Meta Description update
+  useEffect(() => {
+    let title = 'DBSCG Tracker | Colección Dragon Ball Super';
+    let description = '';
+    const formatName = gameType === 'fusion' ? 'Fusion World' : 'Masters';
+
+    if (lang === 'es') {
+      switch (activeTab) {
+        case 'home':
+          title = 'Inicio | DBSCG Tracker - Tu Álbum de Dragon Ball Super';
+          description = `Bienvenido al tracker de Dragon Ball Super Card Game. Organiza y gestiona tu colección de cartas para ${formatName} y Masters en español e inglés.`;
+          break;
+        case 'collection':
+          title = `${formatName} Colección | DBSCG Tracker - Álbum de Cartas`;
+          description = `Explora y actualiza las cartas en tu binder de la colección ${formatName}. Revisa tu nivel de progreso, porcentaje completado y cartas faltantes.`;
+          break;
+        case 'wants':
+          title = 'Lista de Deseos (Wants) | DBSCG Tracker';
+          description = `Gestiona tus listas de wants, prioriza las cartas que te faltan en tu mazo de Dragon Ball Super Card Game y compártelo con tus amigos.`;
+          break;
+        case 'search':
+          title = 'Buscador de Cartas Dragon Ball Super | DBSCG Tracker';
+          description = `Busca rápidamente cartas de Dragon Ball Super (Fusion World y Masters). Filtra por color, rareza, expansión, tipo o poder en segundos.`;
+          break;
+        case 'stats':
+          title = 'Estadísticas de Colección | DBSCG Tracker';
+          description = `Observa gráficos interactivos del progreso de tu colección, distribución de rarezas, porcentajes por colores de tus cartas de Dragon Ball Super.`;
+          break;
+        case 'profile':
+          title = 'Tu Perfil de Coleccionista | DBSCG Tracker';
+          description = `Gestiona tus preferencias de coleccionista o jugador de mazo, revisa tu cuenta y apoya el proyecto DBSCG Tracker.`;
+          break;
+        default:
+          title = 'DBSCG Tracker | Dragon Ball Super Card Game';
+          description = `Lleva el control de tu colección del juego de cartas de Dragon Ball Super (Fusion World y Masters).`;
+      }
+    } else {
+      switch (activeTab) {
+        case 'home':
+          title = 'Home | DBSCG Tracker - Track Your Dragon Ball Super Binder';
+          description = `Welcome to the premier DBSCG companion. Organize and checklist your card collection for both ${formatName} and Masters formats.`;
+          break;
+        case 'collection':
+          title = `${formatName} Collection | DBSCG Tracker - Card Binder Checklist`;
+          description = `Browse and check off your ${formatName} card collection. Monitor your progress trackers, binder filling rate, and missing cards easily.`;
+          break;
+        case 'wants':
+          title = 'My Want Lists | DBSCG Tracker - Wishlist';
+          description = `Manage your personal want lists. Prioritize missing singles for your custom decks and collection goals in Dragon Ball Super TCG.`;
+          break;
+        case 'search':
+          title = 'Dragon Ball Super Card Search | DBSCG Tracker Finder';
+          description = `Fast searchable database of Dragon Ball Super Card Game cards. Filter by color, power, energy, type, or specific expansion sets.`;
+          break;
+        case 'stats':
+          title = 'Collection Charts & Stats | DBSCG Tracker';
+          description = `Analyze interactive charts of your DBSCG card binder. View rarity distribution, color progression, and playset targets progress.`;
+          break;
+        case 'profile':
+          title = 'Collector Profile | DBSCG Tracker';
+          description = `Configure your profile preferences, custom targets (playset vs collection binder), and manage your account.`;
+          break;
+        default:
+          title = 'DBSCG Tracker | Dragon Ball Super Card Game Collection Companion';
+          description = `Durable and intuitive album companion to track details, promos, alternate arts, and sets of Dragon Ball Super TCG.`;
+      }
+    }
+
+    if (title) {
+      document.title = title;
+    }
+
+    if (description) {
+      let metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute('content', description);
+      } else {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        metaDesc.setAttribute('content', description);
+        document.head.appendChild(metaDesc);
+      }
+
+      let ogDesc = document.querySelector('meta[property="og:description"]');
+      if (ogDesc) {
+        ogDesc.setAttribute('content', description);
+      }
+      let ogTitle = document.querySelector('meta[property="og:title"]');
+      if (ogTitle) {
+        ogTitle.setAttribute('content', title);
+      }
+    }
+
+    // Track active tab and game format views in GA4
+    trackPageView(activeTab, gameType);
+  }, [lang, activeTab, gameType]);
 
   const markChangelogAsSeen = () => {
     const wasShownOnEntry = showChangelogOnEntry;
