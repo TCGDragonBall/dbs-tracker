@@ -2117,6 +2117,269 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
 };
 
 const IMAGE_OVERRIDES: Record<string, string> = {
+  'BT8-116_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203927_in_1000x1000.jpg',
+  'BT8-103_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203920_in_1000x1000.jpg',
+  'BT8-084_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203845_in_1000x1000.jpg',
+  'BT8-113_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203925_in_1000x1000.jpg',
+  'BT8-021_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202451_in_1000x1000.jpg',
+  'BT8-017_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202447_in_1000x1000.jpg',
+  'BT8-120_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203930_in_1000x1000.jpg',
+  'BT8-009_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202440_in_1000x1000.jpg',
+  'BT8-068_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203757_in_1000x1000.jpg',
+  'BT8-006_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202437_in_1000x1000.jpg',
+  'BT8-079_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203838_in_1000x1000.jpg',
+  'BT8-092_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203908_in_1000x1000.jpg',
+  'BT8-098_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203913_in_1000x1000.jpg',
+  'BT8-065_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203754_in_1000x1000.jpg',
+  'BT8-015_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202445_in_1000x1000.jpg',
+  'BT8-085_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203847_in_1000x1000.jpg',
+  'BT8-080_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203839_in_1000x1000.jpg',
+  'BT8-076_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203833_in_1000x1000.jpg',
+  'BT8-067_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/203756_in_1000x1000.jpg',
+  'BT8-058_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203747_in_1000x1000.jpg',
+  'BT8-093_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203909_in_1000x1000.jpg',
+  'BT8-034_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202463_in_1000x1000.jpg',
+  'BT8-002_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/202433_in_1000x1000.jpg',
+  'BT8-051_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203740_in_1000x1000.jpg',
+  'BT8-024_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/202454_in_800x800.jpg',
+  'BT8-045_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/203735_in_800x800.jpg',
+  'BT8-056_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203745_in_800x800.jpg',
+  'BT8-013_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202443_in_800x800.jpg',
+  'BT8-083_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203844_in_800x800.jpg',
+  'BT8-117_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203928_in_800x800.jpg',
+  'BT8-019_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202449_in_800x800.jpg',
+  'BT8-053_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203742_in_800x800.jpg',
+  'BT8-029_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202459_in_800x800.jpg',
+  'BT8-095_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/224110_in_800x800.jpg',
+  'BT8-047_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203737_in_800x800.jpg',
+  'BT8-111_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203924_in_800x800.jpg',
+  'BT8-031_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202461_in_800x800.jpg',
+  'BT8-096_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203911_in_800x800.jpg',
+  'BT8-107_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203923_in_800x800.jpg',
+  'BT8-094_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203910_in_800x800.jpg',
+  'BT8-044_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/203734_in_800x800.jpg',
+  'BT8-027_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202457_in_800x800.jpg',
+  'BT8-007_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202438_in_800x800.jpg',
+  'BT8-011_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202442_in_800x800.jpg',
+  'BT8-124_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203931_in_800x800.jpg',
+  'BT8-025_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202455_in_800x800.jpg',
+  'BT8-057_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203746_in_800x800.jpg',
+  'BT8-075_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203832_in_800x800.jpg',
+  'BT8-087_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203904_in_800x800.jpg',
+  'BT8-106_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203922_in_800x800.jpg',
+  'BT8-088_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203905_in_800x800.jpg',
+  'BT8-104_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203921_in_800x800.jpg',
+  'BT8-041_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203731_in_800x800.jpg',
+  'BT8-042_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203732_in_800x800.jpg',
+  'BT8-054_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203743_in_800x800.jpg',
+  'BT8-035_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202464_in_800x800.jpg',
+  'BT8-060_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203749_in_800x800.jpg',
+  'BT8-023_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/202453_in_800x800.jpg',
+  'BT8-071_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203828_in_800x800.jpg',
+  'BT8-004_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202435_in_800x800.jpg',
+  'BT8-078_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203837_in_800x800.jpg',
+  'BT8-048_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203738_in_800x800.jpg',
+  'BT8-040_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203730_in_800x800.jpg',
+  'BT8-037_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202466_in_800x800.jpg',
+  'BT8-089_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/203906_in_800x800.jpg',
+  'BT8-072_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203829_in_800x800.jpg',
+  'BT8-086_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203852_in_800x800.jpg',
+  'BT8-077_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203834_in_800x800.jpg',
+  'BT8-018_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202448_in_800x800.jpg',
+  'BT8-059_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203748_in_800x800.jpg',
+  'BT8-061_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203750_in_800x800.jpg',
+  'BT8-073_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203830_in_800x800.jpg',
+  'BT8-062_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203751_in_800x800.jpg',
+  'BT8-091_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203907_in_800x800.jpg',
+  'BT8-118_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203929_in_800x800.jpg',
+  'BT8-036_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202465_in_800x800.jpg',
+  'BT8-001_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/202432_in_800x800.jpg',
+  'BT8-020_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202450_in_800x800.jpg',
+  'BT8-030_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202460_in_800x800.jpg',
+  'BT8-026_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202456_in_800x800.jpg',
+  'BT8-082_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203842_in_800x800.jpg',
+  'BT8-052_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203741_in_800x800.jpg',
+  'BT8-032_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202462_in_800x800.jpg',
+  'BT8-074_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203831_in_800x800.jpg',
+  'BT8-005_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202436_in_800x800.jpg',
+  'BT8-010_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202441_in_800x800.jpg',
+  'BT8-063_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203752_in_800x800.jpg',
+  'BT8-097_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203912_in_800x800.jpg',
+  'BT8-038_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203729_in_800x800.jpg',
+  'BT8-114_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203926_in_800x800.jpg',
+  'BT8-049_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203739_in_800x800.jpg',
+  'BT8-043_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203733_in_800x800.jpg',
+  'BT8-014_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202444_in_800x800.jpg',
+  'BT8-100_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203917_in_800x800.jpg',
+  'BT8-016_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202446_in_800x800.jpg',
+  'BT8-102_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203919_in_800x800.jpg',
+  'BT8-081_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203840_in_800x800.jpg',
+  'BT8-066_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/203755_in_800x800.jpg',
+  'BT8-099_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203915_in_800x800.jpg',
+  'BT8-069_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203762_in_800x800.jpg',
+  'BT8-046_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203736_in_800x800.jpg',
+  'BT8-008_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202439_in_800x800.jpg',
+  'BT8-028_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202458_in_800x800.jpg',
+  'BT8-055_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203744_in_800x800.jpg',
+  'BT8-022_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202452_in_800x800.jpg',
+  'BT8-064_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203753_in_800x800.jpg',
+  'BT8-003_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/202434_in_800x800.jpg',
+  'BT8-101_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203918_in_800x800.jpg',
+  'BT9-087_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209277_in_800x800.jpg',
+  'BT9-112_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/209292_in_800x800.jpg',
+  'BT9-018_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209216_in_800x800.jpg',
+  'BT9-053_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/209257_in_800x800.jpg',
+  'BT9-100_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/209508_in_800x800.jpg',
+  'BT9-011_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209207_in_800x800.jpg',
+  'BT9-024_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209235_in_800x800.jpg',
+  'BT9-086_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209276_in_800x800.jpg',
+  'BT9-092_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209280_in_800x800.jpg',
+  'BT9-014_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209210_in_800x800.jpg',
+  'BT9-019_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209217_in_800x800.jpg',
+  'BT9-039_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209250_in_800x800.jpg',
+  'BT9-070_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/209267_in_800x800.jpg',
+  'BT9-085_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209275_in_800x800.jpg',
+  'BT9-012_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209208_in_800x800.jpg',
+  'BT9-025_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209236_in_800x800.jpg',
+  'BT9-075_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209270_in_800x800.jpg',
+  'BT9-078_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209272_in_800x800.jpg',
+  'BT9-007_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209403_in_800x800.jpg',
+  'BT9-051_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209255_in_800x800.jpg',
+  'BT9-059_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209260_in_800x800.jpg',
+  'BT9-123_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209296_in_800x800.jpg',
+  'BT9-015_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209211_in_800x800.jpg',
+  'BT9-058_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209259_in_800x800.jpg',
+  'BT9-098_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209285_in_800x800.jpg',
+  'BT9-043_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209252_in_800x800.jpg',
+  'BT9-021_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/209222_in_800x800.jpg',
+  'BT9-013_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209209_in_800x800.jpg',
+  'BT9-099_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209286_in_800x800.jpg',
+  'BT9-031_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209242_in_800x800.jpg',
+  'BT9-038_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/209249_in_800x800.jpg',
+  'BT9-054_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209258_in_800x800.jpg',
+  'BT9-036_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209247_in_800x800.jpg',
+  'BT9-107_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209289_in_800x800.jpg',
+  'BT9-050_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209254_in_800x800.jpg',
+  'BT9-076_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209271_in_800x800.jpg',
+  'BT9-061_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209262_in_800x800.jpg',
+  'BT9-017_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209215_in_800x800.jpg',
+  'BT9-114_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209293_in_800x800.jpg',
+  'BT9-124_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209297_in_800x800.jpg',
+  'BT9-040_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209251_in_800x800.jpg',
+  'BT9-035_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209246_in_800x800.jpg',
+  'BT9-009_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209205_in_800x800.jpg',
+  'BT9-004_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209201_in_800x800.jpg',
+  'BT9-023_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209225_in_800x800.jpg',
+  'BT9-002_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/209199_in_800x800.jpg',
+  'BT9-071_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209268_in_800x800.jpg',
+  'BT9-115_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209294_in_800x800.jpg',
+  'BT9-109_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209291_in_800x800.jpg',
+  'BT9-052_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209256_in_800x800.jpg',
+  'BT9-001_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/209198_in_800x800.jpg',
+  'BT9-003_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209200_in_800x800.jpg',
+  'BT9-027_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209238_in_800x800.jpg',
+  'BT9-022_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209223_in_800x800.jpg',
+  'BT9-016_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209213_in_800x800.jpg',
+  'BT9-106_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209288_in_800x800.jpg',
+  'BT9-060_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209261_in_800x800.jpg',
+  'BT9-067_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209265_in_800x800.jpg',
+  'BT9-034_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209245_in_800x800.jpg',
+  'BT9-006_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209509_in_800x800.jpg',
+  'BT9-028_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209239_in_800x800.jpg',
+  'BT9-063_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209263_in_800x800.jpg',
+  'BT9-079_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209273_in_800x800.jpg',
+  'BT9-032_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209243_in_800x800.jpg',
+  'BT9-080_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209274_in_800x800.jpg',
+  'BT9-084_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209432_in_800x800.jpg',
+  'BT9-066_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209264_in_800x800.jpg',
+  'BT9-030_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209241_in_800x800.jpg',
+  'BT9-102_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209287_in_800x800.jpg',
+  'BT9-008_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209203_in_800x800.jpg',
+  'BT9-069_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209266_in_800x800.jpg',
+  'BT9-090_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209278_in_800x800.jpg',
+  'BT9-029_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209240_in_800x800.jpg',
+  'BT9-073_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209269_in_800x800.jpg',
+  'BT9-122_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209295_in_800x800.jpg',
+  'BT9-097_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209284_in_800x800.jpg',
+  'BT9-094_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209281_in_800x800.jpg',
+  'BT9-010_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209206_in_800x800.jpg',
+  'BT9-095_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209282_in_800x800.jpg',
+  'BT9-046_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209253_in_800x800.jpg',
+  'BT9-037_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209248_in_800x800.jpg',
+  'BT9-108_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209290_in_800x800.jpg',
+  'BT9-026_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209237_in_800x800.jpg',
+  'BT9-096_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209283_in_800x800.jpg',
+  'BT9-033_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209244_in_800x800.jpg',
+  'BT9-020_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209219_in_800x800.jpg',
+  'BT9-091_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/209279_in_800x800.jpg',
+  'BT10-127_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218535_in_1000x1000.jpg',
+  'BT10-113_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218488_in_1000x1000.jpg',
+  'BT10-012_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218536_in_1000x1000.jpg',
+  'BT10-142_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218490_in_1000x1000.jpg',
+  'BT10-100_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218537_in_1000x1000.jpg',
+  'BT10-090_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218491_in_1000x1000.jpg',
+  'BT10-121_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218493_in_1000x1000.jpg',
+  'BT10-064_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218538_in_1000x1000.jpg',
+  'BT10-082_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218494_in_1000x1000.jpg',
+  'BT10-149_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218539_in_800x800.jpg',
+  'BT10-072_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218540_in_800x800.jpg',
+  'BT10-086_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218495_in_800x800.jpg',
+  'BT10-073_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218541_in_800x800.jpg',
+  'BT10-032_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/218542_in_800x800.jpg',
+  'BT10-052_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218497_in_800x800.jpg',
+  'BT10-057_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218498_in_800x800.jpg',
+  'BT10-051_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218502_in_800x800.jpg',
+  'BT10-050_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218501_in_800x800.jpg',
+  'BT10-111_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218543_in_800x800.jpg',
+  'BT10-112_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218503_in_800x800.jpg',
+  'BT10-138_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218544_in_800x800.jpg',
+  'BT10-117_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218504_in_800x800.jpg',
+  'BT10-066_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218505_in_800x800.jpg',
+  'BT10-151_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218545_in_800x800.jpg',
+  'BT10-070_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218506_in_800x800.jpg',
+  'BT10-126_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218507_in_800x800.jpg',
+  'BT10-010_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218546_in_800x800.jpg',
+  'BT10-027_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218547_in_800x800.jpg',
+  'BT10-135_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218548_in_800x800.jpg',
+  'BT10-091_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218549_in_800x800.jpg',
+  'BT10-016_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218508_in_800x800.jpg',
+  'BT10-026_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218510_in_800x800.jpg',
+  'BT10-025_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218550_in_800x800.jpg',
+  'BT10-029_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218512_in_800x800.jpg',
+  'BT10-139_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218551_in_800x800.jpg',
+  'BT10-078_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218552_in_800x800.jpg',
+  'BT10-094_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218559_in_800x800.jpg',
+  'BT10-065_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218526_in_800x800.jpg',
+  'BT10-043_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218560_in_800x800.jpg',
+  'BT10-036_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218561_in_800x800.jpg',
+  'BT10-040_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218562_in_800x800.jpg',
+  'BT10-045_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218527_in_800x800.jpg',
+  'BT10-140_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218518_in_800x800.jpg',
+  'BT10-147_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218521_in_800x800.jpg',
+  'BT10-067_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218553_in_800x800.jpg',
+  'BT10-060_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/218554_in_800x800.jpg',
+  'BT10-145_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218522_in_800x800.jpg',
+  'BT10-097_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218524_in_800x800.jpg',
+  'BT10-099_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218555_in_800x800.jpg',
+  'BT10-007_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218525_in_800x800.jpg',
+  'BT10-128_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218556_in_800x800.jpg',
+  'BT10-006_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218557_in_800x800.jpg',
+  'BT10-102_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218558_in_800x800.jpg',
+  'BT10-034_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218563_in_800x800.jpg',
+  'BT10-093_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/218564_in_800x800.jpg',
+  'BT10-115_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218529_in_800x800.jpg',
+  'BT10-116_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218565_in_800x800.jpg',
+  'BT10-143_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218566_in_800x800.jpg',
+  'BT10-109_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218567_in_800x800.jpg',
+  'BT10-132_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218531_in_800x800.jpg',
+  'BT10-146_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218532_in_800x800.jpg',
+  'BT10-144_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218533_in_800x800.jpg',
+  'BT10-005_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218568_in_800x800.jpg',
+  'BT10-046_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218569_in_800x800.jpg',
+  'BT10-001_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/218570_in_800x800.jpg',
+  'BT10-009_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218534_in_800x800.jpg',
+  'BT10-085_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218571_in_800x800.jpg',
+  'BT10-055_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/218572_in_800x800.jpg',
   'P-331_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-331_PR02.png',
   'P-331_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-331_PR03.png',
   'P-364_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-364_PR02.png',
@@ -2191,6 +2454,7 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'BT8-017_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT8-017_PR02.png',
   'BT7-073_EP17': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT7-073_PR02.png',
   'BT7-085_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT7-085_PR02.png',
+  'BT7-021_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT7-021_PR02.png',
   'BT6-004_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT6-004_PR02.png',
   'BT6-005_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT6-005_PR02.png',
   'BT6-008_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT6-008_PR02.png',
@@ -5303,14 +5567,36 @@ const getCardTags = (card: Card) => {
   return tags;
 };
 
+interface CardVariation {
+  id: string;
+  label: Record<'es' | 'en', string>;
+  isFoil: boolean;
+  imageUrl?: string;
+  backImageUrl?: string;
+  rarity?: string;
+}
+
+const CARD_VARIATIONS: Record<string, CardVariation[]> = {};
+
+const getCardQty = (cardId: string, inventory: InventoryItem[]): number => {
+  const variations = CARD_VARIATIONS[cardId];
+  if (variations) {
+    return variations.reduce((sum, v) => {
+      const item = inventory.find(i => i.cardId === v.id);
+      return sum + (item ? item.quantity : 0);
+    }, 0);
+  }
+  const item = inventory.find(i => i.cardId === cardId);
+  return item ? item.quantity : 0;
+};
+
 const getDeduplicatedStats = (subsetCards: Card[], inventory: InventoryItem[], goal: 'collector' | 'player') => {
   if (goal === 'collector') {
     let total = 0;
     let owned = 0;
     subsetCards.forEach(c => {
       const target = getTargetQuantity(c, goal);
-      const invItem = inventory.find(i => i.cardId === c.id);
-      const quantity = invItem ? invItem.quantity : 0;
+      const quantity = getCardQty(c.id, inventory);
       const ownedValue = Math.min(quantity, target);
       total += target;
       owned += ownedValue;
@@ -5322,8 +5608,7 @@ const getDeduplicatedStats = (subsetCards: Card[], inventory: InventoryItem[], g
   subsetCards.forEach(c => {
     const baseId = c.cardNumber.split('_')[0];
     const target = getTargetQuantity(c, goal);
-    const invItem = inventory.find(i => i.cardId === c.id);
-    const quantity = invItem ? invItem.quantity : 0;
+    const quantity = getCardQty(c.id, inventory);
 
     if (!baseMap.has(baseId)) {
       baseMap.set(baseId, { needed: target, owned: quantity });
@@ -6118,7 +6403,7 @@ const Dashboard = ({
         </motion.a>
       ) : (
         <motion.a
-          href="https://montalfan.com/producto/dragon-ball-super-card-game-fusion-world-fb-10-cross-force-booster-box-reserva/"
+          href="https://montalfan.com/"
           target="_blank"
           rel="noopener noreferrer"
           initial={{ opacity: 0, scale: 0.9 }}
@@ -6130,7 +6415,7 @@ const Dashboard = ({
           {/* Full background image spanning 100% of the banner */}
           <div 
             className="absolute inset-0 opacity-20 bg-cover bg-no-repeat bg-center mix-blend-lighten pointer-events-none transition-opacity duration-700 group-hover:opacity-30 animate-fade-in"
-            style={{ backgroundImage: "url('https://montalfan.com/wp-content/uploads/2026/04/FB10RR.png')" }}
+            style={{ backgroundImage: "url('https://www.dbs-cardgame.com/fw/bccard/en/news/2025/05/02/nBCg0NGTfrlDxjTh/SB01.png')" }}
           />
           
           {/* Ambient Glows */}
@@ -6154,7 +6439,7 @@ const Dashboard = ({
               />
               
               <h3 className="text-white font-extrabold text-[#FFF] text-md sm:text-lg md:text-xl tracking-tight leading-tight uppercase mb-1.5 group-hover:text-red-400 transition-colors truncate w-full">
-                ¡Reserva FB10 Cross Force!
+                {lang === 'es' ? '¡Próximamente Story Booster 01!' : '¡Story Booster 01 Coming Soon!'}
               </h3>
               
               <p className="text-red-400 font-extrabold text-[10px] sm:text-[11px] tracking-wider uppercase flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -6169,7 +6454,7 @@ const Dashboard = ({
                 {lang === 'es' ? 'SALIDA' : 'RELEASES'}
               </span>
               <span className="text-white font-black text-xs sm:text-sm md:text-md tracking-tight uppercase bg-red-500/20 text-red-300 border border-red-500/30 px-2.5 sm:px-3 py-1 rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.15)] mt-1 whitespace-nowrap">
-                {lang === 'es' ? '12 de Junio' : 'June 12th'}
+                {lang === 'es' ? '21 de Agosto' : 'August 21st'}
               </span>
             </div>
           </div>
@@ -6293,7 +6578,7 @@ const Dashboard = ({
               <CardItem 
                 key={`${card.id}-${card.expansion}-${idx}`} 
                 card={card} 
-                quantity={inventory.find(i => i.cardId === card.id)?.quantity || 0}
+                quantity={getCardQty(card.id, inventory)}
                 collectionGoal={collectionGoal}
                 isSelected={selectedCardIds.has(card.id)}
                 isMultiSelectMode={isMultiSelectMode}
@@ -9552,6 +9837,47 @@ export default function TrackerApp() {
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
   const [isFlipped, setIsFlipped] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const [selectedVariationId, setSelectedVariationId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (selectedCard) {
+      const vars = CARD_VARIATIONS[selectedCard.id];
+      if (vars && vars.length > 0) {
+        setSelectedVariationId(vars[0].id);
+      } else {
+        setSelectedVariationId(null);
+      }
+    } else {
+      setSelectedVariationId(null);
+    }
+  }, [selectedCard]);
+
+  const cardToRender = useMemo(() => {
+    if (!selectedCard) return null;
+    if (selectedVariationId) {
+      const vars = CARD_VARIATIONS[selectedCard.id];
+      const selectedVar = vars?.find(v => v.id === selectedVariationId);
+      if (selectedVar) {
+        if (selectedVar.id.endsWith('_var_foil')) {
+          return {
+            ...selectedCard,
+            isFoil: selectedVar.isFoil,
+            rarity: selectedVar.isFoil ? `${selectedCard.rarity} FOIL` : selectedCard.rarity
+          };
+        } else if (selectedVar.id !== selectedCard.id) {
+          return {
+            ...selectedCard,
+            id: selectedVar.id,
+            imageUrl: selectedVar.imageUrl || selectedCard.imageUrl,
+            backImageUrl: selectedVar.backImageUrl || selectedCard.backImageUrl,
+            rarity: selectedVar.rarity || 'PR',
+            isFoil: selectedVar.isFoil
+          };
+        }
+      }
+    }
+    return selectedCard;
+  }, [selectedCard, selectedVariationId]);
   const [isExpanded, setIsExpanded] = useState(true);
   const [isFabOpen, setIsFabOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -10740,7 +11066,8 @@ export default function TrackerApp() {
 
             imageUrl = `https://www.dbs-cardgame.com/images/cardlist/cardimg/${finalCode}.png`;
             if (type === 'Leader') {
-              backImageUrl = `https://www.dbs-cardgame.com/images/cardlist/cardimg/${finalCode}_b.png`;
+              const baseCodeForBack = finalCode.split('_')[0];
+              backImageUrl = `https://www.dbs-cardgame.com/images/cardlist/cardimg/${baseCodeForBack}_b.png`;
             }
           }
         }
@@ -10818,6 +11145,84 @@ export default function TrackerApp() {
         }
         return card;
       });
+
+      // Clear CARD_VARIATIONS first
+      Object.keys(CARD_VARIATIONS).forEach(key => delete CARD_VARIATIONS[key]);
+
+      // Dynamically populate CARD_VARIATIONS for base cards in enabled expansions
+      const foilEnabledExpansions = new Set(['BT3', 'TB1', 'BT4', 'TB2', 'BT5', 'BT6', 'BT7', 'BT8', 'BT9']);
+      parsedCards.forEach(card => {
+        if (!card.id.includes('_')) {
+          const variationsList: CardVariation[] = [];
+
+          // 1. Check if this card has Foil version (C and UC in specified expansions, plus C, UC, and R in BT10)
+          const hasFoil = 
+            (foilEnabledExpansions.has(card.expansion) && (card.rarity === 'C' || card.rarity === 'UC')) ||
+            (card.expansion === 'BT10' && (card.rarity === 'C' || card.rarity === 'UC' || card.rarity === 'R'));
+          if (hasFoil) {
+            variationsList.push(
+              { id: card.id, label: { es: 'Normal', en: 'Normal' }, isFoil: false },
+              { id: `${card.id}_var_foil`, label: { es: 'Foil', en: 'Foil' }, isFoil: true }
+            );
+          }
+
+          // 2. Check if Pre-Release (_PR) checks are supported for this card (BT6 C/UC, BT7 all, BT8/9 C/UC/R, BT10 UC/R)
+          const isPrSupported = 
+            (card.expansion === 'BT6' && (card.rarity === 'C' || card.rarity === 'UC')) || 
+            card.expansion === 'BT7' ||
+            (card.expansion === 'BT8' && (card.rarity === 'C' || card.rarity === 'UC' || card.rarity === 'R')) ||
+            (card.expansion === 'BT9' && (card.rarity === 'C' || card.rarity === 'UC' || card.rarity === 'R')) ||
+            (card.expansion === 'BT10' && (card.rarity === 'UC' || card.rarity === 'R'));
+
+          if (isPrSupported) {
+            const prCard = parsedCards.find(c => c.id === `${card.id}_PR`);
+            if (prCard) {
+              // If we didn't add Foil variations already, we must add the Normal base option as the starting option
+              if (variationsList.length === 0) {
+                variationsList.push({ id: card.id, label: { es: 'Normal', en: 'Normal' }, isFoil: false });
+              }
+              variationsList.push({
+                id: prCard.id,
+                label: { es: 'Pre Release', en: 'Pre Release' },
+                isFoil: false,
+                imageUrl: prCard.imageUrl,
+                backImageUrl: prCard.backImageUrl,
+                rarity: prCard.rarity
+              });
+            } else if (card.expansion === 'BT8' || card.expansion === 'BT9' || card.expansion === 'BT10') {
+              // BT8/BT9/BT10 doesn't have the _PR cards defined yet, so we generate the variation dynamically
+              if (variationsList.length === 0) {
+                variationsList.push({ id: card.id, label: { es: 'Normal', en: 'Normal' }, isFoil: false });
+              }
+              const prImageUrl = IMAGE_OVERRIDES[`${card.id}_PR`] || `https://www.dbs-cardgame.com/images/cardlist/cardimg/${card.id}_PR.png`;
+              const prBackImageUrl = card.type === 'Leader' ? (IMAGE_OVERRIDES[`${card.id}_PR_b`] || `https://www.dbs-cardgame.com/images/cardlist/cardimg/${card.id}_b.png`) : undefined;
+              variationsList.push({
+                id: `${card.id}_PR`,
+                label: { es: 'Pre Release', en: 'Pre Release' },
+                isFoil: false,
+                imageUrl: prImageUrl,
+                backImageUrl: prBackImageUrl,
+                rarity: 'PR'
+              });
+            }
+          }
+
+          if (variationsList.length > 0) {
+            CARD_VARIATIONS[card.id] = variationsList;
+          }
+        }
+      });
+
+      // Filter out raw _PR cards that are already nested as variations (e.g. BT6, BT7, and BT8)
+      const prIdsToHide = new Set<string>();
+      Object.values(CARD_VARIATIONS).forEach(vars => {
+        vars.forEach(v => {
+          if (v.id.includes('_PR')) {
+            prIdsToHide.add(v.id);
+          }
+        });
+      });
+      parsedCards = parsedCards.filter(c => !prIdsToHide.has(c.id));
 
       setCards(parsedCards);
     };
@@ -13206,7 +13611,7 @@ export default function TrackerApp() {
                                           <CardItem 
                                             key={card.id} 
                                             card={card} 
-                                            quantity={inventory.find(i => i.cardId === card.id)?.quantity || 0}
+                                            quantity={getCardQty(card.id, inventory)}
                                             collectionGoal={collectionGoal}
                                             isSelected={selectedCardIds.has(card.id)}
                                             isMultiSelectMode={isMultiSelectMode}
@@ -13357,7 +13762,7 @@ export default function TrackerApp() {
                       <CardItem 
                         key={`${card.id}-${card.expansion}-${idx}`} 
                         card={card} 
-                        quantity={inventory.find(i => i.cardId === card.id)?.quantity || 0}
+                        quantity={getCardQty(card.id, inventory)}
                         collectionGoal={collectionGoal}
                         isSelected={selectedCardIds.has(card.id)}
                         isMultiSelectMode={isMultiSelectMode}
@@ -13369,7 +13774,7 @@ export default function TrackerApp() {
                       <CardListItem
                         key={`${card.id}-${card.expansion}-${idx}`}
                         card={card}
-                        quantity={inventory.find(i => i.cardId === card.id)?.quantity || 0}
+                        quantity={getCardQty(card.id, inventory)}
                         collectionGoal={collectionGoal}
                         lang={lang}
                         isSelected={selectedCardIds.has(card.id)}
@@ -13846,7 +14251,7 @@ export default function TrackerApp() {
                               const wantedQty = getCardWantedQty(list, card.id);
                               const acquiredQty = getCardAcquiredQty(list, card.id);
                               const isAcquired = isCardFullyAcquired(list, card.id);
-                              const inventoryQty = inventory.find(i => i.cardId === card.id)?.quantity || 0;
+                              const inventoryQty = getCardQty(card.id, inventory);
                               const isOwnedInInventory = inventoryQty > 0;
 
                               return (
@@ -14278,7 +14683,7 @@ export default function TrackerApp() {
                       <CardItem 
                         key={`${card.id}-${card.expansion}-${idx}`} 
                         card={card} 
-                        quantity={inventory.find(i => i.cardId === card.id)?.quantity || 0}
+                        quantity={getCardQty(card.id, inventory)}
                         collectionGoal={collectionGoal}
                         isSelected={selectedCardIds.has(card.id)}
                         isMultiSelectMode={isMultiSelectMode}
@@ -14606,29 +15011,29 @@ export default function TrackerApp() {
               {/* Stop propagation on backdrop click to allow closing when clicking outer areas if needed */}
               
               {/* Top Controls - Fixed to Viewport */}
-              <div className="fixed top-6 left-6 right-6 flex items-center justify-between z-[120] pointer-events-none">
+              <div className="fixed top-3 left-3 right-3 sm:top-5 sm:left-5 sm:right-5 flex items-center justify-between z-[120] pointer-events-none">
                 {/* Top Left: Details */}
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();
                     setShowDetails(!showDetails);
                   }}
-                  className={`pointer-events-auto p-4 rounded-full backdrop-blur-xl transition-all border border-white/10 ${showDetails ? 'bg-white/20 text-white' : 'bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white'}`}
+                  className={`pointer-events-auto w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl backdrop-blur-xl transition-all border border-white/10 ${showDetails ? 'bg-white/20 text-white' : 'bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white'}`}
                 >
-                  <Info size={20} />
+                  <Info size={18} />
                 </button>
 
                 {/* Center: Legal Status Badge */}
                 {!showDetails && selectedCard.legalStatus && (
                   <div 
-                    className={`pointer-events-auto px-4 py-2.5 rounded-full font-black text-[10px] uppercase tracking-[0.2em] backdrop-blur-xl border border-white/20 shadow-2xl flex items-center gap-2 ${
+                    className={`pointer-events-auto px-3 py-1.5 rounded-xl font-black text-[9px] uppercase tracking-[0.2em] backdrop-blur-xl border border-white/20 shadow-2xl flex items-center gap-1.5 ${
                       selectedCard.legalStatus === 'Banned' ? 'bg-red-500/80 text-white' :
                       selectedCard.legalStatus === 'Banned (BO1)' ? 'bg-orange-600/80 text-white' :
                       selectedCard.legalStatus === 'Limited' ? 'bg-blue-500/80 text-white' :
                       'bg-yellow-400/90 text-black'
                     }`}
                   >
-                    <Shield size={14} className={selectedCard.legalStatus === 'Errata' ? 'text-black' : 'text-white'} />
+                    <Shield size={12} className={selectedCard.legalStatus === 'Errata' ? 'text-black' : 'text-white'} />
                     <span>
                       {selectedCard.legalStatus === 'Banned' ? t.banned : 
                        selectedCard.legalStatus === 'Banned (BO1)' ? t.bannedBO1 :
@@ -14638,16 +15043,16 @@ export default function TrackerApp() {
                 )}
 
                 {/* Top Right: Flip & Close */}
-                <div className="flex gap-3 pointer-events-auto">
+                <div className="flex gap-2 pointer-events-auto">
                   {selectedCard.type === 'Leader' && (
                     <button 
                       onClick={(e) => {
                         e.stopPropagation();
                         setIsFlipped(!isFlipped);
                       }}
-                      className="p-4 bg-white/10 hover:bg-orange-500/40 text-white rounded-full backdrop-blur-xl transition-all border border-white/10"
+                      className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center bg-white/10 hover:bg-orange-500/40 text-white rounded-xl backdrop-blur-xl transition-all border border-white/10"
                     >
-                      <RefreshCw size={20} className={isFlipped ? 'rotate-180 transition-transform duration-500' : 'transition-transform duration-500'} />
+                      <RefreshCw size={18} className={isFlipped ? 'rotate-180 transition-transform duration-500' : 'transition-transform duration-500'} />
                     </button>
                   )}
                   <button 
@@ -14656,9 +15061,9 @@ export default function TrackerApp() {
                       setShowDetails(false);
                       setIsFlipped(false);
                     }}
-                    className="p-4 bg-white/10 hover:bg-red-500/40 text-white rounded-full backdrop-blur-xl transition-all border border-white/10"
+                    className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center bg-white/10 hover:bg-red-500/40 text-white rounded-xl backdrop-blur-xl transition-all border border-white/10"
                   >
-                    <X size={20} />
+                    <X size={18} />
                   </button>
                 </div>
               </div>
@@ -14685,7 +15090,7 @@ export default function TrackerApp() {
                 </button>
               </div>
 
-              <div className="w-full max-w-2xl px-2 sm:px-4 mx-auto relative pt-24 pb-12">
+              <div className="w-full max-w-2xl px-2 sm:px-4 mx-auto relative pt-12 sm:pt-16 pb-12">
                 <motion.div 
                   key={selectedCard.id}
                   initial={{ x: 300, opacity: 0 }}
@@ -14703,11 +15108,11 @@ export default function TrackerApp() {
                       handlePrevCard();
                     }
                   }}
-                  className="flex flex-col items-center gap-6 cursor-grab active:cursor-grabbing w-full"
+                  className="flex flex-col items-center gap-3 sm:gap-5 cursor-grab active:cursor-grabbing w-full"
                 >
                   <div className="bg-black/80 px-4 py-1.5 rounded-full border border-white/20 backdrop-blur-md shadow-2xl flex items-center justify-center -mb-2">
                     <span className="text-sm font-black tracking-widest text-white/90 uppercase">
-                      {selectedCard.cardNumber} <span className="text-orange-500 mx-2">•</span> {selectedCard.rarity.replace(/\*/g, '★')}
+                      {selectedCard.cardNumber} <span className="text-orange-500 mx-2">•</span> {(cardToRender || selectedCard).rarity.replace(/\*/g, '★')}
                     </span>
                   </div>
 
@@ -14719,9 +15124,9 @@ export default function TrackerApp() {
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.95 }}
                       transition={{ duration: 0.15 }}
-                      className={`w-full ${isHorizontalFormat(selectedCard) ? 'max-w-[460px] md:max-w-[600px] mt-12' : 'max-w-[260px] md:max-w-[325px]'} mx-auto`}
+                      className={`w-full ${isHorizontalFormat(selectedCard) ? 'max-w-[460px] md:max-w-[600px] mt-6 sm:mt-10' : 'max-w-[260px] md:max-w-[325px]'} mx-auto`}
                     >
-                      <ModalCard selectedCard={selectedCard} isFlipped={isFlipped} setIsFlipped={setIsFlipped} />
+                      <ModalCard selectedCard={cardToRender || selectedCard} isFlipped={isFlipped} setIsFlipped={setIsFlipped} />
                     </motion.div>
                   ) : (
                     <motion.div 
@@ -14735,12 +15140,12 @@ export default function TrackerApp() {
                       <div className="bg-black/50 p-3 sm:p-5 rounded-3xl border border-white/10 backdrop-blur-2xl shadow-2xl flex flex-col gap-5 text-left w-full">
                         <div className={`flex gap-3 sm:gap-4 ${isHorizontalFormat(selectedCard) ? 'flex-col items-center' : ''}`}>
                           <div className={`${isHorizontalFormat(selectedCard) ? 'w-full max-w-[400px]' : 'w-[88px] sm:w-24 shrink-0'} shadow-xl rounded-xl`} >
-                            <ModalCard selectedCard={selectedCard} isFlipped={isFlipped} setIsFlipped={setIsFlipped} />
+                            <ModalCard selectedCard={cardToRender || selectedCard} isFlipped={isFlipped} setIsFlipped={setIsFlipped} />
                           </div>
                           <div className="flex-1 min-w-0 pt-1">
                             <h2 className="text-base font-black tracking-tight text-white leading-tight mb-1">{selectedCard.name}</h2>
                             <p className="text-[11px] text-cyan-400 font-bold mb-3">
-                              {selectedCard.cardNumber} • {selectedCard.rarity.replace(/\*/g, '★')} • {(() => {
+                              {selectedCard.cardNumber} • {(cardToRender || selectedCard).rarity.replace(/\*/g, '★')} • {(() => {
                                 const expId = selectedCard.expansion;
                                 for (const g of currentGroups) {
                                   for (const i of g.items) {
@@ -14954,9 +15359,43 @@ export default function TrackerApp() {
 
                 {/* Always visible quantity controls */}
                 <div className="flex flex-col gap-4 w-full max-w-[280px] mx-auto">
+                  {CARD_VARIATIONS[selectedCard.id] && (
+                    <div className="flex flex-col gap-1.5 w-full relative z-10">
+                      <span className="text-[9px] font-black text-gray-500 uppercase tracking-widest text-center">
+                        {lang === 'es' ? 'VERSIÓN EN COLECCIÓN' : 'VERSION IN COLLECTION'}
+                      </span>
+                      <div className={`grid bg-white/5 p-1 rounded-2xl border border-white/10 shadow-inner ${
+                        CARD_VARIATIONS[selectedCard.id].length === 2 ? 'grid-cols-2' :
+                        CARD_VARIATIONS[selectedCard.id].length === 3 ? 'grid-cols-3' :
+                        'grid-cols-4'
+                      }`}>
+                        {CARD_VARIATIONS[selectedCard.id].map((v) => {
+                          const isActive = selectedVariationId === v.id;
+                          const vQty = inventory.find(i => i.cardId === v.id)?.quantity || 0;
+                          return (
+                            <button
+                              key={v.id}
+                              onClick={() => setSelectedVariationId(v.id)}
+                              className={`py-2 px-3 rounded-xl font-bold text-xs transition-all uppercase tracking-tight flex flex-col items-center justify-center gap-0.5 relative overflow-hidden ${
+                                isActive
+                                  ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20 font-black'
+                                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+                              }`}
+                            >
+                              <span>{v.label[lang] || v.label.en}</span>
+                              <span className={`text-[9px] ${isActive ? 'text-white/80' : 'text-gray-500 font-medium'}`}>
+                                ({vQty})
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
                   <div className="bg-white/5 backdrop-blur-xl shrink-0 rounded-full flex items-center justify-between p-1.5 border border-white/10 w-full shadow-2xl relative z-10">
                     <button 
-                      onClick={() => handleUpdateQuantity(selectedCard.id, -1)}
+                      onClick={() => handleUpdateQuantity(selectedVariationId || selectedCard.id, -1)}
                       className="w-12 h-12 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 active:scale-95 rounded-full transition-all"
                     >
                       <Minus size={20} />
@@ -14964,11 +15403,11 @@ export default function TrackerApp() {
                     <div className="flex items-center gap-3">
                       <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">{t.quantity}</span>
                       <span className="text-2xl font-black text-white tabular-nums">
-                        {inventory.find(i => i.cardId === selectedCard.id)?.quantity || 0}
+                        {inventory.find(i => i.cardId === (selectedVariationId || selectedCard.id))?.quantity || 0}
                       </span>
                     </div>
                     <button 
-                      onClick={() => handleUpdateQuantity(selectedCard.id, 1)}
+                      onClick={() => handleUpdateQuantity(selectedVariationId || selectedCard.id, 1)}
                       className="w-12 h-12 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 active:scale-95 rounded-full transition-all"
                     >
                       <Plus size={20} />
