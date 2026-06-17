@@ -11155,24 +11155,24 @@ export default function TrackerApp() {
         if (!card.id.includes('_')) {
           const variationsList: CardVariation[] = [];
 
-          // 1. Check if this card has Foil version (C and UC in specified expansions, plus C, UC, and R in BT10)
+          // 1. Check if this card has Foil version (C and UC in specified expansions, plus C, UC, and R in BT10, BT11, BT12, BT13)
           const hasFoil = 
             (foilEnabledExpansions.has(card.expansion) && (card.rarity === 'C' || card.rarity === 'UC')) ||
-            (card.expansion === 'BT10' && (card.rarity === 'C' || card.rarity === 'UC' || card.rarity === 'R'));
+            ((card.expansion === 'BT10' || card.expansion === 'BT11' || card.expansion === 'BT12' || card.expansion === 'BT13') && (card.rarity === 'C' || card.rarity === 'UC' || card.rarity === 'R'));
           if (hasFoil) {
             variationsList.push(
-              { id: card.id, label: { es: 'Normal', en: 'Normal' }, isFoil: false },
-              { id: `${card.id}_var_foil`, label: { es: 'Foil', en: 'Foil' }, isFoil: true }
+               { id: card.id, label: { es: 'Normal', en: 'Normal' }, isFoil: false },
+               { id: `${card.id}_var_foil`, label: { es: 'Foil', en: 'Foil' }, isFoil: true }
             );
           }
 
-          // 2. Check if Pre-Release (_PR) checks are supported for this card (BT6 C/UC, BT7 all, BT8/9 C/UC/R, BT10 UC/R)
+          // 2. Check if Pre-Release (_PR) checks are supported for this card (BT6 C/UC, BT7 all, BT8/9 C/UC/R, BT10/11/12/13 UC/R)
           const isPrSupported = 
             (card.expansion === 'BT6' && (card.rarity === 'C' || card.rarity === 'UC')) || 
             card.expansion === 'BT7' ||
             (card.expansion === 'BT8' && (card.rarity === 'C' || card.rarity === 'UC' || card.rarity === 'R')) ||
             (card.expansion === 'BT9' && (card.rarity === 'C' || card.rarity === 'UC' || card.rarity === 'R')) ||
-            (card.expansion === 'BT10' && (card.rarity === 'UC' || card.rarity === 'R'));
+            ((card.expansion === 'BT10' || card.expansion === 'BT11' || card.expansion === 'BT12' || card.expansion === 'BT13') && (card.rarity === 'UC' || card.rarity === 'R'));
 
           if (isPrSupported) {
             const prCard = parsedCards.find(c => c.id === `${card.id}_PR`);
@@ -11189,13 +11189,16 @@ export default function TrackerApp() {
                 backImageUrl: prCard.backImageUrl,
                 rarity: prCard.rarity
               });
-            } else if (card.expansion === 'BT8' || card.expansion === 'BT9' || card.expansion === 'BT10') {
-              // BT8/BT9/BT10 doesn't have the _PR cards defined yet, so we generate the variation dynamically
+            } else if (card.expansion === 'BT8' || card.expansion === 'BT9' || card.expansion === 'BT10' || card.expansion === 'BT11' || card.expansion === 'BT12' || card.expansion === 'BT13') {
+              // BT8/BT9/BT10/BT11/BT12/BT13 don't have the _PR cards defined yet, so we generate the variation dynamically
               if (variationsList.length === 0) {
                 variationsList.push({ id: card.id, label: { es: 'Normal', en: 'Normal' }, isFoil: false });
               }
-              const prImageUrl = IMAGE_OVERRIDES[`${card.id}_PR`] || `https://www.dbs-cardgame.com/images/cardlist/cardimg/${card.id}_PR.png`;
-              const prBackImageUrl = card.type === 'Leader' ? (IMAGE_OVERRIDES[`${card.id}_PR_b`] || `https://www.dbs-cardgame.com/images/cardlist/cardimg/${card.id}_b.png`) : undefined;
+              const isBaseImgFallback = card.expansion === 'BT11' || card.expansion === 'BT12' || card.expansion === 'BT13' || card.type === 'Leader';
+              const prImageUrl = IMAGE_OVERRIDES[`${card.id}_PR`] || (isBaseImgFallback ? card.imageUrl : `https://www.dbs-cardgame.com/images/cardlist/cardimg/${card.id}_PR.png`);
+              const prBackImageUrl = card.type === 'Leader' 
+                ? (IMAGE_OVERRIDES[`${card.id}_PR_b`] || (isBaseImgFallback ? (card.backImageUrl || `https://www.dbs-cardgame.com/images/cardlist/cardimg/${card.id}_b.png`) : `https://www.dbs-cardgame.com/images/cardlist/cardimg/${card.id}_b.png`)) 
+                : undefined;
               variationsList.push({
                 id: `${card.id}_PR`,
                 label: { es: 'Pre Release', en: 'Pre Release' },
