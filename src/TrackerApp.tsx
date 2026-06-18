@@ -11219,14 +11219,24 @@ export default function TrackerApp() {
 
       // Dynamically populate CARD_VARIATIONS for base cards in enabled expansions
       const foilEnabledExpansions = new Set(['BT3', 'TB1', 'BT4', 'TB2', 'BT5', 'BT6', 'BT7', 'BT8', 'BT9']);
+      const foilRarityExpansions = new Set([
+        'BT10', 'BT11', 'BT12', 'BT13', 'BT14', 'BT15', 'BT16', 'BT17',
+        'BT18', 'BT19', 'BT20', 'BT21', 'BT22', 'Bt22', 'BT23'
+      ]);
+      const prUcRExpansions = new Set([
+        'BT10', 'BT11', 'BT12', 'BT13', 'BT14', 'BT15', 'BT16', 'BT17',
+        'BT18', 'BT19', 'BT20', 'BT21', 'BT22', 'Bt22', 'BT23', 'BT24',
+        'BT25', 'BT26', 'BT27'
+      ]);
+
       parsedCards.forEach(card => {
         if (!card.id.includes('_')) {
           const variationsList: CardVariation[] = [];
 
-          // 1. Check if this card has Foil version (C and UC in specified expansions, plus C, UC, and R in BT10, BT11, BT12, BT13)
+          // 1. Check if this card has Foil version
           const hasFoil = 
             (foilEnabledExpansions.has(card.expansion) && (card.rarity === 'C' || card.rarity === 'UC')) ||
-            ((card.expansion === 'BT10' || card.expansion === 'BT11' || card.expansion === 'BT12' || card.expansion === 'BT13') && (card.rarity === 'C' || card.rarity === 'UC' || card.rarity === 'R'));
+            (foilRarityExpansions.has(card.expansion) && (card.rarity === 'C' || card.rarity === 'UC' || card.rarity === 'R'));
           if (hasFoil) {
             variationsList.push(
                { id: card.id, label: { es: 'Normal', en: 'Normal' }, isFoil: false },
@@ -11234,13 +11244,13 @@ export default function TrackerApp() {
             );
           }
 
-          // 2. Check if Pre-Release (_PR) checks are supported for this card (BT6 C/UC, BT7 all, BT8/9 C/UC/R, BT10/11/12/13 UC/R)
+          // 2. Check if Pre-Release (_PR) checks are supported for this card
           const isPrSupported = 
             (card.expansion === 'BT6' && (card.rarity === 'C' || card.rarity === 'UC')) || 
             card.expansion === 'BT7' ||
             (card.expansion === 'BT8' && (card.rarity === 'C' || card.rarity === 'UC' || card.rarity === 'R')) ||
             (card.expansion === 'BT9' && (card.rarity === 'C' || card.rarity === 'UC' || card.rarity === 'R')) ||
-            ((card.expansion === 'BT10' || card.expansion === 'BT11' || card.expansion === 'BT12' || card.expansion === 'BT13') && (card.rarity === 'UC' || card.rarity === 'R'));
+            (prUcRExpansions.has(card.expansion) && (card.rarity === 'UC' || card.rarity === 'R'));
 
           if (isPrSupported) {
             const prCard = parsedCards.find(c => c.id === `${card.id}_PR`);
@@ -11257,12 +11267,15 @@ export default function TrackerApp() {
                 backImageUrl: prCard.backImageUrl,
                 rarity: prCard.rarity
               });
-            } else if (card.expansion === 'BT8' || card.expansion === 'BT9' || card.expansion === 'BT10' || card.expansion === 'BT11' || card.expansion === 'BT12' || card.expansion === 'BT13') {
-              // BT8/BT9/BT10/BT11/BT12/BT13 don't have the _PR cards defined yet, so we generate the variation dynamically
+            } else if (card.expansion === 'BT8' || card.expansion === 'BT9' || prUcRExpansions.has(card.expansion)) {
+              // BT8-BT27 don't have the _PR cards defined yet, so we generate the variation dynamically
               if (variationsList.length === 0) {
                 variationsList.push({ id: card.id, label: { es: 'Normal', en: 'Normal' }, isFoil: false });
               }
-              const isBaseImgFallback = card.expansion === 'BT11' || card.expansion === 'BT12' || card.expansion === 'BT13' || card.type === 'Leader';
+              const isBaseImgFallback = 
+                card.expansion === 'BT11' || card.expansion === 'BT12' || card.expansion === 'BT13' || 
+                (prUcRExpansions.has(card.expansion) && card.expansion !== 'BT10') || 
+                card.type === 'Leader';
               const prImageUrl = IMAGE_OVERRIDES[`${card.id}_PR`] || (isBaseImgFallback ? card.imageUrl : `https://www.dbs-cardgame.com/images/cardlist/cardimg/${card.id}_PR.png`);
               const prBackImageUrl = card.type === 'Leader' 
                 ? (IMAGE_OVERRIDES[`${card.id}_PR_b`] || (isBaseImgFallback ? (card.backImageUrl || `https://www.dbs-cardgame.com/images/cardlist/cardimg/${card.id}_b.png`) : `https://www.dbs-cardgame.com/images/cardlist/cardimg/${card.id}_b.png`)) 
