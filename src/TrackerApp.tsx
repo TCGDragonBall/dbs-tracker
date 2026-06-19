@@ -125,6 +125,7 @@ const SET_BG: Record<string, string> = {
   'BT28': '/prismaticclash.jpg',
   'BT29': '/fearsomerivals.webp',
   'BT30': '/threegloriousfighters.webp',
+  'BT31': 'https://montalfan.com/wp-content/uploads/2026/04/BT31R.png',
   'TB1': '/the_tournament_of_power.png',
   'TB2': '/worldmartialartstournament.png',
   'TB3': '/clashoffates.jpg',
@@ -466,7 +467,8 @@ const expansionGroups: ExpansionGroup[] = [
       { id: 'BT27', label: 'BT27: History of Z', sub: 'Main Set' },
       { id: 'BT28', label: 'BT28: Prismatic Clash', sub: 'Main Set' },
       { id: 'BT29', label: 'BT29: Fearsome Rivals', sub: 'Main Set' },
-      { id: 'BT30', label: 'BT30: Three Glorious Fighters', sub: 'Main Set' }
+      { id: 'BT30', label: 'BT30: Three Glorious Fighters', sub: 'Main Set' },
+      { id: 'BT31', label: 'BT31: Impact Beyond Dimensions', sub: 'Main Set' }
     ]
   },
   {
@@ -1198,6 +1200,7 @@ import { bt27Data } from './data/bt27';
 import { bt28Data } from './data/bt28';
 import { bt29Data } from './data/bt29';
 import { bt30Data } from './data/bt30';
+import { bt31Data } from './data/bt31';
 import { fusionWorldData } from './data/fusion_world';
 import { initGA, trackPageView, trackEvent } from './utils/analytics';
 
@@ -10957,7 +10960,7 @@ export default function TrackerApp() {
   useEffect(() => {
     const loadCards = async () => {
       console.log(`[DATA] Loading cards for gameType: ${gameType}`);
-      const mastersDataRaw = `${bt1Data}\n${promoData}\n${startersData}\n${expertsData}\n${expansionsData}\n${tb3Data}\n${tb2Data}\n${tb1Data}\n${eb1Data}\n${db3Data}\n${db2Data}\n${db1Data}\n${bt2Data}\n${bt3Data}\n${bt4Data}\n${bt5Data}\n${bt6Data}\n${bt7Data}\n${bt8Data}\n${bt9Data}\n${bt10Data}\n${bt11Data}\n${bt12Data}\n${bt13Data}\n${bt14Data}\n${bt15Data}\n${bt16Data}\n${bt17Data}\n${bt18Data}\n${bt19Data}\n${bt20Data}\n${bt21Data}\n${bt22Data}\n${bt23Data}\n${bt24Data}\n${bt25Data}\n${bt26Data}\n${bt27Data}\n${bt28Data}\n${bt29Data}\n${bt30Data}\n${energyMarkersData}\n${tokensData}\n${meritsData}`;
+      const mastersDataRaw = `${bt1Data}\n${promoData}\n${startersData}\n${expertsData}\n${expansionsData}\n${tb3Data}\n${tb2Data}\n${tb1Data}\n${eb1Data}\n${db3Data}\n${db2Data}\n${db1Data}\n${bt2Data}\n${bt3Data}\n${bt4Data}\n${bt5Data}\n${bt6Data}\n${bt7Data}\n${bt8Data}\n${bt9Data}\n${bt10Data}\n${bt11Data}\n${bt12Data}\n${bt13Data}\n${bt14Data}\n${bt15Data}\n${bt16Data}\n${bt17Data}\n${bt18Data}\n${bt19Data}\n${bt20Data}\n${bt21Data}\n${bt22Data}\n${bt23Data}\n${bt24Data}\n${bt25Data}\n${bt26Data}\n${bt27Data}\n${bt28Data}\n${bt29Data}\n${bt30Data}\n${bt31Data}\n${energyMarkersData}\n${tokensData}\n${meritsData}`;
       const combinedData = gameType === 'fusion' ? fusionWorldData : mastersDataRaw;
 
       let parsedCards: (Card & { baseIndex?: number })[] = combinedData.split('\n').filter(line => line.trim()).map((line, i) => {
@@ -11117,7 +11120,11 @@ export default function TrackerApp() {
 
             // Map standard promo suffixes back to PR, as most event/judge pack generic promos are registered as _PR on the official site
             if (finalCode.includes('_SLR')) {
-              finalCode = finalCode.replace('_SLR', '_PR');
+              if (finalCode === 'BT31-115_SLR') {
+                finalCode = 'BT31-115_SPR';
+              } else {
+                finalCode = finalCode.replace('_SLR', '_PR');
+              }
             }
             if (/_EP\d+$/.test(finalCode) || /_JP\d+$/.test(finalCode) || (/_PR\d+$/.test(finalCode) && !finalCode.startsWith('BT20-') && !finalCode.startsWith('BT24-'))) {
                finalCode = finalCode.replace(/_[A-Z]+\d+$/, '_PR');
@@ -11134,8 +11141,20 @@ export default function TrackerApp() {
 
             imageUrl = `https://www.dbs-cardgame.com/images/cardlist/cardimg/${finalCode}.png`;
             if (type === 'Leader') {
-              const baseCodeForBack = finalCode.split('_')[0];
-              backImageUrl = `https://www.dbs-cardgame.com/images/cardlist/cardimg/${baseCodeForBack}_b.png`;
+              let isSpecialPrBack = false;
+              if (finalCode.endsWith('_PR') || finalCode.endsWith('_SPR')) {
+                const expMatch = finalCode.match(/^(?:BT|Bt)(\d+)-/);
+                const expNum = expMatch ? parseInt(expMatch[1], 10) : 0;
+                if (expNum >= 24 || expNum === 18 || expNum === 20) {
+                  isSpecialPrBack = true;
+                }
+              }
+              if (isSpecialPrBack) {
+                backImageUrl = `https://www.dbs-cardgame.com/images/cardlist/cardimg/${finalCode}_b.png`;
+              } else {
+                const baseCodeForBack = finalCode.split('_')[0];
+                backImageUrl = `https://www.dbs-cardgame.com/images/cardlist/cardimg/${baseCodeForBack}_b.png`;
+              }
             }
           }
         }
@@ -11278,7 +11297,14 @@ export default function TrackerApp() {
                 card.type === 'Leader';
               const prImageUrl = IMAGE_OVERRIDES[`${card.id}_PR`] || (isBaseImgFallback ? card.imageUrl : `https://www.dbs-cardgame.com/images/cardlist/cardimg/${card.id}_PR.png`);
               const prBackImageUrl = card.type === 'Leader' 
-                ? (IMAGE_OVERRIDES[`${card.id}_PR_b`] || (isBaseImgFallback ? (card.backImageUrl || `https://www.dbs-cardgame.com/images/cardlist/cardimg/${card.id}_b.png`) : `https://www.dbs-cardgame.com/images/cardlist/cardimg/${card.id}_b.png`)) 
+                ? (IMAGE_OVERRIDES[`${card.id}_PR_b`] || (() => {
+                    const expMatch = card.id.match(/^BT(\d+)-/);
+                    const expNum = expMatch ? parseInt(expMatch[1], 10) : 0;
+                    if (expNum >= 24 || expNum === 18 || expNum === 20) {
+                      return `https://www.dbs-cardgame.com/images/cardlist/cardimg/${card.id}_PR_b.png`;
+                    }
+                    return isBaseImgFallback ? (card.backImageUrl || `https://www.dbs-cardgame.com/images/cardlist/cardimg/${card.id}_b.png`) : `https://www.dbs-cardgame.com/images/cardlist/cardimg/${card.id}_b.png`;
+                  })())
                 : undefined;
               variationsList.push({
                 id: `${card.id}_PR`,
