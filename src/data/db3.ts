@@ -1,6 +1,7 @@
 export const db3Data = `DB3-001	Master Roshi, Potential Unleashed	UC	Unison	Red	DB3
 DB3-002	Son Goku, Off to Defeat King Piccolo	SR	Battle	Red	DB3
 DB3-003	Son Goku, Nimbus Master	SR	Battle	Red	DB3
+DB3-003_CS2	Son Goku, Nimbus Master	SR	Battle	Red	DB3
 DB3-003_PR	Son Goku, Nimbus Master	PR	Battle	Red	DB3
 DB3-004	Bulma, a Heartfelt Wish	C	Battle	Red	DB3
 DB3-005	Yamcha, Eye for an Eye	UC	Battle	Red	DB3

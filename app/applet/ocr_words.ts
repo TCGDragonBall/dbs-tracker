@@ -11,7 +11,8 @@ const urls = [
 async function run() {
   for (const url of urls) {
     console.log("Analyzing", url);
-    const { data: { words } } = await Tesseract.recognize(url, "eng");
+    const result = await Tesseract.recognize(url, "eng") as any;
+    const words = result.data?.words || [];
     for (const w of words) {
        // power is usually a large number like 10000, 15000, 20000 located midway
        // costs are top left

@@ -161,6 +161,10 @@ const SET_BG: Record<string, string> = {
   'XD3': '/ultimatelifeform.png',
   'COL01': 'https://static.dbscards.fr/cards/en/mc/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-mc-001-celebrations-high-rank-player.webp',
   'ENM': 'https://tcgplayer-cdn.tcgplayer.com/product/588329_in_800x800.jpg',
+  'CS01': 'https://dragonball.center/files/module_dbc/objetos/86/v9p0116003.jpg',
+  'CS02': 'https://dragonball.center/files/module_dbc/objetos/97/9yw5116005.jpg',
+  'CS03': 'https://dragonball.center/files/module_dbc/objetos/40/htla122989.jpg',
+  'COL09': 'https://dragonball.center/files/module_dbc/objetos/86/v9p0116003.jpg',
   'COL08': '/BT1-111_PR02.png',
   'COL03': 'https://static.dbscards.fr/cards/en/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-tk-01-shadow-token.webp',
   'FS01': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2024/10/31/0JYpHsOgXNKBIVZo/FS01.png',
@@ -619,6 +623,16 @@ const expansionGroups: ExpansionGroup[] = [
           { id: 'JP16', label: 'Judge Pack 16', sub: 'Judge' },
           { id: 'JP17', label: 'Judge Pack 17', sub: 'Judge' },
           { id: 'JP18', label: 'Judge Pack 18', sub: 'Judge' },
+        ]
+      },
+      {
+        id: 'COL09',
+        label: "Collector's Selection",
+        sub: "Collector's Selection Series",
+        subItems: [
+          { id: 'CS01', label: "Collector's Selection Vol.1", sub: 'Premium' },
+          { id: 'CS02', label: "Collector's Selection Vol.2", sub: 'Premium' },
+          { id: 'CS03', label: "Collector's Selection Vol.3", sub: 'Premium' }
         ]
       },
       { id: 'COL03', label: 'Tokens', sub: 'Extras' },
@@ -2120,6 +2134,66 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
 };
 
 const IMAGE_OVERRIDES: Record<string, string> = {
+  'BT1-057_CS1': 'https://dragonball.center/files/module_dbc/objetos/95/g36l117429.jpg',
+  'BT1-057_CS1_b': 'https://dragonball.center/files/module_dbc/objetos/4/dzs9117430.jpg',
+  'BT2-001_CS1': 'https://dragonball.center/files/module_dbc/objetos/51/r0i3117431.jpg',
+  'BT2-001_CS1_b': 'https://dragonball.center/files/module_dbc/objetos/64/ltz5117432.jpg',
+  'BT6-014_CS1': 'https://dragonball.center/files/module_dbc/objetos/64/orm2117433.jpg',
+  'BT6-107_CS1': 'https://dragonball.center/files/module_dbc/objetos/75/q4nk117434.jpg',
+  'BT8-110_CS1': 'https://dragonball.center/files/module_dbc/objetos/8/97sq117435.jpg',
+  'BT9-130_CS1': 'https://dragonball.center/files/module_dbc/objetos/93/nvus117436.jpg',
+  'BT9-131_CS1': 'https://dragonball.center/files/module_dbc/objetos/70/lcq4117437.jpg',
+  'BT9-132_CS1': 'https://dragonball.center/files/module_dbc/objetos/99/zyfi117438.jpg',
+  'BT9-133_CS1': 'https://dragonball.center/files/module_dbc/objetos/62/v9p2117439.jpg',
+  'BT9-134_CS1': 'https://dragonball.center/files/module_dbc/objetos/130/jw4w117440.jpg',
+  'DB1-057_CS1': 'https://dragonball.center/files/module_dbc/objetos/56/5zoj117441.jpg',
+  'DB1-064_CS1': 'https://dragonball.center/files/module_dbc/objetos/93/8uv3117442.jpg',
+  'DB2-001_CS1': 'https://dragonball.center/files/module_dbc/objetos/140/5zm5117443.jpg',
+  'P-036_CS1': 'https://dragonball.center/files/module_dbc/objetos/28/d1xq117444.jpg',
+  'P-086_CS1': 'https://dragonball.center/files/module_dbc/objetos/57/p8ok117446.jpg',
+  'P-086_CS1_b': 'https://dragonball.center/files/module_dbc/objetos/111/txgs117447.jpg',
+  'P-112_CS1': 'https://dragonball.center/files/module_dbc/objetos/99/r1h6117448.jpg',
+  'P-124_CS1': 'https://dragonball.center/files/module_dbc/objetos/68/flxx117449.jpg',
+  'P-181_CS1': 'https://dragonball.center/files/module_dbc/objetos/91/1tac117450.jpg',
+  'P-181_CS1_b': 'https://dragonball.center/files/module_dbc/objetos/142/7ehi117451.jpg',
+  'BT9-090_CS2': 'https://dragonball.center/files/module_dbc/objetos/83/vn1p150258.jpg',
+  'BT9-091_CS2': 'https://dragonball.center/files/module_dbc/objetos/55/w39c150259.jpg',
+  'BT9-096_CS2': 'https://dragonball.center/files/module_dbc/objetos/127/po5y150260.jpg',
+  'BT9-099_CS2': 'https://dragonball.center/files/module_dbc/objetos/9/23ws150261.jpg',
+  'BT9-107_CS2': 'https://dragonball.center/files/module_dbc/objetos/146/tc1g150262.jpg',
+  'BT9-115_CS2': 'https://dragonball.center/files/module_dbc/objetos/68/rx8d150263.jpg',
+  'BT10-075_CS2': 'https://dragonball.center/files/module_dbc/objetos/69/srlt150264.jpg',
+  'BT11-030_CS2': 'https://dragonball.center/files/module_dbc/objetos/39/oa3y150265.jpg',
+  'BT12-013_CS2': 'https://dragonball.center/files/module_dbc/objetos/89/rtmd150266.jpg',
+  'DB2-039_CS2': 'https://dragonball.center/files/module_dbc/objetos/68/buyc150267.jpg',
+  'DB3-003_CS2': 'https://dragonball.center/files/module_dbc/objetos/12/pi9g150268.jpg',
+  'P-211_CS2': 'https://dragonball.center/files/module_dbc/objetos/96/deam150269.jpg',
+  'P-211_CS2_b': 'https://dragonball.center/files/module_dbc/objetos/113/1145150270.jpg',
+  'P-219_CS2': 'https://dragonball.center/files/module_dbc/objetos/101/if3k150271.jpg',
+  'P-263_CS2': 'https://dragonball.center/files/module_dbc/objetos/71/l6rj150272.jpg',
+  'P-276_CS2': 'https://dragonball.center/files/module_dbc/objetos/88/q3a4150273.jpg',
+  'P-286_CS2': 'https://dragonball.center/files/module_dbc/objetos/50/hh9j150274.jpg',
+  'P-331_CS2': 'https://dragonball.center/files/module_dbc/objetos/9/8wif150275.jpg',
+  'TB1-052_CS2': 'https://dragonball.center/files/module_dbc/objetos/69/2ytr150276.jpg',
+  'BT10-030_CS3': 'https://dragonball.center/files/module_dbc/objetos/83/ycsv122990.jpg',
+  'BT10-148_CS3': 'https://dragonball.center/files/module_dbc/objetos/84/lfjp122991.jpg',
+  'BT11-042_CS3': 'https://dragonball.center/files/module_dbc/objetos/45/zfq3122992.jpg',
+  'BT12-137_CS3': 'https://dragonball.center/files/module_dbc/objetos/86/ck2j122993.jpg',
+  'BT13-135_CS3': 'https://dragonball.center/files/module_dbc/objetos/98/qrqj122994.jpg',
+  'BT15-096_CS3': 'https://dragonball.center/files/module_dbc/objetos/47/esa7122995.jpg',
+  'BT16-005_CS3': 'https://dragonball.center/files/module_dbc/objetos/85/0lko122996.jpg',
+  'BT16-071_CS3': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT16-071.png',
+  'BT16-071_CS3_b': 'https://dragonball.center/files/module_dbc/objetos/69/s2e9122998.jpg',
+  'BT16-087_CS3': 'https://dragonball.center/files/module_dbc/objetos/8/z66t122999.jpg',
+  'BT16-117_CS3': 'https://dragonball.center/files/module_dbc/objetos/143/zsd3123000.jpg',
+  'BT17-004_CS3': 'https://dragonball.center/files/module_dbc/objetos/51/6wqo123001.jpg',
+  'BT17-066_CS3': 'https://dragonball.center/files/module_dbc/objetos/0/upfl123002.jpg',
+  'EB1-20_CS3': 'https://dragonball.center/files/module_dbc/objetos/11/hj8p123003.jpg',
+  'EX6-30_CS3': 'https://dragonball.center/files/module_dbc/objetos/98/rn1c123004.jpg',
+  'EX13-16_CS3': 'https://dragonball.center/files/module_dbc/objetos/116/c2km123005.jpg',
+  'P-247_CS3': 'https://dragonball.center/files/module_dbc/objetos/75/6187123006.jpg',
+  'P-337_CS3': 'https://dragonball.center/files/module_dbc/objetos/50/lzly123007.jpg',
+  'P-351_CS3': 'https://dragonball.center/files/module_dbc/objetos/52/nqpp123008.jpg',
   'BT8-116_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203927_in_1000x1000.jpg',
   'BT8-103_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203920_in_1000x1000.jpg',
   'BT8-084_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203845_in_1000x1000.jpg',
@@ -5197,7 +5271,7 @@ const isAlternative = (cardId: string) => {
 };
 
 const isVirtualSet = (setId: string) => {
-  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'EP01', 'EP02', 'EP03', 'EP04', 'EP05', 'EP06', 'EP07', 'EP08', 'EP09', 'EP10', 'EP11', 'EP13', 'EP14', 'EP15', 'EP16', 'EP17', 'EP18', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP05', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', 'UB26-3', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'PLAYMATS_FOLDER', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER', 'ENM', 'ENM_FW'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_');
+  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'EP01', 'EP02', 'EP03', 'EP04', 'EP05', 'EP06', 'EP07', 'EP08', 'EP09', 'EP10', 'EP11', 'EP13', 'EP14', 'EP15', 'EP16', 'EP17', 'EP18', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP05', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', 'UB26-3', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'PLAYMATS_FOLDER', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER', 'ENM', 'ENM_FW', 'CS01', 'CS02', 'CS03', 'COL09'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_');
 };
 
 const EVENT_PACK_01 = [
@@ -5452,6 +5526,9 @@ const FUSION_JUDGE_EVENT_PACK_04 = ['FB05-011_JEP04', 'FB05-018_JEP04', 'FB05-04
 const FUSION_JUDGE_EVENT_PACK_05 = ['FB07-007_JEP05', 'FB07-011_JEP05', 'FB07-027_JEP05', 'FB07-043_JEP05', 'FB07-063_JEP05', 'FB07-069_JEP05', 'FB07-080_JEP05', 'FB07-085_JEP05', 'FB07-103_JEP05', 'FB07-116_JEP05'];
 
 const PACK_ARRAYS: Record<string, string[]> = {
+  CS01: ['BT1-057_CS1', 'BT2-001_CS1', 'BT6-014_CS1', 'BT6-107_CS1', 'BT8-110_CS1', 'BT9-130_CS1', 'BT9-131_CS1', 'BT9-132_CS1', 'BT9-133_CS1', 'BT9-134_CS1', 'DB1-057_CS1', 'DB1-064_CS1', 'DB2-001_CS1', 'P-036_CS1', 'P-086_CS1', 'P-112_CS1', 'P-124_CS1', 'P-181_CS1'],
+  CS02: ['BT9-090_CS2', 'BT9-091_CS2', 'BT9-096_CS2', 'BT9-099_CS2', 'BT9-107_CS2', 'BT9-115_CS2', 'BT10-075_CS2', 'BT11-030_CS2', 'BT12-013_CS2', 'DB2-039_CS2', 'DB3-003_CS2', 'P-211_CS2', 'P-219_CS2', 'P-263_CS2', 'P-276_CS2', 'P-286_CS2', 'P-331_CS2', 'TB1-052_CS2'],
+  CS03: ['BT10-030_CS3', 'BT10-148_CS3', 'BT11-042_CS3', 'BT12-137_CS3', 'BT13-135_CS3', 'BT15-096_CS3', 'BT16-005_CS3', 'BT16-071_CS3', 'BT16-087_CS3', 'BT16-117_CS3', 'BT17-004_CS3', 'BT17-066_CS3', 'EB1-20_CS3', 'EX6-30_CS3', 'EX13-16_CS3', 'P-247_CS3', 'P-337_CS3', 'P-351_CS3'],
   JSP01: FUSION_JUDGE_STORE_PACK_01, JSP02: FUSION_JUDGE_STORE_PACK_02, JSP03: FUSION_JUDGE_STORE_PACK_03, JSP04: FUSION_JUDGE_STORE_PACK_04, JSP05: FUSION_JUDGE_STORE_PACK_05,
   JEP01: FUSION_JUDGE_EVENT_PACK_01, JEP02: FUSION_JUDGE_EVENT_PACK_02, JEP03: FUSION_JUDGE_EVENT_PACK_03, JEP04: FUSION_JUDGE_EVENT_PACK_04, JEP05: FUSION_JUDGE_EVENT_PACK_05,
   EP01: EVENT_PACK_01, EP02: EVENT_PACK_02, EP03: EVENT_PACK_03, EP04: EVENT_PACK_04, EP05: EVENT_PACK_05, EP06: EVENT_PACK_06, EP07: EVENT_PACK_07, EP08: EVENT_PACK_08, EP09: EVENT_PACK_09, EP10: EVENT_PACK_10, EP11: EVENT_PACK_11, EP12: EVENT_PACK_12, EP13: EVENT_PACK_13, EP14: EVENT_PACK_14, EP15: EVENT_PACK_15, EP16: EVENT_PACK_16, EP17: EVENT_PACK_17, EP18: EVENT_PACK_18,
@@ -10390,6 +10467,9 @@ export default function TrackerApp() {
       setUnlockedAchievement(next);
       setUnlockedQueue(prev => prev.slice(1));
       
+      const tierKey = next.tier !== undefined ? `${next.def.id}_tier_${next.tier}` : next.def.id;
+      localStorage.setItem(`seen_ach_${tierKey}`, 'true');
+
       // If it was marked as unseen in DB, we should mark it as seen now
       const userAch = userAchievements.find(a => a.achievementId === next.def.id);
       if (userAch && !userAch.isSeen) {
@@ -10632,7 +10712,10 @@ export default function TrackerApp() {
           if (filters.expansion.startsWith('FB') && filters.expansion !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${filters.expansion}`]?.includes(card.id)) matchesExpansion = true;
           if (filters.expansion === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(card.id)) matchesExpansion = true;
           
-          if (gameType === 'fusion' && (filters.expansion.startsWith('FB') || filters.expansion.startsWith('FS') || filters.expansion.startsWith('SB'))) {
+          if (
+            (gameType === 'fusion' && (filters.expansion.startsWith('FB') || filters.expansion.startsWith('FS') || filters.expansion.startsWith('SB'))) ||
+            (gameType === 'masters' && (filters.expansion.startsWith('BT') || filters.expansion.startsWith('TB') || filters.expansion.startsWith('DB') || filters.expansion.startsWith('EB')))
+          ) {
             const baseNumber = card.cardNumber.split('_')[0];
             if (baseNumber.startsWith(filters.expansion + '-')) {
               matchesExpansion = true;
@@ -11240,7 +11323,7 @@ export default function TrackerApp() {
       const foilEnabledExpansions = new Set(['BT3', 'TB1', 'BT4', 'TB2', 'BT5', 'BT6', 'BT7', 'BT8', 'BT9']);
       const foilRarityExpansions = new Set([
         'BT10', 'BT11', 'BT12', 'BT13', 'BT14', 'BT15', 'BT16', 'BT17',
-        'BT18', 'BT19', 'BT20', 'BT21', 'BT22', 'Bt22', 'BT23'
+        'BT18', 'BT19', 'BT20', 'BT21', 'BT22', 'Bt22', 'BT23', 'EB1'
       ]);
       const prUcRExpansions = new Set([
         'BT10', 'BT11', 'BT12', 'BT13', 'BT14', 'BT15', 'BT16', 'BT17',
@@ -11323,6 +11406,40 @@ export default function TrackerApp() {
         }
       });
 
+      // Custom variations: scan and link custom alternate versions (like _CS1, etc.) to their base cards in CARD_VARIATIONS
+      parsedCards.forEach(card => {
+        if (card.id.includes('_') && !card.id.endsWith('_var_foil') && card.id !== 'BT1-057_CS1') {
+          const baseId = card.id.split('_')[0];
+          const baseCard = parsedCards.find(c => c.id === baseId);
+          if (baseCard) {
+            if (!CARD_VARIATIONS[baseId]) {
+              CARD_VARIATIONS[baseId] = [
+                { id: baseId, label: { es: 'Normal', en: 'Normal' }, isFoil: false }
+              ];
+            }
+            const exists = CARD_VARIATIONS[baseId].some(v => v.id === card.id);
+            if (!exists) {
+              let labelEs = 'Repr.';
+              let labelEn = 'Repr.';
+              if (card.id.includes('_CS')) {
+                const volMatch = card.id.match(/_CS(\d+)/);
+                const volNum = volMatch ? volMatch[1] : '1';
+                labelEs = `Collector's Selection Vol.${volNum}`;
+                labelEn = `Collector's Selection Vol.${volNum}`;
+              }
+              CARD_VARIATIONS[baseId].push({
+                id: card.id,
+                label: { es: labelEs, en: labelEn },
+                isFoil: true,
+                imageUrl: card.imageUrl,
+                backImageUrl: card.backImageUrl,
+                rarity: card.rarity
+              });
+            }
+          }
+        }
+      });
+
       // Filter out raw _PR cards that are already nested as variations (e.g. BT6, BT7, and BT8)
       const prIdsToHide = new Set<string>();
       Object.values(CARD_VARIATIONS).forEach(vars => {
@@ -11392,10 +11509,19 @@ export default function TrackerApp() {
   useEffect(() => {
     if (!user || userAchievements.length === 0 || achievementsList.length === 0) return;
     
-    // Identify unseen achievements for notification on login
+   // Identify unseen achievements for notification on login
     const unseen = userAchievements.filter(a => {
       const tierKey = a.currentTier !== undefined ? `${a.achievementId}_tier_${a.currentTier}` : a.achievementId;
-      return a.isSeen === false && !processedAchievementIds.current.has(tierKey);
+      const isLocalSeen = localStorage.getItem(`seen_ach_${tierKey}`) === 'true';
+      
+      // If it implies it was seen locally but not in DB (due to race condition), sync it
+      if (a.isSeen === false && isLocalSeen) {
+        updateDoc(doc(db, 'achievements', a.id), { isSeen: true })
+          .catch(e => console.error("Silent sync fail", e));
+        return false;
+      }
+
+      return a.isSeen === false && !isLocalSeen && !processedAchievementIds.current.has(tierKey);
     });
 
     if (unseen.length > 0 && unlockedQueue.length === 0 && !unlockedAchievement) {
@@ -11414,6 +11540,7 @@ export default function TrackerApp() {
         toQueue.forEach(item => {
           batch.update(doc(db, 'achievements', item.ach.id), { isSeen: true });
           processedAchievementIds.current.add(item.tierKey);
+          localStorage.setItem(`seen_ach_${item.tierKey}`, 'true');
         });
         batch.commit().catch(err => {
           if (!isQuotaError(err)) console.error("Achievement batch fail", err);
@@ -11421,6 +11548,7 @@ export default function TrackerApp() {
       } else if (toQueue.length > 0) {
         toQueue.forEach(item => {
           processedAchievementIds.current.add(item.tierKey);
+          localStorage.setItem(`seen_ach_${item.tierKey}`, 'true');
           updateDoc(doc(db, 'achievements', item.ach.id), { isSeen: true })
             .catch(err => handleFirestoreError(err, OperationType.UPDATE, `achievements/${item.ach.id}`));
         });
@@ -11543,7 +11671,7 @@ export default function TrackerApp() {
   // Avoids old throttles that silently skipped snapshot updates, ensuring that when cards are
   // unmarked physically, their revoked achievements are 100% reliably removed from Firestore.
   useEffect(() => {
-    if (!user || cards.length === 0 || isQuotaExceeded) return;
+    if (!user || cards.length === 0 || isQuotaExceeded || isInventoryLoading) return;
 
     const runChecks = async () => {
       if (!achievementsLoaded.current || achievementsList.length === 0) return;
@@ -11684,7 +11812,7 @@ export default function TrackerApp() {
 
     const timer = setTimeout(runChecks, 1500);
     return () => clearTimeout(timer);
-  }, [inventory, cards, user, isQuotaExceeded, achievementsList, userAchievements]);
+  }, [inventory, cards, user, isQuotaExceeded, achievementsList, userAchievements, isInventoryLoading]);
 
   const handleLogin = () => {
     if (isQuotaExceeded) {

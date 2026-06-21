@@ -70,6 +70,7 @@ DB1-054	Dr. Myuu, Weapon Surplus	R	Battle	Green	DB1
 DB1-055	Super 17, Power Distilled	SR	Battle	Green	DB1
 DB1-056	SS Rose Goku Black, a Delicate Plan	R	Battle	Green	DB1
 DB1-057	Fused Zamasu, Deity's Wrath	SR	Battle	Green	DB1
+DB1-057_CS1	Fused Zamasu, Deity's Wrath	PR	Battle	Green	DB1
 DB1-057_PR	Fused Zamasu, Deity's Wrath	PR	Battle	Green	DB1
 DB1-057_PR02	Fused Zamasu, Deity's Wrath	PR	Battle	Green	DB1
 DB1-058	Zamasu, the Undying	UC	Battle	Green	DB1
@@ -80,6 +81,7 @@ DB1-061_PR	Great Ape Bardock, Raider's Warcry	PR	Battle	Yellow	DB1
 DB1-062	Gine, the Kind Saiyan	UC	Battle	Yellow	DB1
 DB1-063	Son Goku, Saiyan Reborn	R	Battle	Yellow	DB1
 DB1-064	Great Ape Son Goku, Saiyan Instincts	SR	Battle	Yellow	DB1
+DB1-064_CS1	Great Ape Son Goku, Saiyan Instincts	PR	Battle	Yellow	DB1
 DB1-064_EP06	Great Ape Son Goku, Saiyan Instincts	PR	Battle	Yellow	DB1
 DB1-064_JP13	Great Ape Son Goku, Saiyan Instincts	PR	Battle	Yellow	DB1
 DB1-064_PR	Great Ape Son Goku, Saiyan Instincts	PR	Battle	Yellow	DB1

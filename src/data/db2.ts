@@ -1,5 +1,6 @@
 export const db2Data = `DB2-001	SSB Kaio-Ken Son Goku, Concentrated Destruction	SR	Battle	Red	DB2
 DB2-001_PR	SSB Kaio-Ken Son Goku, Concentrated Destruction	PR	Battle	Red	DB2
+DB2-001_CS1	SSB Kaio-Ken Son Goku, Concentrated Destruction	PR	Battle	Red	DB2
 DB2-002	Ultra Instinct Son Goku, Monumental Presence	SR	Battle	Red	DB2
 DB2-003	Tien Shinhan, Unwavering Anchor	C	Battle	Red	DB2
 DB2-004	Piccolo, Namekian Fortification	C	Battle	Red	DB2
@@ -40,6 +41,7 @@ DB2-036_PR	Android 17, Turning the Tide	PR	Battle	Blue	DB2
 DB2-037	Android 18, Neverending Energy	R	Battle	Blue	DB2
 DB2-038	Energetic Outburst Kale	UC	Battle	Blue	DB2
 DB2-039	Energetic Frenzy Kefla	R	Battle	Blue	DB2
+DB2-039_CS2	Energetic Frenzy Kefla	R	Battle	Blue	DB2
 DB2-040	Hit, Deadly Vanguard	SR	Battle	Blue	DB2
 DB2-040_PR	Hit, Deadly Vanguard	PR	Battle	Blue	DB2
 DB2-041	Frost, Chaotic Burst	UC	Battle	Blue	DB2
