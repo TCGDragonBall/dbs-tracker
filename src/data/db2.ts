@@ -152,6 +152,7 @@ DB2-131	Son Goku, Strength of Legends	SR	Battle	Black	DB2
 DB2-131_PR	Son Goku, Strength of Legends	PR	Battle	Black	DB2
 DB2-132	Saiyan Shield Son Gohan	R	Battle	Black	DB2
 DB2-133	Vegeta, Strength of Legends	R	Battle	Black	DB2
+DB2-133_TS02	Vegeta, Strength of Legends	R	Battle	Black	DB2
 DB2-133_PR	Vegeta, Strength of Legends	PR	Battle	Black	DB2
 DB2-134	Enraged Eminence Vegeta	R	Battle	Black	DB2
 DB2-135	Dynamic Blow Vegeta	C	Battle	Black	DB2
@@ -185,6 +186,7 @@ DB2-156_EP11	Jiren, Survival of the Fittest	PR	Battle	Black	DB2
 DB2-157	Vuon, the Righteous	C	Battle	Black	DB2
 DB2-158	Kahseral, the Righteous	C	Battle	Black	DB2
 DB2-159	Protector of the People	SR	Extra	Black	DB2
+DB2-159_TS02	Protector of the People	SR	Extra	Black	DB2
 DB2-159_PR	Protector of the People	PR	Extra	Black	DB2
 DB2-160	Not Even a Scratch	R	Extra	Black	DB2
 DB2-160_EP08	Not Even a Scratch	PR	Extra	Black	DB2

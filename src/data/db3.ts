@@ -26,6 +26,7 @@ DB3-019	Cymbal, Demon Clan Warrior	C	Battle	Red	DB3
 DB3-020	Drum, Demon Clan Warrior	C	Battle	Red	DB3
 DB3-021	Piccolo Jr., the King's Return	UC	Battle	Red	DB3
 DB3-022	Korin Tower's Secret Medicine	R	Extra	Red	DB3
+DB3-022_TS01	Korin Tower's Secret Medicine	R	Extra	Red	DB3
 DB3-022_PR	Korin Tower's Secret Medicine	PR	Extra	Red	DB3
 DB3-023	Strength Through Survival	C	Extra	Red	DB3
 DB3-024	The Final Blow	SR	Extra	Red	DB3
@@ -137,6 +138,7 @@ DB3-114	Super Dragon Flash	C	Extra	Black	DB3
 DB3-115	Piccolo Jr., Eradicator of Peace	SR	Battle	Multi	DB3
 DB3-115_EP09	Piccolo Jr., Eradicator of Peace	PR	Battle	Multi	DB3
 DB3-116	Son Goku, Unwavering Conviction	R	Battle	Multi	DB3
+DB3-116_TS01	Son Goku, Unwavering Conviction	R	Battle	Multi	DB3
 DB3-116_PR	Son Goku, Unwavering Conviction	PR	Battle	Multi	DB3
 DB3-117	Korin, the Cat Sage	UC	Battle	Multi	DB3
 DB3-118	Bardock, Legend's Origin	SR	Battle	Multi	DB3
@@ -148,8 +150,10 @@ DB3-123	Yajirobe, a New Ally	UC	Battle	Multi	DB3
 DB3-124	Hirudegarn, the Reoccurring Nightmare	SR	Battle	Multi	DB3
 DB3-125	Tapion, Fate of a Hero	R	Battle	Multi	DB3
 DB3-126	Vegeta, Villain-Turned-Protector	UC	Battle	Multi	DB3
+DB3-126_TS02	Vegeta, Villain-Turned-Protector	UC	Battle	Multi	DB3
 DB3-126_PR	Vegeta, Villain-Turned-Protector	PR	Battle	Multi	DB3
 DB3-127	Kakarot, Fate's Dawning	UC	Battle	Multi	DB3
+DB3-127_TS01	Kakarot, Fate's Dawning	UC	Battle	Multi	DB3
 DB3-127_PR	Kakarot, Fate's Dawning	PR	Battle	Multi	DB3
 DB3-128	Final Heat Phalanx	R	Extra	Multi	DB3
 DB3-129	Explosive Demon Wave	SR	Extra	Multi	DB3

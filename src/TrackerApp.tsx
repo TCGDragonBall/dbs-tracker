@@ -74,7 +74,7 @@ import { useAuth } from './AuthContext';
 import emailjs from '@emailjs/browser';
 
 
-const APP_VERSION = '5.3.0';
+const APP_VERSION = '5.4.0';
 
 const CATEGORY_BG: Record<string, string> = {
   'box': '/fondobox.jpg',
@@ -164,7 +164,10 @@ const SET_BG: Record<string, string> = {
   'CS01': 'https://dragonball.center/files/module_dbc/objetos/86/v9p0116003.jpg',
   'CS02': 'https://dragonball.center/files/module_dbc/objetos/97/9yw5116005.jpg',
   'CS03': 'https://dragonball.center/files/module_dbc/objetos/40/htla122989.jpg',
+  'TS01': 'https://dragonball.center/files/module_dbc/objetos/96/vmsh115962.png',
+  'TS02': 'https://dragonball.center/files/module_dbc/objetos/105/c5al115980.png',
   'COL09': 'https://dragonball.center/files/module_dbc/objetos/86/v9p0116003.jpg',
+  'COL10': 'https://dragonball.center/files/module_dbc/objetos/96/vmsh115962.png',
   'COL08': '/BT1-111_PR02.png',
   'COL03': 'https://static.dbscards.fr/cards/en/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-tk-01-shadow-token.webp',
   'FS01': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2024/10/31/0JYpHsOgXNKBIVZo/FS01.png',
@@ -633,6 +636,15 @@ const expansionGroups: ExpansionGroup[] = [
           { id: 'CS01', label: "Collector's Selection Vol.1", sub: 'Premium' },
           { id: 'CS02', label: "Collector's Selection Vol.2", sub: 'Premium' },
           { id: 'CS03', label: "Collector's Selection Vol.3", sub: 'Premium' }
+        ]
+      },
+      {
+        id: 'COL10',
+        label: "Theme Selection",
+        sub: "Theme Selection Series",
+        subItems: [
+          { id: 'TS01', label: "History of Son Goku", sub: 'Premium' },
+          { id: 'TS02', label: "History of Vegeta", sub: 'Premium' }
         ]
       },
       { id: 'COL03', label: 'Tokens', sub: 'Extras' },
@@ -2194,6 +2206,38 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'P-247_CS3': 'https://dragonball.center/files/module_dbc/objetos/75/6187123006.jpg',
   'P-337_CS3': 'https://dragonball.center/files/module_dbc/objetos/50/lzly123007.jpg',
   'P-351_CS3': 'https://dragonball.center/files/module_dbc/objetos/52/nqpp123008.jpg',
+  'BT9-131_TS01': 'https://dragonball.center/files/module_dbc/objetos/68/xtc5149638.jpg',
+  'BT10-060_TS01': 'https://dragonball.center/files/module_dbc/objetos/134/44j2149639.jpg',
+  'BT10-060_TS01_b': 'https://dragonball.center/files/module_dbc/objetos/97/y1op149640.jpg',
+  'BT10-065_TS01': 'https://dragonball.center/files/module_dbc/objetos/114/x6cw149641.jpg',
+  'BT10-066_TS01': 'https://dragonball.center/files/module_dbc/objetos/95/0nne149642.jpg',
+  'BT11-034_TS01': 'https://dragonball.center/files/module_dbc/objetos/6/65vh149643.jpg',
+  'BT11-074_TS01': 'https://dragonball.center/files/module_dbc/objetos/54/8aqk149644.jpg',
+  'BT11-093_TS01': 'https://dragonball.center/files/module_dbc/objetos/84/4rc3149645.jpg',
+  'BT13-012_TS01': 'https://dragonball.center/files/module_dbc/objetos/138/poom149646.jpg',
+  'BT13-071_TS01': 'https://dragonball.center/files/module_dbc/objetos/64/uqq8149647.jpg',
+  'BT14-029_TS01': 'https://dragonball.center/files/module_dbc/objetos/38/mu3l149648.jpg',
+  'DB1-021_TS01': 'https://dragonball.center/files/module_dbc/objetos/29/kctu149649.jpg',
+  'DB1-040_TS01': 'https://dragonball.center/files/module_dbc/objetos/22/aspi149650.jpg',
+  'DB3-022_TS01': 'https://dragonball.center/files/module_dbc/objetos/117/2oqe149651.jpg',
+  'DB3-116_TS01': 'https://dragonball.center/files/module_dbc/objetos/146/6e7s149652.jpg',
+  'DB3-127_TS01': 'https://dragonball.center/files/module_dbc/objetos/58/gaxg149653.jpg',
+  'BT9-133_TS02': 'https://dragonball.center/files/module_dbc/objetos/40/gz17149654.jpg',
+  'BT10-041_TS02': 'https://dragonball.center/files/module_dbc/objetos/136/ho8r149655.jpg',
+  'BT10-068_TS02': 'https://dragonball.center/files/module_dbc/objetos/12/prqu149656.jpg',
+  'BT10-088_TS02': 'https://dragonball.center/files/module_dbc/objetos/105/4n60149657.jpg',
+  'BT10-105_TS02': 'https://dragonball.center/files/module_dbc/objetos/20/6ufw149658.jpg',
+  'BT11-032_TS02': 'https://dragonball.center/files/module_dbc/objetos/31/7z16149659.jpg',
+  'BT11-032_TS02_b': 'https://dragonball.center/files/module_dbc/objetos/137/y406149660.jpg',
+  'BT11-052_TS02': 'https://dragonball.center/files/module_dbc/objetos/129/12ng149661.jpg',
+  'BT11-053_TS02': 'https://dragonball.center/files/module_dbc/objetos/63/n0e2149662.jpg',
+  'BT11-066_TS02': 'https://dragonball.center/files/module_dbc/objetos/144/bo2i149663.jpg',
+  'DB1-002_TS02': 'https://dragonball.center/files/module_dbc/objetos/126/4qce149664.jpg',
+  'DB2-133_TS02': 'https://dragonball.center/files/module_dbc/objetos/140/99vh149665.jpg',
+  'DB2-159_TS02': 'https://dragonball.center/files/module_dbc/objetos/57/jo6l149666.jpg',
+  'DB3-126_TS02': 'https://dragonball.center/files/module_dbc/objetos/59/snaq149667.jpg',
+  'EB1-07_TS02': 'https://dragonball.center/files/module_dbc/objetos/9/bn21149668.jpg',
+  'EX12-02_TS02': 'https://dragonball.center/files/module_dbc/objetos/70/wk4s149669.jpg',
   'BT8-116_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203927_in_1000x1000.jpg',
   'BT8-103_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203920_in_1000x1000.jpg',
   'BT8-084_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203845_in_1000x1000.jpg',
@@ -4061,6 +4105,13 @@ const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata'
 const CHANGELOG = [
 // Removed Excel export changes from changelog during staging
   {
+    version: '5.4.0',
+    date: '22 de junio de 2026',
+    changes: [
+      { es: 'Añadidas las cartas de Collection\'s Selection Vol. 1, 2 y 3, así como las dos Theme Selection (History of Son Goku y History of Vegeta).', en: 'Added Collector\'s Selection Vol. 1, 2 and 3 cards, along with the two Theme Selection sets (History of Son Goku and History of Vegeta).' }
+    ]
+  },
+  {
     version: '5.3.0',
     date: '5 de junio de 2026',
     changes: [
@@ -5271,7 +5322,7 @@ const isAlternative = (cardId: string) => {
 };
 
 const isVirtualSet = (setId: string) => {
-  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'EP01', 'EP02', 'EP03', 'EP04', 'EP05', 'EP06', 'EP07', 'EP08', 'EP09', 'EP10', 'EP11', 'EP13', 'EP14', 'EP15', 'EP16', 'EP17', 'EP18', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP05', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', 'UB26-3', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'PLAYMATS_FOLDER', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER', 'ENM', 'ENM_FW', 'CS01', 'CS02', 'CS03', 'COL09'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_');
+  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'EP01', 'EP02', 'EP03', 'EP04', 'EP05', 'EP06', 'EP07', 'EP08', 'EP09', 'EP10', 'EP11', 'EP13', 'EP14', 'EP15', 'EP16', 'EP17', 'EP18', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP05', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', 'UB26-3', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'PLAYMATS_FOLDER', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER', 'ENM', 'ENM_FW', 'CS01', 'CS02', 'CS03', 'COL09', 'TS01', 'TS02', 'COL10'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_');
 };
 
 const EVENT_PACK_01 = [
@@ -5526,6 +5577,8 @@ const FUSION_JUDGE_EVENT_PACK_04 = ['FB05-011_JEP04', 'FB05-018_JEP04', 'FB05-04
 const FUSION_JUDGE_EVENT_PACK_05 = ['FB07-007_JEP05', 'FB07-011_JEP05', 'FB07-027_JEP05', 'FB07-043_JEP05', 'FB07-063_JEP05', 'FB07-069_JEP05', 'FB07-080_JEP05', 'FB07-085_JEP05', 'FB07-103_JEP05', 'FB07-116_JEP05'];
 
 const PACK_ARRAYS: Record<string, string[]> = {
+  TS01: ['BT9-131_TS01', 'BT10-060_TS01', 'BT10-065_TS01', 'BT10-066_TS01', 'BT11-034_TS01', 'BT11-074_TS01', 'BT11-093_TS01', 'BT13-012_TS01', 'BT13-071_TS01', 'BT14-029_TS01', 'DB1-021_TS01', 'DB1-040_TS01', 'DB3-022_TS01', 'DB3-116_TS01', 'DB3-127_TS01'],
+  TS02: ['BT9-133_TS02', 'BT10-041_TS02', 'BT10-068_TS02', 'BT10-088_TS02', 'BT10-105_TS02', 'BT11-032_TS02', 'BT11-052_TS02', 'BT11-053_TS02', 'BT11-066_TS02', 'DB1-002_TS02', 'DB2-133_TS02', 'DB2-159_TS02', 'DB3-126_TS02', 'EB1-07_TS02', 'EX12-02_TS02'],
   CS01: ['BT1-057_CS1', 'BT2-001_CS1', 'BT6-014_CS1', 'BT6-107_CS1', 'BT8-110_CS1', 'BT9-130_CS1', 'BT9-131_CS1', 'BT9-132_CS1', 'BT9-133_CS1', 'BT9-134_CS1', 'DB1-057_CS1', 'DB1-064_CS1', 'DB2-001_CS1', 'P-036_CS1', 'P-086_CS1', 'P-112_CS1', 'P-124_CS1', 'P-181_CS1'],
   CS02: ['BT9-090_CS2', 'BT9-091_CS2', 'BT9-096_CS2', 'BT9-099_CS2', 'BT9-107_CS2', 'BT9-115_CS2', 'BT10-075_CS2', 'BT11-030_CS2', 'BT12-013_CS2', 'DB2-039_CS2', 'DB3-003_CS2', 'P-211_CS2', 'P-219_CS2', 'P-263_CS2', 'P-276_CS2', 'P-286_CS2', 'P-331_CS2', 'TB1-052_CS2'],
   CS03: ['BT10-030_CS3', 'BT10-148_CS3', 'BT11-042_CS3', 'BT12-137_CS3', 'BT13-135_CS3', 'BT15-096_CS3', 'BT16-005_CS3', 'BT16-071_CS3', 'BT16-087_CS3', 'BT16-117_CS3', 'BT17-004_CS3', 'BT17-066_CS3', 'EB1-20_CS3', 'EX6-30_CS3', 'EX13-16_CS3', 'P-247_CS3', 'P-337_CS3', 'P-351_CS3'],

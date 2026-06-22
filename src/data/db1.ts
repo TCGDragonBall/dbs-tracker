@@ -1,5 +1,6 @@
 export const db1Data = `DB1-001	Son Goku, Might of Many	UC	Battle	Red	DB1
 DB1-002	SS Vegeta, Exploiting Weakness	SR	Battle	Red	DB1
+DB1-002_TS02	SS Vegeta, Exploiting Weakness	SR	Battle	Red	DB1
 DB1-002_PR	SS Vegeta, Exploiting Weakness	PR	Battle	Red	DB1
 DB1-003	Trunks, Deluge of Power	C	Battle	Red	DB1
 DB1-003_EP12	Trunks, Deluge of Power	PR	Battle	Red	DB1
@@ -25,6 +26,7 @@ DB1-019	Niagara Drop	C	Extra	Red	DB1
 DB1-020	Galick Cannon	SR	Extra	Red	DB1
 DB1-020_JP09	Galick Cannon	PR	Extra	Red	DB1
 DB1-021	Ultra Instinct Son Goku, the Unstoppable	SR	Battle	Blue	DB1
+DB1-021_TS01	Ultra Instinct Son Goku, the Unstoppable	SR	Battle	Blue	DB1
 DB1-021_PR	Ultra Instinct Son Goku, the Unstoppable	PR	Battle	Blue	DB1
 DB1-021_PR02	Ultra Instinct Son Goku, the Unstoppable	PR	Battle	Blue	DB1
 DB1-022	SS Son Goku, the Ever-Adapting	R	Battle	Blue	DB1
@@ -48,6 +50,7 @@ DB1-038	Janemba, Infernal Intruder	SR	Battle	Blue	DB1
 DB1-038_EP07	Janemba, Infernal Intruder	PR	Battle	Blue	DB1
 DB1-039	Kamehameha	UC	Extra	Blue	DB1
 DB1-040	Desperate Measures	C	Extra	Blue	DB1
+DB1-040_TS01	Desperate Measures	C	Extra	Blue	DB1
 DB1-040_EP06	Desperate Measures	PR	Extra	Blue	DB1
 DB1-040_PR	Desperate Measures	PR	Extra	Blue	DB1
 DB1-041	Swift Combo Kaio-Ken Son Goku	UC	Battle	Green	DB1
