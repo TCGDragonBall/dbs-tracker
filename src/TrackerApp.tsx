@@ -244,6 +244,48 @@ const SET_BG: Record<string, string> = {
   'FB06-062_P1': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB06-062_p1.webp?v1',
   'FB06-097_P3': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FB06-097_p3.webp?v1',
   'RE_FOLDER': 'https://www.dbs-cardgame.com/fw/bccard/en/news/2024/09/29/cElfkJ4Rfp1L1qCI/EN_FW_FP-027_Battle_PR_TOP_dummy_s.png?_=',
+  'MASTERS_TP_FOLDER': 'https://dragonball.center/files/module_dbc/objetos/63/xqsm15537.jpg',
+  'MASTERS_TP01': 'https://dragonball.center/files/module_dbc/objetos/63/xqsm15537.jpg',
+  'MASTERS_TP02': 'https://dragonball.center/files/module_dbc/objetos/63/lmaa15538.jpg',
+  'MASTERS_TP03': 'https://dragonball.center/files/module_dbc/objetos/73/fjce15541.jpg',
+  'MASTERS_TP04': 'https://dragonball.center/files/module_dbc/objetos/102/lgxn15544.jpg',
+  'MASTERS_TP05': 'https://dragonball.center/files/module_dbc/objetos/119/clgd116267.jpg',
+  'MASTERS_TP06': 'https://dragonball.center/files/module_dbc/objetos/71/mlxq36458.jpg', 
+  'MASTERS_TP07': 'https://dragonball.center/files/module_dbc/objetos/96/cwxq36507.jpg', 
+  'MASTERS_TP08': 'https://dragonball.center/files/module_dbc/objetos/121/r5r7116678.jpg', 
+  'MASTERS_EX_TP': 'https://dragonball.center/files/module_dbc/objetos/117/rsb4116679.jpg',
+  'MASTERS_CHAMPIONSHIP_FOLDER': 'https://dragonball.center/files/module_dbc/objetos/73/hsci15546.jpg',
+  'MASTERS_CHAMPIONSHIP_2018': 'https://dragonball.center/files/module_dbc/objetos/73/hsci15546.jpg', 
+  'MASTERS_CHAMPIONSHIP_2019': 'https://dragonball.center/files/module_dbc/objetos/123/cmtm36514.jpg',
+  'MASTERS_SEALED_TP_FOLDER': 'https://dragonball.center/files/module_dbc/objetos/63/xqsm15537.jpg',
+  'MASTERS_SEALED_TP01': 'https://dragonball.center/files/module_dbc/objetos/63/xqsm15537.jpg',
+  'MASTERS_SEALED_TP02': 'https://dragonball.center/files/module_dbc/objetos/63/lmaa15538.jpg',
+  'MASTERS_SEALED_TP03': 'https://dragonball.center/files/module_dbc/objetos/73/fjce15541.jpg',
+  'MASTERS_SEALED_TP04': 'https://dragonball.center/files/module_dbc/objetos/102/lgxn15544.jpg',
+  'MASTERS_SEALED_TP05': 'https://dragonball.center/files/module_dbc/objetos/119/clgd116267.jpg',
+  'MASTERS_SEALED_TP06': 'https://dragonball.center/files/module_dbc/objetos/71/mlxq36458.jpg', 
+  'MASTERS_SEALED_TP07': 'https://dragonball.center/files/module_dbc/objetos/96/cwxq36507.jpg', 
+  'MASTERS_SEALED_TP08': 'https://dragonball.center/files/module_dbc/objetos/121/r5r7116678.jpg', 
+  'MASTERS_SEALED_EX_TP': 'https://dragonball.center/files/module_dbc/objetos/117/rsb4116679.jpg',
+  'MASTERS_SEALED_EP_FOLDER': 'https://dragonball.center/files/module_dbc/objetos/40/eald15548.jpg',
+  'MASTERS_SEALED_EP01': 'https://dragonball.center/files/module_dbc/objetos/40/eald15548.jpg',
+  'MASTERS_SEALED_EP02': 'https://dragonball.center/files/module_dbc/objetos/110/rk3z116268.jpg', 
+  'MASTERS_SEALED_EP03': 'https://dragonball.center/files/module_dbc/objetos/99/vomp36551.jpg',
+  'MASTERS_SEALED_EP04': 'https://dragonball.center/files/module_dbc/objetos/49/v7is116373.jpg',
+  'PB_FOLDER': 'https://dragonball.center/files/module_dbc/objetos/136/wrfd36478.jpg',
+  'PB01': 'https://dragonball.center/files/module_dbc/objetos/136/wrfd36478.jpg',
+  'MASTERS_PB01': 'https://dragonball.center/files/module_dbc/objetos/136/wrfd36478.jpg',
+  'PB02': 'https://dragonball.center/files/module_dbc/objetos/131/ubym36506.jpg', 
+  'PB03': 'https://dragonball.center/files/module_dbc/objetos/9/yhfy36526.jpg',
+  'MASTERS_PB02': 'https://dragonball.center/files/module_dbc/objetos/131/ubym36506.jpg', 
+  'MASTERS_PB03': 'https://dragonball.center/files/module_dbc/objetos/9/yhfy36526.jpg',
+  'MASTERS_SEALED_PB_FOLDER': 'https://dragonball.center/files/module_dbc/objetos/136/wrfd36478.jpg',
+  'MASTERS_SEALED_PB01': 'https://dragonball.center/files/module_dbc/objetos/136/wrfd36478.jpg',
+  'MASTERS_SEALED_PB02': 'https://dragonball.center/files/module_dbc/objetos/131/ubym36506.jpg', 
+  'MASTERS_SEALED_PB03': 'https://dragonball.center/files/module_dbc/objetos/9/yhfy36526.jpg',
+  'MASTERS_SEALED_CHAMPIONSHIP_FOLDER': 'https://dragonball.center/files/module_dbc/objetos/73/hsci15546.jpg',
+  'MASTERS_SEALED_CHAMPIONSHIP_2018': 'https://dragonball.center/files/module_dbc/objetos/73/hsci15546.jpg', 
+  'MASTERS_SEALED_CHAMPIONSHIP_2019': 'https://dragonball.center/files/module_dbc/objetos/123/cmtm36514.jpg',
   'TP01_FOLDER': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS01-06_p2.webp?v1',
   'TP01_NORMAL_VIEW': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS01-06_p1.webp?v1',
   'TP01_WINNER_VIEW': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS01-06_p2.webp?v1',
@@ -319,6 +361,48 @@ const SET_BG: Record<string, string> = {
 };
 
 const SET_BG_POS: Record<string, string> = {
+  'MASTERS_TP_FOLDER': 'bg-[50%_25%]',
+  'MASTERS_TP01': 'bg-[50%_25%]',
+  'MASTERS_TP02': 'bg-[50%_25%]',
+  'MASTERS_TP03': 'bg-[50%_25%]',
+  'MASTERS_TP04': 'bg-[50%_25%]',
+  'MASTERS_TP05': 'bg-[50%_25%]',
+  'MASTERS_TP06': 'bg-[50%_25%]', 
+  'MASTERS_TP07': 'bg-[50%_25%]', 
+  'MASTERS_TP08': 'bg-[50%_25%]', 
+  'MASTERS_EX_TP': 'bg-[50%_25%]',
+  'MASTERS_CHAMPIONSHIP_FOLDER': 'bg-[50%_25%]',
+  'MASTERS_CHAMPIONSHIP_2018': 'bg-[50%_25%]', 
+  'MASTERS_CHAMPIONSHIP_2019': 'bg-[50%_25%]',
+  'MASTERS_SEALED_TP_FOLDER': 'bg-[50%_25%]',
+  'MASTERS_SEALED_TP01': 'bg-[50%_25%]',
+  'MASTERS_SEALED_TP02': 'bg-[50%_25%]',
+  'MASTERS_SEALED_TP03': 'bg-[50%_25%]',
+  'MASTERS_SEALED_TP04': 'bg-[50%_25%]',
+  'MASTERS_SEALED_TP05': 'bg-[50%_25%]',
+  'MASTERS_SEALED_TP06': 'bg-[50%_25%]', 
+  'MASTERS_SEALED_TP07': 'bg-[50%_25%]', 
+  'MASTERS_SEALED_TP08': 'bg-[50%_25%]', 
+  'MASTERS_SEALED_EX_TP': 'bg-[50%_25%]',
+  'MASTERS_SEALED_EP_FOLDER': 'bg-[50%_25%]',
+  'MASTERS_SEALED_EP01': 'bg-[50%_25%]',
+  'MASTERS_SEALED_EP02': 'bg-[50%_25%]', 
+  'MASTERS_SEALED_EP03': 'bg-[50%_25%]',
+  'MASTERS_SEALED_EP04': 'bg-[50%_25%]',
+  'PB_FOLDER': 'bg-[50%_25%]',
+  'PB01': 'bg-[50%_25%]',
+  'MASTERS_PB01': 'bg-[50%_25%]',
+  'PB02': 'bg-[50%_25%]', 
+  'PB03': 'bg-[50%_25%]',
+  'MASTERS_PB02': 'bg-[50%_25%]', 
+  'MASTERS_PB03': 'bg-[50%_25%]',
+  'MASTERS_SEALED_PB_FOLDER': 'bg-[50%_25%]',
+  'MASTERS_SEALED_PB01': 'bg-[50%_25%]',
+  'MASTERS_SEALED_PB02': 'bg-[50%_25%]', 
+  'MASTERS_SEALED_PB03': 'bg-[50%_25%]',
+  'MASTERS_SEALED_CHAMPIONSHIP_FOLDER': 'bg-[50%_25%]',
+  'MASTERS_SEALED_CHAMPIONSHIP_2018': 'bg-[50%_25%]', 
+  'MASTERS_SEALED_CHAMPIONSHIP_2019': 'bg-[50%_25%]',
   'TP01_FOLDER': 'bg-[50%_25%]',
   'TP01_NORMAL_VIEW': 'bg-[50%_25%]',
   'TP01_WINNER_VIEW': 'bg-[50%_25%]',
@@ -439,6 +523,12 @@ const MAIN_CATEGORIES = [
     icon: 'Library',
     categories: ['Coleccionismo'] 
   },
+  {
+    id: 'sellado',
+    label: { es: 'Sellado', en: 'Sealed' },
+    icon: 'Box',
+    categories: ['Sellado']
+  }
 ];
 
 const expansionGroups: ExpansionGroup[] = [
@@ -603,6 +693,16 @@ const expansionGroups: ExpansionGroup[] = [
           { id: 'EP18', label: 'Event Pack 18', sub: 'Eventos' },
         ]
       },
+      {
+        id: 'PB_FOLDER',
+        label: 'Power Boosters',
+        sub: 'Booster Packs',
+        subItems: [
+          { id: 'PB01', label: 'Power Booster: Colossal Warfare', sub: 'Power Booster' },
+          { id: 'PB02', label: 'Power Booster: Miraculous Revival', sub: 'Power Booster' },
+          { id: 'PB03', label: 'Power Booster: World Martial Arts Tournament', sub: 'Power Booster' }
+        ]
+      },
       { 
         id: 'COL07', 
         label: 'Judge Packs', 
@@ -611,8 +711,24 @@ const expansionGroups: ExpansionGroup[] = [
           { id: 'JP01', label: 'Judge Pack 01', sub: 'Judge' },
           { id: 'JP02', label: 'Judge Pack 02', sub: 'Judge' },
           { id: 'JP03', label: 'Judge Pack 03', sub: 'Judge' },
-          { id: 'JP04', label: 'Judge Pack 04', sub: 'Judge' },
-          { id: 'JP05', label: 'Judge Pack 05', sub: 'Judge' },
+          { 
+            id: 'JP04_FOLDER', 
+            label: 'Judge Pack 04', 
+            sub: 'Judge',
+            subItems: [
+              { id: 'JP04', label: 'Level 1', sub: 'Judge' },
+              { id: 'JP04_LVL2', label: 'Level 2', sub: 'Judge' }
+            ]
+          },
+          { 
+            id: 'JP05_FOLDER', 
+            label: 'Judge Pack 05', 
+            sub: 'Judge',
+            subItems: [
+              { id: 'JP05', label: 'Level 1', sub: 'Judge' },
+              { id: 'JP05_LVL2', label: 'Level 2', sub: 'Judge' }
+            ]
+          },
           { id: 'JP06', label: 'Judge Pack 06', sub: 'Judge' },
           { id: 'JP07', label: 'Judge Pack 07', sub: 'Judge' },
           { id: 'JP08', label: 'Judge Pack 08', sub: 'Judge' },
@@ -647,8 +763,84 @@ const expansionGroups: ExpansionGroup[] = [
           { id: 'TS02', label: "History of Vegeta", sub: 'Premium' }
         ]
       },
+      {
+        id: 'MASTERS_TP_FOLDER',
+        label: "Tournament Packs",
+        sub: "Tournament Packs",
+        subItems: [
+          { id: 'MASTERS_TP01', label: 'Tournament Pack 01', sub: 'Tournament' },
+          { id: 'MASTERS_TP02', label: 'Tournament Pack 02', sub: 'Tournament' },
+          { id: 'MASTERS_TP03', label: 'Tournament Pack 03', sub: 'Tournament' },
+          { id: 'MASTERS_TP04', label: 'Tournament Pack 04', sub: 'Tournament' },
+          { id: 'MASTERS_TP05', label: 'Tournament Pack 05', sub: 'Tournament' },
+          { id: 'MASTERS_TP06', label: 'Tournament Pack 06', sub: 'Tournament' },
+          { id: 'MASTERS_TP07', label: 'Tournament Pack 07', sub: 'Tournament' },
+          { id: 'MASTERS_TP08', label: 'Tournament Pack 08', sub: 'Tournament' },
+          { id: 'MASTERS_EX_TP', label: 'Expansion Set Tournament Pack', sub: 'Tournament' }
+        ]
+      },
+      {
+        id: 'MASTERS_CHAMPIONSHIP_FOLDER',
+        label: "Championship Packs",
+        sub: "Championship Packs",
+        subItems: [
+          { id: 'MASTERS_CHAMPIONSHIP_2018', label: 'Championship 2018', sub: 'Championship' },
+          { id: 'MASTERS_CHAMPIONSHIP_2019', label: 'Championship 2019', sub: 'Championship' }
+        ]
+      },
       { id: 'COL03', label: 'Tokens', sub: 'Extras' },
       { id: 'COL04', label: 'Tapetes', sub: 'Próximamente', locked: true },
+    ]
+  },
+  {
+    category: 'Sellado',
+    items: [
+      {
+        id: 'MASTERS_SEALED_TP_FOLDER',
+        label: "Tournament Packs",
+        sub: "Sellado",
+        subItems: [
+          { id: 'MASTERS_SEALED_TP01', label: 'Tournament Pack 01', sub: 'Tournament' },
+          { id: 'MASTERS_SEALED_TP02', label: 'Tournament Pack 02', sub: 'Tournament' },
+          { id: 'MASTERS_SEALED_TP03', label: 'Tournament Pack 03', sub: 'Tournament' },
+          { id: 'MASTERS_SEALED_TP04', label: 'Tournament Pack 04', sub: 'Tournament' },
+          { id: 'MASTERS_SEALED_TP05', label: 'Tournament Pack 05', sub: 'Tournament' },
+          { id: 'MASTERS_SEALED_TP06', label: 'Tournament Pack 06', sub: 'Tournament' },
+          { id: 'MASTERS_SEALED_TP07', label: 'Tournament Pack 07', sub: 'Tournament' },
+          { id: 'MASTERS_SEALED_TP08', label: 'Tournament Pack 08', sub: 'Tournament' },
+          { id: 'MASTERS_SEALED_EX_TP', label: 'Expansion Set Tournament Pack', sub: 'Tournament' }
+        ]
+      },
+      {
+        id: 'MASTERS_SEALED_CHAMPIONSHIP_FOLDER',
+        label: "Championship Packs",
+        sub: "Sellado",
+        subItems: [
+          { id: 'MASTERS_SEALED_CHAMPIONSHIP_2018', label: 'Championship 2018', sub: 'Championship' },
+          { id: 'MASTERS_SEALED_CHAMPIONSHIP_2019', label: 'Championship 2019', sub: 'Championship' }
+        ]
+      },
+      {
+        id: 'MASTERS_SEALED_EP_FOLDER',
+        label: "Event Packs",
+        sub: "Sellado",
+        subItems: [
+          { id: 'MASTERS_SEALED_EP01', label: 'Event Pack 2018 (Event Pack 01)', sub: 'Event Pack' },
+          { id: 'MASTERS_SEALED_EP02', label: 'Event Pack 2018 (Event Pack 02)', sub: 'Event Pack' },
+          { id: 'MASTERS_SEALED_EP03', label: 'Event Pack 03', sub: 'Event Pack' },
+          { id: 'MASTERS_SEALED_EP04', label: 'Event Pack 04', sub: 'Event Pack' }
+        ]
+      },
+      {
+        id: 'MASTERS_SEALED_PB_FOLDER',
+        label: "Power Boosters",
+        sub: "Sellado",
+        subItems: [
+          { id: 'MASTERS_SEALED_PB01', label: 'Power Booster: Colossal Warfare', sub: 'Power Booster' },
+          { id: 'MASTERS_SEALED_PB02', label: 'Power Booster: Miraculous Revival', sub: 'Power Booster' },
+          { id: 'MASTERS_SEALED_PB03', label: 'Power Booster: World Martial Arts Tournament', sub: 'Power Booster' }
+        ]
+      }
     ]
   }
 ];
@@ -1228,6 +1420,7 @@ import { bt29Data } from './data/bt29';
 import { bt30Data } from './data/bt30';
 import { bt31Data } from './data/bt31';
 import { fusionWorldData } from './data/fusion_world';
+import { sealedCardsData } from './data/sealed';
 import { initGA, trackPageView, trackEvent } from './utils/analytics';
 
 // --- Types ---
@@ -1601,6 +1794,17 @@ const SET_METADATA: Record<string, { sourceProduct: string; releaseDate?: string
   'DB3': { sourceProduct: 'Draft Box 03' },
   'EB1': { sourceProduct: 'Battle Evolution Booster' },
   'ENM': { sourceProduct: 'Energy Markers' },
+  'MASTERS_TP01': { sourceProduct: 'Tournament Pack 01' },
+  'MASTERS_TP02': { sourceProduct: 'Tournament Pack 02' },
+  'MASTERS_TP03': { sourceProduct: 'Tournament Pack 03' },
+  'MASTERS_TP04': { sourceProduct: 'Tournament Pack 04' },
+  'MASTERS_TP05': { sourceProduct: 'Tournament Pack 05' },
+  'MASTERS_TP06': { sourceProduct: 'Tournament Pack 06' }, 
+  'MASTERS_TP07': { sourceProduct: 'Tournament Pack 07' }, 
+  'MASTERS_TP08': { sourceProduct: 'Tournament Pack 08' }, 
+  'MASTERS_EX_TP': { sourceProduct: 'Expansion Set Tournament Pack' },
+  'MASTERS_CHAMPIONSHIP_2018': { sourceProduct: 'Championship 2018' }, 
+  'MASTERS_CHAMPIONSHIP_2019': { sourceProduct: 'Championship 2019' },
   'JSP01': { sourceProduct: 'Judge Store Pack 01' },
   'JSP02': { sourceProduct: 'Judge Store Pack 02' },
   'JSP03': { sourceProduct: 'Judge Store Pack 03' },
@@ -1691,6 +1895,30 @@ const getDynamicPromoSource = (cardNumber: string): string | undefined => {
 };
 
 const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: string }> = {
+  // Base Promo Tournament Pack 01
+  'P-002': { sourceProduct: 'Tournament Pack 01' }, 'P-003': { sourceProduct: 'Tournament Pack 01' }, 'P-004': { sourceProduct: 'Tournament Pack 01' }, 'P-005': { sourceProduct: 'Tournament Pack 01' }, 'P-006': { sourceProduct: 'Tournament Pack 01' }, 'P-007': { sourceProduct: 'Tournament Pack 01' }, 'P-008': { sourceProduct: 'Tournament Pack 01' }, 'P-009': { sourceProduct: 'Tournament Pack 01' },
+  // BCC Battles
+  'P-010': { sourceProduct: 'BCC Battles Vol.1' },
+  'P-020': { sourceProduct: 'BCC Battles Vol.2' },
+  'P-038': { sourceProduct: 'BCC Battles Vol.3' },
+  'P-047': { sourceProduct: 'BCC Battles Vol.4' },
+  'P-062': { sourceProduct: 'BCC Battles Vol.5' },
+  'P-074': { sourceProduct: 'BCC Battles Vol.6' },
+  'P-090': { sourceProduct: 'BCC Battles Vol.7' },
+  // Championship
+  'MASTERS_CHAMPIONSHIP_2018': { sourceProduct: 'Championship 2018' }, 
+  'MASTERS_CHAMPIONSHIP_2019': { sourceProduct: 'Championship 2019' },
+  'P-063': { sourceProduct: 'Championship 2018' }, 'P-064': { sourceProduct: 'Championship 2018' }, 'P-065': { sourceProduct: 'Championship 2018' }, 'P-066': { sourceProduct: 'Championship 2018' }, 'P-067': { sourceProduct: 'Championship 2018' },
+  // Tournament Pack 02
+  'P-012': { sourceProduct: 'Tournament Pack 02' }, 'P-013': { sourceProduct: 'Tournament Pack 02' }, 'P-014': { sourceProduct: 'Tournament Pack 02' }, 'P-015': { sourceProduct: 'Tournament Pack 02' }, 'P-016': { sourceProduct: 'Tournament Pack 02' }, 'P-017': { sourceProduct: 'Tournament Pack 02' }, 'P-018': { sourceProduct: 'Tournament Pack 02' }, 'P-019': { sourceProduct: 'Tournament Pack 02' },
+  // Tournament Pack 03
+  'P-030': { sourceProduct: 'Tournament Pack 03' }, 'P-031': { sourceProduct: 'Tournament Pack 03' }, 'P-032': { sourceProduct: 'Tournament Pack 03' }, 'P-033': { sourceProduct: 'Tournament Pack 03' }, 'P-034': { sourceProduct: 'Tournament Pack 03' }, 'P-035': { sourceProduct: 'Tournament Pack 03' }, 'P-036': { sourceProduct: 'Tournament Pack 03' }, 'P-037': { sourceProduct: 'Tournament Pack 03' },
+  // Tournament Pack 04
+  'P-049': { sourceProduct: 'Tournament Pack 04' }, 'P-050': { sourceProduct: 'Tournament Pack 04' }, 'P-051': { sourceProduct: 'Tournament Pack 04' }, 'P-052': { sourceProduct: 'Tournament Pack 04' }, 'P-053': { sourceProduct: 'Tournament Pack 04' }, 'P-054': { sourceProduct: 'Tournament Pack 04' }, 'P-055': { sourceProduct: 'Tournament Pack 04' }, 'P-056': { sourceProduct: 'Tournament Pack 04' },
+  // Tournament Pack 05
+  'P-077': { sourceProduct: 'Tournament Pack 05' }, 'P-078': { sourceProduct: 'Tournament Pack 05' }, 'P-079': { sourceProduct: 'Tournament Pack 05' }, 'P-080': { sourceProduct: 'Tournament Pack 05' }, 'P-081': { sourceProduct: 'Tournament Pack 05' }, 'P-082': { sourceProduct: 'Tournament Pack 05' }, 'P-083': { sourceProduct: 'Tournament Pack 05' }, 'P-084': { sourceProduct: 'Tournament Pack 05' },
+  // Tournament Pack 06
+  'P-095': { sourceProduct: 'Tournament Pack 06' }, 'P-096': { sourceProduct: 'Tournament Pack 06' }, 'P-097': { sourceProduct: 'Tournament Pack 06' }, 'P-098': { sourceProduct: 'Tournament Pack 06' }, 'P-099': { sourceProduct: 'Tournament Pack 06' }, 'P-100': { sourceProduct: 'Tournament Pack 06' }, 'P-101': { sourceProduct: 'Tournament Pack 06' }, 'P-102': { sourceProduct: 'Tournament Pack 06' },
   // Fusion World FB02 Promos
   'FB01-066_A_FB02': { sourceProduct: 'FB02: Blazing Aura' },
   'FS01-15_A_FB02': { sourceProduct: 'FB02: Blazing Aura' },
@@ -1705,7 +1933,9 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
   'P-030_JP02': { sourceProduct: 'Judge Pack 02' }, 'P-032_JP02': { sourceProduct: 'Judge Pack 02' }, 'P-033_JP02': { sourceProduct: 'Judge Pack 02' }, 'P-036_JP02': { sourceProduct: 'Judge Pack 02' }, 'P-035_JP02': { sourceProduct: 'Judge Pack 02' },
   'P-053_JP03': { sourceProduct: 'Judge Pack 03' }, 'P-049_JP03': { sourceProduct: 'Judge Pack 03' }, 'P-040_JP03': { sourceProduct: 'Judge Pack 03' }, 'P-048_JP03': { sourceProduct: 'Judge Pack 03' }, 'P-052_JP03': { sourceProduct: 'Judge Pack 03' },
   'BT4-073_JP04': { sourceProduct: 'Judge Pack 04' }, 'BT1-005_JP04': { sourceProduct: 'Judge Pack 04' }, 'BT4-103_JP04': { sourceProduct: 'Judge Pack 04' }, 'BT2-093_JP04': { sourceProduct: 'Judge Pack 04' }, 'BT1-110_JP04': { sourceProduct: 'Judge Pack 04' }, 'BT2-060_JP04': { sourceProduct: 'Judge Pack 04' }, 'BT2-044_JP04': { sourceProduct: 'Judge Pack 04' }, 'BT3-110_JP04': { sourceProduct: 'Judge Pack 04' }, 'BT1-080_JP04': { sourceProduct: 'Judge Pack 04' }, 'BT2-010_JP04': { sourceProduct: 'Judge Pack 04' },
+  'BT4-073_JP04_L2': { sourceProduct: 'Judge Pack 04' }, 'BT1-005_JP04_L2': { sourceProduct: 'Judge Pack 04' }, 'BT4-103_JP04_L2': { sourceProduct: 'Judge Pack 04' }, 'BT2-093_JP04_L2': { sourceProduct: 'Judge Pack 04' }, 'BT1-110_JP04_L2': { sourceProduct: 'Judge Pack 04' }, 'BT2-060_JP04_L2': { sourceProduct: 'Judge Pack 04' }, 'BT2-044_JP04_L2': { sourceProduct: 'Judge Pack 04' }, 'BT3-110_JP04_L2': { sourceProduct: 'Judge Pack 04' }, 'BT1-080_JP04_L2': { sourceProduct: 'Judge Pack 04' }, 'BT2-010_JP04_L2': { sourceProduct: 'Judge Pack 04' },
   'BT1-055_JP05': { sourceProduct: 'Judge Pack 05' }, 'BT2-104_JP05': { sourceProduct: 'Judge Pack 05' }, 'BT5-038_JP05': { sourceProduct: 'Judge Pack 05' }, 'BT1-076_JP05': { sourceProduct: 'Judge Pack 05' }, 'BT4-102_JP05': { sourceProduct: 'Judge Pack 05' }, 'BT1-108_JP05': { sourceProduct: 'Judge Pack 05' }, 'BT5-073_JP05': { sourceProduct: 'Judge Pack 05' }, 'BT2-067_JP05': { sourceProduct: 'Judge Pack 05' }, 'BT5-075_JP05': { sourceProduct: 'Judge Pack 05' }, 'P-077_JP05': { sourceProduct: 'Judge Pack 05' },
+  'BT1-055_JP05_L2': { sourceProduct: 'Judge Pack 05' }, 'BT2-104_JP05_L2': { sourceProduct: 'Judge Pack 05' }, 'BT5-038_JP05_L2': { sourceProduct: 'Judge Pack 05' }, 'BT1-076_JP05_L2': { sourceProduct: 'Judge Pack 05' }, 'BT4-102_JP05_L2': { sourceProduct: 'Judge Pack 05' }, 'BT1-108_JP05_L2': { sourceProduct: 'Judge Pack 05' }, 'BT5-073_JP05_L2': { sourceProduct: 'Judge Pack 05' }, 'BT2-067_JP05_L2': { sourceProduct: 'Judge Pack 05' }, 'BT5-075_JP05_L2': { sourceProduct: 'Judge Pack 05' }, 'P-077_JP05_L2': { sourceProduct: 'Judge Pack 05' },
   'BT5-115_JP06': { sourceProduct: 'Judge Pack 06' }, 'BT5-109_JP06': { sourceProduct: 'Judge Pack 06' }, 'BT6-107_JP06': { sourceProduct: 'Judge Pack 06' }, 'BT5-101_JP06': { sourceProduct: 'Judge Pack 06' }, 'P-090_JP06': { sourceProduct: 'Judge Pack 06' }, 'BT5-050_JP06': { sourceProduct: 'Judge Pack 06' }, 'TB3-048_JP06': { sourceProduct: 'Judge Pack 06' }, 'BT6-026_JP06': { sourceProduct: 'Judge Pack 06' }, 'BT6-025_JP06': { sourceProduct: 'Judge Pack 06' }, 'BT5-023_JP06': { sourceProduct: 'Judge Pack 06' },
   'EX3-08_JP07': { sourceProduct: 'Judge Pack 07' }, 'EX4-03_JP07': { sourceProduct: 'Judge Pack 07' }, 'P-112_JP07': { sourceProduct: 'Judge Pack 07' }, 'BT3-008_JP07': { sourceProduct: 'Judge Pack 07' }, 'BT1-025_JP07': { sourceProduct: 'Judge Pack 07' }, 'BT7-120_JP07': { sourceProduct: 'Judge Pack 07' }, 'TB2-024_JP07': { sourceProduct: 'Judge Pack 07' }, 'BT6-117_JP07': { sourceProduct: 'Judge Pack 07' }, 'BT7-117_JP07': { sourceProduct: 'Judge Pack 07' }, 'P-159_JP07': { sourceProduct: 'Judge Pack 07' },
   'BT7-106_JP08': { sourceProduct: 'Judge Pack 08' }, 'DB1-048_JP08': { sourceProduct: 'Judge Pack 08' }, 'BT8-113_JP08': { sourceProduct: 'Judge Pack 08' }, 'BT8-053_JP08': { sourceProduct: 'Judge Pack 08' }, 'BT7-078_JP08': { sourceProduct: 'Judge Pack 08' }, 'BT8-120_JP08': { sourceProduct: 'Judge Pack 08' }, 'BT9-102_JP08': { sourceProduct: 'Judge Pack 08' }, 'BT7-107_JP08': { sourceProduct: 'Judge Pack 08' }, 'BT7-029_JP08': { sourceProduct: 'Judge Pack 08' }, 'BT9-123_JP08': { sourceProduct: 'Judge Pack 08' },
@@ -2238,6 +2468,22 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'DB3-126_TS02': 'https://dragonball.center/files/module_dbc/objetos/59/snaq149667.jpg',
   'EB1-07_TS02': 'https://dragonball.center/files/module_dbc/objetos/9/bn21149668.jpg',
   'EX12-02_TS02': 'https://dragonball.center/files/module_dbc/objetos/70/wk4s149669.jpg',
+  'SEALED_TP01': 'https://dragonball.center/files/module_dbc/objetos/63/xqsm15537.jpg',
+  'SEALED_TP02': 'https://dragonball.center/files/module_dbc/objetos/63/lmaa15538.jpg',
+  'SEALED_TP03': 'https://dragonball.center/files/module_dbc/objetos/73/fjce15541.jpg',
+  'SEALED_TP04': 'https://dragonball.center/files/module_dbc/objetos/102/lgxn15544.jpg',
+  'SEALED_TP05_2018': 'https://dragonball.center/files/module_dbc/objetos/119/clgd116267.jpg',
+  'SEALED_TP05_2019': 'https://dragonball.center/files/module_dbc/objetos/90/mdyl36450.jpg',
+  'SEALED_TP06': 'https://dragonball.center/files/module_dbc/objetos/71/mlxq36458.jpg', 
+  'SEALED_TP07': 'https://dragonball.center/files/module_dbc/objetos/96/cwxq36507.jpg', 
+  'SEALED_TP08': 'https://dragonball.center/files/module_dbc/objetos/121/r5r7116678.jpg', 
+  'SEALED_EX_TP': 'https://dragonball.center/files/module_dbc/objetos/117/rsb4116679.jpg',
+  'SEALED_EVENT_PACK_01': 'https://dragonball.center/files/module_dbc/objetos/40/eald15548.jpg',
+  'SEALED_EVENT_PACK_02': 'https://dragonball.center/files/module_dbc/objetos/110/rk3z116268.jpg', 
+  'SEALED_EVENT_PACK_03': 'https://dragonball.center/files/module_dbc/objetos/99/vomp36551.jpg',
+  'SEALED_EVENT_PACK_04': 'https://dragonball.center/files/module_dbc/objetos/49/v7is116373.jpg',
+  'SEALED_CHAMPIONSHIP_2018': 'https://dragonball.center/files/module_dbc/objetos/73/hsci15546.jpg', 
+  'SEALED_CHAMPIONSHIP_2019': 'https://dragonball.center/files/module_dbc/objetos/123/cmtm36514.jpg',
   'BT8-116_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203927_in_1000x1000.jpg',
   'BT8-103_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203920_in_1000x1000.jpg',
   'BT8-084_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203845_in_1000x1000.jpg',
@@ -3300,6 +3546,9 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'EX6-30_EP16': 'https://static.dbscards.fr/cards/en/evp16/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-ex06-30-ex-event-pack-16-bardock-awakened-instincts.webp',
   'EX6-36_EP16': 'https://static.dbscards.fr/cards/en/evp16/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-ex06-36-ex-event-pack-16-a-crack-in-spacetime.webp',
   // Event Pack 17
+  'SEALED_PB01': 'https://dragonball.center/files/module_dbc/objetos/136/wrfd36478.jpg',
+  'SEALED_PB02': 'https://dragonball.center/files/module_dbc/objetos/131/ubym36506.jpg', 
+  'SEALED_PB03': 'https://dragonball.center/files/module_dbc/objetos/9/yhfy36526.jpg',
   'BT22-127_EP17': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT22-127_PR02.png',
   'BT7-073_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT7-073_PR.png',
   'BT7-057_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT7-057_PR.png',
@@ -3410,6 +3659,26 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'BT3-110_JP04': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT3-110_PR.png',
   'BT4-073_JP04': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT4-073_PR.png',
   'BT4-103_JP04': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT4-103_PR.png',
+  'BT1-005_JP04_L2': 'https://dragonball.center/files/module_dbc/objetos/91/lclc20239.png',
+  'BT1-080_JP04_L2': 'https://dragonball.center/files/module_dbc/objetos/20/edug20241.png',
+  'BT1-110_JP04_L2': 'https://dragonball.center/files/module_dbc/objetos/104/wurx20243.png',
+  'BT2-010_JP04_L2': 'https://dragonball.center/files/module_dbc/objetos/19/pkwn20245.png',
+  'BT2-044_JP04_L2': 'https://dragonball.center/files/module_dbc/objetos/119/ckja20247.png',
+  'BT2-060_JP04_L2': 'https://dragonball.center/files/module_dbc/objetos/115/dyee20249.png',
+  'BT2-093_JP04_L2': 'https://dragonball.center/files/module_dbc/objetos/139/pxdm20251.png',
+  'BT3-110_JP04_L2': 'https://dragonball.center/files/module_dbc/objetos/142/korr20253.png',
+  'BT4-073_JP04_L2': 'https://dragonball.center/files/module_dbc/objetos/29/mzlh20255.png',
+  'BT4-103_JP04_L2': 'https://dragonball.center/files/module_dbc/objetos/57/hcni20257.png',
+  'BT1-055_JP05_L2': 'https://dragonball.center/files/module_dbc/objetos/96/jvfs36575.jpg',
+  'BT1-076_JP05_L2': 'https://dragonball.center/files/module_dbc/objetos/16/fxzr36576.jpg',
+  'BT1-108_JP05_L2': 'https://dragonball.center/files/module_dbc/objetos/95/wzuw36577.jpg',
+  'BT2-067_JP05_L2': 'https://dragonball.center/files/module_dbc/objetos/104/ybjo36578.jpg',
+  'BT2-104_JP05_L2': 'https://dragonball.center/files/module_dbc/objetos/69/vqyu36579.jpg',
+  'BT4-102_JP05_L2': 'https://dragonball.center/files/module_dbc/objetos/89/lgat36580.jpg',
+  'BT5-038_JP05_L2': 'https://dragonball.center/files/module_dbc/objetos/139/xfcd36581.jpg',
+  'BT5-073_JP05_L2': 'https://dragonball.center/files/module_dbc/objetos/8/fiva36582.jpg',
+  'BT5-075_JP05_L2': 'https://dragonball.center/files/module_dbc/objetos/34/dyoa36583.jpg',
+  'P-077_JP05_L2': 'https://dragonball.center/files/module_dbc/objetos/56/kvrn36584.jpg',
   'BT1-083_JP_b': 'https://static.dbscards.fr/cards/en/jp/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-bt1-083-r-judge-ultimate-form-golden-frieza-back.webp',
   'BT1-083_JP11': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT1-083_PR.png',
   'BT1-083_JP11_b': 'https://static.dbscards.fr/cards/en/jp/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-bt1-083-r-judge-ultimate-form-golden-frieza-back.webp',
@@ -3717,7 +3986,6 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'P-263_EP02': 'https://static.dbscards.fr/cards/en/evp08/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-p-263-pr-event-pack-08-uws-masked-saiyan-brainwashed-no-more.webp',
   'P-263_EP08': 'https://static.dbscards.fr/cards/en/evp08/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-p-263-pr-event-pack-08-uws-masked-saiyan-brainwashed-no-more.webp',
   'P-274_EP08': 'https://static.dbscards.fr/cards/en/evp08/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-p-274-pr-event-pack-08-uws-boost-launch-feminine-wiles.webp',
-  'BT10-088_TS': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT10-088_PR.png',
   'BT10-088_EP08': '/BT10-088_EP08.jpg',
   'BT12-004_EP09': 'https://static.dbscards.fr/cards/en/evp09/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-bt12-004-sr-event-pack-09-piccolo-jr-descendant-of-the-king.webp',
   'BT16-012_EP09': 'https://static.dbscards.fr/cards/en/evp09/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-bt16-012-r-event-pack-09-ssb-vegeta-for-the-universes-survival.webp',
@@ -5322,8 +5590,10 @@ const isAlternative = (cardId: string) => {
 };
 
 const isVirtualSet = (setId: string) => {
-  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'EP01', 'EP02', 'EP03', 'EP04', 'EP05', 'EP06', 'EP07', 'EP08', 'EP09', 'EP10', 'EP11', 'EP13', 'EP14', 'EP15', 'EP16', 'EP17', 'EP18', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP05', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', 'UB26-3', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'PLAYMATS_FOLDER', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER', 'ENM', 'ENM_FW', 'CS01', 'CS02', 'CS03', 'COL09', 'TS01', 'TS02', 'COL10'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_');
+  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'EP01', 'EP02', 'EP03', 'EP04', 'EP05', 'EP06', 'EP07', 'EP08', 'EP09', 'EP10', 'EP11', 'EP13', 'EP14', 'EP15', 'EP16', 'EP17', 'EP18', 'PB_FOLDER', 'PB01', 'PB02', 'PB03', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP04_FOLDER', 'JP04_LVL2', 'JP05', 'JP05_FOLDER', 'JP05_LVL2', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP_FOLDER', 'TP01_NORMAL_VIEW', 'SEALED_TP_FOLDER', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', 'UB26-3', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'PLAYMATS_FOLDER', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER', 'ENM', 'ENM_FW', 'CS01', 'CS02', 'CS03', 'COL09', 'TS01', 'TS02', 'COL10'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_') || setId.startsWith('SEALED_') || setId.startsWith('MASTERS_TP') || setId.startsWith('MASTERS_EX') || setId.startsWith('MASTERS_SEALED') || setId.startsWith('MASTERS_CHAMPIONSHIP');
 };
+
+const EXPANSION_SET_TOURNAMENT_PACK = ['P-177', 'P-178', 'P-179', 'P-180', 'P-181', 'P-182', 'P-183', 'P-184', 'P-185', 'P-186'];
 
 const EVENT_PACK_01 = [
   'TB1-003_EP01', 'P-003_EP01', 'P-009_EP01', 'EX2-01_EP01', 
@@ -5337,7 +5607,7 @@ const EVENT_PACK_02 = [
 ];
 
 const EVENT_PACK_03 = [
-  'BT4-012_EP03', 'BT4-048_EP03', 'BT1-052_EP03', 'BT6-060_EP03',
+  'SEALED_EVENT_PACK_03', 'BT4-012_EP03', 'BT4-048_EP03', 'BT1-052_EP03', 'BT6-060_EP03',
   'BT4-093_EP03', 'BT1-109_EP03', 'BT5-112_EP03', 'BT5-117_EP03',
   'BT4-118_EP03', 'BT3-120_EP03'
 ];
@@ -5441,7 +5711,9 @@ const JUDGE_PACK_01 = ['P-003_JP01', 'P-015_JP01', 'P-016_JP01', 'P-018_JP01'];
 const JUDGE_PACK_02 = ['P-030_JP02', 'P-032_JP02', 'P-033_JP02', 'P-036_JP02', 'P-035_JP02'];
 const JUDGE_PACK_03 = ['P-053_JP03', 'P-049_JP03', 'P-040_JP03', 'P-048_JP03', 'P-052_JP03'];
 const JUDGE_PACK_04 = ['BT4-073_JP04', 'BT1-005_JP04', 'BT4-103_JP04', 'BT2-093_JP04', 'BT1-110_JP04', 'BT2-060_JP04', 'BT2-044_JP04', 'BT3-110_JP04', 'BT1-080_JP04', 'BT2-010_JP04'];
+const JUDGE_PACK_04_L2 = ['BT4-073_JP04_L2', 'BT1-005_JP04_L2', 'BT4-103_JP04_L2', 'BT2-093_JP04_L2', 'BT1-110_JP04_L2', 'BT2-060_JP04_L2', 'BT2-044_JP04_L2', 'BT3-110_JP04_L2', 'BT1-080_JP04_L2', 'BT2-010_JP04_L2'];
 const JUDGE_PACK_05 = ['BT1-055_JP05', 'BT2-104_JP05', 'BT5-038_JP05', 'BT1-076_JP05', 'BT4-102_JP05', 'BT1-108_JP05', 'BT5-073_JP05', 'BT2-067_JP05', 'BT5-075_JP05', 'P-077_JP05'];
+const JUDGE_PACK_05_L2 = ['BT1-055_JP05_L2', 'BT2-104_JP05_L2', 'BT5-038_JP05_L2', 'BT1-076_JP05_L2', 'BT4-102_JP05_L2', 'BT1-108_JP05_L2', 'BT5-073_JP05_L2', 'BT2-067_JP05_L2', 'BT5-075_JP05_L2', 'P-077_JP05_L2'];
 const JUDGE_PACK_06 = ['BT5-115_JP06', 'BT5-109_JP06', 'BT6-107_JP06', 'BT5-101_JP06', 'P-090_JP06', 'BT5-050_JP06', 'TB3-048_JP06', 'BT6-026_JP06', 'BT6-025_JP06', 'BT5-023_JP06'];
 const JUDGE_PACK_07 = ['EX3-08_JP07', 'EX4-03_JP07', 'P-112_JP07', 'BT3-008_JP07', 'BT1-025_JP07', 'BT7-120_JP07', 'TB2-024_JP07', 'BT6-117_JP07', 'BT7-117_JP07', 'P-159_JP07'];
 const JUDGE_PACK_08 = ['BT7-106_JP08', 'DB1-048_JP08', 'BT8-113_JP08', 'BT8-053_JP08', 'BT7-078_JP08', 'BT8-120_JP08', 'BT9-102_JP08', 'BT7-107_JP08', 'BT7-029_JP08', 'BT9-123_JP08'];
@@ -5455,6 +5727,10 @@ const JUDGE_PACK_15 = ['BT19-055_JP15', 'BT14-073_JP15', 'EX21-16_JP15', 'SD17-0
 const JUDGE_PACK_16 = ['BT8-022_JP16', 'BT10-088_JP16', 'EX21-15_JP16', 'BT13-020_JP16', 'BT12-115_JP16', 'BT21-051_JP16', 'P-219_JP16', 'P-159_JP16', 'BT14-135_JP16', 'P-321_JP16'];
 const JUDGE_PACK_17 = ['EX19-24_JP17', 'BT13-073_JP17', 'BT25-052_JP17', 'BT10-090_JP17', 'P-359_JP17', 'BT10-123_JP17', 'BT25-005_JP17', 'P-453_JP17', 'BT11-053_JP17', 'BT16-087_JP17'];
 const JUDGE_PACK_18 = ['DB2-097_JP18', 'BT14-007_JP18', 'BT15-033_JP18', 'BT7-110_JP18', 'BT19-049_JP18', 'P-643_JP18', 'BT24-113_JP18', 'BT15-063_JP18', 'BT7-087_JP18', 'BT24-088_JP18'];
+
+const POWER_BOOSTER_01 = ['P-112', 'P-113', 'P-114', 'P-115', 'P-116'];
+const POWER_BOOSTER_02 = ['P-119', 'P-120', 'P-121', 'P-122', 'P-123'];
+const POWER_BOOSTER_03 = ['P-143', 'P-144', 'P-145', 'P-146', 'P-147', 'P-148', 'P-149', 'P-150', 'P-151', 'P-152', 'P-153', 'P-154', 'P-155', 'P-156', 'P-157', 'P-158', 'P-159', 'P-160', 'P-161', 'P-162'];
 
 const TOURNAMENT_PACK_01_NORMAL = ['FS01-06_TP', 'FB01-005_TP', 'FB01-049_TP', 'FB01-057_TP', 'FB01-087_TP', 'FB01-088_TP', 'FB01-124_TP', 'FB01-128_TP'];
 const TOURNAMENT_PACK_01_WINNER = ['FS01-06_TP_W', 'FB01-049_TP_W', 'FB01-087_TP_W', 'FB01-128_TP_W'];
@@ -5577,6 +5853,42 @@ const FUSION_JUDGE_EVENT_PACK_04 = ['FB05-011_JEP04', 'FB05-018_JEP04', 'FB05-04
 const FUSION_JUDGE_EVENT_PACK_05 = ['FB07-007_JEP05', 'FB07-011_JEP05', 'FB07-027_JEP05', 'FB07-043_JEP05', 'FB07-063_JEP05', 'FB07-069_JEP05', 'FB07-080_JEP05', 'FB07-085_JEP05', 'FB07-103_JEP05', 'FB07-116_JEP05'];
 
 const PACK_ARRAYS: Record<string, string[]> = {
+  'MASTERS_SEALED_TP_FOLDER': ['SEALED_TP01', 'SEALED_TP02', 'SEALED_TP03', 'SEALED_TP04', 'SEALED_TP05_2018', 'SEALED_TP05_2019', 'SEALED_TP06', 'SEALED_TP07', 'SEALED_TP08', 'SEALED_EX_TP'],
+  'MASTERS_SEALED_TP01': ['SEALED_TP01'],
+  'MASTERS_SEALED_TP02': ['SEALED_TP02'],
+  'MASTERS_SEALED_TP03': ['SEALED_TP03'],
+  'MASTERS_SEALED_TP04': ['SEALED_TP04'],
+  'MASTERS_SEALED_TP05': ['SEALED_TP05_2018', 'SEALED_TP05_2019'],
+  'MASTERS_SEALED_TP06': ['SEALED_TP06'], 
+  'MASTERS_SEALED_TP07': ['SEALED_TP07'], 
+  'MASTERS_SEALED_TP08': ['SEALED_TP08'], 
+  'MASTERS_SEALED_EX_TP': ['SEALED_EX_TP'],
+  'MASTERS_SEALED_EP_FOLDER': ['SEALED_EVENT_PACK_01', 'SEALED_EVENT_PACK_02', 'SEALED_EVENT_PACK_03', 'SEALED_EVENT_PACK_04'],
+  'MASTERS_SEALED_EP01': ['SEALED_EVENT_PACK_01'],
+  'MASTERS_SEALED_EP02': ['SEALED_EVENT_PACK_02'], 
+  'MASTERS_SEALED_EP03': ['SEALED_EVENT_PACK_03'],
+  'MASTERS_SEALED_EP04': ['SEALED_EVENT_PACK_04'],
+  'MASTERS_SEALED_PB_FOLDER': ['SEALED_PB01', 'SEALED_PB02', 'SEALED_PB03'],
+  'MASTERS_SEALED_PB01': ['SEALED_PB01'],
+  'MASTERS_SEALED_PB02': ['SEALED_PB02'], 
+  'MASTERS_SEALED_PB03': ['SEALED_PB03'],
+  'MASTERS_SEALED_CHAMPIONSHIP_FOLDER': ['SEALED_CHAMPIONSHIP_2018', 'SEALED_CHAMPIONSHIP_2019'],
+  'MASTERS_SEALED_CHAMPIONSHIP_2018': ['SEALED_CHAMPIONSHIP_2018'], 
+  'MASTERS_SEALED_CHAMPIONSHIP_2019': ['SEALED_CHAMPIONSHIP_2019'],
+  'MASTERS_TP01': ['SEALED_TP01', 'P-002', 'P-003', 'P-004', 'P-005', 'P-006', 'P-007', 'P-008', 'P-009'],
+  'MASTERS_TP02': ['SEALED_TP02', 'P-012', 'P-013', 'P-014', 'P-015', 'P-016', 'P-017', 'P-018', 'P-019'],
+  'MASTERS_TP03': ['SEALED_TP03', 'P-030', 'P-031', 'P-032', 'P-033', 'P-034', 'P-035', 'P-036', 'P-037'],
+  'MASTERS_TP04': ['SEALED_TP04', 'P-049', 'P-050', 'P-051', 'P-052', 'P-053', 'P-054', 'P-055', 'P-056'],
+  'MASTERS_TP05': ['SEALED_TP05_2018', 'SEALED_TP05_2019', 'P-077', 'P-078', 'P-079', 'P-080', 'P-081', 'P-082', 'P-083', 'P-084'],
+  'MASTERS_TP06': ['SEALED_TP06', 'P-095', 'P-096', 'P-097', 'P-098', 'P-099', 'P-100', 'P-101', 'P-102'], 
+  'MASTERS_TP07': ['SEALED_TP07', 'P-126', 'P-127', 'P-128', 'P-129', 'P-130', 'P-131', 'P-132', 'P-133'], 
+  'MASTERS_TP08': ['SEALED_TP08', 'P-165', 'P-166', 'P-167', 'P-168', 'P-169', 'P-170', 'P-171', 'P-172'], 
+  'MASTERS_EX_TP': ['SEALED_EX_TP', ...EXPANSION_SET_TOURNAMENT_PACK],
+  'MASTERS_PB01': POWER_BOOSTER_01,
+  'MASTERS_PB02': POWER_BOOSTER_02, 
+  'MASTERS_PB03': ['SEALED_PB03', ...POWER_BOOSTER_03],
+  'MASTERS_CHAMPIONSHIP_2018': ['SEALED_CHAMPIONSHIP_2018', 'P-063', 'P-064', 'P-065', 'P-066', 'P-067'], 
+  'MASTERS_CHAMPIONSHIP_2019': ['SEALED_CHAMPIONSHIP_2019', 'P-138', 'P-139', 'P-140', 'P-141', 'P-142'],
   TS01: ['BT9-131_TS01', 'BT10-060_TS01', 'BT10-065_TS01', 'BT10-066_TS01', 'BT11-034_TS01', 'BT11-074_TS01', 'BT11-093_TS01', 'BT13-012_TS01', 'BT13-071_TS01', 'BT14-029_TS01', 'DB1-021_TS01', 'DB1-040_TS01', 'DB3-022_TS01', 'DB3-116_TS01', 'DB3-127_TS01'],
   TS02: ['BT9-133_TS02', 'BT10-041_TS02', 'BT10-068_TS02', 'BT10-088_TS02', 'BT10-105_TS02', 'BT11-032_TS02', 'BT11-052_TS02', 'BT11-053_TS02', 'BT11-066_TS02', 'DB1-002_TS02', 'DB2-133_TS02', 'DB2-159_TS02', 'DB3-126_TS02', 'EB1-07_TS02', 'EX12-02_TS02'],
   CS01: ['BT1-057_CS1', 'BT2-001_CS1', 'BT6-014_CS1', 'BT6-107_CS1', 'BT8-110_CS1', 'BT9-130_CS1', 'BT9-131_CS1', 'BT9-132_CS1', 'BT9-133_CS1', 'BT9-134_CS1', 'DB1-057_CS1', 'DB1-064_CS1', 'DB2-001_CS1', 'P-036_CS1', 'P-086_CS1', 'P-112_CS1', 'P-124_CS1', 'P-181_CS1'],
@@ -5585,7 +5897,8 @@ const PACK_ARRAYS: Record<string, string[]> = {
   JSP01: FUSION_JUDGE_STORE_PACK_01, JSP02: FUSION_JUDGE_STORE_PACK_02, JSP03: FUSION_JUDGE_STORE_PACK_03, JSP04: FUSION_JUDGE_STORE_PACK_04, JSP05: FUSION_JUDGE_STORE_PACK_05,
   JEP01: FUSION_JUDGE_EVENT_PACK_01, JEP02: FUSION_JUDGE_EVENT_PACK_02, JEP03: FUSION_JUDGE_EVENT_PACK_03, JEP04: FUSION_JUDGE_EVENT_PACK_04, JEP05: FUSION_JUDGE_EVENT_PACK_05,
   EP01: EVENT_PACK_01, EP02: EVENT_PACK_02, EP03: EVENT_PACK_03, EP04: EVENT_PACK_04, EP05: EVENT_PACK_05, EP06: EVENT_PACK_06, EP07: EVENT_PACK_07, EP08: EVENT_PACK_08, EP09: EVENT_PACK_09, EP10: EVENT_PACK_10, EP11: EVENT_PACK_11, EP12: EVENT_PACK_12, EP13: EVENT_PACK_13, EP14: EVENT_PACK_14, EP15: EVENT_PACK_15, EP16: EVENT_PACK_16, EP17: EVENT_PACK_17, EP18: EVENT_PACK_18,
-  JP01: JUDGE_PACK_01, JP02: JUDGE_PACK_02, JP03: JUDGE_PACK_03, JP04: JUDGE_PACK_04, JP05: JUDGE_PACK_05, JP06: JUDGE_PACK_06, JP07: JUDGE_PACK_07, JP08: JUDGE_PACK_08, JP09: JUDGE_PACK_09, JP10: JUDGE_PACK_10, JP11: JUDGE_PACK_11, JP12: JUDGE_PACK_12, JP13: JUDGE_PACK_13, JP14: JUDGE_PACK_14, JP15: JUDGE_PACK_15, JP16: JUDGE_PACK_16, JP17: JUDGE_PACK_17, JP18: JUDGE_PACK_18,
+  PB_FOLDER: [...POWER_BOOSTER_01, ...POWER_BOOSTER_02, ...POWER_BOOSTER_03], PB01: POWER_BOOSTER_01, PB02: POWER_BOOSTER_02, PB03: POWER_BOOSTER_03,
+  JP01: JUDGE_PACK_01, JP02: JUDGE_PACK_02, JP03: JUDGE_PACK_03, JP04_FOLDER: [...JUDGE_PACK_04, ...JUDGE_PACK_04_L2], JP04: JUDGE_PACK_04, JP04_LVL2: JUDGE_PACK_04_L2, JP05_FOLDER: [...JUDGE_PACK_05, ...JUDGE_PACK_05_L2], JP05: JUDGE_PACK_05, JP05_LVL2: JUDGE_PACK_05_L2, JP06: JUDGE_PACK_06, JP07: JUDGE_PACK_07, JP08: JUDGE_PACK_08, JP09: JUDGE_PACK_09, JP10: JUDGE_PACK_10, JP11: JUDGE_PACK_11, JP12: JUDGE_PACK_12, JP13: JUDGE_PACK_13, JP14: JUDGE_PACK_14, JP15: JUDGE_PACK_15, JP16: JUDGE_PACK_16, JP17: JUDGE_PACK_17, JP18: JUDGE_PACK_18,
   TP01: [...TOURNAMENT_PACK_01_NORMAL, ...TOURNAMENT_PACK_01_WINNER],
   TP02: [...TOURNAMENT_PACK_02_NORMAL, ...TOURNAMENT_PACK_02_WINNER],
   TP03: [...TOURNAMENT_PACK_03_NORMAL, ...TOURNAMENT_PACK_03_WINNER],
@@ -11096,7 +11409,7 @@ export default function TrackerApp() {
   useEffect(() => {
     const loadCards = async () => {
       console.log(`[DATA] Loading cards for gameType: ${gameType}`);
-      const mastersDataRaw = `${bt1Data}\n${promoData}\n${startersData}\n${expertsData}\n${expansionsData}\n${tb3Data}\n${tb2Data}\n${tb1Data}\n${eb1Data}\n${db3Data}\n${db2Data}\n${db1Data}\n${bt2Data}\n${bt3Data}\n${bt4Data}\n${bt5Data}\n${bt6Data}\n${bt7Data}\n${bt8Data}\n${bt9Data}\n${bt10Data}\n${bt11Data}\n${bt12Data}\n${bt13Data}\n${bt14Data}\n${bt15Data}\n${bt16Data}\n${bt17Data}\n${bt18Data}\n${bt19Data}\n${bt20Data}\n${bt21Data}\n${bt22Data}\n${bt23Data}\n${bt24Data}\n${bt25Data}\n${bt26Data}\n${bt27Data}\n${bt28Data}\n${bt29Data}\n${bt30Data}\n${bt31Data}\n${energyMarkersData}\n${tokensData}\n${meritsData}`;
+      const mastersDataRaw = `${bt1Data}\n${promoData}\n${startersData}\n${expertsData}\n${expansionsData}\n${tb3Data}\n${tb2Data}\n${tb1Data}\n${eb1Data}\n${db3Data}\n${db2Data}\n${db1Data}\n${bt2Data}\n${bt3Data}\n${bt4Data}\n${bt5Data}\n${bt6Data}\n${bt7Data}\n${bt8Data}\n${bt9Data}\n${bt10Data}\n${bt11Data}\n${bt12Data}\n${bt13Data}\n${bt14Data}\n${bt15Data}\n${bt16Data}\n${bt17Data}\n${bt18Data}\n${bt19Data}\n${bt20Data}\n${bt21Data}\n${bt22Data}\n${bt23Data}\n${bt24Data}\n${bt25Data}\n${bt26Data}\n${bt27Data}\n${bt28Data}\n${bt29Data}\n${bt30Data}\n${bt31Data}\n${energyMarkersData}\n${tokensData}\n${meritsData}\n${sealedCardsData}`;
       const combinedData = gameType === 'fusion' ? fusionWorldData : mastersDataRaw;
 
       let parsedCards: (Card & { baseIndex?: number })[] = combinedData.split('\n').filter(line => line.trim()).map((line, i) => {
@@ -11273,7 +11586,7 @@ export default function TrackerApp() {
             finalCode = finalCode.replace(/^XD0([1-9])(-)/, 'XD$1$2');
 
             // Clean specific suffixes that shouldn't affect image lookup
-            finalCode = finalCode.replace(/_TS$/, '_PR').replace(/_W$/, '_PR').replace(/_GS$/, '');
+            finalCode = finalCode.replace(/_TS$/, '_PR').replace(/_W$/, '_PR').replace(/_GS$/, '').replace(/_PB01_F$/, '').replace(/_PB01$/, '');
 
             imageUrl = `https://www.dbs-cardgame.com/images/cardlist/cardimg/${finalCode}.png`;
             if (type === 'Leader') {
@@ -11373,7 +11686,7 @@ export default function TrackerApp() {
       Object.keys(CARD_VARIATIONS).forEach(key => delete CARD_VARIATIONS[key]);
 
       // Dynamically populate CARD_VARIATIONS for base cards in enabled expansions
-      const foilEnabledExpansions = new Set(['BT3', 'TB1', 'BT4', 'TB2', 'BT5', 'BT6', 'BT7', 'BT8', 'BT9']);
+      const foilEnabledExpansions = new Set(['BT3', 'TB1', 'BT4', 'TB2', 'BT5', 'BT6', 'BT7', 'BT8', 'BT9', 'DB1', 'DB2', 'DB3']);
       const foilRarityExpansions = new Set([
         'BT10', 'BT11', 'BT12', 'BT13', 'BT14', 'BT15', 'BT16', 'BT17',
         'BT18', 'BT19', 'BT20', 'BT21', 'BT22', 'Bt22', 'BT23', 'EB1'
@@ -11391,7 +11704,8 @@ export default function TrackerApp() {
           // 1. Check if this card has Foil version
           const hasFoil = 
             (foilEnabledExpansions.has(card.expansion) && (card.rarity === 'C' || card.rarity === 'UC')) ||
-            (foilRarityExpansions.has(card.expansion) && (card.rarity === 'C' || card.rarity === 'UC' || card.rarity === 'R'));
+            (foilRarityExpansions.has(card.expansion) && (card.rarity === 'C' || card.rarity === 'UC' || card.rarity === 'R')) ||
+            (['P-002', 'P-003', 'P-004', 'P-005', 'P-006', 'P-007', 'P-008', 'P-009', 'P-012', 'P-013', 'P-014', 'P-015', 'P-016', 'P-017', 'P-018', 'P-019', 'P-030', 'P-031', 'P-032', 'P-033', 'P-034', 'P-035', 'P-036', 'P-037', 'P-049', 'P-050', 'P-051', 'P-052', 'P-053', 'P-054', 'P-055', 'P-056', 'P-063', 'P-064', 'P-065', 'P-066', 'P-067', 'P-077', 'P-078', 'P-079', 'P-080', 'P-081', 'P-082', 'P-083', 'P-084', 'P-095', 'P-096', 'P-097', 'P-098', 'P-099', 'P-100', 'P-101', 'P-102', 'P-112', 'P-113', 'P-114', 'P-115', 'P-116', 'P-119', 'P-120', 'P-121', 'P-122', 'P-123', 'P-124', 'P-125', 'P-126', 'P-127', 'P-128', 'P-129', 'P-130', 'P-131', 'P-132', 'P-133', 'P-138', 'P-139', 'P-140', 'P-141', 'P-142', 'P-143', 'P-144', 'P-145', 'P-146', 'P-147', 'P-148', 'P-149', 'P-150', 'P-151', 'P-152', 'P-153', 'P-154', 'P-155', 'P-156', 'P-157', 'P-158', 'P-159', 'P-160', 'P-161', 'P-162', 'P-165', 'P-166', 'P-167', 'P-168', 'P-169', 'P-170', 'P-171', 'P-172'].includes(card.id));
           if (hasFoil) {
             variationsList.push(
                { id: card.id, label: { es: 'Normal', en: 'Normal' }, isFoil: false },
@@ -11455,40 +11769,6 @@ export default function TrackerApp() {
 
           if (variationsList.length > 0) {
             CARD_VARIATIONS[card.id] = variationsList;
-          }
-        }
-      });
-
-      // Custom variations: scan and link custom alternate versions (like _CS1, etc.) to their base cards in CARD_VARIATIONS
-      parsedCards.forEach(card => {
-        if (card.id.includes('_') && !card.id.endsWith('_var_foil') && card.id !== 'BT1-057_CS1') {
-          const baseId = card.id.split('_')[0];
-          const baseCard = parsedCards.find(c => c.id === baseId);
-          if (baseCard) {
-            if (!CARD_VARIATIONS[baseId]) {
-              CARD_VARIATIONS[baseId] = [
-                { id: baseId, label: { es: 'Normal', en: 'Normal' }, isFoil: false }
-              ];
-            }
-            const exists = CARD_VARIATIONS[baseId].some(v => v.id === card.id);
-            if (!exists) {
-              let labelEs = 'Repr.';
-              let labelEn = 'Repr.';
-              if (card.id.includes('_CS')) {
-                const volMatch = card.id.match(/_CS(\d+)/);
-                const volNum = volMatch ? volMatch[1] : '1';
-                labelEs = `Collector's Selection Vol.${volNum}`;
-                labelEn = `Collector's Selection Vol.${volNum}`;
-              }
-              CARD_VARIATIONS[baseId].push({
-                id: card.id,
-                label: { es: labelEs, en: labelEn },
-                isFoil: true,
-                imageUrl: card.imageUrl,
-                backImageUrl: card.backImageUrl,
-                rarity: card.rarity
-              });
-            }
           }
         }
       });
@@ -13406,31 +13686,33 @@ export default function TrackerApp() {
                   }
                   window.scrollTo(0, 0);
                 }}
-                className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-full border border-white/5 text-orange-500 hover:bg-orange-500/10 transition-all active:scale-95"
+                className="flex items-center sm:gap-2 bg-white/5 px-2 sm:px-3 py-1.5 rounded-full border border-white/5 text-orange-500 hover:bg-orange-500/10 transition-all active:scale-95"
               >
                 <ChevronLeft size={16} />
-                <span className="text-[10px] font-black uppercase tracking-widest">{lang === 'es' ? 'VOLVER' : 'BACK'}</span>
+                <span className="hidden sm:inline text-[10px] font-black uppercase tracking-widest">{lang === 'es' ? 'VOLVER' : 'BACK'}</span>
               </button>
             )}
 
-            <button 
-              onClick={() => {
-                const newType = gameType === 'masters' ? 'fusion' : 'masters';
-                setGameType(newType);
-                safeStorage.setItem('gameType', newType);
-                safeStorage.setItem('lastGameSelectionDate', new Date().toDateString());
-              }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-all ${
-                gameType === 'fusion' 
-                  ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-500' 
-                  : 'bg-orange-500/10 border-orange-500/30 text-orange-500'
-              }`}
-            >
-              <Zap size={12} />
-              <span className="text-[10px] font-black uppercase tracking-tight">
-                {gameType === 'fusion' ? 'Fusion World' : 'Masters'}
-              </span>
-            </button>
+            {!(activeTab === 'collection' && (currentCollectionCategory !== null || filters.expansion !== 'Todos')) && (
+              <button 
+                onClick={() => {
+                  const newType = gameType === 'masters' ? 'fusion' : 'masters';
+                  setGameType(newType);
+                  safeStorage.setItem('gameType', newType);
+                  safeStorage.setItem('lastGameSelectionDate', new Date().toDateString());
+                }}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-all ${
+                  gameType === 'fusion' 
+                    ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-500' 
+                    : 'bg-orange-500/10 border-orange-500/30 text-orange-500'
+                }`}
+              >
+                <Zap size={12} />
+                <span className="text-[10px] font-black uppercase tracking-tight">
+                  {gameType === 'fusion' ? 'Fusion World' : 'Masters'}
+                </span>
+              </button>
+            )}
 
             {/* Goal Toggle Mini */}
             <button 
@@ -15418,6 +15700,62 @@ export default function TrackerApp() {
                       className={`w-full ${isHorizontalFormat(selectedCard) ? 'max-w-[460px] md:max-w-[600px] mt-6 sm:mt-10' : 'max-w-[260px] md:max-w-[325px]'} mx-auto`}
                     >
                       <ModalCard selectedCard={cardToRender || selectedCard} isFlipped={isFlipped} setIsFlipped={setIsFlipped} />
+                      {selectedCard.type === 'Sealed' && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedCard(null);
+                            
+                            // Map sealed card to its category/set
+                            let targetCat = 'coleccionismo';
+                            let targetSub = 'Tournament Packs';
+                            let targetExpansion = 'MASTERS_TP01';
+                            
+                            if (selectedCard.id === 'SEALED_TP01') {
+                              targetExpansion = 'MASTERS_TP01';
+                            } else if (selectedCard.id === 'SEALED_TP02') {
+                              targetExpansion = 'MASTERS_TP02';
+                            } else if (selectedCard.id === 'SEALED_TP03') {
+                              targetExpansion = 'MASTERS_TP03';
+                            } else if (selectedCard.id === 'SEALED_TP04') {
+                              targetExpansion = 'MASTERS_TP04';
+                            } else if (selectedCard.id === 'SEALED_TP05_2018' || selectedCard.id === 'SEALED_TP05_2019') {
+                              targetExpansion = 'MASTERS_TP05';
+                            } else if (selectedCard.id === 'SEALED_TP06') {
+                              targetExpansion = 'MASTERS_TP06';
+                            } else if (selectedCard.id === 'SEALED_TP07') {
+                              targetExpansion = 'MASTERS_TP07'; 
+                            } else if (selectedCard.id === 'SEALED_TP08') {
+                              targetExpansion = 'MASTERS_TP08'; 
+                            } else if (selectedCard.id === 'SEALED_EX_TP') {
+                              targetExpansion = 'MASTERS_EX_TP';
+                            } else if (selectedCard.id === 'SEALED_EVENT_PACK_01') {
+                              targetExpansion = 'EP01';
+                              targetSub = 'Eventos especiales';
+                            } else if (selectedCard.id === 'SEALED_EVENT_PACK_02') {
+                              targetExpansion = 'EP02'; 
+                            } else if (selectedCard.id === 'SEALED_EVENT_PACK_03') {
+                              targetExpansion = 'EP03';
+                            } else if (selectedCard.id === 'SEALED_EVENT_PACK_04') {
+                              targetExpansion = 'EP04';
+                              targetSub = 'Eventos especiales';
+                            } else if (selectedCard.id === 'SEALED_CHAMPIONSHIP_2018') {
+                              targetExpansion = 'MASTERS_CHAMPIONSHIP_2018'; 
+                            } else if (selectedCard.id === 'SEALED_CHAMPIONSHIP_2019') {
+                              targetExpansion = 'MASTERS_CHAMPIONSHIP_2019';
+                              targetSub = 'Championship Packs';
+                            }
+                            
+                            setCurrentCollectionCategory(targetCat);
+                            setCurrentCollectionSubCategory(targetSub);
+                            setFilters(prev => ({ ...prev, expansion: targetExpansion }));
+                          }}
+                          className="mt-6 mx-auto w-full max-w-[260px] flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 font-black text-white px-4 py-3 rounded-2xl shadow-xl hover:scale-105 transition-transform active:scale-95 text-xs uppercase tracking-widest border border-white/20"
+                        >
+                          <Library size={16} />
+                          {lang === 'es' ? 'Ver Cartas del Set' : 'View Cards from Set'}
+                        </button>
+                      )}
                     </motion.div>
                   ) : (
                     <motion.div 
@@ -15777,9 +16115,10 @@ export default function TrackerApp() {
                     const findSetIdBySourceProduct = (sourceProduct: string, cardId: string): string | null => {
                       const lowerSource = sourceProduct.toLowerCase();
                       
-                      const setEntry = Object.entries(SET_METADATA).find(([, meta]) => 
+                      let setEntry = Object.entries(SET_METADATA).find(([, meta]) => 
                         meta.sourceProduct.toLowerCase() === lowerSource
                       );
+                      
                       if (setEntry) {
                         const baseId = setEntry[0];
                         for (const group of currentGroups) {
