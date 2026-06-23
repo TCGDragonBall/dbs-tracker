@@ -2,5 +2,5 @@
   "name": "DBS TCG Tracker",
   "description": "Rastreador de colecciones de Dragon Ball Super Card Game (Masters & Fusion World) con inventario, valores de mercado y funciones sociales.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

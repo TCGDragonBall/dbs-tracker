@@ -139,7 +139,6 @@ DB3-115	Piccolo Jr., Eradicator of Peace	SR	Battle	Multi	DB3
 DB3-115_EP09	Piccolo Jr., Eradicator of Peace	PR	Battle	Multi	DB3
 DB3-116	Son Goku, Unwavering Conviction	R	Battle	Multi	DB3
 DB3-116_TS01	Son Goku, Unwavering Conviction	R	Battle	Multi	DB3
-DB3-116_PR	Son Goku, Unwavering Conviction	PR	Battle	Multi	DB3
 DB3-117	Korin, the Cat Sage	UC	Battle	Multi	DB3
 DB3-118	Bardock, Legend's Origin	SR	Battle	Multi	DB3
 DB3-119	Imparted Wishes Tora	R	Battle	Multi	DB3
@@ -148,13 +147,12 @@ DB3-121	King Piccolo, the Exterminator	SR	Battle	Multi	DB3
 DB3-122	Son Goku, Plan for Victory	R	Battle	Multi	DB3
 DB3-123	Yajirobe, a New Ally	UC	Battle	Multi	DB3
 DB3-124	Hirudegarn, the Reoccurring Nightmare	SR	Battle	Multi	DB3
+DB3-124_PR	Hirudegarn, the Reoccurring Nightmare	PR	Battle	Multi	DB3
 DB3-125	Tapion, Fate of a Hero	R	Battle	Multi	DB3
 DB3-126	Vegeta, Villain-Turned-Protector	UC	Battle	Multi	DB3
 DB3-126_TS02	Vegeta, Villain-Turned-Protector	UC	Battle	Multi	DB3
-DB3-126_PR	Vegeta, Villain-Turned-Protector	PR	Battle	Multi	DB3
 DB3-127	Kakarot, Fate's Dawning	UC	Battle	Multi	DB3
 DB3-127_TS01	Kakarot, Fate's Dawning	UC	Battle	Multi	DB3
-DB3-127_PR	Kakarot, Fate's Dawning	PR	Battle	Multi	DB3
 DB3-128	Final Heat Phalanx	R	Extra	Multi	DB3
 DB3-129	Explosive Demon Wave	SR	Extra	Multi	DB3
 DB3-130	Lord Slug, Youth Regained	SR	Battle	Multi	DB3
@@ -167,6 +165,7 @@ DB3-134_W	Lord Slug, Giant Force	GFR	Unison	Red	DB3
 DB3-135	King Piccolo, Giant Force	GFR	Unison	Red	DB3
 DB3-136	Raditz, Giant Force	GFR	Unison	Blue	DB3
 DB3-136_EP17	Raditz, Giant Force	PR	Unison	Blue	DB3
+DB3-136_PR	Raditz, Giant Force	PR	Unison	Blue	DB3
 DB3-137	Bardock, Giant Force	GFR	Unison	Blue	DB3
 DB3-138	King Vegeta, Giant Force	GFR	Unison	Blue	DB3
 DB3-139	Hirudegarn, Giant Force	GFR	Unison	Green	DB3
