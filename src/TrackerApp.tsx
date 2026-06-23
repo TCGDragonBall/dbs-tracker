@@ -912,7 +912,7 @@ const expansionGroups: ExpansionGroup[] = [
     items: [
       { id: 'COL01', label: 'Merit Cards', sub: 'Premios de torneos' },
       { id: 'ENM', label: 'Energy Markers', sub: 'Markers' },
-      { id: 'COL02', label: 'Giant Size Cards', sub: 'Próximamente', locked: true },
+      { id: 'COL02', label: 'Giant Size Cards', sub: 'Cartas Especiales', locked: false },
       { 
         id: 'COL05', 
         label: 'Event Packs', 
@@ -1088,7 +1088,10 @@ const expansionGroups: ExpansionGroup[] = [
         sub: 'Accessories', 
         locked: false,
         subItems: [
-          { id: 'ANIMENEXT_2019', label: 'AnimeNEXT 2019', sub: 'Eventos' }
+          { id: 'ANIMENEXT_2019', label: 'AnimeNEXT 2019', sub: 'Eventos' },
+          { id: 'ORIGINS_2019', label: 'Origins 2019', sub: 'Eventos' },
+          { id: 'ANIME_EXPO_2019', label: 'Anime Expo 2019', sub: 'Eventos' },
+          { id: 'OTAKON_2019', label: 'Otakon 2019', sub: 'Eventos' }
         ]
       },
       { id: 'COL11', label: 'Fundas', sub: 'Sleeves' },
@@ -2746,7 +2749,100 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
   'PM-CH-W1': { sourceProduct: 'Championship 2024 Wave 1' },
 };
 
+
+const EXTRA_VARIANTS_ORIGINS: Record<string, { id: string; label: Record<string, string>; isFoil: boolean; rarity?: string }> = {
+  'BT1-053': { id: 'BT1-053_OR19', label: { es: 'Origins 2019', en: 'Origins 2019' }, isFoil: false },
+  'BT1-014': { id: 'BT1-014_OR19', label: { es: 'Origins 2019', en: 'Origins 2019' }, isFoil: false },
+  'BT1-052_EP03': { id: 'BT1-052_OR19', label: { es: 'Origins 2019', en: 'Origins 2019' }, isFoil: false },
+  'BT3-104': { id: 'BT3-104_OR19', label: { es: 'Origins 2019', en: 'Origins 2019' }, isFoil: false },
+  'BT1-109_EP03': { id: 'BT1-109_OR19', label: { es: 'Origins 2019', en: 'Origins 2019' }, isFoil: false },
+  'BT3-120_EP03': { id: 'BT3-120_OR19', label: { es: 'Origins 2019', en: 'Origins 2019' }, isFoil: false },
+  'BT4-012_EP03': { id: 'BT4-012_OR19', label: { es: 'Origins 2019', en: 'Origins 2019' }, isFoil: false },
+  'BT4-048_EP03': { id: 'BT4-048_OR19', label: { es: 'Origins 2019', en: 'Origins 2019' }, isFoil: false },
+  'BT4-093_EP03': { id: 'BT4-093_OR19', label: { es: 'Origins 2019', en: 'Origins 2019' }, isFoil: false },
+  'BT4-118_EP03': { id: 'BT4-118_OR19', label: { es: 'Origins 2019', en: 'Origins 2019' }, isFoil: false },
+  'BT5-112_EP03': { id: 'BT5-112_OR19', label: { es: 'Origins 2019', en: 'Origins 2019' }, isFoil: false },
+  'BT5-117_EP03': { id: 'BT5-117_OR19', label: { es: 'Origins 2019', en: 'Origins 2019' }, isFoil: false }
+        };
+
+
+const EXTRA_VARIANTS_OTAKON: Record<string, { id: string; label: Record<string, string>; isFoil: boolean; rarity?: string }> = {
+  'P-041': { id: 'P-041_OT19', label: { es: 'Otakon 2019', en: 'Otakon 2019' }, isFoil: false },
+  'BT1-055': { id: 'BT1-055_OT19', label: { es: 'Otakon 2019', en: 'Otakon 2019' }, isFoil: false },
+  'BT1-079': { id: 'BT1-079_OT19', label: { es: 'Otakon 2019', en: 'Otakon 2019' }, isFoil: false },
+  'P-089': { id: 'P-089_OT19', label: { es: 'Otakon 2019', en: 'Otakon 2019' }, isFoil: false }
+};
+
 const IMAGE_OVERRIDES: Record<string, string> = {
+
+  'BT1-053_OR19': 'https://dragonball.center/files/module_dbc/objetos/49/icw5116269.jpg',
+  'BT1-014_OR19': 'https://dragonball.center/files/module_dbc/objetos/147/eu6h116273.jpg',
+  'BT1-052_OR19': 'https://dragonball.center/files/module_dbc/objetos/104/jvzh116336.jpg',
+  'BT3-104_OR19': 'https://dragonball.center/files/module_dbc/objetos/20/c1sf116275.jpg',
+  'BT1-109_OR19': 'https://dragonball.center/files/module_dbc/objetos/24/p40o116337.jpg',
+  'BT3-120_OR19': 'https://dragonball.center/files/module_dbc/objetos/82/2nb3116338.jpg',
+  'BT4-012_OR19': 'https://dragonball.center/files/module_dbc/objetos/7/2rnt116339.jpg',
+  'BT4-048_OR19': 'https://dragonball.center/files/module_dbc/objetos/67/5yv6116340.jpg',
+  'BT4-093_OR19': 'https://dragonball.center/files/module_dbc/objetos/100/06w3116341.jpg',
+  'BT4-118_OR19': 'https://dragonball.center/files/module_dbc/objetos/107/mfw1116342.jpg',
+  'BT5-112_OR19': 'https://dragonball.center/files/module_dbc/objetos/86/h42o116343.jpg',
+  'BT5-117_OR19': 'https://dragonball.center/files/module_dbc/objetos/94/gdw8116344.jpg',
+  'PM-AX2019-01': 'https://dragonball.center/files/module_dbc/objetos/128/eifa116371.png',
+  'PM-AX2019-02': 'https://dragonball.center/files/module_dbc/objetos/130/aivh116372.png',
+  'P-041_OT19': 'https://dragonball.center/files/module_dbc/objetos/54/lio3116383.jpg',
+  'BT1-055_OT19': 'https://dragonball.center/files/module_dbc/objetos/9/jhgp116386.jpg',
+  'BT1-079_OT19': 'https://dragonball.center/files/module_dbc/objetos/140/31l7116387.jpg',
+  'P-089_OT19': 'https://dragonball.center/files/module_dbc/objetos/143/uvum116388.jpg',
+  'TB3-018_GS': 'https://dragonball.center/files/module_dbc/objetos/141/egz0116385.jpg',
+  'BT5-001_GS': 'https://dragonball.center/files/module_dbc/objetos/36/09rp116390.jpg',
+  'BT5-079_GS': 'https://dragonball.center/files/module_dbc/objetos/104/ufe6116391.jpg',
+  'BT5-105_GS': 'https://dragonball.center/files/module_dbc/objetos/112/oi0z116389.jpg',
+  'PM-OT2019-01': 'https://dragonball.center/files/module_dbc/objetos/116/eh1k116397.jpg',
+  'PM-OT2019-02': 'https://dragonball.center/files/module_dbc/objetos/68/itgu116400.jpg',
+  'PM-OT2019-03': 'https://dragonball.center/files/module_dbc/objetos/108/x2wn116403.jpg',
+  'PM-OT2019-04': 'https://dragonball.center/files/module_dbc/objetos/122/s1az116406.jpg',
+  'PM-OT2019-05': 'https://dragonball.center/files/module_dbc/objetos/80/hxlm116409.jpg',
+  'PM-OT2019-06': 'https://dragonball.center/files/module_dbc/objetos/100/d65b116398.jpg',
+  'PM-OT2019-07': 'https://dragonball.center/files/module_dbc/objetos/52/uet0116401.jpg',
+  'PM-OT2019-08': 'https://dragonball.center/files/module_dbc/objetos/121/hbwm116404.jpg',
+  'PM-OT2019-09': 'https://dragonball.center/files/module_dbc/objetos/74/6pmj116407.jpg',
+  'PM-OT2019-10': 'https://dragonball.center/files/module_dbc/objetos/56/w8ap116410.jpg',
+  'PM-OT2019-11': 'https://dragonball.center/files/module_dbc/objetos/131/jd2w116399.jpg',
+  'PM-OT2019-12': 'https://dragonball.center/files/module_dbc/objetos/125/7j4j116402.jpg',
+  'PM-OT2019-13': 'https://dragonball.center/files/module_dbc/objetos/81/q0tn116405.jpg',
+  'PM-OT2019-14': 'https://dragonball.center/files/module_dbc/objetos/145/7n77116408.jpg',
+  'PM-OT2019-15': 'https://dragonball.center/files/module_dbc/objetos/18/yjgf116411.jpg',
+
+
+  'BT6-105_GS': 'https://dragonball.center/files/module_dbc/objetos/104/cfrz116276.jpg',
+  'BT6-027_GS': 'https://dragonball.center/files/module_dbc/objetos/90/lusv116300.jpg',
+  'BT6-028_GS': 'https://dragonball.center/files/module_dbc/objetos/6/72oy116298.jpg',
+  'BT6-079_GS': 'https://dragonball.center/files/module_dbc/objetos/114/94oz116299.jpg',
+  'PM-OR2019-01': 'https://dragonball.center/files/module_dbc/objetos/2/jei0116301.png',
+  'PM-OR2019-02': 'https://dragonball.center/files/module_dbc/objetos/17/y755116302.png',
+  'PM-OR2019-03': 'https://dragonball.center/files/module_dbc/objetos/73/l7jw116303.png',
+  'PM-OR2019-04': 'https://dragonball.center/files/module_dbc/objetos/55/ocu0116304.png',
+  'PM-OR2019-05': 'https://dragonball.center/files/module_dbc/objetos/10/84ae116305.png',
+  'PM-OR2019-06': 'https://dragonball.center/files/module_dbc/objetos/91/j0ig116321.jpg',
+  'PM-OR2019-07': 'https://dragonball.center/files/module_dbc/objetos/91/d42g116324.jpg',
+  'PM-OR2019-08': 'https://dragonball.center/files/module_dbc/objetos/21/en6q116327.jpg',
+  'PM-OR2019-09': 'https://dragonball.center/files/module_dbc/objetos/74/b217116330.jpg',
+  'PM-OR2019-10': 'https://dragonball.center/files/module_dbc/objetos/30/hqwh116333.jpg',
+  'PM-OR2019-11': 'https://dragonball.center/files/module_dbc/objetos/102/v7ag116322.jpg',
+  'PM-OR2019-12': 'https://dragonball.center/files/module_dbc/objetos/113/1ezp116325.jpg',
+  'PM-OR2019-13': 'https://dragonball.center/files/module_dbc/objetos/34/mstq116328.jpg',
+  'PM-OR2019-14': 'https://dragonball.center/files/module_dbc/objetos/66/6itc116331.jpg',
+  'PM-OR2019-15': 'https://dragonball.center/files/module_dbc/objetos/36/53kt116334.jpg',
+  'PM-OR2019-16': 'https://dragonball.center/files/module_dbc/objetos/27/pl9j116323.jpg',
+  'PM-OR2019-17': 'https://dragonball.center/files/module_dbc/objetos/96/ha1v116326.jpg',
+  'PM-OR2019-18': 'https://dragonball.center/files/module_dbc/objetos/111/brag116329.jpg',
+  'PM-OR2019-19': 'https://dragonball.center/files/module_dbc/objetos/141/1mws116332.jpg',
+  'PM-OR2019-20': 'https://dragonball.center/files/module_dbc/objetos/17/ysfh116335.jpg',
+  'PM-OR2019-21': 'https://dragonball.center/files/module_dbc/objetos/124/nuqv116271.jpg',
+  'PM-OR2019-22': 'https://dragonball.center/files/module_dbc/objetos/48/2tse116272.jpg',
+  'SL-OR2019': 'https://dragonball.center/files/module_dbc/objetos/105/raks116270.jpg',
+  'ORIGINS_2019': 'https://dragonball.center/files/module_dbc/objetos/2/jei0116301.png',
+
   'SEALED_CHAMPIONSHIP_2022_CEL': 'https://dragonball.center/files/module_dbc/objetos/4/rs88123041.jpg',
   'SEALED_CHAMPIONSHIP_2022_FP': 'https://dragonball.center/files/module_dbc/objetos/35/3xzi123077.jpg',
   'SEALED_CHAMPIONSHIP_2022_ZS': 'https://dragonball.center/files/module_dbc/objetos/32/6zsr123078.jpg',
@@ -6215,7 +6311,7 @@ const isAlternative = (cardId: string) => {
 };
 
 const isVirtualSet = (setId: string) => {
-  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'PB_FOLDER', 'PB01', 'PB02', 'PB03', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP04_FOLDER', 'JP04_LVL2', 'JP05', 'JP05_FOLDER', 'JP05_LVL2', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP_FOLDER', 'TP01_NORMAL_VIEW', 'SEALED_TP_FOLDER', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', 'UB26-3', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'PLAYMATS_FOLDER', 'PLAYMATS_MASTERS_FOLDER', 'ANIMENEXT_2019', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER', 'ENM', 'ENM_FW', 'CS01', 'CS02', 'CS03', 'COL09', 'TS01', 'TS02', 'COL10', 'COL11'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_') || setId.startsWith('SEALED_') || setId.startsWith('MASTERS_') || setId.startsWith('EP');
+  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'PB_FOLDER', 'PB01', 'PB02', 'PB03', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP04_FOLDER', 'JP04_LVL2', 'JP05', 'JP05_FOLDER', 'JP05_LVL2', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP_FOLDER', 'TP01_NORMAL_VIEW', 'SEALED_TP_FOLDER', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', 'UB26-3', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'PLAYMATS_FOLDER', 'PLAYMATS_MASTERS_FOLDER', 'ANIMENEXT_2019', 'ORIGINS_2019', 'ANIME_EXPO_2019', 'OTAKON_2019', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER', 'ENM', 'ENM_FW', 'CS01', 'CS02', 'CS03', 'COL09', 'TS01', 'TS02', 'COL10', 'COL11'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_') || setId.startsWith('SEALED_') || setId.startsWith('MASTERS_') || setId.startsWith('EP');
 };
 
 const EXPANSION_SET_TOURNAMENT_PACK = ['P-177', 'P-178', 'P-179', 'P-180', 'P-181', 'P-182', 'P-183', 'P-184', 'P-185', 'P-186'];
@@ -6576,8 +6672,11 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_SEALED_CHAMPIONSHIP_2023_ZENKAI': ['SEALED_CHAMPIONSHIP_2023_ZENKAI'],
   'MASTERS_SEALED_CHAMPIONSHIP_2024_FINALS': ['SEALED_CHAMPIONSHIP_2024_FINALS'],
   'MASTERS_SEALED_CHAMPIONSHIP_2024_ZENKAI': ['SEALED_CHAMPIONSHIP_2024_ZENKAI'],
-  'PLAYMATS_MASTERS_FOLDER': ['ANIMENEXT_2019'],
+  'PLAYMATS_MASTERS_FOLDER': ['ANIMENEXT_2019', 'ORIGINS_2019', 'ANIME_EXPO_2019', 'OTAKON_2019'],
+  'OTAKON_2019': ['PM-OT2019-01', 'PM-OT2019-02', 'PM-OT2019-03', 'PM-OT2019-04', 'PM-OT2019-05', 'PM-OT2019-06', 'PM-OT2019-07', 'PM-OT2019-08', 'PM-OT2019-09', 'PM-OT2019-10', 'PM-OT2019-11', 'PM-OT2019-12', 'PM-OT2019-13', 'PM-OT2019-14', 'PM-OT2019-15'],
+  'ANIME_EXPO_2019': ['PM-AX2019-01', 'PM-AX2019-02'],
   'ANIMENEXT_2019': ['PM-AN2019-01', 'PM-AN2019-02', 'PM-AN2019-03', 'PM-AN2019-04', 'PM-AN2019-05'],
+  'ORIGINS_2019': ['PM-OR2019-01', 'PM-OR2019-02', 'PM-OR2019-03', 'PM-OR2019-04', 'PM-OR2019-05', 'PM-OR2019-06', 'PM-OR2019-07', 'PM-OR2019-08', 'PM-OR2019-09', 'PM-OR2019-10', 'PM-OR2019-11', 'PM-OR2019-12', 'PM-OR2019-13', 'PM-OR2019-14', 'PM-OR2019-15', 'PM-OR2019-16', 'PM-OR2019-17', 'PM-OR2019-18', 'PM-OR2019-19', 'PM-OR2019-20', 'PM-OR2019-21', 'PM-OR2019-22'],
   'MASTERS_TP01': ['SEALED_TP01', 'P-002', 'P-003', 'P-004', 'P-005', 'P-006', 'P-007', 'P-008', 'P-009'],
   'MASTERS_TP02': ['SEALED_TP02', 'P-012', 'P-013', 'P-014', 'P-015', 'P-016', 'P-017', 'P-018', 'P-019'],
   'MASTERS_TP03': ['SEALED_TP03', 'P-030', 'P-031', 'P-032', 'P-033', 'P-034', 'P-035', 'P-036', 'P-037'],
@@ -6649,7 +6748,7 @@ const PACK_ARRAYS: Record<string, string[]> = {
   JEP01: FUSION_JUDGE_EVENT_PACK_01, JEP02: FUSION_JUDGE_EVENT_PACK_02, JEP03: FUSION_JUDGE_EVENT_PACK_03, JEP04: FUSION_JUDGE_EVENT_PACK_04, JEP05: FUSION_JUDGE_EVENT_PACK_05,
   EP01: EVENT_PACK_01, EP02: EVENT_PACK_02, EP03: EVENT_PACK_03, EP04: EVENT_PACK_04, EP05: EVENT_PACK_05, EP06: EVENT_PACK_06, EP07: EVENT_PACK_07, EP08: EVENT_PACK_08, EP09: EVENT_PACK_09, EP10: EVENT_PACK_10, EP11: EVENT_PACK_11, EP12: EVENT_PACK_12, EP13: EVENT_PACK_13, EP14: EVENT_PACK_14, EP15: EVENT_PACK_15, EP16: EVENT_PACK_16, EP17: EVENT_PACK_17, EP18: EVENT_PACK_18,
   PB_FOLDER: [...POWER_BOOSTER_01, ...POWER_BOOSTER_02, ...POWER_BOOSTER_03], PB01: POWER_BOOSTER_01, PB02: POWER_BOOSTER_02, PB03: POWER_BOOSTER_03,
-  JP01: JUDGE_PACK_01, JP02: JUDGE_PACK_02, JP03: JUDGE_PACK_03, JP04_FOLDER: [...JUDGE_PACK_04, ...JUDGE_PACK_04_L2], JP04: JUDGE_PACK_04, JP04_LVL2: JUDGE_PACK_04_L2, JP05_FOLDER: [...JUDGE_PACK_05, ...JUDGE_PACK_05_L2], JP05: JUDGE_PACK_05, JP05_LVL2: JUDGE_PACK_05_L2, JP06: JUDGE_PACK_06, JP07: JUDGE_PACK_07, JP08: JUDGE_PACK_08, JP09: JUDGE_PACK_09, JP10: JUDGE_PACK_10, JP11: JUDGE_PACK_11, JP12: JUDGE_PACK_12, JP13: JUDGE_PACK_13, JP14: JUDGE_PACK_14, JP15: JUDGE_PACK_15, JP16: JUDGE_PACK_16, JP17: JUDGE_PACK_17, JP18: JUDGE_PACK_18,
+  JP01: JUDGE_PACK_01, JP02: JUDGE_PACK_02, JP03: JUDGE_PACK_03, JP04_FOLDER: JUDGE_PACK_04, JP04: JUDGE_PACK_04, JP04_LVL2: JUDGE_PACK_04_L2, JP05_FOLDER: JUDGE_PACK_05, JP05: JUDGE_PACK_05, JP05_LVL2: JUDGE_PACK_05_L2, JP06: JUDGE_PACK_06, JP07: JUDGE_PACK_07, JP08: JUDGE_PACK_08, JP09: JUDGE_PACK_09, JP10: JUDGE_PACK_10, JP11: JUDGE_PACK_11, JP12: JUDGE_PACK_12, JP13: JUDGE_PACK_13, JP14: JUDGE_PACK_14, JP15: JUDGE_PACK_15, JP16: JUDGE_PACK_16, JP17: JUDGE_PACK_17, JP18: JUDGE_PACK_18,
   TP01: [...TOURNAMENT_PACK_01_NORMAL, ...TOURNAMENT_PACK_01_WINNER],
   TP02: [...TOURNAMENT_PACK_02_NORMAL, ...TOURNAMENT_PACK_02_WINNER],
   TP03: [...TOURNAMENT_PACK_03_NORMAL, ...TOURNAMENT_PACK_03_WINNER],
@@ -8765,7 +8864,7 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
                             <div className="w-20 h-20 rounded-full overflow-hidden border border-white/10 relative bg-[#121110] flex items-center justify-center">
                               {profile?.photoURL || user?.photoURL ? (
                                 <img 
-                                  src={profile?.photoURL || user?.photoURL} 
+                                  src={profile?.photoURL || user?.photoURL || null} 
                                   alt="Avatar" 
                                   className="w-full h-full object-cover"
                                   referrerPolicy="no-referrer"
@@ -9172,7 +9271,7 @@ const CardListItem = ({
     >
       <div className={`relative ${isHorizontal ? 'w-24 h-14' : 'w-12 h-16'} rounded-lg overflow-hidden flex-shrink-0 border border-gray-100 shadow-sm bg-gray-50`}>
         <img 
-          src={card.imageUrl || `https://picsum.photos/seed/${card.id}/400/600`} 
+          src={card?.imageUrl || `https://picsum.photos/seed/${card?.id}/400/600`} 
           alt={card.name}
           loading="lazy"
           decoding="async"
@@ -9273,7 +9372,7 @@ const ModalCard = ({ selectedCard, isFlipped, setIsFlipped }: { selectedCard: Ca
         style={{ backfaceVisibility: 'hidden' }}
       >
         <img 
-          src={selectedCard.imageUrl} 
+          src={selectedCard?.imageUrl || null} 
           className="w-full h-full object-cover" 
           alt={selectedCard.name} 
           referrerPolicy="no-referrer"
@@ -9307,7 +9406,7 @@ const ModalCard = ({ selectedCard, isFlipped, setIsFlipped }: { selectedCard: Ca
           }}
         >
           <img 
-            src={selectedCard.backImageUrl} 
+            src={selectedCard?.backImageUrl || null} 
             className="w-full h-full object-cover" 
             alt={`${selectedCard.name} (Back)`} 
             referrerPolicy="no-referrer"
@@ -9448,7 +9547,7 @@ const CardItem = ({
       }`}>
         <div className="relative w-full h-full overflow-hidden bg-[#1E1E1E]">
           <img 
-            src={card.imageUrl || `https://picsum.photos/seed/${card.id}/400/600`} 
+            src={card?.imageUrl || `https://picsum.photos/seed/${card?.id}/400/600`} 
             alt={card.name}
             onLoad={() => setImageLoaded(true)}
             onError={(e) => {
@@ -9516,7 +9615,7 @@ const CardItem = ({
 const CustomIcon = ({ src, active, size = 24 }: { src: string, active?: boolean, size?: number }) => (
   <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
     <img 
-      src={src} 
+      src={src || null} 
       alt="icon" 
       className={`w-full h-full object-contain transition-all duration-300 ${active ? 'opacity-100' : 'opacity-40 grayscale'}`}
       onError={(e) => {
@@ -9584,7 +9683,7 @@ const IconRenderer = ({ name, size = 20, className = "" }: { name: string, size?
           <div className="absolute inset-0 bg-white/5 animate-pulse" />
         )}
         <img 
-          src={name} 
+          src={name || null} 
           alt="icon" 
           onLoad={() => setIsLoaded(true)}
           className={`${className} w-full h-full object-cover transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
@@ -12561,6 +12660,42 @@ export default function TrackerApp() {
             });
           }
 
+
+          
+          
+          const isJudgePackLevel1 = card.id.endsWith('_JP04') || card.id.endsWith('_JP05');
+          if (isJudgePackLevel1) {
+            if (variationsList.length === 0) {
+              variationsList.push({ id: card.id, label: { es: 'Level 1', en: 'Level 1' }, isFoil: false });
+            }
+            const l2Id = card.id + '_L2';
+            const l2Card = parsedCards.find(c => c.id === l2Id);
+            if (l2Card) {
+              variationsList.push({
+                id: l2Id,
+                label: { es: 'Level 2', en: 'Level 2' },
+                isFoil: true,
+                imageUrl: l2Card.imageUrl,
+                backImageUrl: l2Card.backImageUrl
+              });
+            }
+          }
+
+          // 4. Inject extra variants from EXTRA_VARIANTS_ORIGINS
+          if (EXTRA_VARIANTS_ORIGINS[card.id] || EXTRA_VARIANTS_OTAKON[card.id]) {
+            if (variationsList.length === 0) {
+              variationsList.push({ id: card.id, label: { es: 'Normal', en: 'Normal' }, isFoil: false });
+            }
+            const v = EXTRA_VARIANTS_ORIGINS[card.id] || EXTRA_VARIANTS_OTAKON[card.id];
+            variationsList.push({
+              ...v,
+              imageUrl: IMAGE_OVERRIDES[v.id] || card.imageUrl,
+              backImageUrl: card.type === 'Leader' ? (IMAGE_OVERRIDES[v.id + '_b'] || card.backImageUrl) : undefined
+            });
+          }
+
+
+
           if (variationsList.length > 0) {
             CARD_VARIATIONS[card.id] = variationsList;
           }
@@ -12571,7 +12706,7 @@ export default function TrackerApp() {
       const prIdsToHide = new Set<string>();
       Object.values(CARD_VARIATIONS).forEach(vars => {
         vars.forEach(v => {
-          if (v.id.includes('_PR')) {
+          if (v.id.includes('_PR') || v.id.endsWith('_L2')) {
             prIdsToHide.add(v.id);
           }
         });
@@ -13447,7 +13582,7 @@ export default function TrackerApp() {
                                 {/* Card image wrapper */}
                                 <div className="aspect-[3/4.2] w-full rounded-xl overflow-hidden bg-white/5 relative mb-2 flex items-center justify-center border border-white/5 group">
                                   <img 
-                                    src={card.img} 
+                                    src={card?.img || null} 
                                     alt={card.name} 
                                     className="w-full h-full object-cover transition-transform group-hover:scale-105" 
                                     referrerPolicy="no-referrer"
@@ -13595,7 +13730,7 @@ export default function TrackerApp() {
                               >
                                 <div className="flex items-center gap-3 truncate">
                                   <div className="w-8 h-11 bg-white/5 rounded-lg overflow-hidden flex-shrink-0 border border-white/10 shadow">
-                                    <img src={card.img} alt={card.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                                    <img src={card?.img || null} alt={card.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                                   </div>
                                   <div className="text-left truncate">
                                     <h5 className="text-[10px] sm:text-[11px] font-black text-white truncate max-w-[140px] sm:max-w-[180px]">{card.name}</h5>
@@ -14719,7 +14854,7 @@ export default function TrackerApp() {
                           {bgImage && (
                             <>
                               <img 
-                                src={bgImage}
+                                src={bgImage || null}
                                 loading="lazy"
                                 decoding="async"
                                 alt=""
@@ -14851,7 +14986,7 @@ export default function TrackerApp() {
                               {subBgImage && (
                                 <>
                                   <img 
-                                    src={subBgImage}
+                                    src={subBgImage || null}
                                     loading="lazy"
                                     decoding="async"
                                     alt=""
@@ -14995,7 +15130,7 @@ export default function TrackerApp() {
                                    <div key={item.id} className="relative bg-[#1E1E1E] rounded-2xl border border-white/5 overflow-hidden shadow-2xl">
                                      {bgImage && (
                                        <img 
-                                         src={bgImage}
+                                         src={bgImage || null}
                                          loading="lazy"
                                          decoding="async"
                                          alt=""
@@ -15520,7 +15655,7 @@ export default function TrackerApp() {
 
                                             <div className="relative pt-[140%] overflow-hidden rounded-xl">
                                               <img
-                                                src={card.imageUrl}
+                                                src={card?.imageUrl || null}
                                                 alt={card.name}
                                                 className="absolute inset-0 w-full h-full object-cover rounded-xl shadow transition-transform duration-500 group-hover/search-card:scale-105"
                                                 referrerPolicy="no-referrer"
@@ -15657,7 +15792,7 @@ export default function TrackerApp() {
                                     }`}
                                   >
                                     <img
-                                      src={card.imageUrl}
+                                      src={card?.imageUrl || null}
                                       alt={card.name}
                                       className="absolute inset-0 w-full h-full object-cover rounded-xl shadow-md transition-transform duration-500 group-hover/want-card:scale-105"
                                       referrerPolicy="no-referrer"
