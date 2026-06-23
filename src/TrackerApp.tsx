@@ -74,7 +74,7 @@ import { useAuth } from './AuthContext';
 import emailjs from '@emailjs/browser';
 
 
-const APP_VERSION = '5.4.0';
+const APP_VERSION = '5.4.1';
 
 const CATEGORY_BG: Record<string, string> = {
   'box': '/fondobox.jpg',
@@ -253,10 +253,12 @@ const SET_BG: Record<string, string> = {
   'MASTERS_TP06': 'https://dragonball.center/files/module_dbc/objetos/71/mlxq36458.jpg', 
   'MASTERS_TP07': 'https://dragonball.center/files/module_dbc/objetos/96/cwxq36507.jpg', 
   'MASTERS_TP08': 'https://dragonball.center/files/module_dbc/objetos/121/r5r7116678.jpg', 
+  'MASTERS_TP09': 'https://dragonball.center/files/module_dbc/objetos/93/col7116757.jpg', 
   'MASTERS_EX_TP': 'https://dragonball.center/files/module_dbc/objetos/117/rsb4116679.jpg',
   'MASTERS_CHAMPIONSHIP_FOLDER': 'https://dragonball.center/files/module_dbc/objetos/73/hsci15546.jpg',
   'MASTERS_CHAMPIONSHIP_2018': 'https://dragonball.center/files/module_dbc/objetos/73/hsci15546.jpg', 
   'MASTERS_CHAMPIONSHIP_2019': 'https://dragonball.center/files/module_dbc/objetos/123/cmtm36514.jpg',
+  'MASTERS_CHAMPIONSHIP_2020_V1': 'https://dragonball.center/files/module_dbc/objetos/69/0sji116595.jpg',
   'MASTERS_SEALED_TP_FOLDER': 'https://dragonball.center/files/module_dbc/objetos/63/xqsm15537.jpg',
   'MASTERS_SEALED_TP01': 'https://dragonball.center/files/module_dbc/objetos/63/xqsm15537.jpg',
   'MASTERS_SEALED_TP02': 'https://dragonball.center/files/module_dbc/objetos/63/lmaa15538.jpg',
@@ -266,12 +268,14 @@ const SET_BG: Record<string, string> = {
   'MASTERS_SEALED_TP06': 'https://dragonball.center/files/module_dbc/objetos/71/mlxq36458.jpg', 
   'MASTERS_SEALED_TP07': 'https://dragonball.center/files/module_dbc/objetos/96/cwxq36507.jpg', 
   'MASTERS_SEALED_TP08': 'https://dragonball.center/files/module_dbc/objetos/121/r5r7116678.jpg', 
+  'MASTERS_SEALED_TP09': 'https://dragonball.center/files/module_dbc/objetos/93/col7116757.jpg', 
   'MASTERS_SEALED_EX_TP': 'https://dragonball.center/files/module_dbc/objetos/117/rsb4116679.jpg',
   'MASTERS_SEALED_EP_FOLDER': 'https://dragonball.center/files/module_dbc/objetos/40/eald15548.jpg',
   'MASTERS_SEALED_EP01': 'https://dragonball.center/files/module_dbc/objetos/40/eald15548.jpg',
   'MASTERS_SEALED_EP02': 'https://dragonball.center/files/module_dbc/objetos/110/rk3z116268.jpg', 
   'MASTERS_SEALED_EP03': 'https://dragonball.center/files/module_dbc/objetos/99/vomp36551.jpg',
   'MASTERS_SEALED_EP04': 'https://dragonball.center/files/module_dbc/objetos/49/v7is116373.jpg',
+  'MASTERS_SEALED_EP05': 'https://dragonball.center/files/module_dbc/objetos/82/20oy116345.jpg',
   'PB_FOLDER': 'https://dragonball.center/files/module_dbc/objetos/136/wrfd36478.jpg',
   'PB01': 'https://dragonball.center/files/module_dbc/objetos/136/wrfd36478.jpg',
   'MASTERS_PB01': 'https://dragonball.center/files/module_dbc/objetos/136/wrfd36478.jpg',
@@ -286,6 +290,7 @@ const SET_BG: Record<string, string> = {
   'MASTERS_SEALED_CHAMPIONSHIP_FOLDER': 'https://dragonball.center/files/module_dbc/objetos/73/hsci15546.jpg',
   'MASTERS_SEALED_CHAMPIONSHIP_2018': 'https://dragonball.center/files/module_dbc/objetos/73/hsci15546.jpg', 
   'MASTERS_SEALED_CHAMPIONSHIP_2019': 'https://dragonball.center/files/module_dbc/objetos/123/cmtm36514.jpg',
+  'MASTERS_SEALED_CHAMPIONSHIP_2020_V1': 'https://dragonball.center/files/module_dbc/objetos/69/0sji116595.jpg',
   'TP01_FOLDER': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS01-06_p2.webp?v1',
   'TP01_NORMAL_VIEW': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS01-06_p1.webp?v1',
   'TP01_WINNER_VIEW': 'https://www.dbs-cardgame.com/fw/images/cards/card/en/FS01-06_p2.webp?v1',
@@ -370,10 +375,12 @@ const SET_BG_POS: Record<string, string> = {
   'MASTERS_TP06': 'bg-[50%_25%]', 
   'MASTERS_TP07': 'bg-[50%_25%]', 
   'MASTERS_TP08': 'bg-[50%_25%]', 
+  'MASTERS_TP09': 'bg-[50%_25%]', 
   'MASTERS_EX_TP': 'bg-[50%_25%]',
   'MASTERS_CHAMPIONSHIP_FOLDER': 'bg-[50%_25%]',
   'MASTERS_CHAMPIONSHIP_2018': 'bg-[50%_25%]', 
   'MASTERS_CHAMPIONSHIP_2019': 'bg-[50%_25%]',
+  'MASTERS_CHAMPIONSHIP_2020_V1': 'bg-[50%_25%]',
   'MASTERS_SEALED_TP_FOLDER': 'bg-[50%_25%]',
   'MASTERS_SEALED_TP01': 'bg-[50%_25%]',
   'MASTERS_SEALED_TP02': 'bg-[50%_25%]',
@@ -383,12 +390,14 @@ const SET_BG_POS: Record<string, string> = {
   'MASTERS_SEALED_TP06': 'bg-[50%_25%]', 
   'MASTERS_SEALED_TP07': 'bg-[50%_25%]', 
   'MASTERS_SEALED_TP08': 'bg-[50%_25%]', 
+  'MASTERS_SEALED_TP09': 'bg-[50%_25%]', 
   'MASTERS_SEALED_EX_TP': 'bg-[50%_25%]',
   'MASTERS_SEALED_EP_FOLDER': 'bg-[50%_25%]',
   'MASTERS_SEALED_EP01': 'bg-[50%_25%]',
   'MASTERS_SEALED_EP02': 'bg-[50%_25%]', 
   'MASTERS_SEALED_EP03': 'bg-[50%_25%]',
   'MASTERS_SEALED_EP04': 'bg-[50%_25%]',
+  'MASTERS_SEALED_EP05': 'bg-[50%_25%]',
   'PB_FOLDER': 'bg-[50%_25%]',
   'PB01': 'bg-[50%_25%]',
   'MASTERS_PB01': 'bg-[50%_25%]',
@@ -403,6 +412,7 @@ const SET_BG_POS: Record<string, string> = {
   'MASTERS_SEALED_CHAMPIONSHIP_FOLDER': 'bg-[50%_25%]',
   'MASTERS_SEALED_CHAMPIONSHIP_2018': 'bg-[50%_25%]', 
   'MASTERS_SEALED_CHAMPIONSHIP_2019': 'bg-[50%_25%]',
+  'MASTERS_SEALED_CHAMPIONSHIP_2020_V1': 'bg-[50%_25%]',
   'TP01_FOLDER': 'bg-[50%_25%]',
   'TP01_NORMAL_VIEW': 'bg-[50%_25%]',
   'TP01_WINNER_VIEW': 'bg-[50%_25%]',
@@ -776,6 +786,7 @@ const expansionGroups: ExpansionGroup[] = [
           { id: 'MASTERS_TP06', label: 'Tournament Pack 06', sub: 'Tournament' },
           { id: 'MASTERS_TP07', label: 'Tournament Pack 07', sub: 'Tournament' },
           { id: 'MASTERS_TP08', label: 'Tournament Pack 08', sub: 'Tournament' },
+          { id: 'MASTERS_TP09', label: 'Tournament Pack 09', sub: 'Tournament' },
           { id: 'MASTERS_EX_TP', label: 'Expansion Set Tournament Pack', sub: 'Tournament' }
         ]
       },
@@ -785,7 +796,8 @@ const expansionGroups: ExpansionGroup[] = [
         sub: "Championship Packs",
         subItems: [
           { id: 'MASTERS_CHAMPIONSHIP_2018', label: 'Championship 2018', sub: 'Championship' },
-          { id: 'MASTERS_CHAMPIONSHIP_2019', label: 'Championship 2019', sub: 'Championship' }
+          { id: 'MASTERS_CHAMPIONSHIP_2019', label: 'Championship 2019', sub: 'Championship' },
+          { id: 'MASTERS_CHAMPIONSHIP_2020_V1', label: 'Championship Pack 2020 Vol 1', sub: 'Championship' }
         ]
       },
       { id: 'COL03', label: 'Tokens', sub: 'Extras' },
@@ -808,6 +820,7 @@ const expansionGroups: ExpansionGroup[] = [
           { id: 'MASTERS_SEALED_TP06', label: 'Tournament Pack 06', sub: 'Tournament' },
           { id: 'MASTERS_SEALED_TP07', label: 'Tournament Pack 07', sub: 'Tournament' },
           { id: 'MASTERS_SEALED_TP08', label: 'Tournament Pack 08', sub: 'Tournament' },
+          { id: 'MASTERS_SEALED_TP09', label: 'Tournament Pack 09', sub: 'Tournament' },
           { id: 'MASTERS_SEALED_EX_TP', label: 'Expansion Set Tournament Pack', sub: 'Tournament' }
         ]
       },
@@ -817,7 +830,8 @@ const expansionGroups: ExpansionGroup[] = [
         sub: "Sellado",
         subItems: [
           { id: 'MASTERS_SEALED_CHAMPIONSHIP_2018', label: 'Championship 2018', sub: 'Championship' },
-          { id: 'MASTERS_SEALED_CHAMPIONSHIP_2019', label: 'Championship 2019', sub: 'Championship' }
+          { id: 'MASTERS_SEALED_CHAMPIONSHIP_2019', label: 'Championship 2019', sub: 'Championship' },
+          { id: 'MASTERS_SEALED_CHAMPIONSHIP_2020_V1', label: 'Championship Pack 2020 Vol 1', sub: 'Championship' }
         ]
       },
       {
@@ -828,7 +842,8 @@ const expansionGroups: ExpansionGroup[] = [
           { id: 'MASTERS_SEALED_EP01', label: 'Event Pack 2018 (Event Pack 01)', sub: 'Event Pack' },
           { id: 'MASTERS_SEALED_EP02', label: 'Event Pack 2018 (Event Pack 02)', sub: 'Event Pack' },
           { id: 'MASTERS_SEALED_EP03', label: 'Event Pack 03', sub: 'Event Pack' },
-          { id: 'MASTERS_SEALED_EP04', label: 'Event Pack 04', sub: 'Event Pack' }
+          { id: 'MASTERS_SEALED_EP04', label: 'Event Pack 04', sub: 'Event Pack' },
+          { id: 'MASTERS_SEALED_EP05', label: 'Event Pack 05', sub: 'Event Pack' }
         ]
       },
       {
@@ -1802,9 +1817,11 @@ const SET_METADATA: Record<string, { sourceProduct: string; releaseDate?: string
   'MASTERS_TP06': { sourceProduct: 'Tournament Pack 06' }, 
   'MASTERS_TP07': { sourceProduct: 'Tournament Pack 07' }, 
   'MASTERS_TP08': { sourceProduct: 'Tournament Pack 08' }, 
+  'MASTERS_TP09': { sourceProduct: 'Tournament Pack 09' }, 
   'MASTERS_EX_TP': { sourceProduct: 'Expansion Set Tournament Pack' },
   'MASTERS_CHAMPIONSHIP_2018': { sourceProduct: 'Championship 2018' }, 
   'MASTERS_CHAMPIONSHIP_2019': { sourceProduct: 'Championship 2019' },
+  'MASTERS_CHAMPIONSHIP_2020_V1': { sourceProduct: 'Championship Pack 2020 Vol 1' },
   'JSP01': { sourceProduct: 'Judge Store Pack 01' },
   'JSP02': { sourceProduct: 'Judge Store Pack 02' },
   'JSP03': { sourceProduct: 'Judge Store Pack 03' },
@@ -1908,7 +1925,9 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
   // Championship
   'MASTERS_CHAMPIONSHIP_2018': { sourceProduct: 'Championship 2018' }, 
   'MASTERS_CHAMPIONSHIP_2019': { sourceProduct: 'Championship 2019' },
+  'MASTERS_CHAMPIONSHIP_2020_V1': { sourceProduct: 'Championship Pack 2020 Vol 1' },
   'P-063': { sourceProduct: 'Championship 2018' }, 'P-064': { sourceProduct: 'Championship 2018' }, 'P-065': { sourceProduct: 'Championship 2018' }, 'P-066': { sourceProduct: 'Championship 2018' }, 'P-067': { sourceProduct: 'Championship 2018' },
+  'P-201': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-201_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-202': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-202_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-203': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-203_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-204': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-204_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-205': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-205_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-206': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-206_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-207': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-207_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-208': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-208_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-209': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-209_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-210': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-210_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' },
   // Tournament Pack 02
   'P-012': { sourceProduct: 'Tournament Pack 02' }, 'P-013': { sourceProduct: 'Tournament Pack 02' }, 'P-014': { sourceProduct: 'Tournament Pack 02' }, 'P-015': { sourceProduct: 'Tournament Pack 02' }, 'P-016': { sourceProduct: 'Tournament Pack 02' }, 'P-017': { sourceProduct: 'Tournament Pack 02' }, 'P-018': { sourceProduct: 'Tournament Pack 02' }, 'P-019': { sourceProduct: 'Tournament Pack 02' },
   // Tournament Pack 03
@@ -2390,6 +2409,81 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'BT9-134_CS1': 'https://dragonball.center/files/module_dbc/objetos/130/jw4w117440.jpg',
   'DB1-057_CS1': 'https://dragonball.center/files/module_dbc/objetos/56/5zoj117441.jpg',
   'DB1-064_CS1': 'https://dragonball.center/files/module_dbc/objetos/93/8uv3117442.jpg',
+  'DB1-003_DBT': '/DB1-003_DBT.png',
+  'DB1-004_DBT': '/DB1-004_DBT.png',
+  'DB1-009_DBT': '/DB1-009_DBT.png',
+  'DB1-011_DBT': '/DB1-011_DBT.png',
+  'DB1-013_DBT': '/DB1-013_DBT.png',
+  'DB1-018_DBT': '/DB1-018_DBT.png',
+  'DB1-019_DBT': '/DB1-019_DBT.png',
+  'DB1-023_DBT': '/DB1-023_DBT.png',
+  'DB1-025_DBT': '/DB1-025_DBT.png',
+  'DB1-030_DBT': '/DB1-030_DBT.png',
+  'DB1-035_DBT': '/DB1-035_DBT.png',
+  'DB1-036_DBT': '/DB1-036_DBT.png',
+  'DB1-037_DBT': '/DB1-037_DBT.png',
+  'DB1-040_DBT': '/DB1-040_DBT.png',
+  'DB1-042_DBT': '/DB1-042_DBT.png',
+  'DB1-044_DBT': '/DB1-044_DBT.png',
+  'DB1-046_DBT': '/DB1-046_DBT.png',
+  'DB1-047_DBT': '/DB1-047_DBT.png',
+  'DB1-051_DBT': '/DB1-051_DBT.png',
+  'DB1-052_DBT': '/DB1-052_DBT.png',
+  'DB1-060_DBT': '/DB1-060_DBT.png',
+  'DB1-067_DBT': '/DB1-067_DBT.png',
+  'DB1-068_DBT': '/DB1-068_DBT.png',
+  'DB1-069_DBT': '/DB1-069_DBT.png',
+  'DB1-070_DBT': '/DB1-070_DBT.png',
+  'DB1-071_DBT': '/DB1-071_DBT.png',
+  'DB1-072_DBT': '/DB1-072_DBT.png',
+  'DB1-080_DBT': '/DB1-080_DBT.png',
+  'DB1-083_DBT': '/DB1-083_DBT.png',
+  'DB1-087_DBT': '/DB1-087_DBT.png',
+  'DB2-009_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-009-uc-draft-tournament-worthy-warrior-kefla.webp',
+  'DB2-015_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-015-uc-draft-tournament-dercori-the-unstoppable-shadow.webp',
+  'DB2-016_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-016-uc-draft-tournament-feral-strike-shosa.webp',
+  'DB2-017_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-017-uc-draft-tournament-monna-the-confidence-booster.webp',
+  'DB2-019_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-019-uc-draft-tournament-majora-unseeing-aid.webp',
+  'DB2-021_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-021-uc-draft-tournament-stealth-silhouette-gamisaras.webp',
+  'DB2-027_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-027-uc-draft-tournament-pride-collective-cocotte.webp',
+  'DB2-031_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-031-uc-draft-tournament-universe-4-assemble.webp',
+  'DB2-038_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-038-uc-draft-tournament-energetic-outburst-kale.webp',
+  'DB2-041_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-041-uc-draft-tournament-frost-chaotic-burst.webp',
+  'DB2-042_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-042-uc-draft-tournament-dr-rota-unknown-potential.webp',
+  'DB2-043_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-043-uc-draft-tournament-pirina-namekian-ambush.webp',
+  'DB2-045_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-045-uc-draft-tournament-fuwa-strategic-supremacy.webp',
+  'DB2-049_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-049-uc-draft-tournament-jirasen-graceful-wager.webp',
+  'DB2-050_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-050-uc-draft-tournament-murichim-brave-bruiser.webp',
+  'DB2-054_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-054-uc-draft-tournament-mechiorp-bobbing-and-weaving.webp',
+  'DB2-060_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-060-uc-draft-tournament-agu-virtuous-supremacy.webp',
+  'DB2-065_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-065-uc-draft-tournament-son-goku-spirited-contender.webp',
+  'DB2-067_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-067-uc-draft-tournament-krillin-destructo-disc-unleashed.webp',
+  'DB2-070_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-070-uc-draft-tournament-ribrianne-boundless-heart.webp',
+  'DB2-075_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-075-uc-draft-tournament-rozie-maiden-cunning.webp',
+  'DB2-087_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-087-uc-draft-tournament-hermilla-pinpoint-accuracy.webp',
+  'DB2-088_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-088-uc-draft-tournament-pell-confident-supremacy.webp',
+  'DB2-089_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-089-uc-draft-tournament-ganos-aerial-assault.webp',
+  'DB2-091_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-091-uc-draft-tournament-toppo-righteous-reprisal.webp',
+  'DB2-096_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-096-uc-draft-tournament-heavy-light-shatter-burst.webp',
+  'DB2-099_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-099-uc-draft-tournament-cabba-saiyan-invigoration.webp',
+  'DB2-100_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-100-uc-draft-tournament-caulifla-saiyan-invalidation.webp',
+  'DB2-102_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-102-uc-draft-tournament-kale-uncontrollable-rage.webp',
+  'DB2-110_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-110-uc-draft-tournament-gigantic-crusher-bergamo.webp',
+  'DB2-116_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-116-uc-draft-tournament-roselle-wings-of-universe-9.webp',
+  'DB2-119_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-119-uc-draft-tournament-chappil-the-iron-drake.webp',
+  'DB2-121_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-121-uc-draft-tournament-feline-force-hop.webp',
+  'DB2-122_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-122-uc-draft-tournament-roh-brash-supremacy.webp',
+  'DB2-129_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-129-uc-draft-tournament-ice-lance.webp',
+  'DB2-139_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-139-uc-draft-tournament-paparoni-brilliant-inventor.webp',
+  'DB2-140_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-140-uc-draft-tournament-secret-technique-paparoni.webp',
+  'DB2-141_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-141-uc-draft-tournament-koichiarator-menacing-assassin.webp',
+  'DB2-147_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-147-uc-draft-tournament-katopesla-righteous-fury.webp',
+  'DB2-148_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-148-uc-draft-tournament-katopesla-sonic-justice.webp',
+  'DB2-151_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-151-uc-draft-tournament-nigrisshi-from-the-shadows.webp',
+  'DB2-154_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-154-uc-draft-tournament-majikayo-the-shapeshifter.webp',
+  'DB2-161_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-161-uc-draft-tournament-universe-3-assemble.webp',
+  'DB2-162_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-162-uc-draft-tournament-bollarators-elastic-strike.webp',
+  'DB2-165_DBT': 'https://static.dbscards.fr/cards/en/db2p/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-db2-165-uc-draft-tournament-sleepy-boy-technique.webp',
   'DB2-001_CS1': 'https://dragonball.center/files/module_dbc/objetos/140/5zm5117443.jpg',
   'P-036_CS1': 'https://dragonball.center/files/module_dbc/objetos/28/d1xq117444.jpg',
   'P-086_CS1': 'https://dragonball.center/files/module_dbc/objetos/57/p8ok117446.jpg',
@@ -2477,13 +2571,16 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'SEALED_TP06': 'https://dragonball.center/files/module_dbc/objetos/71/mlxq36458.jpg', 
   'SEALED_TP07': 'https://dragonball.center/files/module_dbc/objetos/96/cwxq36507.jpg', 
   'SEALED_TP08': 'https://dragonball.center/files/module_dbc/objetos/121/r5r7116678.jpg', 
+  'SEALED_TP09': 'https://dragonball.center/files/module_dbc/objetos/93/col7116757.jpg', 
   'SEALED_EX_TP': 'https://dragonball.center/files/module_dbc/objetos/117/rsb4116679.jpg',
   'SEALED_EVENT_PACK_01': 'https://dragonball.center/files/module_dbc/objetos/40/eald15548.jpg',
   'SEALED_EVENT_PACK_02': 'https://dragonball.center/files/module_dbc/objetos/110/rk3z116268.jpg', 
   'SEALED_EVENT_PACK_03': 'https://dragonball.center/files/module_dbc/objetos/99/vomp36551.jpg',
   'SEALED_EVENT_PACK_04': 'https://dragonball.center/files/module_dbc/objetos/49/v7is116373.jpg',
+  'SEALED_EVENT_PACK_05': 'https://dragonball.center/files/module_dbc/objetos/82/20oy116345.jpg',
   'SEALED_CHAMPIONSHIP_2018': 'https://dragonball.center/files/module_dbc/objetos/73/hsci15546.jpg', 
   'SEALED_CHAMPIONSHIP_2019': 'https://dragonball.center/files/module_dbc/objetos/123/cmtm36514.jpg',
+  'SEALED_CHAMPIONSHIP_2020_V1': 'https://dragonball.center/files/module_dbc/objetos/69/0sji116595.jpg',
   'BT8-116_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203927_in_1000x1000.jpg',
   'BT8-103_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203920_in_1000x1000.jpg',
   'BT8-084_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/203845_in_1000x1000.jpg',
@@ -3998,7 +4095,6 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'P-331_EP04': 'https://static.dbscards.fr/cards/en/evp09/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-p-331-pr-event-pack-09-mecha-frieza-robotic-riposte.webp',
   'P-331_EP09': 'https://static.dbscards.fr/cards/en/evp09/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-p-331-pr-event-pack-09-mecha-frieza-robotic-riposte.webp',
   'DB1-014_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/DB1-014_PR02.png',
-  'DB1-021_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/DB1-021_PR02.png',
   'DB1-084_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/DB1-084_PR02.png',
   'DB1-084_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/DB1-084_PR03.png',
   'DB1-088_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/DB1-088_PR02.png',
@@ -4372,6 +4468,13 @@ const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata'
 
 const CHANGELOG = [
 // Removed Excel export changes from changelog during staging
+  {
+    version: '5.4.1',
+    date: '23 de junio de 2026',
+    changes: [
+      { es: 'Habilitado y enlazado el catálogo completo de cartas "Draft Box Tournament" de DB1 y DB2/Divine Multiverse, asociando urls de imágenes oficiales de alta definición directamente. Eliminados varios registros duplicados innecesarios de cartas de DB1 (DB1-002_PR, DB1-021_PR02, DB1-040_PR y DB1-057_PR02).', en: 'Enabled and linked full "Draft Box Tournament" card catalog variants for DB1 and DB2/Divine Multiverse, associating official high-definition image URLs directly. Removed unnecessary DB1 duplicate card mappings (DB1-002_PR, DB1-021_PR02, DB1-040_PR, and DB1-057_PR02).' }
+    ]
+  },
   {
     version: '5.4.0',
     date: '22 de junio de 2026',
@@ -5837,6 +5940,10 @@ const ANNIVERSARY_SET_2025 = [
 
 const ANNIVERSARY_SET_2026 = ['FP-075_AS2', 'FP-076_AS2', 'FP-079_AS2_W', 'FP-080_AS2_W', 'FP-081_AS2_W'];
 
+const DB1_DBT_LIST = Array.from({ length: 100 }, (_, i) => `DB1-${String(i + 1).padStart(3, '0')}`);
+const DB2_DBT_LIST = Array.from({ length: 100 }, (_, i) => `DB2-${String(i + 1).padStart(3, '0')}`);
+const DBT_ENABLED_CARDS = new Set([...DB1_DBT_LIST, ...DB2_DBT_LIST]);
+
 const ULTIMATE_BATTLE_2024_V1 = ['FB01-096_UB_W', 'FS04-12_UB_T8'];
 const ULTIMATE_BATTLE_2024_V2 = ['FB02-007_UB_V2_T8', 'FB02-061_UB_V2_W'];
 const BCG_FEST_24 = ['FB03-011_BCGF'];
@@ -5853,7 +5960,7 @@ const FUSION_JUDGE_EVENT_PACK_04 = ['FB05-011_JEP04', 'FB05-018_JEP04', 'FB05-04
 const FUSION_JUDGE_EVENT_PACK_05 = ['FB07-007_JEP05', 'FB07-011_JEP05', 'FB07-027_JEP05', 'FB07-043_JEP05', 'FB07-063_JEP05', 'FB07-069_JEP05', 'FB07-080_JEP05', 'FB07-085_JEP05', 'FB07-103_JEP05', 'FB07-116_JEP05'];
 
 const PACK_ARRAYS: Record<string, string[]> = {
-  'MASTERS_SEALED_TP_FOLDER': ['SEALED_TP01', 'SEALED_TP02', 'SEALED_TP03', 'SEALED_TP04', 'SEALED_TP05_2018', 'SEALED_TP05_2019', 'SEALED_TP06', 'SEALED_TP07', 'SEALED_TP08', 'SEALED_EX_TP'],
+  'MASTERS_SEALED_TP_FOLDER': ['SEALED_TP01', 'SEALED_TP02', 'SEALED_TP03', 'SEALED_TP04', 'SEALED_TP05_2018', 'SEALED_TP05_2019', 'SEALED_TP06', 'SEALED_TP07', 'SEALED_TP08', 'SEALED_TP09', 'SEALED_EX_TP'],
   'MASTERS_SEALED_TP01': ['SEALED_TP01'],
   'MASTERS_SEALED_TP02': ['SEALED_TP02'],
   'MASTERS_SEALED_TP03': ['SEALED_TP03'],
@@ -5862,19 +5969,22 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_SEALED_TP06': ['SEALED_TP06'], 
   'MASTERS_SEALED_TP07': ['SEALED_TP07'], 
   'MASTERS_SEALED_TP08': ['SEALED_TP08'], 
+  'MASTERS_SEALED_TP09': ['SEALED_TP09'], 
   'MASTERS_SEALED_EX_TP': ['SEALED_EX_TP'],
-  'MASTERS_SEALED_EP_FOLDER': ['SEALED_EVENT_PACK_01', 'SEALED_EVENT_PACK_02', 'SEALED_EVENT_PACK_03', 'SEALED_EVENT_PACK_04'],
+  'MASTERS_SEALED_EP_FOLDER': ['SEALED_EVENT_PACK_01', 'SEALED_EVENT_PACK_02', 'SEALED_EVENT_PACK_03', 'SEALED_EVENT_PACK_04', 'SEALED_EVENT_PACK_05'],
   'MASTERS_SEALED_EP01': ['SEALED_EVENT_PACK_01'],
   'MASTERS_SEALED_EP02': ['SEALED_EVENT_PACK_02'], 
   'MASTERS_SEALED_EP03': ['SEALED_EVENT_PACK_03'],
   'MASTERS_SEALED_EP04': ['SEALED_EVENT_PACK_04'],
+  'MASTERS_SEALED_EP05': ['SEALED_EVENT_PACK_05'],
   'MASTERS_SEALED_PB_FOLDER': ['SEALED_PB01', 'SEALED_PB02', 'SEALED_PB03'],
   'MASTERS_SEALED_PB01': ['SEALED_PB01'],
   'MASTERS_SEALED_PB02': ['SEALED_PB02'], 
   'MASTERS_SEALED_PB03': ['SEALED_PB03'],
-  'MASTERS_SEALED_CHAMPIONSHIP_FOLDER': ['SEALED_CHAMPIONSHIP_2018', 'SEALED_CHAMPIONSHIP_2019'],
+  'MASTERS_SEALED_CHAMPIONSHIP_FOLDER': ['SEALED_CHAMPIONSHIP_2018', 'SEALED_CHAMPIONSHIP_2019', 'SEALED_CHAMPIONSHIP_2020_V1'],
   'MASTERS_SEALED_CHAMPIONSHIP_2018': ['SEALED_CHAMPIONSHIP_2018'], 
   'MASTERS_SEALED_CHAMPIONSHIP_2019': ['SEALED_CHAMPIONSHIP_2019'],
+  'MASTERS_SEALED_CHAMPIONSHIP_2020_V1': ['SEALED_CHAMPIONSHIP_2020_V1'],
   'MASTERS_TP01': ['SEALED_TP01', 'P-002', 'P-003', 'P-004', 'P-005', 'P-006', 'P-007', 'P-008', 'P-009'],
   'MASTERS_TP02': ['SEALED_TP02', 'P-012', 'P-013', 'P-014', 'P-015', 'P-016', 'P-017', 'P-018', 'P-019'],
   'MASTERS_TP03': ['SEALED_TP03', 'P-030', 'P-031', 'P-032', 'P-033', 'P-034', 'P-035', 'P-036', 'P-037'],
@@ -5883,12 +5993,14 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_TP06': ['SEALED_TP06', 'P-095', 'P-096', 'P-097', 'P-098', 'P-099', 'P-100', 'P-101', 'P-102'], 
   'MASTERS_TP07': ['SEALED_TP07', 'P-126', 'P-127', 'P-128', 'P-129', 'P-130', 'P-131', 'P-132', 'P-133'], 
   'MASTERS_TP08': ['SEALED_TP08', 'P-165', 'P-166', 'P-167', 'P-168', 'P-169', 'P-170', 'P-171', 'P-172'], 
+  'MASTERS_TP09': ['SEALED_TP09', 'P-188', 'P-189', 'P-190', 'P-191', 'P-192', 'P-193', 'P-194', 'P-195'], 
   'MASTERS_EX_TP': ['SEALED_EX_TP', ...EXPANSION_SET_TOURNAMENT_PACK],
   'MASTERS_PB01': POWER_BOOSTER_01,
   'MASTERS_PB02': POWER_BOOSTER_02, 
   'MASTERS_PB03': ['SEALED_PB03', ...POWER_BOOSTER_03],
   'MASTERS_CHAMPIONSHIP_2018': ['SEALED_CHAMPIONSHIP_2018', 'P-063', 'P-064', 'P-065', 'P-066', 'P-067'], 
   'MASTERS_CHAMPIONSHIP_2019': ['SEALED_CHAMPIONSHIP_2019', 'P-138', 'P-139', 'P-140', 'P-141', 'P-142'],
+  'MASTERS_CHAMPIONSHIP_2020_V1': ['SEALED_CHAMPIONSHIP_2020_V1', 'P-201', 'P-202', 'P-203', 'P-204', 'P-205', 'P-206', 'P-207', 'P-208', 'P-209', 'P-210'],
   TS01: ['BT9-131_TS01', 'BT10-060_TS01', 'BT10-065_TS01', 'BT10-066_TS01', 'BT11-034_TS01', 'BT11-074_TS01', 'BT11-093_TS01', 'BT13-012_TS01', 'BT13-071_TS01', 'BT14-029_TS01', 'DB1-021_TS01', 'DB1-040_TS01', 'DB3-022_TS01', 'DB3-116_TS01', 'DB3-127_TS01'],
   TS02: ['BT9-133_TS02', 'BT10-041_TS02', 'BT10-068_TS02', 'BT10-088_TS02', 'BT10-105_TS02', 'BT11-032_TS02', 'BT11-052_TS02', 'BT11-053_TS02', 'BT11-066_TS02', 'DB1-002_TS02', 'DB2-133_TS02', 'DB2-159_TS02', 'DB3-126_TS02', 'EB1-07_TS02', 'EX12-02_TS02'],
   CS01: ['BT1-057_CS1', 'BT2-001_CS1', 'BT6-014_CS1', 'BT6-107_CS1', 'BT8-110_CS1', 'BT9-130_CS1', 'BT9-131_CS1', 'BT9-132_CS1', 'BT9-133_CS1', 'BT9-134_CS1', 'DB1-057_CS1', 'DB1-064_CS1', 'DB2-001_CS1', 'P-036_CS1', 'P-086_CS1', 'P-112_CS1', 'P-124_CS1', 'P-181_CS1'],
@@ -8531,6 +8643,12 @@ const ModalCard = ({ selectedCard, isFlipped, setIsFlipped }: { selectedCard: Ca
             const isEnergyMarker = selectedCard.cardNumber.startsWith('E-') || selectedCard.cardNumber.startsWith('E01-') || selectedCard.cardNumber.startsWith('E02-') || selectedCard.cardNumber.startsWith('E03-') || selectedCard.cardNumber.startsWith('M-') || /^[EM]\d+/.test(selectedCard.cardNumber);
             if (isEnergyMarker) {
               target.src = 'https://static.fw.dbscards.fr/cards/common/back-energy.webp';
+            } else {
+              const baseNum = selectedCard.cardNumber.split('_')[0];
+              const fallbackUrl = `https://www.dbs-cardgame.com/images/cardlist/cardimg/${baseNum}.png`;
+              if (target.src !== fallbackUrl) {
+                target.src = fallbackUrl;
+              }
             }
           }}
         />
@@ -8559,6 +8677,12 @@ const ModalCard = ({ selectedCard, isFlipped, setIsFlipped }: { selectedCard: Ca
               const isEnergyMarker = selectedCard.cardNumber.startsWith('E-') || selectedCard.cardNumber.startsWith('E01-') || selectedCard.cardNumber.startsWith('E02-') || selectedCard.cardNumber.startsWith('E03-') || selectedCard.cardNumber.startsWith('M-') || /^[EM]\d+/.test(selectedCard.cardNumber);
               if (isEnergyMarker) {
                 target.src = 'https://static.fw.dbscards.fr/cards/common/back-energy.webp';
+              } else {
+                const baseNum = selectedCard.cardNumber.split('_')[0];
+                const fallbackUrl = `https://www.dbs-cardgame.com/images/cardlist/cardimg/${baseNum}_b.png`;
+                if (target.src !== fallbackUrl) {
+                  target.src = fallbackUrl;
+                }
               }
             }}
           />
@@ -8693,6 +8817,12 @@ const CardItem = ({
               const isEnergyMarker = card.cardNumber.startsWith('E-') || card.cardNumber.startsWith('E01-') || card.cardNumber.startsWith('E02-') || card.cardNumber.startsWith('E03-') || card.cardNumber.startsWith('M-') || /^[EM]\d+/.test(card.cardNumber);
               if (isEnergyMarker) {
                 target.src = 'https://static.fw.dbscards.fr/cards/common/back-energy.webp';
+              } else {
+                const baseNum = card.cardNumber.split('_')[0];
+                const fallbackUrl = `https://www.dbs-cardgame.com/images/cardlist/cardimg/${baseNum}.png`;
+                if (target.src !== fallbackUrl) {
+                  target.src = fallbackUrl;
+                }
               }
             }}
             loading="lazy"
@@ -11705,7 +11835,7 @@ export default function TrackerApp() {
           const hasFoil = 
             (foilEnabledExpansions.has(card.expansion) && (card.rarity === 'C' || card.rarity === 'UC')) ||
             (foilRarityExpansions.has(card.expansion) && (card.rarity === 'C' || card.rarity === 'UC' || card.rarity === 'R')) ||
-            (['P-002', 'P-003', 'P-004', 'P-005', 'P-006', 'P-007', 'P-008', 'P-009', 'P-012', 'P-013', 'P-014', 'P-015', 'P-016', 'P-017', 'P-018', 'P-019', 'P-030', 'P-031', 'P-032', 'P-033', 'P-034', 'P-035', 'P-036', 'P-037', 'P-049', 'P-050', 'P-051', 'P-052', 'P-053', 'P-054', 'P-055', 'P-056', 'P-063', 'P-064', 'P-065', 'P-066', 'P-067', 'P-077', 'P-078', 'P-079', 'P-080', 'P-081', 'P-082', 'P-083', 'P-084', 'P-095', 'P-096', 'P-097', 'P-098', 'P-099', 'P-100', 'P-101', 'P-102', 'P-112', 'P-113', 'P-114', 'P-115', 'P-116', 'P-119', 'P-120', 'P-121', 'P-122', 'P-123', 'P-124', 'P-125', 'P-126', 'P-127', 'P-128', 'P-129', 'P-130', 'P-131', 'P-132', 'P-133', 'P-138', 'P-139', 'P-140', 'P-141', 'P-142', 'P-143', 'P-144', 'P-145', 'P-146', 'P-147', 'P-148', 'P-149', 'P-150', 'P-151', 'P-152', 'P-153', 'P-154', 'P-155', 'P-156', 'P-157', 'P-158', 'P-159', 'P-160', 'P-161', 'P-162', 'P-165', 'P-166', 'P-167', 'P-168', 'P-169', 'P-170', 'P-171', 'P-172'].includes(card.id));
+            (['P-002', 'P-003', 'P-004', 'P-005', 'P-006', 'P-007', 'P-008', 'P-009', 'P-012', 'P-013', 'P-014', 'P-015', 'P-016', 'P-017', 'P-018', 'P-019', 'P-030', 'P-031', 'P-032', 'P-033', 'P-034', 'P-035', 'P-036', 'P-037', 'P-049', 'P-050', 'P-051', 'P-052', 'P-053', 'P-054', 'P-055', 'P-056', 'P-063', 'P-064', 'P-065', 'P-066', 'P-067', 'P-077', 'P-078', 'P-079', 'P-080', 'P-081', 'P-082', 'P-083', 'P-084', 'P-095', 'P-096', 'P-097', 'P-098', 'P-099', 'P-100', 'P-101', 'P-102', 'P-112', 'P-113', 'P-114', 'P-115', 'P-116', 'P-119', 'P-120', 'P-121', 'P-122', 'P-123', 'P-124', 'P-125', 'P-126', 'P-127', 'P-128', 'P-129', 'P-130', 'P-131', 'P-132', 'P-133', 'P-138', 'P-139', 'P-140', 'P-141', 'P-142', 'P-143', 'P-144', 'P-145', 'P-146', 'P-147', 'P-148', 'P-149', 'P-150', 'P-151', 'P-152', 'P-153', 'P-154', 'P-155', 'P-156', 'P-157', 'P-158', 'P-159', 'P-160', 'P-161', 'P-162', 'P-165', 'P-166', 'P-167', 'P-168', 'P-169', 'P-170', 'P-171', 'P-172', 'P-188', 'P-189', 'P-190', 'P-191', 'P-192', 'P-193', 'P-194', 'P-195', 'P-201', 'P-202', 'P-203', 'P-204', 'P-205', 'P-206', 'P-207', 'P-208', 'P-209', 'P-210'].includes(card.id));
           if (hasFoil) {
             variationsList.push(
                { id: card.id, label: { es: 'Normal', en: 'Normal' }, isFoil: false },
@@ -11765,6 +11895,27 @@ export default function TrackerApp() {
                 rarity: 'PR'
               });
             }
+          }
+
+          // 3. Check if Draft Box Tournament / Release variation is supported for this card (DB1, DB2)
+          const isDbtSupported = (card.expansion === 'DB1' || card.expansion === 'DB2') && DBT_ENABLED_CARDS.has(card.id);
+          if (isDbtSupported) {
+            if (variationsList.length === 0) {
+              variationsList.push({ id: card.id, label: { es: 'Normal', en: 'Normal' }, isFoil: false });
+            }
+            const dbtImageUrl = IMAGE_OVERRIDES[`${card.id}_DBT`] || card.imageUrl;
+            const dbtBackImageUrl = card.type === 'Leader' 
+              ? (IMAGE_OVERRIDES[`${card.id}_DBT_b`] || card.backImageUrl)
+              : undefined;
+
+            variationsList.push({
+              id: `${card.id}_DBT`,
+              label: { es: 'Draft Box Tournament', en: 'Draft Box Tournament' },
+              isFoil: false,
+              imageUrl: dbtImageUrl,
+              backImageUrl: dbtBackImageUrl,
+              rarity: 'PR'
+            });
           }
 
           if (variationsList.length > 0) {
@@ -15727,6 +15878,8 @@ export default function TrackerApp() {
                               targetExpansion = 'MASTERS_TP07'; 
                             } else if (selectedCard.id === 'SEALED_TP08') {
                               targetExpansion = 'MASTERS_TP08'; 
+                            } else if (selectedCard.id === 'SEALED_TP09') {
+                              targetExpansion = 'MASTERS_TP09'; 
                             } else if (selectedCard.id === 'SEALED_EX_TP') {
                               targetExpansion = 'MASTERS_EX_TP';
                             } else if (selectedCard.id === 'SEALED_EVENT_PACK_01') {
@@ -15739,10 +15892,16 @@ export default function TrackerApp() {
                             } else if (selectedCard.id === 'SEALED_EVENT_PACK_04') {
                               targetExpansion = 'EP04';
                               targetSub = 'Eventos especiales';
+                            } else if (selectedCard.id === 'SEALED_EVENT_PACK_05') {
+                              targetExpansion = 'EP05';
+                              targetSub = 'Eventos especiales';
                             } else if (selectedCard.id === 'SEALED_CHAMPIONSHIP_2018') {
                               targetExpansion = 'MASTERS_CHAMPIONSHIP_2018'; 
                             } else if (selectedCard.id === 'SEALED_CHAMPIONSHIP_2019') {
                               targetExpansion = 'MASTERS_CHAMPIONSHIP_2019';
+                              targetSub = 'Championship Packs';
+                            } else if (selectedCard.id === 'SEALED_CHAMPIONSHIP_2020_V1') {
+                              targetExpansion = 'MASTERS_CHAMPIONSHIP_2020_V1';
                               targetSub = 'Championship Packs';
                             }
                             

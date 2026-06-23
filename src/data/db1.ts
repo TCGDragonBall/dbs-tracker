@@ -1,7 +1,6 @@
 export const db1Data = `DB1-001	Son Goku, Might of Many	UC	Battle	Red	DB1
 DB1-002	SS Vegeta, Exploiting Weakness	SR	Battle	Red	DB1
 DB1-002_TS02	SS Vegeta, Exploiting Weakness	SR	Battle	Red	DB1
-DB1-002_PR	SS Vegeta, Exploiting Weakness	PR	Battle	Red	DB1
 DB1-003	Trunks, Deluge of Power	C	Battle	Red	DB1
 DB1-003_EP12	Trunks, Deluge of Power	PR	Battle	Red	DB1
 DB1-004	Giru	C	Battle	Red	DB1
@@ -28,7 +27,6 @@ DB1-020_JP09	Galick Cannon	PR	Extra	Red	DB1
 DB1-021	Ultra Instinct Son Goku, the Unstoppable	SR	Battle	Blue	DB1
 DB1-021_TS01	Ultra Instinct Son Goku, the Unstoppable	SR	Battle	Blue	DB1
 DB1-021_PR	Ultra Instinct Son Goku, the Unstoppable	PR	Battle	Blue	DB1
-DB1-021_PR02	Ultra Instinct Son Goku, the Unstoppable	PR	Battle	Blue	DB1
 DB1-022	SS Son Goku, the Ever-Adapting	R	Battle	Blue	DB1
 DB1-023	Son Gohan, Universe 7 United	C	Battle	Blue	DB1
 DB1-024	SSB Vegeta, Universe 7 United	R	Battle	Blue	DB1
@@ -52,7 +50,6 @@ DB1-039	Kamehameha	UC	Extra	Blue	DB1
 DB1-040	Desperate Measures	C	Extra	Blue	DB1
 DB1-040_TS01	Desperate Measures	C	Extra	Blue	DB1
 DB1-040_EP06	Desperate Measures	PR	Extra	Blue	DB1
-DB1-040_PR	Desperate Measures	PR	Extra	Blue	DB1
 DB1-041	Swift Combo Kaio-Ken Son Goku	UC	Battle	Green	DB1
 DB1-042	Son Goten, Deluge of Power	C	Battle	Green	DB1
 DB1-043	King Vegeta, Saiyan Ruler	SR	Battle	Green	DB1
@@ -75,7 +72,6 @@ DB1-056	SS Rose Goku Black, a Delicate Plan	R	Battle	Green	DB1
 DB1-057	Fused Zamasu, Deity's Wrath	SR	Battle	Green	DB1
 DB1-057_CS1	Fused Zamasu, Deity's Wrath	PR	Battle	Green	DB1
 DB1-057_PR	Fused Zamasu, Deity's Wrath	PR	Battle	Green	DB1
-DB1-057_PR02	Fused Zamasu, Deity's Wrath	PR	Battle	Green	DB1
 DB1-058	Zamasu, the Undying	UC	Battle	Green	DB1
 DB1-059	Slumber Strike	R	Extra	Green	DB1
 DB1-060	M2, the Phantasmagoric Planet	C	Extra	Green	DB1

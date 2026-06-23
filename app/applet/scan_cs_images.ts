@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 async function checkUrl(url: string) {
   try {
-    const res = await fetch(url, { method: 'HEAD', timeout: 3000 });
+    const res = await fetch(url, { method: 'HEAD', timeout: 3000 } as any);
     if (res.status === 200) {
       console.log(`FOUND: ${url}`);
       return url;
