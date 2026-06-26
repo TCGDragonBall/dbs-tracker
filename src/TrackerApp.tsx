@@ -397,7 +397,9 @@ const SET_BG: Record<string, string> = {
   'MASTERS_SEALED_EP17': 'https://dragonball.center/files/module_dbc/objetos/143/i9mt162048.jpg',
   'MASTERS_SEALED_ULTRA_BOUT_TP_V13': 'https://dragonball.center/files/module_dbc/objetos/15/uoxk163555.jpg',
   'MASTERS_SEALED_ULTRA_BOUT_TP_V1': 'https://dragonball.center/files/module_dbc/objetos/103/b4pn168655.jpg',
-  'MASTERS_SEALED_DELUXE_PACK_2026_V1': 'https://dragonball.center/files/module_dbc/objetos/0/u0nt175101.jpg',
+  'MASTERS_SEALED_DELUXE_PACK_2026_V1': 'https://dragonball.center/files/module_dbc/objetos/0/u0nt175101.jpg', 
+  'MASTERS_SEALED_DELUXE_PACK_2026_V2': 'https://dragonball.center/files/module_dbc/objetos/0/u0nt175101.jpg',
+
   'MASTERS_SEALED_ULTRA_BOUT_TP_V2': 'https://dragonball.center/files/module_dbc/objetos/68/c17q173477.jpg',
   'MASTERS_SEALED_EP18': 'https://dragonball.center/files/module_dbc/objetos/147/6p0d175120.jpg',
   'MASTERS_SEALED_ULTRA_BOUT_TP_V3': 'https://dragonball.center/files/module_dbc/objetos/149/0rkf177061.jpg',
@@ -544,6 +546,7 @@ const SET_BG_POS: Record<string, string> = {
   'MASTERS_ZENKAI_TP_V9': 'bg-[50%_25%]',
   'MASTERS_CHAMPIONSHIP_2024_FINALS': 'bg-[50%_25%]',
   'MASTERS_CHAMPIONSHIP_2024_ZENKAI': 'bg-[50%_25%]',
+  'MASTERS_CHAMPIONSHIP_PACS_2026_V2': 'bg-[50%_25%]',
   'MASTERS_ZENKAI_TP_V10': 'bg-[50%_25%]',
   'MASTERS_DELUXE_PACK_2025_V1': 'bg-[50%_25%]',
   'MASTERS_ZENKAI_TP_V11': 'bg-[50%_25%]',
@@ -553,9 +556,11 @@ const SET_BG_POS: Record<string, string> = {
   'EP17': 'bg-[50%_25%]',
   'MASTERS_ULTRA_BOUT_TP_V13': 'bg-[50%_25%]',
   'MASTERS_ULTRA_BOUT_TP_V1': 'bg-[50%_25%]',
-  'MASTERS_DELUXE_PACK_2026_V1': 'bg-[50%_25%]',
+  'MASTERS_DELUXE_PACK_2026_V1': 'bg-[50%_25%]', 
+  'MASTERS_DELUXE_PACK_2026_V2': 'bg-[50%_25%]',
   'MASTERS_ULTRA_BOUT_TP_V2': 'bg-[50%_25%]',
   'EP18': 'bg-[50%_25%]',
+  'EP19': 'bg-[50%_25%]',
   'MASTERS_ULTRA_BOUT_TP_V3': 'bg-[50%_25%]',
   'MASTERS_SEALED_TP_FOLDER': 'bg-[50%_25%]',
   'MASTERS_SEALED_TP01': 'bg-[50%_25%]',
@@ -630,6 +635,7 @@ const SET_BG_POS: Record<string, string> = {
   'MASTERS_SEALED_ZENKAI_TP_V9': 'bg-[50%_25%]',
   'MASTERS_SEALED_CHAMPIONSHIP_2024_FINALS': 'bg-[50%_25%]',
   'MASTERS_SEALED_CHAMPIONSHIP_2024_ZENKAI': 'bg-[50%_25%]',
+  'MASTERS_SEALED_CHAMPIONSHIP_PACS_2026_V2': 'bg-[50%_25%]',
   'MASTERS_SEALED_ZENKAI_TP_V10': 'bg-[50%_25%]',
   'MASTERS_SEALED_DELUXE_PACK_2025_V1': 'bg-[50%_25%]',
   'MASTERS_SEALED_ZENKAI_TP_V11': 'bg-[50%_25%]',
@@ -639,9 +645,11 @@ const SET_BG_POS: Record<string, string> = {
   'MASTERS_SEALED_EP17': 'bg-[50%_25%]',
   'MASTERS_SEALED_ULTRA_BOUT_TP_V13': 'bg-[50%_25%]',
   'MASTERS_SEALED_ULTRA_BOUT_TP_V1': 'bg-[50%_25%]',
-  'MASTERS_SEALED_DELUXE_PACK_2026_V1': 'bg-[50%_25%]',
+  'MASTERS_SEALED_DELUXE_PACK_2026_V1': 'bg-[50%_25%]', 
+  'MASTERS_SEALED_DELUXE_PACK_2026_V2': 'bg-[50%_25%]',
   'MASTERS_SEALED_ULTRA_BOUT_TP_V2': 'bg-[50%_25%]',
   'MASTERS_SEALED_EP18': 'bg-[50%_25%]',
+  'MASTERS_SEALED_EP19': 'bg-[50%_25%]',
   'MASTERS_SEALED_ULTRA_BOUT_TP_V3': 'bg-[50%_25%]',
   'MASTERS_SEALED_EP06': 'bg-[50%_25%]',
   'MASTERS_SEALED_EP07': 'bg-[50%_25%]',
@@ -936,6 +944,7 @@ const expansionGroups: ExpansionGroup[] = [
           { id: 'EP16', label: 'Event Pack 16', sub: 'Eventos' },
           { id: 'EP17', label: 'Event Pack 17', sub: 'Eventos' },
           { id: 'EP18', label: 'Event Pack 18', sub: 'Eventos' },
+          { id: 'EP19', label: 'Event Pack 19', sub: 'Eventos' }
         ]
       },
       {
@@ -1078,7 +1087,8 @@ const expansionGroups: ExpansionGroup[] = [
           { id: 'MASTERS_CHAMPIONSHIP_2023_CEL', label: 'Championship 2023 Finals Celebration', sub: 'Championship' },
           { id: 'MASTERS_CHAMPIONSHIP_2023_ZENKAI', label: 'Championship 2023 Finals Zenkai Premium', sub: 'Championship' },
           { id: 'MASTERS_CHAMPIONSHIP_2024_FINALS', label: 'Championship 2024 Finals Pack', sub: 'Championship' },
-          { id: 'MASTERS_CHAMPIONSHIP_2024_ZENKAI', label: 'Championship 2024 Finals ZENKAI Pack', sub: 'Championship' }
+          { id: 'MASTERS_CHAMPIONSHIP_2024_ZENKAI', label: 'Championship 2024 Finals ZENKAI Pack', sub: 'Championship' },
+          { id: 'MASTERS_CHAMPIONSHIP_PACS_2026_V2', label: 'Premium Alt-Art Card Set 2026 Vol.2', sub: 'Championship' },
         ]
       },
       { id: 'COL03', label: 'Tokens', sub: 'Extras' },
@@ -1144,7 +1154,9 @@ const expansionGroups: ExpansionGroup[] = [
           { id: 'MASTERS_SEALED_DELUXE_PACK_2025_V2', label: 'Deluxe Pack 2025 Vol. 2', sub: 'Promo' },
           { id: 'MASTERS_SEALED_ULTRA_BOUT_TP_V13', label: 'Ultra Bout Series Tournament Pack Vol. 13', sub: 'Tournament' },
           { id: 'MASTERS_SEALED_ULTRA_BOUT_TP_V1', label: 'Ultra Bout Series Tournament Pack Vol. 1', sub: 'Tournament' },
-          { id: 'MASTERS_SEALED_DELUXE_PACK_2026_V1', label: 'Deluxe Pack 2026 Vol. 1', sub: 'Promo' },
+          { id: 'MASTERS_SEALED_DELUXE_PACK_2026_V1', label: 'Deluxe Pack 2026 Vol. 1', sub: 'Promo' }, 
+          { id: 'MASTERS_SEALED_DELUXE_PACK_2026_V2', label: 'Deluxe Pack 2026 Vol. 2', sub: 'Promo' },
+
           { id: 'MASTERS_SEALED_ULTRA_BOUT_TP_V2', label: 'Ultra Bout Series Tournament Pack Vol. 2', sub: 'Tournament' },
           { id: 'MASTERS_SEALED_ULTRA_BOUT_TP_V3', label: 'Ultra Bout Series Tournament Pack Vol. 3', sub: 'Tournament' }
         ]
@@ -1170,7 +1182,8 @@ const expansionGroups: ExpansionGroup[] = [
           { id: 'MASTERS_SEALED_CHAMPIONSHIP_2023_CEL', label: 'Championship 2023 Finals Celebration', sub: 'Championship' },
           { id: 'MASTERS_SEALED_CHAMPIONSHIP_2023_ZENKAI', label: 'Championship 2023 Finals Zenkai Premium', sub: 'Championship' },
           { id: 'MASTERS_SEALED_CHAMPIONSHIP_2024_FINALS', label: 'Championship 2024 Finals Pack', sub: 'Championship' },
-          { id: 'MASTERS_SEALED_CHAMPIONSHIP_2024_ZENKAI', label: 'Championship 2024 Finals ZENKAI Pack', sub: 'Championship' }
+          { id: 'MASTERS_SEALED_CHAMPIONSHIP_2024_ZENKAI', label: 'Championship 2024 Finals ZENKAI Pack', sub: 'Championship' },
+          { id: 'MASTERS_SEALED_CHAMPIONSHIP_PACS_2026_V2', label: 'Premium Alt-Art Card Set 2026 Vol.2', sub: 'Championship' },
         ]
       },
       {
@@ -1195,7 +1208,8 @@ const expansionGroups: ExpansionGroup[] = [
           { id: 'MASTERS_SEALED_EP15', label: 'Event Pack 15', sub: 'Event Pack' },
           { id: 'MASTERS_SEALED_EP16', label: 'Event Pack 16', sub: 'Event Pack' },
           { id: 'MASTERS_SEALED_EP17', label: 'Event Pack 17', sub: 'Event Pack' },
-          { id: 'MASTERS_SEALED_EP18', label: 'Event Pack 18', sub: 'Event Pack' }
+          { id: 'MASTERS_SEALED_EP18', label: 'Event Pack 18', sub: 'Event Pack' },
+          { id: 'MASTERS_SEALED_EP19', label: 'Event Pack 19', sub: 'Event Pack' }
         ]
       },
       { id: 'MASTERS_SEALED_SPECIAL_TOKEN_PACK', label: 'Special Token Pack', sub: 'Sellado' },
@@ -1624,7 +1638,7 @@ const FUSION_EXPANSION_GROUPS: ExpansionGroup[] = [
         ]
       },
       {
-        id: 'CH2026_FOLDER',
+                id: 'CH2026_FOLDER',
         label: 'Championship 2026',
         sub: 'Championship',
         locked: false,
@@ -1638,7 +1652,16 @@ const FUSION_EXPANSION_GROUPS: ExpansionGroup[] = [
               { id: 'CH26_W1_TOP_VIEW', label: 'Wave 1 Top Cards', sub: 'Top' },
               { id: 'CH26_W1_ACC_VIEW', label: 'Wave 1 Accessories', sub: 'Playmat' }
             ]
-          }
+          },
+          {
+            id: 'CH26_W2_FOLDER',
+            label: 'Championship 2026 Wave 2',
+            sub: 'Wave 2',
+            subItems: [
+              { id: 'CH26_W2_TOP_VIEW', label: 'Wave 2 Top Cards', sub: 'Top' }
+            ]
+          },
+          { id: 'CH26_GOLDEN_V2_VIEW', label: 'Golden Card 2026 Vol.2', sub: 'Championship' }
         ]
       }
     ]
@@ -2349,6 +2372,15 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
   'P-753': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
   'P-754': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
   'P-754_W': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'P-757': { sourceProduct: 'Deluxe Pack 2026 Vol.2' },
+  'P-758': { sourceProduct: 'Deluxe Pack 2026 Vol.2' },
+  'P-759': { sourceProduct: 'Deluxe Pack 2026 Vol.2' },
+  'P-760': { sourceProduct: 'Deluxe Pack 2026 Vol.2' },
+  'P-761': { sourceProduct: 'Deluxe Pack 2026 Vol.2' },
+  'P-761_PR': { sourceProduct: 'Deluxe Pack 2026 Vol.2' },
+  'P-762': { sourceProduct: 'Deluxe Pack 2026 Vol.2' },
+  'P-762_PR': { sourceProduct: 'Deluxe Pack 2026 Vol.2' },
+
   
   // Event Pack 09
   'BT12-004_EP09': { sourceProduct: 'Event Pack 09' },
@@ -2711,6 +2743,33 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
   'TP06_NORMAL_VIEW': { sourceProduct: 'Tournament Pack 06' },
   'TP06_WINNER_VIEW': { sourceProduct: 'Tournament Pack 06' },
   
+  // Premium Alt-Art Card Set 2026 Vol.2
+    'BT26-049_CH26_W2_T16': { sourceProduct: 'CHAMPIONSHIP 26-27 Online/Offline Regionals Wave 2 Top 16 Alt-Art Card' },
+  'BT28-078_CH26_GLD2': { sourceProduct: 'CHAMPIONSHIP 26-27 Golden Card 2026 Vol.2' },
+  'BT22-034_PACS2': { sourceProduct: 'Premium Alt-Art Card Set 2026 Vol.2' },
+  'BT26-128_PACS2': { sourceProduct: 'Premium Alt-Art Card Set 2026 Vol.2' },
+  'BT27-059_PACS2': { sourceProduct: 'Premium Alt-Art Card Set 2026 Vol.2' },
+  'BT28-003_PACS2': { sourceProduct: 'Premium Alt-Art Card Set 2026 Vol.2' },
+  'BT28-083_PACS2': { sourceProduct: 'Premium Alt-Art Card Set 2026 Vol.2' },
+  // Event Pack 19
+  'BT27-025_EP19': { sourceProduct: 'Event Pack 19' },
+  'BT5-044_EP19': { sourceProduct: 'Event Pack 19' },
+  'BT5-112_EP19': { sourceProduct: 'Event Pack 19' },
+  'BT10-010_EP19': { sourceProduct: 'Event Pack 19' },
+  'BT21-041_EP19': { sourceProduct: 'Event Pack 19' },
+  'BT24-083_EP19': { sourceProduct: 'Event Pack 19' },
+  'BT27-021_EP19': { sourceProduct: 'Event Pack 19' },
+  'BT27-059_EP19': { sourceProduct: 'Event Pack 19' },
+  'BT27-064_EP19': { sourceProduct: 'Event Pack 19' },
+  'BT27-076_EP19': { sourceProduct: 'Event Pack 19' },
+  'BT28-034_EP19': { sourceProduct: 'Event Pack 19' },
+  'BT28-113_EP19': { sourceProduct: 'Event Pack 19' },
+  'BT28-124_EP19': { sourceProduct: 'Event Pack 19' },
+  'BT28-139_EP19': { sourceProduct: 'Event Pack 19' },
+  'DB3-089_EP19': { sourceProduct: 'Event Pack 19' },
+  'EX10-05_EP19': { sourceProduct: 'Event Pack 19' },
+  'P-473_EP19': { sourceProduct: 'Event Pack 19' },
+  'P-680_EP19': { sourceProduct: 'Event Pack 19' },
   // TP03 Cards Metadata
   'FB03-011_BCGF': { sourceProduct: 'Bandai Card Games Fest 2024' },
   'FB02-007_UB_V2_T8': { sourceProduct: 'Ultimate Battle 2024 VOL 2' },
@@ -2875,9 +2934,41 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'SEALED_EVENT_PACK_17': 'https://dragonball.center/files/module_dbc/objetos/143/i9mt162048.jpg',
   'SEALED_ULTRA_BOUT_TP_V13': 'https://dragonball.center/files/module_dbc/objetos/15/uoxk163555.jpg',
   'SEALED_ULTRA_BOUT_TP_V1': 'https://dragonball.center/files/module_dbc/objetos/103/b4pn168655.jpg',
-  'SEALED_DELUXE_PACK_2026_V1': 'https://dragonball.center/files/module_dbc/objetos/0/u0nt175101.jpg',
+  'SEALED_DELUXE_PACK_2026_V1': 'https://dragonball.center/files/module_dbc/objetos/0/u0nt175101.jpg', 
+  'SEALED_DELUXE_PACK_2026_V2': 'https://dragonball.center/files/module_dbc/objetos/0/u0nt175101.jpg',
+
   'SEALED_ULTRA_BOUT_TP_V2': 'https://dragonball.center/files/module_dbc/objetos/68/c17q173477.jpg',
   'SEALED_EVENT_PACK_18': 'https://dragonball.center/files/module_dbc/objetos/147/6p0d175120.jpg',
+  'BT27-025_EP19': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT27-025_PR.png',
+  'BT5-044_EP19': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT5-044_PR.png',
+  'BT5-112_EP19': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT5-112_PR03.png',
+  'BT10-010_EP19': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT10-010_PR02.png',
+  'BT21-041_EP19': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT21-041_PR.png',
+  'BT24-083_EP19': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT24-083_PR.png',
+  'BT27-021_EP19': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT27-021_PR.png',
+  'BT27-059_EP19': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT27-059_PR03.png',
+  'BT27-064_EP19': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT27-064_PR.png',
+  'BT27-076_EP19': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT27-076_PR.png',
+  'BT28-034_EP19': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT28-034_PR.png',
+  'BT28-113_EP19': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT28-113_PR.png',
+  'BT28-124_EP19': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT28-124_PR.png',
+  'BT28-139_EP19': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT28-139_PR.png',
+  'DB3-089_EP19': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/DB3-089_PR.png',
+  'EX10-05_EP19': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/EX10-05_PR.png',
+  'P-473_EP19': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-473_PR02.png',
+  'P-680_EP19': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-680_PR02.png',
+  'SEALED_EVENT_PACK_19': 'https://dragonball.center/files/module_dbc/objetos/0/u0nt175101.jpg',
+  'MASTERS_SEALED_EP19': 'https://dragonball.center/files/module_dbc/objetos/0/u0nt175101.jpg',
+    'BT26-049_CH26_W2_T16': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT26-049_PR.png',
+  'BT28-078_CH26_GLD2': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT28-078.png',
+  'BT28-078_CH26_GLD2_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT28-078_PR02_b.png',
+  'BT22-034_PACS2': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT22-034_PR.png',
+  'BT26-128_PACS2': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT26-128_PR.png',
+  'BT27-059_PACS2': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT27-059_PR02.png',
+  'BT28-003_PACS2': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT28-003_PR.png',
+  'BT28-083_PACS2': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT28-083_PR.png',
+  'SEALED_CHAMPIONSHIP_PACS_2026_V2': 'https://dragonball.center/files/module_dbc/objetos/0/u0nt175101.jpg',
+  'MASTERS_SEALED_CHAMPIONSHIP_PACS_2026_V2': 'https://dragonball.center/files/module_dbc/objetos/0/u0nt175101.jpg',
   'SEALED_ULTRA_BOUT_TP_V3': 'https://dragonball.center/files/module_dbc/objetos/149/0rkf177061.jpg',
   'MASTERS_SEALED_SPECIAL_TOKEN_PACK': 'https://dragonball.center/files/module_dbc/objetos/49/rou4116849.jpg',
   'MASTERS_TP_FOLDER': 'https://dragonball.center/files/module_dbc/objetos/63/xqsm15537.jpg',
@@ -2956,7 +3047,9 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'MASTERS_SEALED_EP17': 'https://dragonball.center/files/module_dbc/objetos/143/i9mt162048.jpg',
   'MASTERS_SEALED_ULTRA_BOUT_TP_V13': 'https://dragonball.center/files/module_dbc/objetos/15/uoxk163555.jpg',
   'MASTERS_SEALED_ULTRA_BOUT_TP_V1': 'https://dragonball.center/files/module_dbc/objetos/103/b4pn168655.jpg',
-  'MASTERS_SEALED_DELUXE_PACK_2026_V1': 'https://dragonball.center/files/module_dbc/objetos/0/u0nt175101.jpg',
+  'MASTERS_SEALED_DELUXE_PACK_2026_V1': 'https://dragonball.center/files/module_dbc/objetos/0/u0nt175101.jpg', 
+  'MASTERS_SEALED_DELUXE_PACK_2026_V2': 'https://dragonball.center/files/module_dbc/objetos/0/u0nt175101.jpg',
+
   'MASTERS_SEALED_ULTRA_BOUT_TP_V2': 'https://dragonball.center/files/module_dbc/objetos/68/c17q173477.jpg',
   'MASTERS_SEALED_EP18': 'https://dragonball.center/files/module_dbc/objetos/147/6p0d175120.jpg',
   'MASTERS_SEALED_ULTRA_BOUT_TP_V3': 'https://dragonball.center/files/module_dbc/objetos/149/0rkf177061.jpg',
@@ -3538,6 +3631,15 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'P-746_W': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-746_PR.png',
   'P-750_W': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-750_PR.png',
   'P-754_W': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-754_PR.png',
+  'P-757': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-757.png',
+  'P-758': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-758.png',
+  'P-759': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-759.png',
+  'P-760': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-760.png',
+  'P-761': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-761.png',
+  'P-761_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-761_PR.png',
+  'P-762': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-762.png',
+  'P-762_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-762_PR.png',
+
   'BT19-065_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT19-065_PR02.png',
   'BT19-065_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT19-065_PR03.png',
   'BT21-097_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT21-097_PR02.png',
@@ -6428,6 +6530,14 @@ const EVENT_PACK_18 = [
   'BT24-136_EP18', 'BT16-045_EP18', 'BT11-127_EP18'
 ];
 
+const EVENT_PACK_19 = [
+  'SEALED_EVENT_PACK_19', 'BT27-025_EP19', 'BT5-044_EP19', 'BT5-112_EP19', 'BT10-010_EP19', 'BT21-041_EP19', 'BT24-083_EP19', 'BT27-021_EP19', 'BT27-059_EP19', 'BT27-064_EP19', 'BT27-076_EP19', 'BT28-034_EP19', 'BT28-113_EP19', 'BT28-124_EP19', 'BT28-139_EP19', 'DB3-089_EP19', 'EX10-05_EP19', 'P-473_EP19', 'P-680_EP19'
+];
+
+const CHAMPIONSHIP_PACS_2026_V2 = [
+  'SEALED_CHAMPIONSHIP_PACS_2026_V2', 'BT22-034_PACS2', 'BT26-128_PACS2', 'BT27-059_PACS2', 'BT28-003_PACS2', 'BT28-083_PACS2'
+];
+
 const JUDGE_PACK_01 = ['P-003_JP01', 'P-015_JP01', 'P-016_JP01', 'P-018_JP01'];
 const JUDGE_PACK_02 = ['P-030_JP02', 'P-032_JP02', 'P-033_JP02', 'P-036_JP02', 'P-035_JP02'];
 const JUDGE_PACK_03 = ['P-053_JP03', 'P-049_JP03', 'P-040_JP03', 'P-048_JP03', 'P-052_JP03'];
@@ -6491,6 +6601,8 @@ const LIMITED_PACK_26_01 = [
   'FB09-113_LP26_W1', 'FB09-116_LP26_W1', 'FB09-118_LP26_W1', 'FB09-120_LP26_W1'
 ];
 const CHAMPIONSHIP_2026_W1_TOP = ['FB09-037_CH26_T4', 'FB09-060_CH26_T8'];
+const CHAMPIONSHIP_2026_W2_TOP = ['BT26-049_CH26_W2_T16'];
+const CHAMPIONSHIP_2026_GOLDEN_V2 = ['BT28-078_CH26_GLD2'];
 const CHAMPIONSHIP_2026_W1_SERIAL = ['FB09-007_CH26_SE'];
 
 const LP02_NORMAL = ['FB02-047_LP02', 'FB05-100_LP02', 'FS02-03_LP02', 'FS07-12_LP02', 'SB02-002_LP02', 'SB02-003_LP02', 'SB02-011_LP02', 'SB02-049_LP02', 'SB02-059_LP02'];
@@ -6580,7 +6692,7 @@ const FUSION_JUDGE_EVENT_PACK_05 = ['FB07-007_JEP05', 'FB07-011_JEP05', 'FB07-02
 const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_SEALED_TP_FOLDER': [
     'SEALED_TP01', 'SEALED_TP02', 'SEALED_TP03', 'SEALED_TP04', 'SEALED_TP05_2018', 'SEALED_TP05_2019', 'SEALED_TP06', 'SEALED_TP07', 'SEALED_TP08', 'SEALED_TP09', 'SEALED_EX_TP', 'SEALED_TP_UW1', 'SEALED_TP_UW2', 'SEALED_TP_UW3', 'SEALED_TP_UW4', 'SEALED_TP_UW5', 'SEALED_TP_UW6', 'SEALED_TP_UW7', 'SEALED_TP_UW8', 'SEALED_ZENKAI_START_PACK', 'SEALED_ZENKAI_TP_V1',
-    'SEALED_ZENKAI_TP_V2', 'SEALED_Z03_DASH_PACK', 'SEALED_ZENKAI_TP_V3', 'SEALED_ZENKAI_TP_V4', 'SEALED_ZENKAI_TP_V5', 'SEALED_ZENKAI_TP_V6', 'SEALED_ZENKAI_TP_V7', 'SEALED_DELUXE_PACK_2024_V1', 'SEALED_ZENKAI_TP_V8', 'SEALED_DELUXE_PACK_2024_V2', 'SEALED_ZENKAI_TP_V9', 'SEALED_ZENKAI_TP_V10', 'SEALED_DELUXE_PACK_2025_V1', 'SEALED_ZENKAI_TP_V11', 'SEALED_ZENKAI_TP_V12', 'SEALED_DELUXE_PACK_2025_V2', 'SEALED_ULTRA_BOUT_TP_V13', 'SEALED_ULTRA_BOUT_TP_V1', 'SEALED_DELUXE_PACK_2026_V1', 'SEALED_ULTRA_BOUT_TP_V2', 'SEALED_ULTRA_BOUT_TP_V3'
+    'SEALED_ZENKAI_TP_V2', 'SEALED_Z03_DASH_PACK', 'SEALED_ZENKAI_TP_V3', 'SEALED_ZENKAI_TP_V4', 'SEALED_ZENKAI_TP_V5', 'SEALED_ZENKAI_TP_V6', 'SEALED_ZENKAI_TP_V7', 'SEALED_DELUXE_PACK_2024_V1', 'SEALED_ZENKAI_TP_V8', 'SEALED_DELUXE_PACK_2024_V2', 'SEALED_ZENKAI_TP_V9', 'SEALED_ZENKAI_TP_V10', 'SEALED_DELUXE_PACK_2025_V1', 'SEALED_ZENKAI_TP_V11', 'SEALED_ZENKAI_TP_V12', 'SEALED_DELUXE_PACK_2025_V2', 'SEALED_ULTRA_BOUT_TP_V13', 'SEALED_ULTRA_BOUT_TP_V1', 'SEALED_DELUXE_PACK_2026_V1', 'SEALED_DELUXE_PACK_2026_V2', 'SEALED_ULTRA_BOUT_TP_V2', 'SEALED_ULTRA_BOUT_TP_V3'
   ],
   'MASTERS_SEALED_TP01': ['SEALED_TP01'],
   'MASTERS_SEALED_TP02': ['SEALED_TP02'],
@@ -6621,12 +6733,14 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_SEALED_DELUXE_PACK_2025_V2': ['SEALED_DELUXE_PACK_2025_V2'],
   'MASTERS_SEALED_ULTRA_BOUT_TP_V13': ['SEALED_ULTRA_BOUT_TP_V13'],
   'MASTERS_SEALED_ULTRA_BOUT_TP_V1': ['SEALED_ULTRA_BOUT_TP_V1'],
-  'MASTERS_SEALED_DELUXE_PACK_2026_V1': ['SEALED_DELUXE_PACK_2026_V1'],
+  'MASTERS_SEALED_DELUXE_PACK_2026_V1': ['SEALED_DELUXE_PACK_2026_V1'], 
+  'MASTERS_SEALED_DELUXE_PACK_2026_V2': ['SEALED_DELUXE_PACK_2026_V2'],
+
   'MASTERS_SEALED_ULTRA_BOUT_TP_V2': ['SEALED_ULTRA_BOUT_TP_V2'],
   'MASTERS_SEALED_ULTRA_BOUT_TP_V3': ['SEALED_ULTRA_BOUT_TP_V3'],
   'MASTERS_SEALED_EP_FOLDER': [
     'SEALED_EVENT_PACK_01', 'SEALED_EVENT_PACK_02', 'SEALED_EVENT_PACK_03', 'SEALED_EVENT_PACK_04', 'SEALED_EVENT_PACK_05', 'SEALED_EVENT_PACK_06', 'SEALED_EVENT_PACK_07', 'SEALED_EVENT_PACK_08', 'SEALED_EVENT_PACK_09', 'SEALED_EVENT_PACK_10',
-    'SEALED_EVENT_PACK_11', 'SEALED_EVENT_PACK_12', 'SEALED_EVENT_PACK_13', 'SEALED_EVENT_PACK_14', 'SEALED_EVENT_PACK_15', 'SEALED_EVENT_PACK_16', 'SEALED_EVENT_PACK_17', 'SEALED_EVENT_PACK_18'
+    'SEALED_EVENT_PACK_11', 'SEALED_EVENT_PACK_12', 'SEALED_EVENT_PACK_13', 'SEALED_EVENT_PACK_14', 'SEALED_EVENT_PACK_15', 'SEALED_EVENT_PACK_16', 'SEALED_EVENT_PACK_17', 'SEALED_EVENT_PACK_18', 'SEALED_EVENT_PACK_19'
   ],
   'MASTERS_SEALED_EP01': ['SEALED_EVENT_PACK_01'],
   'MASTERS_SEALED_EP02': ['SEALED_EVENT_PACK_02'], 
@@ -6646,6 +6760,7 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_SEALED_EP16': ['SEALED_EVENT_PACK_16'],
   'MASTERS_SEALED_EP17': ['SEALED_EVENT_PACK_17'],
   'MASTERS_SEALED_EP18': ['SEALED_EVENT_PACK_18'],
+  'MASTERS_SEALED_EP19': ['SEALED_EVENT_PACK_19'],
   'MASTERS_SEALED_SPECIAL_TOKEN_PACK': ['SEALED_SPECIAL_TOKEN_PACK'],
   'MASTERS_SEALED_PB_FOLDER': ['SEALED_PB01', 'SEALED_PB02', 'SEALED_PB03'],
   'MASTERS_SEALED_PB01': ['SEALED_PB01'],
@@ -6672,6 +6787,7 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_SEALED_CHAMPIONSHIP_2023_ZENKAI': ['SEALED_CHAMPIONSHIP_2023_ZENKAI'],
   'MASTERS_SEALED_CHAMPIONSHIP_2024_FINALS': ['SEALED_CHAMPIONSHIP_2024_FINALS'],
   'MASTERS_SEALED_CHAMPIONSHIP_2024_ZENKAI': ['SEALED_CHAMPIONSHIP_2024_ZENKAI'],
+  'MASTERS_SEALED_CHAMPIONSHIP_PACS_2026_V2': ['SEALED_CHAMPIONSHIP_PACS_2026_V2'],
   'PLAYMATS_MASTERS_FOLDER': ['ANIMENEXT_2019', 'ORIGINS_2019', 'ANIME_EXPO_2019', 'OTAKON_2019'],
   'OTAKON_2019': ['PM-OT2019-01', 'PM-OT2019-02', 'PM-OT2019-03', 'PM-OT2019-04', 'PM-OT2019-05', 'PM-OT2019-06', 'PM-OT2019-07', 'PM-OT2019-08', 'PM-OT2019-09', 'PM-OT2019-10', 'PM-OT2019-11', 'PM-OT2019-12', 'PM-OT2019-13', 'PM-OT2019-14', 'PM-OT2019-15'],
   'ANIME_EXPO_2019': ['PM-AX2019-01', 'PM-AX2019-02'],
@@ -6726,7 +6842,9 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_ZENKAI_TP_V12': ['SEALED_ZENKAI_TP_V12', 'P-681', 'P-682', 'P-683', 'P-684', 'P-685', 'P-686', 'P-687', 'P-688'],
   'MASTERS_DELUXE_PACK_2025_V2': ['SEALED_DELUXE_PACK_2025_V2', 'P-689', 'P-690', 'P-691', 'P-692', 'P-693', 'P-694'],
   'MASTERS_ULTRA_BOUT_TP_V13': ['SEALED_ULTRA_BOUT_TP_V13', 'P-697', 'P-698', 'P-699', 'P-700', 'P-701', 'P-702', 'P-703', 'P-704', 'P-705', 'P-706', 'P-707', 'P-708', 'P-709', 'P-710', 'P-711', 'P-712'],
-  'MASTERS_DELUXE_PACK_2026_V1': ['SEALED_DELUXE_PACK_2026_V1', 'P-717', 'P-718', 'P-719', 'P-720', 'P-721', 'P-722'],
+  'MASTERS_DELUXE_PACK_2026_V1': ['SEALED_DELUXE_PACK_2026_V1', 'SEALED_DELUXE_PACK_2026_V2', 'P-717', 'P-718', 'P-719', 'P-720', 'P-721', 'P-722'],
+  'MASTERS_DELUXE_PACK_2026_V2': ['SEALED_DELUXE_PACK_2026_V2', 'P-757', 'P-758', 'P-759', 'P-760', 'P-761', 'P-761_PR', 'P-762', 'P-762_PR'],
+
   'MASTERS_ULTRA_BOUT_TP_V2': ['SEALED_ULTRA_BOUT_TP_V2', 'P-723', 'P-724', 'P-725', 'P-726', 'P-727', 'P-728', 'P-729', 'P-730', 'P-731', 'P-732', 'P-733', 'P-734', 'P-735', 'P-736', 'P-737', 'P-738'],
   'MASTERS_ULTRA_BOUT_TP_V3': ['SEALED_ULTRA_BOUT_TP_V3', 'P-739', 'P-740', 'P-741', 'P-742', 'P-743', 'P-744', 'P-745', 'P-746', 'P-747', 'P-748', 'P-749', 'P-750', 'P-751', 'P-752', 'P-753', 'P-754'],
   'MASTERS_DELUXE_PACK_2024_V1': ['SEALED_DELUXE_PACK_2024_V1'],
@@ -6739,6 +6857,7 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_CHAMPIONSHIP_2023_ZENKAI': ['SEALED_CHAMPIONSHIP_2023_ZENKAI'],
   'MASTERS_CHAMPIONSHIP_2024_FINALS': ['SEALED_CHAMPIONSHIP_2024_FINALS'],
   'MASTERS_CHAMPIONSHIP_2024_ZENKAI': ['SEALED_CHAMPIONSHIP_2024_ZENKAI'],
+  'MASTERS_CHAMPIONSHIP_PACS_2026_V2': CHAMPIONSHIP_PACS_2026_V2,
   TS01: ['BT9-131_TS01', 'BT10-060_TS01', 'BT10-065_TS01', 'BT10-066_TS01', 'BT11-034_TS01', 'BT11-074_TS01', 'BT11-093_TS01', 'BT13-012_TS01', 'BT13-071_TS01', 'BT14-029_TS01', 'DB1-021_TS01', 'DB1-040_TS01', 'DB3-022_TS01', 'DB3-116_TS01', 'DB3-127_TS01'],
   TS02: ['BT9-133_TS02', 'BT10-041_TS02', 'BT10-068_TS02', 'BT10-088_TS02', 'BT10-105_TS02', 'BT11-032_TS02', 'BT11-052_TS02', 'BT11-053_TS02', 'BT11-066_TS02', 'DB1-002_TS02', 'DB2-133_TS02', 'DB2-159_TS02', 'DB3-126_TS02', 'EB1-07_TS02', 'EX12-02_TS02'],
   CS01: ['BT1-057_CS1', 'BT2-001_CS1', 'BT6-014_CS1', 'BT6-107_CS1', 'BT8-110_CS1', 'BT9-130_CS1', 'BT9-131_CS1', 'BT9-132_CS1', 'BT9-133_CS1', 'BT9-134_CS1', 'DB1-057_CS1', 'DB1-064_CS1', 'DB2-001_CS1', 'P-036_CS1', 'P-086_CS1', 'P-112_CS1', 'P-124_CS1', 'P-181_CS1'],
@@ -6746,7 +6865,7 @@ const PACK_ARRAYS: Record<string, string[]> = {
   CS03: ['BT10-030_CS3', 'BT10-148_CS3', 'BT11-042_CS3', 'BT12-137_CS3', 'BT13-135_CS3', 'BT15-096_CS3', 'BT16-005_CS3', 'BT16-071_CS3', 'BT16-087_CS3', 'BT16-117_CS3', 'BT17-004_CS3', 'BT17-066_CS3', 'EB1-20_CS3', 'EX6-30_CS3', 'EX13-16_CS3', 'P-247_CS3', 'P-337_CS3', 'P-351_CS3'],
   JSP01: FUSION_JUDGE_STORE_PACK_01, JSP02: FUSION_JUDGE_STORE_PACK_02, JSP03: FUSION_JUDGE_STORE_PACK_03, JSP04: FUSION_JUDGE_STORE_PACK_04, JSP05: FUSION_JUDGE_STORE_PACK_05,
   JEP01: FUSION_JUDGE_EVENT_PACK_01, JEP02: FUSION_JUDGE_EVENT_PACK_02, JEP03: FUSION_JUDGE_EVENT_PACK_03, JEP04: FUSION_JUDGE_EVENT_PACK_04, JEP05: FUSION_JUDGE_EVENT_PACK_05,
-  EP01: EVENT_PACK_01, EP02: EVENT_PACK_02, EP03: EVENT_PACK_03, EP04: EVENT_PACK_04, EP05: EVENT_PACK_05, EP06: EVENT_PACK_06, EP07: EVENT_PACK_07, EP08: EVENT_PACK_08, EP09: EVENT_PACK_09, EP10: EVENT_PACK_10, EP11: EVENT_PACK_11, EP12: EVENT_PACK_12, EP13: EVENT_PACK_13, EP14: EVENT_PACK_14, EP15: EVENT_PACK_15, EP16: EVENT_PACK_16, EP17: EVENT_PACK_17, EP18: EVENT_PACK_18,
+  EP01: EVENT_PACK_01, EP02: EVENT_PACK_02, EP03: EVENT_PACK_03, EP04: EVENT_PACK_04, EP05: EVENT_PACK_05, EP06: EVENT_PACK_06, EP07: EVENT_PACK_07, EP08: EVENT_PACK_08, EP09: EVENT_PACK_09, EP10: EVENT_PACK_10, EP11: EVENT_PACK_11, EP12: EVENT_PACK_12, EP13: EVENT_PACK_13, EP14: EVENT_PACK_14, EP15: EVENT_PACK_15, EP16: EVENT_PACK_16, EP17: EVENT_PACK_17, EP18: EVENT_PACK_18, EP19: EVENT_PACK_19,
   PB_FOLDER: [...POWER_BOOSTER_01, ...POWER_BOOSTER_02, ...POWER_BOOSTER_03], PB01: POWER_BOOSTER_01, PB02: POWER_BOOSTER_02, PB03: POWER_BOOSTER_03,
   JP01: JUDGE_PACK_01, JP02: JUDGE_PACK_02, JP03: JUDGE_PACK_03, JP04_FOLDER: JUDGE_PACK_04, JP04: JUDGE_PACK_04, JP04_LVL2: JUDGE_PACK_04_L2, JP05_FOLDER: JUDGE_PACK_05, JP05: JUDGE_PACK_05, JP05_LVL2: JUDGE_PACK_05_L2, JP06: JUDGE_PACK_06, JP07: JUDGE_PACK_07, JP08: JUDGE_PACK_08, JP09: JUDGE_PACK_09, JP10: JUDGE_PACK_10, JP11: JUDGE_PACK_11, JP12: JUDGE_PACK_12, JP13: JUDGE_PACK_13, JP14: JUDGE_PACK_14, JP15: JUDGE_PACK_15, JP16: JUDGE_PACK_16, JP17: JUDGE_PACK_17, JP18: JUDGE_PACK_18,
   TP01: [...TOURNAMENT_PACK_01_NORMAL, ...TOURNAMENT_PACK_01_WINNER],
@@ -6791,6 +6910,9 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'UB26-2': ULTIMATE_BATTLE_2026_V2,
   'UB26-3': ULTIMATE_BATTLE_2026_V3,
   'CH26_W1_FOLDER': [...LIMITED_PACK_26_01, ...CHAMPIONSHIP_2026_W1_TOP, 'PM-CH26-W1'],
+  'CH26_W2_FOLDER': CHAMPIONSHIP_2026_W2_TOP,
+  'CH26_W2_TOP_VIEW': CHAMPIONSHIP_2026_W2_TOP,
+  'CH26_GOLDEN_V2_VIEW': CHAMPIONSHIP_2026_GOLDEN_V2,
   LP26_W1_VIEW: LIMITED_PACK_26_01,
   CH26_W1_TOP_VIEW: CHAMPIONSHIP_2026_W1_TOP,
   CH26_W1_ACC_VIEW: ['PM-CH26-W1'],
@@ -6903,7 +7025,7 @@ const getCardTags = (card: Card) => {
       EVENT_PACK_07.includes(id) || EVENT_PACK_08.includes(id) || EVENT_PACK_09.includes(id) || 
       EVENT_PACK_10.includes(id) || EVENT_PACK_11.includes(id) || EVENT_PACK_12.includes(id) || 
       EVENT_PACK_13.includes(id) || EVENT_PACK_14.includes(id) || EVENT_PACK_15.includes(id) || 
-      EVENT_PACK_16.includes(id) || EVENT_PACK_17.includes(id) || EVENT_PACK_18.includes(id)) tags.push('event');
+      EVENT_PACK_16.includes(id) || EVENT_PACK_17.includes(id) || EVENT_PACK_18.includes(id) || EVENT_PACK_19.includes(id)) tags.push('event');
       
   if (source.includes('tournament pack') || id.includes('_W') || id.includes('_TP')) tags.push('tournament');
   if (id.includes('_TP_W')) tags.push('winner');
@@ -6911,7 +7033,7 @@ const getCardTags = (card: Card) => {
     tags.push('anniversary');
     tags.push('event');
   }
-  if (id.includes('_CP') || source.includes('championship')) tags.push('championship');
+  if (id.includes('_CP') || source.includes('championship') || source.includes('premium alt-art')) tags.push('championship');
   
   if (source.includes('judge pack') || source.includes('judge promo') || id.includes('_JP') || 
       JUDGE_PACK_01.includes(id) || JUDGE_PACK_02.includes(id) || JUDGE_PACK_03.includes(id) || 

@@ -1,2 +1,4 @@
-      const parsedCards: Card[] = combinedData.split('\n').filter(line => line.trim()).map((line, i) => {
-      setCards(parsedCards);
+304:  'MASTERS_CHAMPIONSHIP_2024_ZENKAI': 'https://dragonball.center/files/module_dbc/objetos/74/g1ej152938.jpg',
+548:  'MASTERS_CHAMPIONSHIP_2024_ZENKAI': 'bg-[50%_25%]',
+1090:          { id: 'MASTERS_CHAMPIONSHIP_2024_ZENKAI', label: 'Championship 2024 Finals ZENKAI Pack', sub: 'Championship' },
+6843:  'MASTERS_CHAMPIONSHIP_2024_ZENKAI': ['SEALED_CHAMPIONSHIP_2024_ZENKAI'],

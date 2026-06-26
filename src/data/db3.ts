@@ -103,6 +103,7 @@ DB3-086	Yajirobe	C	Battle	Yellow	DB3
 DB3-087	Hire-Dragon, a Fated Meeting	C	Battle	Yellow	DB3
 DB3-088	Hire-Dragon, a Kind Friend	SR	Battle	Yellow	DB3
 DB3-089	Chi-Chi, Melee Matriarch	UC	Battle	Yellow	DB3
+DB3-089_EP19	Chi-Chi, Melee Matriarch	UC	Battle	Yellow	DB3
 DB3-089_EP12	Chi-Chi, Melee Matriarch	PR	Battle	Yellow	DB3
 DB3-090	Bulma, the Power of Science	C	Battle	Yellow	DB3
 DB3-091	Lord Slug, Power Overwhelming	UC	Battle	Yellow	DB3
