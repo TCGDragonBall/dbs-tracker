@@ -1102,6 +1102,8 @@ const expansionGroups: ExpansionGroup[] = [
         sub: 'Accessories', 
         locked: false,
         subItems: [
+
+          { id: 'PM_CELEBRATIONS_2019', label: 'Celebrations 2019', sub: 'Eventos' },
           { id: 'PM_CHAMPIONSHIP_2019', label: 'Championship 2019', sub: 'Eventos' },
           { id: 'ANIMENEXT_2019', label: 'AnimeNEXT 2019', sub: 'Eventos' },
           { id: 'ORIGINS_2019', label: 'Origins 2019', sub: 'Eventos' },
@@ -1109,7 +1111,28 @@ const expansionGroups: ExpansionGroup[] = [
           { id: 'OTAKON_2019', label: 'Otakon 2019', sub: 'Eventos' }
         ]
       },
+
       { id: 'COL11', label: 'Fundas', sub: 'Sleeves' },
+      {
+        id: 'CASES_MASTERS_FOLDER',
+        label: 'Cases',
+        sub: 'Accessories',
+        locked: false,
+        subItems: [
+          { id: 'CASE_CELEBRATIONS_2019', label: 'Celebrations 2019', sub: 'Eventos' },
+          { id: 'CASE_UNIVERSAL_ONSLAUGHT_PRE', label: 'Series 9 Pre-release', sub: 'Eventos' },
+          { id: 'CASE_UNIVERSAL_ONSLAUGHT', label: 'Universal Onslaught', sub: 'Eventos' },
+        ]
+      },
+      {
+        id: 'SEPARATORS_MASTERS_FOLDER',
+        label: 'Separators',
+        sub: 'Accessories',
+        locked: false,
+        subItems: [
+          { id: 'SEP_CELEBRATIONS_2019', label: 'Celebrations 2019', sub: 'Eventos' }
+        ]
+      },
     ]
   },
   {
@@ -1690,6 +1713,9 @@ const FUSION_EXPANSION_GROUPS: ExpansionGroup[] = [
         sub: 'Accessories',
         locked: false,
         subItems: [
+
+          { id: 'SL_CELEBRATIONS_2019', label: 'Celebrations 2019', sub: 'Eventos' },
+          { id: 'SL_MALICIOUS_MACHINATIONS', label: 'Malicious Machinations', sub: 'Eventos' },,
           { id: 'SL-CH-W1', label: 'Championship 2024 Wave 1', sub: 'Eventos', locked: false },
           { id: 'SL-CH-W2', label: 'Championship 2024 Wave 2', sub: 'Eventos', locked: false },
           { id: 'SL-CH25-W1', label: 'Championship 2025 Wave 1 Sleeve', sub: 'Eventos', locked: false },
@@ -1819,6 +1845,7 @@ import { bt31Data } from './data/bt31';
 import { fusionWorldData } from './data/fusion_world';
 import { sealedCardsData } from './data/sealed';
 import { playmatsData } from './data/playmats';
+import { casesData, separatorsData } from './data/accessories';
 import { initGA, trackPageView, trackEvent } from './utils/analytics';
 
 // --- Types ---
@@ -2822,6 +2849,32 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
 };
 
 
+
+
+const EXTRA_VARIANTS_PROMOS: Record<string, { id: string; label: Record<string, string>; isFoil: boolean; rarity?: string }> = {
+  'P-232': { id: 'P-232_W', label: { es: 'Winner', en: 'Winner' }, isFoil: true },
+  'BT9-076': { id: 'BT9-076_CM', label: { es: 'Cardmarket Series Tournament', en: 'Cardmarket Series Tournament' }, isFoil: true },
+  'DB1-027': { id: 'DB1-027_CM', label: { es: 'Cardmarket Series Tournament', en: 'Cardmarket Series Tournament' }, isFoil: true }
+};
+const EXTRA_VARIANTS_CELEBRATIONS: Record<string, { id: string; label: Record<string, string>; isFoil: boolean; rarity?: string }> = {
+  'BT5-027': { id: 'BT5-027_GS_T1', label: { es: 'Celebrations 2019 Team Top 1 (Giant)', en: 'Celebrations 2019 Team Top 1 (Giant)' }, isFoil: true },
+  'BT5-054': { id: 'BT5-054_GS_T8', label: { es: 'Celebrations 2019 Team Top 8 (Giant)', en: 'Celebrations 2019 Team Top 8 (Giant)' }, isFoil: true },
+  'BT6-001': { id: 'BT6-001_GS_S2', label: { es: 'Celebrations 2019 Single Top 2 (Giant)', en: 'Celebrations 2019 Single Top 2 (Giant)' }, isFoil: true },
+  'BT6-002': { id: 'BT6-002_GS_S2', label: { es: 'Celebrations 2019 Single Top 2 (Giant)', en: 'Celebrations 2019 Single Top 2 (Giant)' }, isFoil: true },
+  'BT6-080': { id: 'BT6-080_GS_T8', label: { es: 'Celebrations 2019 Team Top 8 (Giant)', en: 'Celebrations 2019 Team Top 8 (Giant)' }, isFoil: true },
+  'EX3-07': { id: 'EX3-07_GS_T2', label: { es: 'Celebrations 2019 Team Top 2 (Giant)', en: 'Celebrations 2019 Team Top 2 (Giant)' }, isFoil: true },
+  'EX3-13': { id: 'EX3-13_GS_T3', label: { es: 'Celebrations 2019 Team Top 3 (Giant)', en: 'Celebrations 2019 Team Top 3 (Giant)' }, isFoil: true },
+  'EX3-19': { id: 'EX3-19_GS_T3', label: { es: 'Celebrations 2019 Team Top 3 (Giant)', en: 'Celebrations 2019 Team Top 3 (Giant)' }, isFoil: true },
+  'P-071': { id: 'P-071_GS_T8', label: { es: 'Celebrations 2019 Team Top 8 (Giant)', en: 'Celebrations 2019 Team Top 8 (Giant)' }, isFoil: true },
+  'SD6-01': { id: 'SD6-01_GS_T2', label: { es: 'Celebrations 2019 Team Top 2 (Giant)', en: 'Celebrations 2019 Team Top 2 (Giant)' }, isFoil: true },
+  'SD7-01': { id: 'SD7-01_GS_T1', label: { es: 'Celebrations 2019 Team Top 1 (Giant)', en: 'Celebrations 2019 Team Top 1 (Giant)' }, isFoil: true },
+  'SD8-01': { id: 'SD8-01_GS_T1', label: { es: 'Celebrations 2019 Team Top 1 (Giant)', en: 'Celebrations 2019 Team Top 1 (Giant)' }, isFoil: true },
+  'TB2-001': { id: 'TB2-001_GS_T3', label: { es: 'Celebrations 2019 Team Top 3 (Giant)', en: 'Celebrations 2019 Team Top 3 (Giant)' }, isFoil: true },
+  'TB2-065': { id: 'TB2-065_GS_T2', label: { es: 'Celebrations 2019 Team Top 2 (Giant)', en: 'Celebrations 2019 Team Top 2 (Giant)' }, isFoil: true },
+  'TB3-001': { id: 'TB3-001_GS_S3', label: { es: 'Celebrations 2019 Single Top 3 (Giant)', en: 'Celebrations 2019 Single Top 3 (Giant)' }, isFoil: true },
+  'TB3-034': { id: 'TB3-034_GS_S8', label: { es: 'Celebrations 2019 Single Top 8 (Giant)', en: 'Celebrations 2019 Single Top 8 (Giant)' }, isFoil: true }
+};
+
 const EXTRA_VARIANTS_ORIGINS: Record<string, { id: string; label: Record<string, string>; isFoil: boolean; rarity?: string }> = {
   'BT1-053': { id: 'BT1-053_OR19', label: { es: 'Origins 2019', en: 'Origins 2019' }, isFoil: false },
   'BT1-014': { id: 'BT1-014_OR19', label: { es: 'Origins 2019', en: 'Origins 2019' }, isFoil: false },
@@ -2846,6 +2899,41 @@ const EXTRA_VARIANTS_OTAKON: Record<string, { id: string; label: Record<string, 
 };
 
 const IMAGE_OVERRIDES: Record<string, string> = {
+
+  'SL-MM-01': 'https://dragonball.center/files/module_dbc/objetos/39/bimu116677.jpg',
+  'CASE-S9-PRE': 'https://dragonball.center/files/module_dbc/objetos/32/2tgp116684.jpg',
+  'CASE-UO-01': 'https://dragonball.center/files/module_dbc/objetos/1/tku2116758.jpg',
+  'P-232': 'https://dragonball.center/files/module_dbc/objetos/9/tl7m116766.jpg',
+  'P-232_W': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-232.png',
+  'BT9-076_CM': 'https://dragonball.center/files/module_dbc/objetos/3/9cn1129394.jpg',
+  'DB1-027_CM': 'https://dragonball.center/files/module_dbc/objetos/96/d8ui129395.jpg',
+
+  'CASE-CEL19-01': 'https://dragonball.center/files/module_dbc/objetos/101/gw64117025.jpg',
+  'CASE-CEL19-02': 'https://dragonball.center/files/module_dbc/objetos/12/3grk117051.jpg',
+  'SEP-CEL19-01': 'https://dragonball.center/files/module_dbc/objetos/17/99ij117054.jpg',
+  'SEP-CEL19-02': 'https://dragonball.center/files/module_dbc/objetos/77/glj3117055.jpg',
+  'SEP-CEL19-03': 'https://dragonball.center/files/module_dbc/objetos/66/v8c5117056.jpg',
+  'SEP-CEL19-04': 'https://dragonball.center/files/module_dbc/objetos/24/du9g117057.jpg',
+  'SEP-CEL19-05': 'https://dragonball.center/files/module_dbc/objetos/53/vqnv117058.jpg',
+  'SL-CEL19-01': 'https://dragonball.center/files/module_dbc/objetos/97/6i2l117052.jpg',
+  'PM-CEL19-01': 'https://dragonball.center/files/module_dbc/objetos/109/0crb117034.png',
+  'PM-CEL19-02': 'https://dragonball.center/files/module_dbc/objetos/80/5vm6117039.png',
+  'PM-CEL19-03': 'https://dragonball.center/files/module_dbc/objetos/89/1yqe117040.png',
+  'PM-CEL19-04': 'https://dragonball.center/files/module_dbc/objetos/86/a62m117041.png',
+  'PM-CEL19-05': 'https://dragonball.center/files/module_dbc/objetos/68/np3u117042.png',
+  'PM-CEL19-06': 'https://dragonball.center/files/module_dbc/objetos/121/7dl6117043.png',
+  'PM-CEL19-07': 'https://dragonball.center/files/module_dbc/objetos/28/dw7v117044.png',
+  'PM-CEL19-08': 'https://dragonball.center/files/module_dbc/objetos/126/1zap117045.png',
+  'PM-CEL19-09': 'https://dragonball.center/files/module_dbc/objetos/91/2jcg117046.png',
+  'PM-CEL19-10': 'https://dragonball.center/files/module_dbc/objetos/35/cnyk117047.png',
+  'PM-CEL19-11': 'https://dragonball.center/files/module_dbc/objetos/119/0w9p117048.png',
+  'PM-CEL19-12': 'https://dragonball.center/files/module_dbc/objetos/138/3r4o117049.png',
+  'PM-CEL19-13': 'https://dragonball.center/files/module_dbc/objetos/138/qcnh117050.png',
+  'PM-CEL19-14': 'https://dragonball.center/files/module_dbc/_thumbs/objetos/ks3e117035.250x250.png',
+  'PM-CEL19-15': 'https://dragonball.center/files/module_dbc/objetos/123/qcpa117036.png',
+  'PM-CEL19-16': 'https://dragonball.center/files/module_dbc/objetos/53/gcpb117037.png',
+  'PM-CEL19-17': 'https://dragonball.center/files/module_dbc/objetos/1/bx80117038.png',
+  'TB3-034_GS_S8': 'https://dragonball.center/files/module_dbc/objetos/110/or4q117059.png',
   'BT7-025_CM19_1ST': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT7-025.png',
   'BT7-025_CM19_1ST_b': 'https://dragonball.center/files/module_dbc/objetos/48/aunn116432.jpg',
   'BT7-025_CM19_METAL': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT7-025.png',
@@ -6452,7 +6540,7 @@ const isAlternative = (cardId: string) => {
 };
 
 const isVirtualSet = (setId: string) => {
-  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'PB_FOLDER', 'PB01', 'PB02', 'PB03', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP04_FOLDER', 'JP04_LVL2', 'JP05', 'JP05_FOLDER', 'JP05_LVL2', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP_FOLDER', 'TP01_NORMAL_VIEW', 'SEALED_TP_FOLDER', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', 'UB26-3', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'PLAYMATS_FOLDER', 'PLAYMATS_MASTERS_FOLDER', 'ANIMENEXT_2019', 'ORIGINS_2019', 'ANIME_EXPO_2019', 'OTAKON_2019', 'PM_CHAMPIONSHIP_2019', 'MASTERS_EU_INVITATION_2019', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER', 'ENM', 'ENM_FW', 'CS01', 'CS02', 'CS03', 'COL09', 'TS01', 'TS02', 'COL10', 'COL11'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_') || setId.startsWith('SEALED_') || setId.startsWith('MASTERS_') || setId.startsWith('EP');
+  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'PB_FOLDER', 'PB01', 'PB02', 'PB03', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP04_FOLDER', 'JP04_LVL2', 'JP05', 'JP05_FOLDER', 'JP05_LVL2', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP_FOLDER', 'TP01_NORMAL_VIEW', 'SEALED_TP_FOLDER', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', 'UB26-3', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'PLAYMATS_FOLDER', 'CASES_MASTERS_FOLDER', 'CASE_CELEBRATIONS_2019', 'CASE_UNIVERSAL_ONSLAUGHT_PRE', 'CASE_UNIVERSAL_ONSLAUGHT', 'SL_MALICIOUS_MACHINATIONS', 'SEPARATORS_MASTERS_FOLDER', 'SEP_CELEBRATIONS_2019', 'PM_CELEBRATIONS_2019', 'SL_CELEBRATIONS_2019', 'PLAYMATS_MASTERS_FOLDER', 'ANIMENEXT_2019', 'ORIGINS_2019', 'ANIME_EXPO_2019', 'OTAKON_2019', 'PM_CHAMPIONSHIP_2019', 'MASTERS_EU_INVITATION_2019', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER', 'ENM', 'ENM_FW', 'CS01', 'CS02', 'CS03', 'COL09', 'TS01', 'TS02', 'COL10', 'COL11'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_') || setId.startsWith('SEALED_') || setId.startsWith('MASTERS_') || setId.startsWith('EP');
 };
 
 const EXPANSION_SET_TOURNAMENT_PACK = ['P-177', 'P-178', 'P-179', 'P-180', 'P-181', 'P-182', 'P-183', 'P-184', 'P-185', 'P-186'];
@@ -6827,7 +6915,17 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_SEALED_CHAMPIONSHIP_2024_FINALS': ['SEALED_CHAMPIONSHIP_2024_FINALS'],
   'MASTERS_SEALED_CHAMPIONSHIP_2024_ZENKAI': ['SEALED_CHAMPIONSHIP_2024_ZENKAI'],
   'MASTERS_SEALED_CHAMPIONSHIP_PACS_2026_V2': ['SEALED_CHAMPIONSHIP_PACS_2026_V2'],
-  'PLAYMATS_MASTERS_FOLDER': ['PM_CHAMPIONSHIP_2019', 'ANIMENEXT_2019', 'ORIGINS_2019', 'ANIME_EXPO_2019', 'OTAKON_2019'],
+
+  'CASES_MASTERS_FOLDER': ['CASE_CELEBRATIONS_2019', 'CASE_UNIVERSAL_ONSLAUGHT_PRE', 'CASE_UNIVERSAL_ONSLAUGHT'],
+  'CASE_CELEBRATIONS_2019': ['CASE-CEL19-01', 'CASE-CEL19-02'],
+  'CASE_UNIVERSAL_ONSLAUGHT_PRE': ['CASE-S9-PRE'],
+  'CASE_UNIVERSAL_ONSLAUGHT': ['CASE-UO-01'],
+  'SL_MALICIOUS_MACHINATIONS': ['SL-MM-01'],
+  'SEPARATORS_MASTERS_FOLDER': ['SEP_CELEBRATIONS_2019'],
+  'SEP_CELEBRATIONS_2019': ['SEP-CEL19-01', 'SEP-CEL19-02', 'SEP-CEL19-03', 'SEP-CEL19-04', 'SEP-CEL19-05'],
+  'PM_CELEBRATIONS_2019': ['PM-CEL19-01', 'PM-CEL19-02', 'PM-CEL19-03', 'PM-CEL19-04', 'PM-CEL19-05', 'PM-CEL19-06', 'PM-CEL19-07', 'PM-CEL19-08', 'PM-CEL19-09', 'PM-CEL19-10', 'PM-CEL19-11', 'PM-CEL19-12', 'PM-CEL19-13', 'PM-CEL19-14', 'PM-CEL19-15', 'PM-CEL19-16', 'PM-CEL19-17'],
+  'SL_CELEBRATIONS_2019': ['SL-CEL19-01'],
+  'PLAYMATS_MASTERS_FOLDER': ['PM_CELEBRATIONS_2019', 'PM_CHAMPIONSHIP_2019', 'ANIMENEXT_2019', 'ORIGINS_2019', 'ANIME_EXPO_2019', 'OTAKON_2019'],
   'PM_CHAMPIONSHIP_2019': ['PM-CM19-01', 'PM-CM19-02', 'PM-CM19-03', 'PM-CM19-04', 'PM-CM19-05', 'PM-CM19-06', 'PM-CM19-07', 'PM-CM19-08', 'PM-CM19-09'],
   'OTAKON_2019': ['PM-OT2019-01', 'PM-OT2019-02', 'PM-OT2019-03', 'PM-OT2019-04', 'PM-OT2019-05', 'PM-OT2019-06', 'PM-OT2019-07', 'PM-OT2019-08', 'PM-OT2019-09', 'PM-OT2019-10', 'PM-OT2019-11', 'PM-OT2019-12', 'PM-OT2019-13', 'PM-OT2019-14', 'PM-OT2019-15'],
   'ANIME_EXPO_2019': ['PM-AX2019-01', 'PM-AX2019-02'],
@@ -7088,8 +7186,11 @@ const getCardTags = (card: Card) => {
   
   if (id.includes('_SE') || source.includes('serial') || ['BT22-138_PR', 'BT19-152_PR', 'BT27-139_PR', 'BT1-111_PR', 'BT1-111_PR02', 'BT27-019_PR', 'BT27-039_PR', 'BT27-059_PR', 'BT27-084_PR', 'BT27-095_PR'].includes(id)) tags.push('serial');
   
+
   if (id.startsWith('SL-')) tags.push('sleeve');
   if (id.startsWith('PM-')) tags.push('playmat');
+  if (id.startsWith('CASE-')) tags.push('case');
+  if (id.startsWith('SEP-')) tags.push('separator');
 
   return tags;
 };
@@ -12473,7 +12574,7 @@ export default function TrackerApp() {
   useEffect(() => {
     const loadCards = async () => {
       console.log(`[DATA] Loading cards for gameType: ${gameType}`);
-      const mastersDataRaw = `${bt1Data}\n${promoData}\n${startersData}\n${expertsData}\n${expansionsData}\n${tb3Data}\n${tb2Data}\n${tb1Data}\n${eb1Data}\n${db3Data}\n${db2Data}\n${db1Data}\n${bt2Data}\n${bt3Data}\n${bt4Data}\n${bt5Data}\n${bt6Data}\n${bt7Data}\n${bt8Data}\n${bt9Data}\n${bt10Data}\n${bt11Data}\n${bt12Data}\n${bt13Data}\n${bt14Data}\n${bt15Data}\n${bt16Data}\n${bt17Data}\n${bt18Data}\n${bt19Data}\n${bt20Data}\n${bt21Data}\n${bt22Data}\n${bt23Data}\n${bt24Data}\n${bt25Data}\n${bt26Data}\n${bt27Data}\n${bt28Data}\n${bt29Data}\n${bt30Data}\n${bt31Data}\n${energyMarkersData}\n${tokensData}\n${meritsData}\n${sealedCardsData}\n${sleevesData}\n${playmatsData}`;
+      const mastersDataRaw = `${bt1Data}\n${promoData}\n${startersData}\n${expertsData}\n${expansionsData}\n${tb3Data}\n${tb2Data}\n${tb1Data}\n${eb1Data}\n${db3Data}\n${db2Data}\n${db1Data}\n${bt2Data}\n${bt3Data}\n${bt4Data}\n${bt5Data}\n${bt6Data}\n${bt7Data}\n${bt8Data}\n${bt9Data}\n${bt10Data}\n${bt11Data}\n${bt12Data}\n${bt13Data}\n${bt14Data}\n${bt15Data}\n${bt16Data}\n${bt17Data}\n${bt18Data}\n${bt19Data}\n${bt20Data}\n${bt21Data}\n${bt22Data}\n${bt23Data}\n${bt24Data}\n${bt25Data}\n${bt26Data}\n${bt27Data}\n${bt28Data}\n${bt29Data}\n${bt30Data}\n${bt31Data}\n${energyMarkersData}\n${tokensData}\n${meritsData}\n${sealedCardsData}\n${sleevesData}\n${playmatsData}\n${casesData}\n${separatorsData}`;
       const combinedData = gameType === 'fusion' ? fusionWorldData : mastersDataRaw;
 
       let parsedCards: (Card & { baseIndex?: number })[] = combinedData.split('\n').filter(line => line.trim()).map((line, i) => {
@@ -12878,11 +12979,12 @@ export default function TrackerApp() {
           }
 
           // 4. Inject extra variants from EXTRA_VARIANTS_ORIGINS
-          if (EXTRA_VARIANTS_ORIGINS[card.id] || EXTRA_VARIANTS_OTAKON[card.id]) {
+
+          if (EXTRA_VARIANTS_ORIGINS[card.id] || EXTRA_VARIANTS_OTAKON[card.id] || EXTRA_VARIANTS_CELEBRATIONS[card.id] || EXTRA_VARIANTS_PROMOS[card.id]) {
             if (variationsList.length === 0) {
               variationsList.push({ id: card.id, label: { es: 'Normal', en: 'Normal' }, isFoil: false });
             }
-            const v = EXTRA_VARIANTS_ORIGINS[card.id] || EXTRA_VARIANTS_OTAKON[card.id];
+            const v = EXTRA_VARIANTS_ORIGINS[card.id] || EXTRA_VARIANTS_OTAKON[card.id] || EXTRA_VARIANTS_CELEBRATIONS[card.id] || EXTRA_VARIANTS_PROMOS[card.id];
             variationsList.push({
               ...v,
               imageUrl: IMAGE_OVERRIDES[v.id] || card.imageUrl,
@@ -17181,7 +17283,7 @@ export default function TrackerApp() {
                       <div className={`grid bg-white/5 p-1 rounded-2xl border border-white/10 shadow-inner ${
                         CARD_VARIATIONS[selectedCard.id].length === 2 ? 'grid-cols-2' :
                         CARD_VARIATIONS[selectedCard.id].length === 3 ? 'grid-cols-3' :
-                        'grid-cols-4'
+                        'grid-cols-2 gap-1'
                       }`}>
                         {CARD_VARIATIONS[selectedCard.id].map((v) => {
                           const isActive = selectedVariationId === v.id;
