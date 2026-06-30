@@ -1112,7 +1112,16 @@ const expansionGroups: ExpansionGroup[] = [
         ]
       },
 
-      { id: 'COL11', label: 'Fundas', sub: 'Sleeves' },
+      {
+        id: 'SLEEVES_MASTERS_FOLDER',
+        label: 'Fundas',
+        sub: 'Accessories',
+        locked: false,
+        subItems: [
+          { id: 'COL11', label: 'Fundas Generales', sub: 'Sleeves' },
+          { id: 'SL_CELEBRATIONS_2019', label: 'Celebrations 2019', sub: 'Eventos' }
+        ]
+      },
       {
         id: 'CASES_MASTERS_FOLDER',
         label: 'Cases',
@@ -1713,9 +1722,6 @@ const FUSION_EXPANSION_GROUPS: ExpansionGroup[] = [
         sub: 'Accessories',
         locked: false,
         subItems: [
-
-          { id: 'SL_CELEBRATIONS_2019', label: 'Celebrations 2019', sub: 'Eventos' },
-          { id: 'SL_MALICIOUS_MACHINATIONS', label: 'Malicious Machinations', sub: 'Eventos' },,
           { id: 'SL-CH-W1', label: 'Championship 2024 Wave 1', sub: 'Eventos', locked: false },
           { id: 'SL-CH-W2', label: 'Championship 2024 Wave 2', sub: 'Eventos', locked: false },
           { id: 'SL-CH25-W1', label: 'Championship 2025 Wave 1 Sleeve', sub: 'Eventos', locked: false },
@@ -6540,7 +6546,7 @@ const isAlternative = (cardId: string) => {
 };
 
 const isVirtualSet = (setId: string) => {
-  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'PB_FOLDER', 'PB01', 'PB02', 'PB03', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP04_FOLDER', 'JP04_LVL2', 'JP05', 'JP05_FOLDER', 'JP05_LVL2', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP_FOLDER', 'TP01_NORMAL_VIEW', 'SEALED_TP_FOLDER', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', 'UB26-3', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'PLAYMATS_FOLDER', 'CASES_MASTERS_FOLDER', 'CASE_CELEBRATIONS_2019', 'CASE_UNIVERSAL_ONSLAUGHT_PRE', 'CASE_UNIVERSAL_ONSLAUGHT', 'SL_MALICIOUS_MACHINATIONS', 'SEPARATORS_MASTERS_FOLDER', 'SEP_CELEBRATIONS_2019', 'PM_CELEBRATIONS_2019', 'SL_CELEBRATIONS_2019', 'PLAYMATS_MASTERS_FOLDER', 'ANIMENEXT_2019', 'ORIGINS_2019', 'ANIME_EXPO_2019', 'OTAKON_2019', 'PM_CHAMPIONSHIP_2019', 'MASTERS_EU_INVITATION_2019', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER', 'ENM', 'ENM_FW', 'CS01', 'CS02', 'CS03', 'COL09', 'TS01', 'TS02', 'COL10', 'COL11'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_') || setId.startsWith('SEALED_') || setId.startsWith('MASTERS_') || setId.startsWith('EP');
+  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'PB_FOLDER', 'PB01', 'PB02', 'PB03', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP04_FOLDER', 'JP04_LVL2', 'JP05', 'JP05_FOLDER', 'JP05_LVL2', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP_FOLDER', 'TP01_NORMAL_VIEW', 'SEALED_TP_FOLDER', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', 'UB26-3', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'SLEEVES_MASTERS_FOLDER', 'PLAYMATS_FOLDER', 'CASES_MASTERS_FOLDER', 'CASE_CELEBRATIONS_2019', 'CASE_UNIVERSAL_ONSLAUGHT_PRE', 'CASE_UNIVERSAL_ONSLAUGHT', 'SEPARATORS_MASTERS_FOLDER', 'SEP_CELEBRATIONS_2019', 'PM_CELEBRATIONS_2019', 'SL_CELEBRATIONS_2019', 'PLAYMATS_MASTERS_FOLDER', 'ANIMENEXT_2019', 'ORIGINS_2019', 'ANIME_EXPO_2019', 'OTAKON_2019', 'PM_CHAMPIONSHIP_2019', 'MASTERS_EU_INVITATION_2019', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER', 'ENM', 'ENM_FW', 'CS01', 'CS02', 'CS03', 'COL09', 'TS01', 'TS02', 'COL10', 'COL11'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_') || setId.startsWith('SEALED_') || setId.startsWith('MASTERS_') || setId.startsWith('EP');
 };
 
 const EXPANSION_SET_TOURNAMENT_PACK = ['P-177', 'P-178', 'P-179', 'P-180', 'P-181', 'P-182', 'P-183', 'P-184', 'P-185', 'P-186'];
@@ -6916,11 +6922,16 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_SEALED_CHAMPIONSHIP_2024_ZENKAI': ['SEALED_CHAMPIONSHIP_2024_ZENKAI'],
   'MASTERS_SEALED_CHAMPIONSHIP_PACS_2026_V2': ['SEALED_CHAMPIONSHIP_PACS_2026_V2'],
 
+  'SLEEVES_MASTERS_FOLDER': ['COL11', 'SL_CELEBRATIONS_2019'],
+  'COL11': ['SL-M01', 'SL-OR2019', 'SL-MM-01'],
+  'SLEEVES_FOLDER': ['SL-CH-W1', 'SL-CH-W2', 'SL-CH25-W1', 'SL-CH25-W2', 'SL01', 'SL02', 'SL-LTD02-GOKU', 'SL-LTD02-SHENRON', 'SL03', 'SL-ILL', 'SL-ILL-SP', 'SL04', 'SL-LTD03-BULMA', 'SL-LTD04-GOKU'],
+  'PLAYMATS_FOLDER': ['PM-CH-FINALS24', 'PM-CH-GF24', 'PM-CH-W1', 'PM-CH-W2', 'PM-CH25-W1', 'PM-CH25-W2', 'PM01', 'PM02'],
+  'CARD_CASE_FOLDER': ['CC-BARDOCK', 'CC-VEGITO', 'CC-GOGETA', 'CC-BROLY', 'ACS01', 'ACS02'],
+
   'CASES_MASTERS_FOLDER': ['CASE_CELEBRATIONS_2019', 'CASE_UNIVERSAL_ONSLAUGHT_PRE', 'CASE_UNIVERSAL_ONSLAUGHT'],
   'CASE_CELEBRATIONS_2019': ['CASE-CEL19-01', 'CASE-CEL19-02'],
   'CASE_UNIVERSAL_ONSLAUGHT_PRE': ['CASE-S9-PRE'],
   'CASE_UNIVERSAL_ONSLAUGHT': ['CASE-UO-01'],
-  'SL_MALICIOUS_MACHINATIONS': ['SL-MM-01'],
   'SEPARATORS_MASTERS_FOLDER': ['SEP_CELEBRATIONS_2019'],
   'SEP_CELEBRATIONS_2019': ['SEP-CEL19-01', 'SEP-CEL19-02', 'SEP-CEL19-03', 'SEP-CEL19-04', 'SEP-CEL19-05'],
   'PM_CELEBRATIONS_2019': ['PM-CEL19-01', 'PM-CEL19-02', 'PM-CEL19-03', 'PM-CEL19-04', 'PM-CEL19-05', 'PM-CEL19-06', 'PM-CEL19-07', 'PM-CEL19-08', 'PM-CEL19-09', 'PM-CEL19-10', 'PM-CEL19-11', 'PM-CEL19-12', 'PM-CEL19-13', 'PM-CEL19-14', 'PM-CEL19-15', 'PM-CEL19-16', 'PM-CEL19-17'],
@@ -7755,7 +7766,7 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
         // We need a proper getCardTags that works with the current card
         const cardTagsCheck = (c: Card, targetSetId: string) => {
           const tags = getCardTags(c);
-          if (targetSetId === 'COL02') return tags.includes('giant');
+          if (targetSetId === 'COL02') return tags.includes('giant') || (PACK_ARRAYS['COL02'] && PACK_ARRAYS['COL02'].includes(c.id));
           if (targetSetId === 'COL08') return tags.includes('serial');
           if (targetSetId === 'COL05') return tags.includes('event');
           if (targetSetId === 'COL06') return tags.includes('tournament');
@@ -7838,7 +7849,7 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
           check: (cards, inventory) => {
             const cardTagsCheck = (c: Card, targetSetId: string) => {
               const tags = getCardTags(c);
-              if (targetSetId === 'COL02') return tags.includes('giant');
+              if (targetSetId === 'COL02') return tags.includes('giant') || (PACK_ARRAYS['COL02'] && PACK_ARRAYS['COL02'].includes(c.id));
               if (targetSetId === 'COL08') return tags.includes('serial');
               if (targetSetId === 'COL05') return tags.includes('event');
               if (targetSetId === 'COL06') return tags.includes('tournament');
@@ -7875,7 +7886,7 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
           check: (cards, inventory) => {
             const cardTagsCheck = (c: Card, targetSetId: string) => {
               const tags = getCardTags(c);
-              if (targetSetId === 'COL02') return tags.includes('giant');
+              if (targetSetId === 'COL02') return tags.includes('giant') || (PACK_ARRAYS['COL02'] && PACK_ARRAYS['COL02'].includes(c.id));
               if (targetSetId === 'COL08') return tags.includes('serial');
               if (targetSetId === 'COL05') return tags.includes('event');
               if (targetSetId === 'COL06') return tags.includes('tournament');
@@ -12227,12 +12238,22 @@ export default function TrackerApp() {
     // Check expansion match
     let matchesExpansion = filters.expansion === 'Todos';
     if (!matchesExpansion) {
-      if (filters.expansion === 'COL02') matchesExpansion = isGiant;
+      if (filters.expansion === 'COL02') matchesExpansion = isGiant || !!(PACK_ARRAYS['COL02'] && PACK_ARRAYS['COL02'].includes(card.id));
       else if (filters.expansion === 'COL05') matchesExpansion = isEvent;
       else if (filters.expansion === 'COL06') matchesExpansion = isTournament;
       else if (filters.expansion === 'COL07') matchesExpansion = isJudge;
       else if (PACK_ARRAYS[filters.expansion]) {
-        matchesExpansion = PACK_ARRAYS[filters.expansion].includes(card.id);
+        const getAllCardIds = (setId: string, visited = new Set<string>()): string[] => {
+           if (visited.has(setId)) return [];
+           visited.add(setId);
+           if (!PACK_ARRAYS[setId]) return [setId];
+           return PACK_ARRAYS[setId].flatMap(id => {
+             if (id === setId) return [id]; // Handle self-referencing
+             return getAllCardIds(id, visited);
+           });
+        };
+        const expandedIds = getAllCardIds(filters.expansion);
+        matchesExpansion = expandedIds.includes(card.id);
       }
       else if (filters.expansion === 'FP' && gameType === 'fusion') {
         matchesExpansion = card.expansion === 'FP' || card.cardNumber.startsWith('FP-');
