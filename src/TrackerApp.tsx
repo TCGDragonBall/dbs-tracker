@@ -260,6 +260,8 @@ const SET_BG: Record<string, string> = {
   'MASTERS_CHAMPIONSHIP_FOLDER': 'https://dragonball.center/files/module_dbc/objetos/73/hsci15546.jpg',
   'MASTERS_CHAMPIONSHIP_2018': 'https://dragonball.center/files/module_dbc/objetos/73/hsci15546.jpg', 
   'MASTERS_CHAMPIONSHIP_2019': 'https://dragonball.center/files/module_dbc/objetos/123/cmtm36514.jpg',
+  'MASTERS_EU_INVITATION_2019': 'https://dragonball.center/files/module_dbc/objetos/123/cmtm36514.jpg',
+  'PM_CHAMPIONSHIP_2019': 'https://dragonball.center/files/module_dbc/objetos/123/cmtm36514.jpg',
   'MASTERS_CHAMPIONSHIP_2020_V1': 'https://dragonball.center/files/module_dbc/objetos/69/0sji116595.jpg',
   'MASTERS_CHAMPIONSHIP_2020_V2': 'https://dragonball.center/files/module_dbc/objetos/71/3d0y116596.jpg',
   'MASTERS_CHAMPIONSHIP_2021_V1': 'https://dragonball.center/files/module_dbc/objetos/32/wqq7116457.jpg',
@@ -504,6 +506,7 @@ const SET_BG_POS: Record<string, string> = {
   'MASTERS_CHAMPIONSHIP_FOLDER': 'bg-[50%_25%]',
   'MASTERS_CHAMPIONSHIP_2018': 'bg-[50%_25%]', 
   'MASTERS_CHAMPIONSHIP_2019': 'bg-[50%_25%]',
+  'PM_CHAMPIONSHIP_2019': 'bg-[50%_25%]',
   'MASTERS_CHAMPIONSHIP_2020_V1': 'bg-[50%_25%]',
   'MASTERS_CHAMPIONSHIP_2020_V2': 'bg-[50%_25%]',
   'MASTERS_CHAMPIONSHIP_2021_V1': 'bg-[50%_25%]',
@@ -1073,6 +1076,7 @@ const expansionGroups: ExpansionGroup[] = [
         subItems: [
           { id: 'MASTERS_CHAMPIONSHIP_2018', label: 'Championship 2018', sub: 'Championship' },
           { id: 'MASTERS_CHAMPIONSHIP_2019', label: 'Championship 2019', sub: 'Championship' },
+          { id: 'MASTERS_EU_INVITATION_2019', label: 'EU Invitation Finals 2019', sub: 'Championship' },
           { id: 'MASTERS_CHAMPIONSHIP_2020_V1', label: 'Championship Pack 2020 Vol 1', sub: 'Championship' },
           { id: 'MASTERS_CHAMPIONSHIP_2020_V2', label: 'Championship Pack 2020 Vol 2', sub: 'Championship' },
           { id: 'MASTERS_CHAMPIONSHIP_2021_V1', label: 'Championship Pack 2021 Vol 1', sub: 'Championship' },
@@ -1098,6 +1102,7 @@ const expansionGroups: ExpansionGroup[] = [
         sub: 'Accessories', 
         locked: false,
         subItems: [
+          { id: 'PM_CHAMPIONSHIP_2019', label: 'Championship 2019', sub: 'Eventos' },
           { id: 'ANIMENEXT_2019', label: 'AnimeNEXT 2019', sub: 'Eventos' },
           { id: 'ORIGINS_2019', label: 'Origins 2019', sub: 'Eventos' },
           { id: 'ANIME_EXPO_2019', label: 'Anime Expo 2019', sub: 'Eventos' },
@@ -2303,6 +2308,14 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
   // Championship
   'MASTERS_CHAMPIONSHIP_2018': { sourceProduct: 'Championship 2018' }, 
   'MASTERS_CHAMPIONSHIP_2019': { sourceProduct: 'Championship 2019' },
+  'MASTERS_EU_INVITATION_2019': { sourceProduct: 'EU Invitation Finals 2019' },
+  'P-036_CM19': { sourceProduct: 'Championship 2019' }, 'P-078_CM19': { sourceProduct: 'Championship 2019' }, 'P-091_GS': { sourceProduct: 'Championship 2019' }, 'P-092_GS': { sourceProduct: 'Championship 2019' }, 'P-138': { sourceProduct: 'Championship 2019' }, 'P-139': { sourceProduct: 'Championship 2019' }, 'P-140': { sourceProduct: 'Championship 2019' }, 'P-141': { sourceProduct: 'Championship 2019' }, 'P-142': { sourceProduct: 'Championship 2019' },
+  'BT7-025_CM19_1ST': { sourceProduct: 'Championship 2019 Finals' }, 'BT7-025_CM19_METAL': { sourceProduct: 'Championship 2019 Finals' },
+  'P-092_CM19_2ND': { sourceProduct: 'Championship 2019 Finals' }, 'P-092_CM19_METAL': { sourceProduct: 'Championship 2019 Finals' },
+  'EX3-07_CM19_3RD': { sourceProduct: 'Championship 2019 Finals' }, 'EX3-07_CM19_METAL': { sourceProduct: 'Championship 2019 Finals' },
+  'BT7-026_CM19_METAL': { sourceProduct: 'Championship 2019 Finals' },
+  'BT8-066_EU19_METAL': { sourceProduct: 'EU Invitation Finals 2019' },
+  'BT8-067_EU19_METAL': { sourceProduct: 'EU Invitation Finals 2019' },
   'MASTERS_CHAMPIONSHIP_2020_V1': { sourceProduct: 'Championship Pack 2020 Vol 1' },
   'P-063': { sourceProduct: 'Championship 2018' }, 'P-064': { sourceProduct: 'Championship 2018' }, 'P-065': { sourceProduct: 'Championship 2018' }, 'P-066': { sourceProduct: 'Championship 2018' }, 'P-067': { sourceProduct: 'Championship 2018' },
   'P-201': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-201_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-202': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-202_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-203': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-203_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-204': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-204_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-205': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-205_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-206': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-206_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-207': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-207_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-208': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-208_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-209': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-209_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-210': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-210_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' },
@@ -2833,6 +2846,24 @@ const EXTRA_VARIANTS_OTAKON: Record<string, { id: string; label: Record<string, 
 };
 
 const IMAGE_OVERRIDES: Record<string, string> = {
+  'BT7-025_CM19_1ST': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT7-025.png',
+  'BT7-025_CM19_1ST_b': 'https://dragonball.center/files/module_dbc/objetos/48/aunn116432.jpg',
+  'BT7-025_CM19_METAL': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT7-025.png',
+  'BT7-025_CM19_METAL_b': 'https://dragonball.center/files/module_dbc/objetos/69/nclb116428.jpg',
+  'P-092_CM19_2ND': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-092.png',
+  'P-092_CM19_2ND_b': 'https://dragonball.center/files/module_dbc/objetos/38/4os8116434.jpg',
+  'P-092_CM19_METAL': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-092.png',
+  'P-092_CM19_METAL_b': 'https://dragonball.center/files/module_dbc/objetos/121/ljqb116429.jpg',
+  'EX3-07_CM19_3RD': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/EX03-07.png',
+  'EX3-07_CM19_3RD_b': 'https://dragonball.center/files/module_dbc/objetos/145/hvdp116436.jpg',
+  'EX3-07_CM19_METAL': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/EX03-07.png',
+  'EX3-07_CM19_METAL_b': 'https://dragonball.center/files/module_dbc/objetos/104/gdvh116430.jpg',
+  'BT7-026_CM19_METAL': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT7-026.png',
+  'BT7-026_CM19_METAL_b': 'https://dragonball.center/files/module_dbc/objetos/12/oaus116431.jpg',
+  'BT8-066_EU19_METAL': 'https://dragonball.center/files/module_dbc/objetos/72/84kl117316.jpg',
+  'BT8-066_EU19_METAL_b': 'https://dragonball.center/files/module_dbc/objetos/128/p5id117317.jpg',
+  'BT8-067_EU19_METAL': 'https://dragonball.center/files/module_dbc/objetos/34/ffz1117314.jpg',
+  'BT8-067_EU19_METAL_b': 'https://dragonball.center/files/module_dbc/objetos/91/qa5z117315.jpg',
 
   'BT1-053_OR19': 'https://dragonball.center/files/module_dbc/objetos/49/icw5116269.jpg',
   'BT1-014_OR19': 'https://dragonball.center/files/module_dbc/objetos/147/eu6h116273.jpg',
@@ -2877,6 +2908,14 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'BT6-027_GS': 'https://dragonball.center/files/module_dbc/objetos/90/lusv116300.jpg',
   'BT6-028_GS': 'https://dragonball.center/files/module_dbc/objetos/6/72oy116298.jpg',
   'BT6-079_GS': 'https://dragonball.center/files/module_dbc/objetos/114/94oz116299.jpg',
+  'P-091_GS': 'https://dragonball.center/files/module_dbc/objetos/15/f981116418.png',
+  'P-092_GS': 'https://dragonball.center/files/module_dbc/objetos/45/se4z116419.png',
+  'P-036_CM19': 'https://dragonball.center/files/module_dbc/objetos/49/0b26116420.png',
+  'P-078_CM19': 'https://dragonball.center/files/module_dbc/objetos/110/goqo116421.png',
+  'PM-CM19-01': 'https://dragonball.center/files/module_dbc/objetos/78/wmxz116412.jpg',
+  'PM-CM19-02': 'https://dragonball.center/files/module_dbc/objetos/75/vmhx116413.jpg',
+  'PM-CM19-03': 'https://dragonball.center/files/module_dbc/objetos/54/w8ma116415.jpg',
+  'PM-CM19-04': 'https://dragonball.center/files/module_dbc/objetos/147/s07p116417.jpg',
   'PM-OR2019-01': 'https://dragonball.center/files/module_dbc/objetos/2/jei0116301.png',
   'PM-OR2019-02': 'https://dragonball.center/files/module_dbc/objetos/17/y755116302.png',
   'PM-OR2019-03': 'https://dragonball.center/files/module_dbc/objetos/73/l7jw116303.png',
@@ -6413,7 +6452,7 @@ const isAlternative = (cardId: string) => {
 };
 
 const isVirtualSet = (setId: string) => {
-  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'PB_FOLDER', 'PB01', 'PB02', 'PB03', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP04_FOLDER', 'JP04_LVL2', 'JP05', 'JP05_FOLDER', 'JP05_LVL2', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP_FOLDER', 'TP01_NORMAL_VIEW', 'SEALED_TP_FOLDER', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', 'UB26-3', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'PLAYMATS_FOLDER', 'PLAYMATS_MASTERS_FOLDER', 'ANIMENEXT_2019', 'ORIGINS_2019', 'ANIME_EXPO_2019', 'OTAKON_2019', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER', 'ENM', 'ENM_FW', 'CS01', 'CS02', 'CS03', 'COL09', 'TS01', 'TS02', 'COL10', 'COL11'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_') || setId.startsWith('SEALED_') || setId.startsWith('MASTERS_') || setId.startsWith('EP');
+  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'PB_FOLDER', 'PB01', 'PB02', 'PB03', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP04_FOLDER', 'JP04_LVL2', 'JP05', 'JP05_FOLDER', 'JP05_LVL2', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP_FOLDER', 'TP01_NORMAL_VIEW', 'SEALED_TP_FOLDER', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', 'UB26-3', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'PLAYMATS_FOLDER', 'PLAYMATS_MASTERS_FOLDER', 'ANIMENEXT_2019', 'ORIGINS_2019', 'ANIME_EXPO_2019', 'OTAKON_2019', 'PM_CHAMPIONSHIP_2019', 'MASTERS_EU_INVITATION_2019', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER', 'ENM', 'ENM_FW', 'CS01', 'CS02', 'CS03', 'COL09', 'TS01', 'TS02', 'COL10', 'COL11'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_') || setId.startsWith('SEALED_') || setId.startsWith('MASTERS_') || setId.startsWith('EP');
 };
 
 const EXPANSION_SET_TOURNAMENT_PACK = ['P-177', 'P-178', 'P-179', 'P-180', 'P-181', 'P-182', 'P-183', 'P-184', 'P-185', 'P-186'];
@@ -6788,7 +6827,8 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_SEALED_CHAMPIONSHIP_2024_FINALS': ['SEALED_CHAMPIONSHIP_2024_FINALS'],
   'MASTERS_SEALED_CHAMPIONSHIP_2024_ZENKAI': ['SEALED_CHAMPIONSHIP_2024_ZENKAI'],
   'MASTERS_SEALED_CHAMPIONSHIP_PACS_2026_V2': ['SEALED_CHAMPIONSHIP_PACS_2026_V2'],
-  'PLAYMATS_MASTERS_FOLDER': ['ANIMENEXT_2019', 'ORIGINS_2019', 'ANIME_EXPO_2019', 'OTAKON_2019'],
+  'PLAYMATS_MASTERS_FOLDER': ['PM_CHAMPIONSHIP_2019', 'ANIMENEXT_2019', 'ORIGINS_2019', 'ANIME_EXPO_2019', 'OTAKON_2019'],
+  'PM_CHAMPIONSHIP_2019': ['PM-CM19-01', 'PM-CM19-02', 'PM-CM19-03', 'PM-CM19-04', 'PM-CM19-05', 'PM-CM19-06', 'PM-CM19-07', 'PM-CM19-08', 'PM-CM19-09'],
   'OTAKON_2019': ['PM-OT2019-01', 'PM-OT2019-02', 'PM-OT2019-03', 'PM-OT2019-04', 'PM-OT2019-05', 'PM-OT2019-06', 'PM-OT2019-07', 'PM-OT2019-08', 'PM-OT2019-09', 'PM-OT2019-10', 'PM-OT2019-11', 'PM-OT2019-12', 'PM-OT2019-13', 'PM-OT2019-14', 'PM-OT2019-15'],
   'ANIME_EXPO_2019': ['PM-AX2019-01', 'PM-AX2019-02'],
   'ANIMENEXT_2019': ['PM-AN2019-01', 'PM-AN2019-02', 'PM-AN2019-03', 'PM-AN2019-04', 'PM-AN2019-05'],
@@ -6807,7 +6847,8 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_PB02': POWER_BOOSTER_02, 
   'MASTERS_PB03': ['SEALED_PB03', ...POWER_BOOSTER_03],
   'MASTERS_CHAMPIONSHIP_2018': ['SEALED_CHAMPIONSHIP_2018', 'P-063', 'P-064', 'P-065', 'P-066', 'P-067'], 
-  'MASTERS_CHAMPIONSHIP_2019': ['SEALED_CHAMPIONSHIP_2019', 'P-138', 'P-139', 'P-140', 'P-141', 'P-142'],
+  'MASTERS_CHAMPIONSHIP_2019': ['SEALED_CHAMPIONSHIP_2019', 'P-036_CM19', 'P-078_CM19', 'P-091_GS', 'P-092_GS', 'P-138', 'P-139', 'P-140', 'P-141', 'P-142', 'BT7-025_CM19_1ST', 'BT7-025_CM19_METAL', 'P-092_CM19_2ND', 'P-092_CM19_METAL', 'EX3-07_CM19_3RD', 'EX3-07_CM19_METAL', 'BT7-026_CM19_METAL', 'PM-CM19-01', 'PM-CM19-02', 'PM-CM19-03', 'PM-CM19-04', 'PM-CM19-05', 'PM-CM19-06', 'PM-CM19-07', 'PM-CM19-08', 'PM-CM19-09'],
+  'MASTERS_EU_INVITATION_2019': ['BT8-066_EU19_METAL', 'BT8-067_EU19_METAL'],
   'MASTERS_CHAMPIONSHIP_25': ['UB25-5'], // Placeholder / mapped properly
   'MASTERS_CHAMPIONSHIP_2020_V1': ['SEALED_CHAMPIONSHIP_2020_V1', 'P-201', 'P-202', 'P-203', 'P-204', 'P-205', 'P-206', 'P-207', 'P-208', 'P-209', 'P-210'],
   'MASTERS_CHAMPIONSHIP_2020_V2': ['SEALED_CHAMPIONSHIP_2020_V2', 'P-233', 'P-234', 'P-235', 'P-236', 'P-237', 'P-238', 'P-239', 'P-240', 'P-241', 'P-242'],
@@ -9116,9 +9157,9 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
   );
 };
 
-const FoilEffect = ({ rarity, mouseX = 0, mouseY = 0 }: { rarity: string, mouseX?: number, mouseY?: number }) => {
+const FoilEffect = ({ rarity, mouseX = 0, mouseY = 0, isMetal = false }: { rarity: string, mouseX?: number, mouseY?: number, isMetal?: boolean }) => {
   const isHighRarity = ['SCR', 'GDR', 'LEADER RARE', 'SPR', 'SR', 'RLR', 'PRW'].includes(rarity) || rarity.includes('*');
-  const isFoil = isHighRarity || rarity === 'R';
+  const isFoil = isHighRarity || rarity === 'R' || isMetal;
   
   if (!isFoil) return null;
 
@@ -9133,8 +9174,41 @@ const FoilEffect = ({ rarity, mouseX = 0, mouseY = 0 }: { rarity: string, mouseX
     isSPR: rarity === 'SPR',
     isSCR: rarity.startsWith('SCR'),
     isGDR: rarity === 'GDR',
-    isAlt: rarity.includes('*')
+    isAlt: rarity.includes('*'),
+    isMetal
   };
+
+  // 0. Metal Card - Solid Gold Foil Sheen
+  if (config.isMetal) {
+    return (
+      <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden rounded-3xl">
+        <div
+          className="absolute inset-0 opacity-70"
+          style={{ 
+            backgroundImage: `
+              linear-gradient(${115 + mouseX * 50}deg, 
+                rgba(255, 215, 0, 0.1) 0%, 
+                rgba(255, 230, 100, 0.7) 40%, 
+                rgba(255, 215, 0, 0.9) 50%, 
+                rgba(255, 240, 120, 0.8) 60%, 
+                rgba(255, 215, 0, 0.1) 100%)
+            `,
+            backgroundSize: '200% 200%',
+            backgroundPosition: `${px}% ${py}%`,
+            mixBlendMode: 'color-dodge',
+            filter: 'contrast(1.5) brightness(1.2)'
+          }}
+        />
+        <div 
+          className="absolute inset-0 opacity-30 mix-blend-overlay animate-pulse"
+          style={{ 
+            backgroundImage: 'radial-gradient(circle at center, rgba(255,255,255,0.5) 0%, transparent 60%)',
+            backgroundPosition: `${px}% ${py}%`,
+          }}
+        />
+      </div>
+    );
+  }
 
   // 1. R (Rare) - Simple silver sheen
   if (config.isR && !config.isAlt) {
@@ -9514,7 +9588,7 @@ const ModalCard = ({ selectedCard, isFlipped, setIsFlipped }: { selectedCard: Ca
         />
         
         {selectedCard.isFoil && (
-          <FoilEffect rarity={selectedCard.rarity} mouseX={mouseX} mouseY={mouseY} />
+          <FoilEffect rarity={selectedCard.rarity} mouseX={mouseX} mouseY={mouseY} isMetal={selectedCard.id.includes('METAL')} />
         )}
       </div>
 
@@ -9547,7 +9621,7 @@ const ModalCard = ({ selectedCard, isFlipped, setIsFlipped }: { selectedCard: Ca
             }}
           />
            {selectedCard.isFoil && (
-            <FoilEffect rarity={selectedCard.rarity} mouseX={-mouseX} mouseY={mouseY} />
+            <FoilEffect rarity={selectedCard.rarity} mouseX={-mouseX} mouseY={mouseY} isMetal={selectedCard.id.includes('METAL')} />
            )}
         </div>
       )}
@@ -9694,7 +9768,7 @@ const CardItem = ({
           />
           
           {(isOwned || isSelected) && card.isFoil && !isSelected && (
-            <FoilEffect rarity={card.rarity} mouseX={mouseX} mouseY={mouseY} />
+            <FoilEffect rarity={card.rarity} mouseX={mouseX} mouseY={mouseY} isMetal={card.id.includes('METAL')} />
           )}
 
           {isSelected && (
@@ -12620,7 +12694,7 @@ export default function TrackerApp() {
           expansion: expansionId || 'BT1',
           imageUrl: imageUrl,
           backImageUrl: backImageUrl,
-          isFoil: ['SR', 'SPR', 'SCR', 'GDR', 'RLR', 'PRW', 'LEADER RARE', 'L*', 'C*', 'UC*', 'R*', 'SR*', 'SCR*', 'SCR**'].includes(rarity),
+          isFoil: ['SR', 'SPR', 'SCR', 'GDR', 'RLR', 'PRW', 'LEADER RARE', 'L*', 'C*', 'UC*', 'R*', 'SR*', 'SCR*', 'SCR**'].includes(rarity) || (cardNumber || '').includes('METAL'),
           power: power,
           energy: energy,
           comboEnergy: comboEnergy,

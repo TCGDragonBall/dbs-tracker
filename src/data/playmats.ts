@@ -1,4 +1,14 @@
 export const playmatsData = `
+PM-CM19-01	Championship 2019 July Participation Playmat	Accessories	Playmat	Neutral	PM_CHAMPIONSHIP_2019	-	-	-	-	-	-	-	-
+PM-CM19-02	Championship 2019 July Finalist Playmat	Accessories	Playmat	Neutral	PM_CHAMPIONSHIP_2019	-	-	-	-	-	-	-	-
+PM-CM19-03	Championship 2019 September Participation Playmat	Accessories	Playmat	Neutral	PM_CHAMPIONSHIP_2019	-	-	-	-	-	-	-	-
+PM-CM19-04	Championship 2019 September Finalist Playmat	Accessories	Playmat	Neutral	PM_CHAMPIONSHIP_2019	-	-	-	-	-	-	-	-
+PM-CM19-05	Champion Playmat Championship 2019 Finals	Accessories	Playmat	Neutral	PM_CHAMPIONSHIP_2019	-	-	-	-	-	-	-	-
+PM-CM19-06	2nd Place Playmat Championship 2019 Finals	Accessories	Playmat	Neutral	PM_CHAMPIONSHIP_2019	-	-	-	-	-	-	-	-
+PM-CM19-07	3rd Place Playmat Championship 2019 Finals	Accessories	Playmat	Neutral	PM_CHAMPIONSHIP_2019	-	-	-	-	-	-	-	-
+PM-CM19-08	Top 32 Playmat Championship 2019 Finals	Accessories	Playmat	Neutral	PM_CHAMPIONSHIP_2019	-	-	-	-	-	-	-	-
+PM-CM19-09	Participation Playmat Championship 2019 Finals	Accessories	Playmat	Neutral	PM_CHAMPIONSHIP_2019	-	-	-	-	-	-	-	-
+
 PM-AN2019-01	AnimeNEXT 2019 1st Playmat	Accessories	Playmat	Neutral	ANIMENEXT_2019	-	-	-	-	-	-	-	-
 PM-AN2019-02	AnimeNEXT 2019 2nd Playmat	Accessories	Playmat	Neutral	ANIMENEXT_2019	-	-	-	-	-	-	-	-
 PM-AN2019-03	AnimeNEXT 2019 3rd Playmat	Accessories	Playmat	Neutral	ANIMENEXT_2019	-	-	-	-	-	-	-	-
