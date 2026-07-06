@@ -111,6 +111,7 @@ DB1-084_PR02	Mira, Assault from the Skies	PR	Battle	Black	DB1
 DB1-084_PR03	Mira, Assault from the Skies	PR	Battle	Black	DB1
 DB1-085	Fu, Mission Accomplished	R	Battle	Black	DB1
 DB1-086	Remote Serious Bomb	UC	Extra	Black	DB1
+DB1-086_CM20_W	Remote Serious Bomb	PR	Extra	Black	DB1
 DB1-087	Burning Slash	C	Extra	Black	DB1
 DB1-088	Champa and Beerus, Capricious Gods	R	Battle	Multi	DB1
 DB1-088_PR	Champa and Beerus, Capricious Gods	PR	Battle	Multi	DB1

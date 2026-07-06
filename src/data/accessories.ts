@@ -1,6 +1,7 @@
 export const casesData = `
 CASE-CEL19-01	Celebrations 2019 Deck Box 1	Accessories	Case	Neutral	CASE_CELEBRATIONS_2019	-	-	-	-	-	-	-	-
 CASE-CEL19-02	Celebrations 2019 Deck Box 2	Accessories	Case	Neutral	CASE_CELEBRATIONS_2019	-	-	-	-	-	-	-	-
+CASE-CM21-01	Championship 2021 Deck Box	Accessories	Case	Neutral	CASE_CHAMPIONSHIP_2021	-	-	-	-	-	-	-	-
 CASE-S9-PRE	Series 9 Pre-release Deck Box	Accessories	Case	Neutral	CASE_UNIVERSAL_ONSLAUGHT_PRE	-	-	-	-	-	-	-	-
 CASE-UO-01	Universal Onslaught Tournament Deck Box	Accessories	Case	Neutral	CASE_UNIVERSAL_ONSLAUGHT	-	-	-	-	-	-	-	-
 `;
