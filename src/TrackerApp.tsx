@@ -2936,6 +2936,7 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'SL-MM-01': 'https://dragonball.center/files/module_dbc/objetos/39/bimu116677.jpg',
   'CASE-S9-PRE': 'https://dragonball.center/files/module_dbc/objetos/32/2tgp116684.jpg',
   'CASE-UO-01': 'https://dragonball.center/files/module_dbc/objetos/1/tku2116758.jpg',
+  'P-121_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-121_PR.png',
   'P-232': 'https://dragonball.center/files/module_dbc/objetos/9/tl7m116766.jpg',
   'P-232_W': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-232.png',
   'BT9-076_CM': 'https://dragonball.center/files/module_dbc/objetos/3/9cn1129394.jpg',
@@ -8490,6 +8491,7 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
   const filteredChartData = achievementChartData.filter(d => d.value > 0 || d.name === t.remaining);
 
   // Creative extra Statistics:
+  // Creative extra Statistics:
   const collectorScore = useMemo(() => {
     let score = 0;
     inventory.forEach(item => {
@@ -8518,135 +8520,152 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
     return score;
   }, [cards, inventory]);
 
-  const collectorTier = useMemo(() => {
-    const s = collectorScore;
-    if (s < 500) {
-      return { 
-        title: lang === 'es' ? 'Recluta Z' : 'Z Recruit', 
-        desc: lang === 'es' ? '¡Tu viaje de combate acaba de comenzar!' : 'Your fighting journey has just begun!', 
-        color: 'text-gray-400 bg-gray-500/10 border-gray-500/20' 
-      };
-    }
-    if (s < 2500) {
-      return { 
-        title: lang === 'es' ? 'Guerrero Z' : 'Z Warrior', 
-        desc: lang === 'es' ? 'Defendiendo la Tierra con orgullo.' : 'Proudly defending Earth.', 
-        color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' 
-      };
-    }
-    if (s < 8000) {
-      return { 
-        title: lang === 'es' ? 'Super Saiyan' : 'Super Saiyan', 
-        desc: lang === 'es' ? 'Despertando el poder legendario de la raza.' : 'Awakening legendary race power.', 
-        color: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20 border-b-2' 
-      };
-    }
-    if (s < 20000) {
-      return { 
-        title: lang === 'es' ? 'Super Saiyan God' : 'Super Saiyan God', 
-        desc: lang === 'es' ? 'Sintiendo el milagroso Ki de los Dioses.' : 'Sensing the miraculous Ki of gods.', 
-        color: 'text-red-400 bg-red-400/10 border-red-500/20 border-b-2' 
-      };
-    }
-    if (s < 50500) {
-      return { 
-        title: lang === 'es' ? 'Ultra Instinto' : 'Ultra Instinct', 
-        desc: lang === 'es' ? 'Tu cuerpo reacciona de forma automática.' : 'Your body reacts completely automatically.', 
-        color: 'text-cyan-400 bg-cyan-400/10 border-cyan-500/20 shadow-cyan-500/10 border-b-2' 
-      };
-    }
-    return { 
-      title: lang === 'es' ? 'Omni-Rey del Tracker' : 'Tracker Omni-King', 
-      desc: lang === 'es' ? '¡El coleccionista absoluto definitivo de la galaxia!' : 'The ultimate absolute collector of the galaxy!', 
-      color: 'text-purple-400 bg-purple-500/10 border-purple-500/20 shadow-purple-500/10 border-b-2' 
-    };
-  }, [collectorScore, lang]);
+  const globalPercentage = useMemo(() => {
+    let rawNeeded = 0;
+    let rawOwned = 0;
+    
+    cards.forEach(c => {
+      const target = getTargetQuantity(c, collectionGoal);
+      const invItem = inventory.find(i => i.cardId === c.id);
+      const quantity = invItem ? invItem.quantity : 0;
+      const ownedValue = Math.min(quantity, target);
+      rawNeeded += target;
+      rawOwned += ownedValue;
+    });
+    
+    return rawNeeded > 0 ? (rawOwned / rawNeeded) * 100 : 0;
+  }, [cards, inventory, collectionGoal]);
 
   const tierConfig = useMemo(() => {
-    const s = collectorScore;
-    if (s < 500) {
-      return {
+    const p = globalPercentage;
+    let tierIndex = 0;
+    let tierNameES = '';
+    let tierNameEN = '';
+    let baseTheme = ''; 
+    let stars = 1;
+
+    if (p < 3) { tierIndex = 1; tierNameES = 'Humano Corriente'; tierNameEN = 'Ordinary Human'; baseTheme = 'zinc'; stars = 1; }
+    else if (p < 6) { tierIndex = 2; tierNameES = 'Discípulo de Mutenroshi'; tierNameEN = "Master Roshi's Disciple"; baseTheme = 'zinc'; stars = 1; }
+    else if (p < 9) { tierIndex = 3; tierNameES = 'Humano Potenciado'; tierNameEN = 'Enhanced Human'; baseTheme = 'zinc'; stars = 1; }
+    else if (p < 12) { tierIndex = 4; tierNameES = 'Superviviente del Planeta Vegeta'; tierNameEN = 'Planet Vegeta Survivor'; baseTheme = 'zinc'; stars = 1; }
+    else if (p < 15) { tierIndex = 5; tierNameES = 'Humano Más Poderoso'; tierNameEN = 'Strongest Human'; baseTheme = 'emerald'; stars = 2; }
+    else if (p < 19) { tierIndex = 6; tierNameES = 'Guerrero de Élite (Ejército de Frieza)'; tierNameEN = 'Elite Warrior (Frieza Force)'; baseTheme = 'emerald'; stars = 2; }
+    else if (p < 23) { tierIndex = 7; tierNameES = 'Estado Ozaru'; tierNameEN = 'Great Ape State'; baseTheme = 'emerald'; stars = 2; }
+    else if (p < 27) { tierIndex = 8; tierNameES = 'Kaioken'; tierNameEN = 'Kaioken'; baseTheme = 'red'; stars = 3; }
+    else if (p < 31) { tierIndex = 9; tierNameES = 'Kaioken x20'; tierNameEN = 'Kaioken x20'; baseTheme = 'red'; stars = 3; }
+    else if (p < 36) { tierIndex = 10; tierNameES = 'Falso Super Saiyan'; tierNameEN = 'False Super Saiyan'; baseTheme = 'yellow'; stars = 3; }
+    else if (p < 41) { tierIndex = 11; tierNameES = 'Super Saiyan (SSJ)'; tierNameEN = 'Super Saiyan (SSJ)'; baseTheme = 'yellow'; stars = 4; }
+    else if (p < 46) { tierIndex = 12; tierNameES = 'Super Saiyan Máximo Poder'; tierNameEN = 'Super Saiyan Full Power'; baseTheme = 'yellow'; stars = 4; }
+    else if (p < 51) { tierIndex = 13; tierNameES = 'Super Saiyan 2 (SSJ2)'; tierNameEN = 'Super Saiyan 2 (SSJ2)'; baseTheme = 'yellow'; stars = 4; }
+    else if (p < 56) { tierIndex = 14; tierNameES = 'Majin (Poder Despertado)'; tierNameEN = 'Majin (Awakened Power)'; baseTheme = 'fuchsia'; stars = 4; }
+    else if (p < 61) { tierIndex = 15; tierNameES = 'Super Saiyan 3 (SSJ3)'; tierNameEN = 'Super Saiyan 3 (SSJ3)'; baseTheme = 'yellow'; stars = 5; }
+    else if (p < 66) { tierIndex = 16; tierNameES = 'Estado Definitivo (Ultimate)'; tierNameEN = 'Ultimate State'; baseTheme = 'zinc'; stars = 5; }
+    else if (p < 71) { tierIndex = 17; tierNameES = 'Guerrero Fusionado (Base)'; tierNameEN = 'Fused Warrior (Base)'; baseTheme = 'yellow'; stars = 5; }
+    else if (p < 75) { tierIndex = 18; tierNameES = 'Ozaru Dorado'; tierNameEN = 'Golden Great Ape'; baseTheme = 'yellow'; stars = 5; }
+    else if (p < 79) { tierIndex = 19; tierNameES = 'Super Saiyan 4 (SSJ4)'; tierNameEN = 'Super Saiyan 4 (SSJ4)'; baseTheme = 'red'; stars = 6; }
+    else if (p < 83) { tierIndex = 20; tierNameES = 'Super Saiyan God'; tierNameEN = 'Super Saiyan God'; baseTheme = 'red'; stars = 6; }
+    else if (p < 86) { tierIndex = 21; tierNameES = 'Super Saiyan Blue'; tierNameEN = 'Super Saiyan Blue'; baseTheme = 'cyan'; stars = 6; }
+    else if (p < 89) { tierIndex = 22; tierNameES = 'Super Saiyan Blue Evolution'; tierNameEN = 'SSB Evolution'; baseTheme = 'cyan'; stars = 6; }
+    else if (p < 91) { tierIndex = 23; tierNameES = 'Rosé'; tierNameEN = 'Rosé'; baseTheme = 'fuchsia'; stars = 7; }
+    else if (p < 93) { tierIndex = 24; tierNameES = 'Beast Mode'; tierNameEN = 'Beast Mode'; baseTheme = 'emerald'; stars = 7; }
+    else if (p < 95) { tierIndex = 25; tierNameES = 'Ultra Ego'; tierNameEN = 'Ultra Ego'; baseTheme = 'fuchsia'; stars = 7; }
+    else if (p < 97) { tierIndex = 26; tierNameES = 'Ultra Instinto Señal'; tierNameEN = 'Ultra Instinct Sign'; baseTheme = 'zinc'; stars = 7; }
+    else if (p < 98) { tierIndex = 27; tierNameES = 'Ultra Instinto Dominado'; tierNameEN = 'Mastered Ultra Instinct'; baseTheme = 'cyan'; stars = 7; }
+    else if (p < 99) { tierIndex = 28; tierNameES = 'Dios de la Destrucción'; tierNameEN = 'God of Destruction'; baseTheme = 'fuchsia'; stars = 7; }
+    else if (p < 100) { tierIndex = 29; tierNameES = 'Ángel'; tierNameEN = 'Angel'; baseTheme = 'cyan'; stars = 7; }
+    else { tierIndex = 30; tierNameES = 'Zeno Sama'; tierNameEN = 'Zeno Sama'; baseTheme = 'purple'; stars = 7; }
+
+    let config: any = {
+      bg: '', borderColor: '', textColor: '', textGradient: '', glow: '', accentColor: '', auraColor: ''
+    };
+    if (baseTheme === 'zinc') {
+      config = {
         bg: 'from-zinc-950 via-neutral-900 to-black',
         borderColor: 'border-zinc-500/50',
         textColor: 'text-zinc-400',
         textGradient: 'from-zinc-400 via-zinc-300 to-zinc-500',
         glow: 'shadow-zinc-500/10',
         accentColor: 'text-zinc-400 bg-zinc-500/10 border-zinc-500/20',
-        tierName: lang === 'es' ? 'Recruto Z' : 'Z Recruit',
-        themeName: lang === 'es' ? 'Metal Templado' : 'Tempered Metal',
         auraColor: 'rgba(115, 115, 115, 0.15)',
-        stars: 1,
       };
-    }
-    if (s < 2500) {
-      return {
+    } else if (baseTheme === 'emerald') {
+      config = {
         bg: 'from-emerald-950 via-[#0a1e12] to-black',
         borderColor: 'border-emerald-500/50',
         textColor: 'text-emerald-400',
         textGradient: 'from-emerald-400 via-emerald-300 to-teal-500',
         glow: 'shadow-emerald-500/20',
         accentColor: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20',
-        tierName: lang === 'es' ? 'Guerrero Z' : 'Z Warrior',
-        themeName: lang === 'es' ? 'Holográfico Esmeralda' : 'Emerald Holographic',
         auraColor: 'rgba(16, 185, 129, 0.2)',
-        stars: 2,
       };
-    }
-    if (s < 8000) {
-      return {
+    } else if (baseTheme === 'yellow') {
+      config = {
         bg: 'from-amber-950 via-yellow-900/40 to-black',
         borderColor: 'border-yellow-500/60',
         textColor: 'text-yellow-400',
         textGradient: 'from-yellow-300 via-orange-400 to-amber-500',
         glow: 'shadow-yellow-500/30 shadow-[0_0_20px_rgba(234,179,8,0.25)]',
         accentColor: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20 border-b-2',
-        tierName: lang === 'es' ? 'Super Saiyan' : 'Super Saiyan',
-        themeName: lang === 'es' ? 'Aura Dorada Saiyan' : 'Golden Saiyan Aura',
         auraColor: 'rgba(234, 179, 8, 0.35)',
-        stars: 3,
       };
-    }
-    if (s < 20000) {
-      return {
+    } else if (baseTheme === 'red') {
+      config = {
         bg: 'from-red-950 via-rose-950/55 to-black',
         borderColor: 'border-red-500/60',
         textColor: 'text-red-400',
         textGradient: 'from-red-400 via-rose-450 to-red-500',
         glow: 'shadow-red-500/30 shadow-[0_0_20px_rgba(239,68,68,0.25)]',
         accentColor: 'text-red-400 bg-red-400/10 border-red-500/20 border-b-2',
-        tierName: lang === 'es' ? 'Super Saiyan God' : 'Super Saiyan God',
-        themeName: lang === 'es' ? 'Fuego Divino' : 'Divine Fire',
         auraColor: 'rgba(239, 68, 68, 0.4)',
-        stars: 4,
       };
-    }
-    if (s < 50500) {
-      return {
+    } else if (baseTheme === 'cyan') {
+      config = {
         bg: 'from-cyan-950 via-sky-950/60 to-black',
         borderColor: 'border-cyan-400/60',
         textColor: 'text-cyan-400',
         textGradient: 'from-cyan-300 via-sky-200 to-cyan-450',
         glow: 'shadow-cyan-400/30 shadow-[0_0_25px_rgba(34,211,238,0.3)]',
         accentColor: 'text-cyan-400 bg-cyan-400/10 border-cyan-500/20 shadow-cyan-500/10 border-b-2',
-        tierName: lang === 'es' ? 'Ultra Instinto' : 'Ultra Instinct',
-        themeName: lang === 'es' ? 'Energía Plateada Instinto' : 'Silver Instinct Energy',
         auraColor: 'rgba(34, 211, 238, 0.45)',
-        stars: 5,
+      };
+    } else if (baseTheme === 'fuchsia') {
+      config = {
+        bg: 'from-fuchsia-950 via-pink-950/60 to-black',
+        borderColor: 'border-fuchsia-500/60',
+        textColor: 'text-fuchsia-400',
+        textGradient: 'from-fuchsia-400 via-pink-300 to-fuchsia-500',
+        glow: 'shadow-fuchsia-500/30 shadow-[0_0_25px_rgba(217,70,239,0.3)]',
+        accentColor: 'text-fuchsia-400 bg-fuchsia-500/10 border-fuchsia-500/20 shadow-fuchsia-500/10 border-b-2',
+        auraColor: 'rgba(217, 70, 239, 0.45)',
+      };
+    } else { // purple
+      config = {
+        bg: 'from-purple-950 via-indigo-950/60 to-black',
+        borderColor: 'border-purple-500/80',
+        textColor: 'text-purple-400',
+        textGradient: 'from-purple-400 via-indigo-300 to-purple-500',
+        glow: 'shadow-purple-500/40 shadow-[0_0_30px_rgba(168,85,247,0.35)]',
+        accentColor: 'text-purple-400 bg-purple-500/10 border-purple-500/20 shadow-purple-500/10 border-b-2',
+        auraColor: 'rgba(168, 85, 247, 0.5)',
       };
     }
+
     return {
-      bg: 'from-purple-950 via-indigo-950/60 to-black',
-      borderColor: 'border-fuchsia-500/80',
-      textColor: 'text-fuchsia-400',
-      textGradient: 'from-fuchsia-400 via-purple-300 to-indigo-400',
-      glow: 'shadow-fuchsia-500/40 shadow-[0_0_30px_rgba(217,70,239,0.35)]',
-      accentColor: 'text-purple-400 bg-purple-500/10 border-purple-500/20 shadow-purple-500/10 border-b-2',
-      tierName: lang === 'es' ? 'Omni-Rey del Tracker' : 'Tracker Omni-King',
-      themeName: lang === 'es' ? 'Cosmos Absoluto' : 'Absolute Cosmos',
-      auraColor: 'rgba(217, 70, 239, 0.5)',
-      stars: 6,
+      ...config,
+      tierName: lang === 'es' ? tierNameES : tierNameEN,
+      themeName: `Tier ${tierIndex}`,
+      stars: stars,
+      percentage: p
     };
-  }, [collectorScore, lang]);
+  }, [globalPercentage, lang]);
+
+  const collectorTier = useMemo(() => {
+    return {
+       title: tierConfig.tierName,
+       desc: lang === 'es' ? `Progreso: ${tierConfig.percentage.toFixed(2)}%` : `Progress: ${tierConfig.percentage.toFixed(2)}%`,
+       color: tierConfig.accentColor
+    };
+  }, [tierConfig, lang]);
 
   const characterStats = useMemo(() => {
     const charMap = new Map<string, { uniqueCount: number; ownedCount: number; img?: string }>();
