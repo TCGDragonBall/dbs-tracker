@@ -1,2 +1,0 @@
-FB01-001	Son Goku	L	Leader	Red	FB01
-FB01-001_A	Son Goku (Alt)	L*	Leader	Red	FB01

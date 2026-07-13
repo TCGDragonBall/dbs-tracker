@@ -2693,6 +2693,21 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
   'BT3-015_PR': { sourceProduct: 'Winner - MIRACULOUS REVIVAL Release Tournament' },
   'BT2-064_PR': { sourceProduct: 'Winner - DESTROYER KINGS Release Tournament' },
   'BT2-064_PR02': { sourceProduct: 'Mythic Booster' },
+  'P-172_PR': { sourceProduct: 'Mythic Booster' },
+  'P-212_PR': { sourceProduct: 'Mythic Booster' },
+  'P-219_TV': { sourceProduct: '2021 Tournament Pack Vault Set' },
+  'P-219_MB': { sourceProduct: 'Mythic Booster' },
+  'P-274_MB': { sourceProduct: 'Mythic Booster' },
+  'P-261_TV': { sourceProduct: '2021 Tournament Pack Vault Set' },
+  'P-284_TV': { sourceProduct: '2021 Tournament Pack Vault Set' },
+  'P-293_TV': { sourceProduct: '2021 Tournament Pack Vault Set' },
+  'P-302_TV': { sourceProduct: '2021 Tournament Pack Vault Set' },
+  'P-310_TV': { sourceProduct: '2021 Tournament Pack Vault Set' },
+  'P-261_MB': { sourceProduct: 'Mythic Booster' },
+  'P-260_MB': { sourceProduct: 'Mythic Booster' },
+  'P-219_PCC': { sourceProduct: "Player's Choice Campaign" },
+  'P-223_TP': { sourceProduct: 'UW Tournament Pack Vol 1' },
+  'P-223_PCC': { sourceProduct: "Player's Choice Campaign" },
   'BT3-063_PR': { sourceProduct: 'Championship 2024 Finals Pack' },
   'BT3-063_PR02': { sourceProduct: 'Championship 2024 Finals EX Pack (Finalist ver.)' },
   'BT3-005_PR': { sourceProduct: 'Winner - COLOSSAL WARFARE Release Tournament' },
@@ -2932,6 +2947,21 @@ const EXTRA_VARIANTS_OTAKON: Record<string, { id: string; label: Record<string, 
 };
 
 const IMAGE_OVERRIDES: Record<string, string> = {
+  'P-212_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/214964_in_1000x1000.jpg',
+  'P-219_TV': 'https://tcgplayer-cdn.tcgplayer.com/product/257215_in_1000x1000.jpg',
+  'P-219_MB': 'https://tcgplayer-cdn.tcgplayer.com/product/256762_in_1000x1000.jpg',
+  'P-274_MB': 'https://tcgplayer-cdn.tcgplayer.com/product/256770_in_1000x1000.jpg',
+  'P-261_TV': 'https://tcgplayer-cdn.tcgplayer.com/product/257218_in_1000x1000.jpg',
+  'P-284_TV': 'https://tcgplayer-cdn.tcgplayer.com/product/257221_in_1000x1000.jpg',
+  'P-293_TV': 'https://i.ebayimg.com/images/g/7uwAAOSwlDtitGYf/s-l1200.jpg',
+  'P-302_TV': 'https://i.pinimg.com/474x/56/d8/db/56d8db4efc66b3e2568c374b70988e02.jpg',
+  'P-310_TV': 'https://otakumart.co.nz/cdn/shop/files/96078613-8908-5a09-88bc-1747a6effb3f_600x.png?v=1770840150',
+  'P-261_MB': 'https://tcgplayer-cdn.tcgplayer.com/product/256962_in_1000x1000.jpg',
+  'P-260_MB': 'https://tcgplayer-cdn.tcgplayer.com/product/256766_in_1000x1000.jpg',
+  'P-219_PCC': 'https://tcgplayer-cdn.tcgplayer.com/product/236467_in_1000x1000.jpg',
+  'P-223_TP': 'https://tcgplayer-cdn.tcgplayer.com/product/229231_in_1000x1000.jpg',
+  'P-223_PCC': 'https://tcgplayer-cdn.tcgplayer.com/product/236466_in_1000x1000.jpg',
+  'P-172_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/254767_in_1000x1000.jpg',
 
   'SL-MM-01': 'https://dragonball.center/files/module_dbc/objetos/39/bimu116677.jpg',
   'CASE-S9-PRE': 'https://dragonball.center/files/module_dbc/objetos/32/2tgp116684.jpg',
@@ -7114,7 +7144,7 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_TP05': ['SEALED_TP05_2018', 'SEALED_TP05_2019', 'P-077', 'P-078', 'P-079', 'P-080', 'P-081', 'P-082', 'P-083', 'P-084'],
   'MASTERS_TP06': ['SEALED_TP06', 'P-095', 'P-096', 'P-097', 'P-098', 'P-099', 'P-100', 'P-101', 'P-102'], 
   'MASTERS_TP07': ['SEALED_TP07', 'P-126', 'P-127', 'P-128', 'P-129', 'P-130', 'P-131', 'P-132', 'P-133'], 
-  'MASTERS_TP08': ['SEALED_TP08', 'P-165', 'P-166', 'P-167', 'P-168', 'P-169', 'P-170', 'P-171', 'P-172'], 
+  'MASTERS_TP08': ['SEALED_TP08', 'P-165', 'P-166', 'P-167', 'P-168', 'P-169', 'P-170', 'P-171', 'P-172', 'P-172_PR'], 
   'MASTERS_TP09': ['SEALED_TP09', 'P-188', 'P-189', 'P-190', 'P-191', 'P-192', 'P-193', 'P-194', 'P-195'], 
   'MASTERS_EX_TP': ['SEALED_EX_TP', ...EXPANSION_SET_TOURNAMENT_PACK],
   'MASTERS_PB01': POWER_BOOSTER_01,
@@ -7127,7 +7157,7 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_CHAMPIONSHIP_2020_V1': ['SEALED_CHAMPIONSHIP_2020_V1', 'P-201', 'P-202', 'P-203', 'P-204', 'P-205', 'P-206', 'P-207', 'P-208', 'P-209', 'P-210'],
   'MASTERS_CHAMPIONSHIP_2020_V2': ['SEALED_CHAMPIONSHIP_2020_V2', 'P-233', 'P-234', 'P-235', 'P-236', 'P-237', 'P-238', 'P-239', 'P-240', 'P-241', 'P-242'],
   'MASTERS_CHAMPIONSHIP_2021': ['BT16-001_CM21_1ST', 'BT16-001_CM21_METAL_1ST', 'BT10-093_CM21_2ND', 'BT10-093_CM21_METAL_2ND', 'SD15-01_CM21_3RD', 'SD15-01_CM21_METAL_3RD', 'BT12-122_CM21_TOP16', 'BT12-122_CM21_METAL_TOP16'],
-  'MASTERS_CHAMPIONSHIP_2021_VAULT': ['P-329_CM21_VS', 'P-329_CM21_VS_FIN', 'P-329_CM21_VS_SEW', 'P-331_CM21_VS', 'P-331_CM21_VS_FIN', 'P-331_CM21_VS_SEW', 'P-335_CM21_VS', 'P-335_CM21_VS_FIN', 'P-335_CM21_VS_SEW', 'P-337_CM21_VS', 'P-337_CM21_VS_FIN', 'P-337_CM21_VS_SEW', 'P-355_CM21_VS', 'P-355_CM21_VS_FIN', 'P-355_CM21_VS_SEW', 'P-357_CM21_VS', 'P-357_CM21_VS_FIN', 'P-357_CM21_VS_SEW'],
+  'MASTERS_CHAMPIONSHIP_2021_VAULT': ['P-329_CM21_VS', 'P-329_CM21_VS_FIN', 'P-329_CM21_VS_SEW', 'P-331_CM21_VS', 'P-331_CM21_VS_FIN', 'P-331_CM21_VS_SEW', 'P-335_CM21_VS', 'P-335_CM21_VS_FIN', 'P-335_CM21_VS_SEW', 'P-337_CM21_VS', 'P-337_CM21_VS_FIN', 'P-337_CM21_VS_SEW', 'P-355_CM21_VS', 'P-355_CM21_VS_FIN', 'P-355_CM21_VS_SEW', 'P-357_CM21_VS', 'P-357_CM21_VS_FIN', 'P-357_CM21_VS_SEW', 'P-219_TV', 'P-261_TV', 'P-284_TV', 'P-293_TV', 'P-302_TV', 'P-310_TV'],
   'MASTERS_CHAMPIONSHIP_2021_V1': ['SEALED_CHAMPIONSHIP_2021_V1', 'P-328', 'P-329', 'P-330', 'P-331', 'P-332'],
   'MASTERS_CHAMPIONSHIP_2021_V2': ['SEALED_CHAMPIONSHIP_2021_V2', 'P-333', 'P-334', 'P-335', 'P-336', 'P-337'],
   'MASTERS_CHAMPIONSHIP_2021_V3': ['SEALED_CHAMPIONSHIP_2021_V3', 'P-355', 'P-356', 'P-357', 'P-358', 'P-359'],
@@ -9684,7 +9714,7 @@ const FoilEffect = ({ rarity, mouseX = 0, mouseY = 0, isMetal = false }: { rarit
   );
 };
 
-const CardListItem = ({ 
+const CardListItem = React.memo(({ 
   card, 
   quantity, 
   onClick, 
@@ -9745,9 +9775,7 @@ const CardListItem = ({
   };
   
   return (
-    <motion.div
-      whileHover={!isMultiSelectMode ? { x: 5 } : {}}
-      whileTap={{ scale: 0.98 }}
+    <div
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
@@ -9809,127 +9837,41 @@ const CardListItem = ({
         </div>
       </div>
       <ChevronRight size={16} className="text-gray-300" />
-    </motion.div>
+    </div>
   );
+}, areEqualListItem);
+
+function areEqualListItem(prevProps: any, nextProps: any) {
+  return prevProps.card.id === nextProps.card.id &&
+         prevProps.quantity === nextProps.quantity &&
+         prevProps.collectionGoal === nextProps.collectionGoal &&
+         prevProps.isSelected === nextProps.isSelected &&
+         prevProps.isMultiSelectMode === nextProps.isMultiSelectMode &&
+         prevProps.lang === nextProps.lang;
 };
 
 const ModalCard = ({ selectedCard, isFlipped, setIsFlipped }: { selectedCard: Card, isFlipped: boolean, setIsFlipped: (f: boolean) => void }) => {
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
-  const [mouseX, setMouseX] = useState(0);
-  const [mouseY, setMouseY] = useState(0);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    // Rotate for tilt (-5 to 5 degrees for modal, much subtler)
-    setRotateX((centerY - y) / 8);
-    setRotateY((x - centerX) / 8);
-    
-    setMouseX((x - centerX) / centerX);
-    setMouseY((y - centerY) / centerY);
-  };
-
-  const handleMouseLeave = () => {
-    setRotateX(0);
-    setRotateY(0);
-    setMouseX(0);
-    setMouseY(0);
-  };
-
   return (
-    <motion.div
-      initial={{ scale: 0.8, y: 20 }}
-      animate={{ 
-        scale: 1, 
-        y: 0,
-        rotateY: isFlipped ? 180 + rotateY : rotateY,
-        rotateX: rotateX
-      }}
-      transition={{ 
-        type: "spring", 
-        damping: 35, 
-        stiffness: 70,
-        rotateY: isFlipped ? { duration: 0.6 } : { type: "spring", damping: 35, stiffness: 70 }
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className={`${isHorizontalFormat(selectedCard) ? 'aspect-video' : 'aspect-[63/88]'} rounded-xl shadow-2xl border border-white/10 relative group preserve-3d cursor-pointer bg-black/40`}
-      style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
-      onClick={() => selectedCard.type === 'Leader' && setIsFlipped(!isFlipped)}
+    <div
+      onClick={() => setIsFlipped(!isFlipped)}
+      className="relative w-full max-w-sm aspect-[2/3] cursor-pointer mx-auto transition-transform duration-300"
     >
-      {/* Front Side */}
       <div 
-        className="absolute inset-0 backface-hidden rounded-xl overflow-hidden"
-        style={{ backfaceVisibility: 'hidden' }}
+        className="w-full h-full relative transition-all duration-500"
+        style={{ transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)", transformStyle: "preserve-3d" }}
       >
-        <img 
-          src={selectedCard?.imageUrl || null} 
-          className="w-full h-full object-cover" 
-          alt={selectedCard.name} 
-          referrerPolicy="no-referrer"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            const isEnergyMarker = selectedCard.cardNumber.startsWith('E-') || selectedCard.cardNumber.startsWith('E01-') || selectedCard.cardNumber.startsWith('E02-') || selectedCard.cardNumber.startsWith('E03-') || selectedCard.cardNumber.startsWith('M-') || /^[EM]\d+/.test(selectedCard.cardNumber);
-            if (isEnergyMarker) {
-              target.src = 'https://static.fw.dbscards.fr/cards/common/back-energy.webp';
-            } else {
-              const baseNum = selectedCard.cardNumber.split('_')[0];
-              const fallbackUrl = `https://www.dbs-cardgame.com/images/cardlist/cardimg/${baseNum}.png`;
-              if (target.src !== fallbackUrl) {
-                target.src = fallbackUrl;
-              }
-            }
-          }}
-        />
-        
-        {selectedCard.isFoil && (
-          <FoilEffect rarity={selectedCard.rarity} mouseX={mouseX} mouseY={mouseY} isMetal={selectedCard.id.includes('METAL')} />
-        )}
-      </div>
-
-      {/* Back Side (for Leaders) */}
-      {selectedCard.type === 'Leader' && (
-        <div 
-          className="absolute inset-0 backface-hidden rounded-xl overflow-hidden"
-          style={{ 
-            backfaceVisibility: 'hidden',
-            transform: 'rotateY(180deg)'
-          }}
-        >
-          <img 
-            src={selectedCard?.backImageUrl || null} 
-            className="w-full h-full object-cover" 
-            alt={`${selectedCard.name} (Back)`} 
-            referrerPolicy="no-referrer"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              const isEnergyMarker = selectedCard.cardNumber.startsWith('E-') || selectedCard.cardNumber.startsWith('E01-') || selectedCard.cardNumber.startsWith('E02-') || selectedCard.cardNumber.startsWith('E03-') || selectedCard.cardNumber.startsWith('M-') || /^[EM]\d+/.test(selectedCard.cardNumber);
-              if (isEnergyMarker) {
-                target.src = 'https://static.fw.dbscards.fr/cards/common/back-energy.webp';
-              } else {
-                const baseNum = selectedCard.cardNumber.split('_')[0];
-                const fallbackUrl = `https://www.dbs-cardgame.com/images/cardlist/cardimg/${baseNum}_b.png`;
-                if (target.src !== fallbackUrl) {
-                  target.src = fallbackUrl;
-                }
-              }
-            }}
-          />
-           {selectedCard.isFoil && (
-            <FoilEffect rarity={selectedCard.rarity} mouseX={-mouseX} mouseY={mouseY} isMetal={selectedCard.id.includes('METAL')} />
-           )}
+        <div className="absolute inset-0 backface-hidden rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/20" style={{ backfaceVisibility: "hidden" }}>
+          <img src={selectedCard.imageUrl || `https://picsum.photos/seed/${selectedCard.id}/400/600`} alt={selectedCard.name} className="w-full h-full object-cover" />
         </div>
-      )}
-    </motion.div>
+        <div className="absolute inset-0 backface-hidden rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/20" style={{ transform: "rotateY(180deg)", backfaceVisibility: "hidden" }}>
+          <img src={selectedCard.backImageUrl || selectedCard.imageUrl || `https://picsum.photos/seed/${selectedCard.id}/400/600`} alt="Back" className="w-full h-full object-cover" />
+        </div>
+      </div>
+    </div>
   );
 };
 
-const CardItem = ({ 
+const CardItem = React.memo(({ 
   card, 
   quantity, 
   onClick, 
@@ -9954,36 +9896,6 @@ const CardItem = ({
   const isPlaysetComplete = quantity && quantity >= target;
   const [imageLoaded, setImageLoaded] = useState(false);
   
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
-  const [mouseX, setMouseX] = useState(0);
-  const [mouseY, setMouseY] = useState(0);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (isMultiSelectMode) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    // Calculate rotation (-3 to 3 degrees, very subtle)
-    setRotateX((centerY - y) / 12);
-    setRotateY((x - centerX) / 12);
-    
-    // Normalized position (-1 to 1) for the shine
-    setMouseX((x - centerX) / centerX);
-    setMouseY((y - centerY) / centerY);
-  };
-
-  const handleMouseLeave = () => {
-    setRotateX(0);
-    setRotateY(0);
-    setMouseX(0);
-    setMouseY(0);
-    handleMouseUp();
-  };
-
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const isLongPressActive = useRef(false);
 
@@ -10018,23 +9930,14 @@ const CardItem = ({
   };
 
   return (
-    <motion.div
-      animate={{ 
-        rotateX, 
-        rotateY,
-        scale: isSelected ? 0.95 : (rotateX !== 0 ? 1.05 : 1),
-        y: rotateX !== 0 ? -5 : 0
-      }}
-      transition={{ type: "spring", stiffness: 70, damping: 35 }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+    <div
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onTouchStart={handleMouseDown}
       onTouchEnd={handleMouseUp}
       onClick={handleClick}
       onContextMenu={(e) => e.preventDefault()}
-      className={`relative cursor-pointer group preserve-3d transition-all duration-300 select-none ${isSelected ? 'z-10' : ''} ${isHorizontal ? 'col-span-2' : ''}`}
+      className={`relative cursor-pointer group transition-all duration-300 select-none ${isSelected ? 'z-10 scale-95' : 'hover:scale-105'} ${isHorizontal ? 'col-span-2' : ''}`}
     >
       <div className={`relative ${isHorizontal ? 'aspect-video' : 'aspect-[2/3]'} rounded-xl overflow-hidden shadow-2xl transition-all duration-300 ${
         isSelected 
@@ -10067,9 +9970,7 @@ const CardItem = ({
             referrerPolicy="no-referrer"
           />
           
-          {(isOwned || isSelected) && card.isFoil && !isSelected && (
-            <FoilEffect rarity={card.rarity} mouseX={mouseX} mouseY={mouseY} isMetal={card.id.includes('METAL')} />
-          )}
+
 
           {isSelected && (
             <div className="absolute inset-0 bg-orange-500/40 flex items-center justify-center backdrop-blur-[2px]">
@@ -10103,9 +10004,19 @@ const CardItem = ({
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
+}, areEqualCardItem);
+
+function areEqualCardItem(prevProps: any, nextProps: any) {
+  return prevProps.card.id === nextProps.card.id &&
+         prevProps.quantity === nextProps.quantity &&
+         prevProps.collectionGoal === nextProps.collectionGoal &&
+         prevProps.isSelected === nextProps.isSelected &&
+         prevProps.isMultiSelectMode === nextProps.isMultiSelectMode;
 };
+
+
 
 
 const CustomIcon = ({ src, active, size = 24 }: { src: string, active?: boolean, size?: number }) => (
@@ -11610,6 +11521,8 @@ export default function TrackerApp() {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [isInventoryLoading, setIsInventoryLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [renderCount, setRenderCount] = useState(0); // 0 means not chunking or done
+  const [isRendering, setIsRendering] = useState(false);
   const [wantsSearchQuery, setWantsSearchQuery] = useState('');
   const [wantsFilterExpansion, setWantsFilterExpansion] = useState('Todos');
   const [wantsFilterColor, setWantsFilterColor] = useState('Todos');
@@ -12293,6 +12206,7 @@ export default function TrackerApp() {
     eras: [],
     owned: 'all'
   });
+
   const [sortBy, setSortBy] = useState<'index' | 'name'>('index');
 
   useEffect(() => {
@@ -12392,15 +12306,19 @@ export default function TrackerApp() {
       if (card.cardNumber && card.cardNumber.toLowerCase().includes(q)) return true;
       if (card.id && card.id.toLowerCase().includes(q)) return true;
       
-      // Normalized matching
-      if (card.name && normalize(card.name).includes(nq)) return true;
-      if (card.cardNumber && normalize(card.cardNumber).includes(nq)) return true;
+      // Normalized matching (only if query doesn't have hyphens to avoid false positives like "p-26" matching "hope 26")
+      if (!searchQuery.includes('-')) {
+        if (card.name && normalize(card.name).includes(nq)) return true;
+        if (card.cardNumber && normalize(card.cardNumber).includes(nq)) return true;
+      }
       
       // Search by source product / pack name
       if (sourceProduct && sourceProduct.toLowerCase().includes(q)) return true;
       if (setName && setName.toLowerCase().includes(q)) return true;
-      if (sourceProduct && normalize(sourceProduct).includes(nq)) return true;
-      if (setName && normalize(setName).includes(nq)) return true;
+      if (!searchQuery.includes('-')) {
+        if (sourceProduct && normalize(sourceProduct).includes(nq)) return true;
+        if (setName && normalize(setName).includes(nq)) return true;
+      }
       
       // Deep fields
       if (card.character && card.character.toLowerCase().includes(q)) return true;
@@ -12465,6 +12383,27 @@ export default function TrackerApp() {
              if (id === setId) return [id]; // Handle self-referencing
              return getAllCardIds(id, visited);
            });
+  useEffect(() => {
+    if (filteredCards.length > 50) {
+      setRenderCount(50);
+      setIsRendering(true);
+    } else {
+      setRenderCount(filteredCards.length);
+      setIsRendering(false);
+    }
+  }, [filteredCards.length, filters, searchQuery, activeTab, currentCollectionCategory]);
+
+  useEffect(() => {
+    if (isRendering && renderCount < filteredCards.length) {
+      const timer = setTimeout(() => {
+        setRenderCount(prev => Math.min(prev + 100, filteredCards.length));
+      }, 0); // yielding to main thread
+      return () => clearTimeout(timer);
+    } else if (isRendering && renderCount >= filteredCards.length) {
+      setIsRendering(false);
+    }
+  }, [isRendering, renderCount, filteredCards.length]);
+
         };
         const expandedIds = getAllCardIds(filters.expansion);
         matchesExpansion = expandedIds.includes(card.id);
@@ -12605,6 +12544,27 @@ export default function TrackerApp() {
     return aBaseIndex - bBaseIndex;
   });
 
+  useEffect(() => {
+    if (filteredCards.length > 50) {
+      setRenderCount(50);
+      setIsRendering(true);
+    } else {
+      setRenderCount(filteredCards.length);
+      setIsRendering(false);
+    }
+  }, [filteredCards.length, filters, searchQuery, activeTab, currentCollectionCategory]);
+
+  useEffect(() => {
+    if (isRendering && renderCount < filteredCards.length) {
+      const timer = setTimeout(() => {
+        setRenderCount(prev => Math.min(prev + 100, filteredCards.length));
+      }, 0);
+      return () => clearTimeout(timer);
+    } else if (isRendering && renderCount >= filteredCards.length) {
+      setIsRendering(false);
+    }
+  }, [isRendering, renderCount, filteredCards.length]);
+
   const hasActiveFilters = useMemo(() => {
     return filters.rarities.length > 0 || filters.colors.length > 0 || filters.expansion !== 'Todos' || filters.types.length > 0 || filters.legalStatus.length > 0 || filters.owned !== 'all' || filters.traits.length > 0 || filters.characters.length > 0 || filters.eras.length > 0;
   }, [filters]);
@@ -12656,8 +12616,8 @@ export default function TrackerApp() {
         let matchesSearch = false;
         if (card.name && card.name.toLowerCase().includes(q)) matchesSearch = true;
         else if (card.cardNumber && card.cardNumber.toLowerCase().includes(q)) matchesSearch = true;
-        else if (card.name && normalize(card.name).includes(nq)) matchesSearch = true;
-        else if (card.cardNumber && normalize(card.cardNumber).includes(nq)) matchesSearch = true;
+        else if (!searchQuery.includes('-') && card.name && normalize(card.name).includes(nq)) matchesSearch = true;
+        else if (!searchQuery.includes('-') && card.cardNumber && normalize(card.cardNumber).includes(nq)) matchesSearch = true;
         else {
           const specialCardInfo = CARD_METADATA[card.id];
           const sourceProduct = specialCardInfo?.sourceProduct || card.sourceProduct || '';
@@ -13121,7 +13081,7 @@ export default function TrackerApp() {
           const hasFoil = 
             (foilEnabledExpansions.has(card.expansion) && (card.rarity === 'C' || card.rarity === 'UC')) ||
             (foilRarityExpansions.has(card.expansion) && (card.rarity === 'C' || card.rarity === 'UC' || card.rarity === 'R')) ||
-            (['P-002', 'P-003', 'P-004', 'P-005', 'P-006', 'P-007', 'P-008', 'P-009', 'P-012', 'P-013', 'P-014', 'P-015', 'P-016', 'P-017', 'P-018', 'P-019', 'P-030', 'P-031', 'P-032', 'P-033', 'P-034', 'P-035', 'P-036', 'P-037', 'P-049', 'P-050', 'P-051', 'P-052', 'P-053', 'P-054', 'P-055', 'P-056', 'P-063', 'P-064', 'P-065', 'P-066', 'P-067', 'P-077', 'P-078', 'P-079', 'P-080', 'P-081', 'P-082', 'P-083', 'P-084', 'P-095', 'P-096', 'P-097', 'P-098', 'P-099', 'P-100', 'P-101', 'P-102', 'P-112', 'P-113', 'P-114', 'P-115', 'P-116', 'P-119', 'P-120', 'P-121', 'P-122', 'P-123', 'P-124', 'P-125', 'P-126', 'P-127', 'P-128', 'P-129', 'P-130', 'P-131', 'P-132', 'P-133', 'P-138', 'P-139', 'P-140', 'P-141', 'P-142', 'P-143', 'P-144', 'P-145', 'P-146', 'P-147', 'P-148', 'P-149', 'P-150', 'P-151', 'P-152', 'P-153', 'P-154', 'P-155', 'P-156', 'P-157', 'P-158', 'P-159', 'P-160', 'P-161', 'P-162', 'P-165', 'P-166', 'P-167', 'P-168', 'P-169', 'P-170', 'P-171', 'P-172', 'P-188', 'P-189', 'P-190', 'P-191', 'P-192', 'P-193', 'P-194', 'P-195', 'P-201', 'P-202', 'P-203', 'P-204', 'P-205', 'P-206', 'P-207', 'P-208', 'P-209', 'P-210'].includes(card.id));
+            (['P-002', 'P-003', 'P-004', 'P-005', 'P-006', 'P-007', 'P-008', 'P-009', 'P-012', 'P-013', 'P-014', 'P-015', 'P-016', 'P-017', 'P-018', 'P-019', 'P-030', 'P-031', 'P-032', 'P-033', 'P-034', 'P-035', 'P-036', 'P-037', 'P-049', 'P-050', 'P-051', 'P-052', 'P-053', 'P-054', 'P-055', 'P-056', 'P-063', 'P-064', 'P-065', 'P-066', 'P-067', 'P-077', 'P-078', 'P-079', 'P-080', 'P-081', 'P-082', 'P-083', 'P-084', 'P-095', 'P-096', 'P-097', 'P-098', 'P-099', 'P-100', 'P-101', 'P-102', 'P-112', 'P-113', 'P-114', 'P-115', 'P-116', 'P-119', 'P-120', 'P-121', 'P-122', 'P-123', 'P-124', 'P-125', 'P-126', 'P-127', 'P-128', 'P-129', 'P-130', 'P-131', 'P-132', 'P-133', 'P-138', 'P-139', 'P-140', 'P-141', 'P-142', 'P-143', 'P-144', 'P-145', 'P-146', 'P-147', 'P-148', 'P-149', 'P-150', 'P-151', 'P-152', 'P-153', 'P-154', 'P-155', 'P-156', 'P-157', 'P-158', 'P-159', 'P-160', 'P-161', 'P-162', 'P-165', 'P-166', 'P-167', 'P-168', 'P-169', 'P-170', 'P-171', 'P-172', 'P-172_PR', 'P-188', 'P-189', 'P-190', 'P-191', 'P-192', 'P-193', 'P-194', 'P-195', 'P-201', 'P-202', 'P-203', 'P-204', 'P-205', 'P-206', 'P-207', 'P-208', 'P-209', 'P-210'].includes(card.id));
           if (hasFoil) {
             variationsList.push(
                { id: card.id, label: { es: 'Normal', en: 'Normal' }, isFoil: false },
@@ -13924,7 +13884,7 @@ export default function TrackerApp() {
   };
 
   if (authLoading) return (
-    <div className="min-h-screen bg-black flex items-center justify-center">
+    <div className="min-h-screen bg-[#0F0F0F] flex items-center justify-center">
       <motion.div 
         animate={{ rotate: 360 }}
         transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -15807,8 +15767,17 @@ export default function TrackerApp() {
                   </div>
                 </div>
 
-                <div className={viewMode === 'grid' ? "grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-3" : "flex flex-col gap-2"}>
-                  {filteredCards.map((card, idx) => (
+                <div className={viewMode === 'grid' ? "grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-3 relative" : "flex flex-col gap-2 relative"}>
+                  {isRendering && (
+                    <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 bg-black/80 backdrop-blur-md px-6 py-3 rounded-full border border-orange-500/30 flex items-center gap-3 shadow-xl shadow-black/50 pointer-events-none">
+                      <div className="w-5 h-5 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
+                      <span className="text-orange-400 font-bold text-sm">
+                        {lang === 'es' ? 'Renderizando...' : 'Rendering...'} {renderCount} / {filteredCards.length}
+                      </span>
+                    </div>
+                  )}
+
+                  {filteredCards.slice(0, isRendering ? renderCount : filteredCards.length).map((card, idx) => (
                     viewMode === 'grid' ? (
                       <CardItem 
                         key={`${card.id}-${card.expansion}-${idx}`} 
@@ -17144,9 +17113,9 @@ export default function TrackerApp() {
               <div className="w-full max-w-2xl px-2 sm:px-4 mx-auto relative pt-12 sm:pt-16 pb-12">
                 <motion.div 
                   key={selectedCard.id}
-                  initial={{ x: 300, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  exit={{ x: -300, opacity: 0 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                   drag="x"
                   dragConstraints={{ left: 0, right: 0 }}
                   dragElastic={0.2}
@@ -17171,9 +17140,9 @@ export default function TrackerApp() {
                   {!showDetails ? (
                     <motion.div 
                       key="full-card"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
                       transition={{ duration: 0.15 }}
                       className={`w-full ${isHorizontalFormat(selectedCard) ? 'max-w-[460px] md:max-w-[600px] mt-6 sm:mt-10' : 'max-w-[260px] md:max-w-[325px]'} mx-auto`}
                     >
@@ -17298,9 +17267,9 @@ export default function TrackerApp() {
                   ) : (
                     <motion.div 
                       key="details-card"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
                       transition={{ duration: 0.15 }}
                       className={`w-full ${isHorizontalFormat(selectedCard) ? 'max-w-xl' : 'max-w-full sm:max-w-[420px]'} mx-auto`}
                     >
