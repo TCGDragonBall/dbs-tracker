@@ -2378,7 +2378,7 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
   'BT16-001_CM21_1ST': { sourceProduct: 'Championship 2021' }, 'BT16-001_CM21_METAL_1ST': { sourceProduct: 'Championship 2021' }, 'BT10-093_CM21_2ND': { sourceProduct: 'Championship 2021' }, 'BT10-093_CM21_METAL_2ND': { sourceProduct: 'Championship 2021' }, 'SD15-01_CM21_3RD': { sourceProduct: 'Championship 2021' }, 'SD15-01_CM21_METAL_3RD': { sourceProduct: 'Championship 2021' }, 'BT12-122_CM21_TOP16': { sourceProduct: 'Championship 2021' }, 'BT12-122_CM21_METAL_TOP16': { sourceProduct: 'Championship 2021' },
   'P-329_CM21_VS': { sourceProduct: 'Championship 2021 Vault Set' }, 'P-329_CM21_VS_FIN': { sourceProduct: 'Championship 2021 Vault Set' }, 'P-329_CM21_VS_SEW': { sourceProduct: 'Championship 2021 Vault Set' }, 'P-331_CM21_VS': { sourceProduct: 'Championship 2021 Vault Set' }, 'P-331_CM21_VS_FIN': { sourceProduct: 'Championship 2021 Vault Set' }, 'P-331_CM21_VS_SEW': { sourceProduct: 'Championship 2021 Vault Set' }, 'P-335_CM21_VS': { sourceProduct: 'Championship 2021 Vault Set' }, 'P-335_CM21_VS_FIN': { sourceProduct: 'Championship 2021 Vault Set' }, 'P-335_CM21_VS_SEW': { sourceProduct: 'Championship 2021 Vault Set' }, 'P-337_CM21_VS': { sourceProduct: 'Championship 2021 Vault Set' }, 'P-337_CM21_VS_FIN': { sourceProduct: 'Championship 2021 Vault Set' }, 'P-337_CM21_VS_SEW': { sourceProduct: 'Championship 2021 Vault Set' }, 'P-355_CM21_VS': { sourceProduct: 'Championship 2021 Vault Set' }, 'P-355_CM21_VS_FIN': { sourceProduct: 'Championship 2021 Vault Set' }, 'P-355_CM21_VS_SEW': { sourceProduct: 'Championship 2021 Vault Set' }, 'P-357_CM21_VS': { sourceProduct: 'Championship 2021 Vault Set' }, 'P-357_CM21_VS_FIN': { sourceProduct: 'Championship 2021 Vault Set' }, 'P-357_CM21_VS_SEW': { sourceProduct: 'Championship 2021 Vault Set' },
   'P-063': { sourceProduct: 'Championship 2018' }, 'P-064': { sourceProduct: 'Championship 2018' }, 'P-065': { sourceProduct: 'Championship 2018' }, 'P-066': { sourceProduct: 'Championship 2018' }, 'P-067': { sourceProduct: 'Championship 2018' },
-  'P-201': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-201_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-202': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-202_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-203': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-203_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-204': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-204_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-205': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-205_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-206': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-206_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-207': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-207_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-208': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-208_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-209': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-209_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-210': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-210_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' },
+  'P-201': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-201_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-202': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-203': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-203_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-204': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-204_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-205': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-205_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-206': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-206_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-207': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-207_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-208': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-208_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-209': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-209_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-210': { sourceProduct: 'Championship Pack 2020 Vol 1' }, 'P-210_PR': { sourceProduct: 'Championship Pack 2020 Vol 1' },
   // Tournament Pack 02
   'P-012': { sourceProduct: 'Tournament Pack 02' }, 'P-013': { sourceProduct: 'Tournament Pack 02' }, 'P-014': { sourceProduct: 'Tournament Pack 02' }, 'P-015': { sourceProduct: 'Tournament Pack 02' }, 'P-016': { sourceProduct: 'Tournament Pack 02' }, 'P-017': { sourceProduct: 'Tournament Pack 02' }, 'P-018': { sourceProduct: 'Tournament Pack 02' }, 'P-019': { sourceProduct: 'Tournament Pack 02' },
   // Tournament Pack 03
@@ -3449,6 +3449,7 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'P-124_CS1': 'https://dragonball.center/files/module_dbc/objetos/68/flxx117449.jpg',
   'P-181_CS1': 'https://dragonball.center/files/module_dbc/objetos/91/1tac117450.jpg',
   'P-181_CS1_b': 'https://dragonball.center/files/module_dbc/objetos/142/7ehi117451.jpg',
+  'P-181_PR_b': 'https://tcgplayer-cdn.tcgplayer.com/product/254758_in_1000x1000.jpg',
   'BT9-090_CS2': 'https://dragonball.center/files/module_dbc/objetos/83/vn1p150258.jpg',
   'BT9-091_CS2': 'https://dragonball.center/files/module_dbc/objetos/55/w39c150259.jpg',
   'BT9-096_CS2': 'https://dragonball.center/files/module_dbc/objetos/127/po5y150260.jpg',
@@ -17088,25 +17089,25 @@ export default function TrackerApp() {
                 </div>
               </div>
 
-              {/* Legal Status Badge */}{/* Desktop Navigation Arrows - Positioned relative to the scroll container or screen */}
-              <div className="hidden md:flex fixed inset-x-0 top-1/2 -translate-y-1/2 px-12 justify-between pointer-events-none z-[110]">
+              {/* Legal Status Badge */}{/* Navigation Arrows - Positioned relative to the scroll container or screen */}
+              <div className="flex fixed inset-x-0 top-1/2 -translate-y-1/2 px-2 sm:px-12 justify-between pointer-events-none z-[110]">
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();
                     handlePrevCard();
                   }}
-                  className="p-4 bg-white/10 rounded-full hover:bg-orange-500 hover:text-white transition-all text-gray-400 pointer-events-auto shadow-2xl backdrop-blur-md border border-white/5"
+                  className="p-3 sm:p-4 bg-white/10 rounded-full hover:bg-orange-500 hover:text-white transition-all text-gray-400 pointer-events-auto shadow-2xl backdrop-blur-md border border-white/5"
                 >
-                  <ChevronLeft size={24} />
+                  <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
                 </button>
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();
                     handleNextCard();
                   }}
-                  className="p-4 bg-white/10 rounded-full hover:bg-orange-500 hover:text-white transition-all text-gray-400 pointer-events-auto shadow-2xl backdrop-blur-md border border-white/5"
+                  className="p-3 sm:p-4 bg-white/10 rounded-full hover:bg-orange-500 hover:text-white transition-all text-gray-400 pointer-events-auto shadow-2xl backdrop-blur-md border border-white/5"
                 >
-                  <ChevronRight size={24} />
+                  <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
                 </button>
               </div>
 
