@@ -62,13 +62,36 @@ M-40	Energy Marker M-40	PR	Marker	Multi	ENM
 M-41	Energy Marker M-41	PR	Marker	Multi	ENM
 M-42	Energy Marker M-42	PR	Marker	Multi	ENM
 M-43	Energy Marker M-43	PR	Marker	Multi	ENM
-M-44	Energy Marker M-44	PR	Marker	Multi	ENM
+
 M-45	Energy Marker M-45	PR	Marker	Multi	ENM
+M-45_PR	Energy Marker M-45 Gold	PR	Marker	Multi	ENM
 M-46	Energy Marker M-46	PR	Marker	Multi	ENM
+M-46_PR	Energy Marker M-46 Gold	PR	Marker	Multi	ENM
 M-47	Energy Marker M-47	PR	Marker	Multi	ENM
+M-47_PR	Energy Marker M-47 Gold	PR	Marker	Multi	ENM
 M-48	Energy Marker M-48	PR	Marker	Multi	ENM
+M-48_PR	Energy Marker M-48 Gold	PR	Marker	Multi	ENM
 M-49	Energy Marker M-49	PR	Marker	Multi	ENM
+M-49_PR	Energy Marker M-49 Gold	PR	Marker	Multi	ENM
 M-50	Energy Marker M-50	PR	Marker	Multi	ENM
+M-50_PR	Energy Marker M-50 Gold	PR	Marker	Multi	ENM
 M-51	Energy Marker M-51	PR	Marker	Multi	ENM
+M-51_PR	Energy Marker M-51 Gold	PR	Marker	Multi	ENM
 M-52	Energy Marker M-52	PR	Marker	Multi	ENM
-M-53	Energy Marker M-53	PR	Marker	Multi	ENM`;
+M-52_PR	Energy Marker M-52 Gold	PR	Marker	Multi	ENM
+M-53	Energy Marker M-53	PR	Marker	Multi	ENM
+M-53_PR	Energy Marker M-53 Gold	PR	Marker	Multi	ENM
+M-54	Energy Marker M-54	PR	Marker	Multi	ENM
+M-54_PR	Energy Marker M-54 Gold	PR	Marker	Multi	ENM
+BT31-EM01	Energy Marker BT31-EM01	PR	Marker	Multi	ENM
+BT31-EM01_PR	Energy Marker BT31-EM01 Gold	PR	Marker	Multi	ENM
+BT31-EM02	Energy Marker BT31-EM02	PR	Marker	Multi	ENM
+BT31-EM02_PR	Energy Marker BT31-EM02 Gold	PR	Marker	Multi	ENM
+BT31-EM03	Energy Marker BT31-EM03	PR	Marker	Multi	ENM
+BT31-EM03_PR	Energy Marker BT31-EM03 Gold	PR	Marker	Multi	ENM
+BT31-EM04	Energy Marker BT31-EM04	PR	Marker	Multi	ENM
+BT31-EM04_PR	Energy Marker BT31-EM04 Gold	PR	Marker	Multi	ENM
+BT31-EM05	Energy Marker BT31-EM05	PR	Marker	Multi	ENM
+BT31-EM05_PR	Energy Marker BT31-EM05 Gold	PR	Marker	Multi	ENM
+BT31-EM06	Energy Marker BT31-EM06	PR	Marker	Multi	ENM
+BT31-EM06_PR	Energy Marker BT31-EM06 Gold	PR	Marker	Multi	ENM`;
