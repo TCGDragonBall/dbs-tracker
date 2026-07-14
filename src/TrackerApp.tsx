@@ -63,7 +63,8 @@ import {
   Check,
   Heart,
   CheckSquare,
-  Square
+  Square,
+  Edit2
 } from 'lucide-react';
 import { collection, query, onSnapshot, where, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, getDocFromServer, writeBatch, getCountFromServer, getDoc } from 'firebase/firestore';
 import { MultiSelect } from './components/MultiSelect';
@@ -2179,6 +2180,23 @@ interface InventoryItem {
   quantity: number;
   ownerId: string;
   addedAt?: any;
+}
+
+interface MatchRecord {
+  id?: string;
+  ownerId: string;
+  date: string;
+  leaderId: string;
+  leaderColor: string;
+  opponentLeader: string;
+  opponentColor: string;
+  tournamentType: string;
+  result: 'win' | 'loss' | 'draw';
+  notes?: string;
+  myDecklist?: string;
+  oppDecklist?: string;
+  gameType: 'masters' | 'fusion';
+  createdAt?: any;
 }
 
 interface WantsList {
@@ -9368,7 +9386,7 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
                                 <img 
                                   src={profile?.photoURL || user?.photoURL || null} 
                                   alt="Avatar" 
-                                  className="w-full h-full object-cover"
+                                  className="w-full h-full object-cover object-top"
                                   referrerPolicy="no-referrer"
                                   crossOrigin="anonymous"
                                   onError={(e) => {
@@ -9870,7 +9888,7 @@ const ModalCard = ({ selectedCard, isFlipped, setIsFlipped }: { selectedCard: Ca
         style={{ transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)", transformStyle: "preserve-3d" }}
       >
         <div className="absolute inset-0 backface-hidden rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/20" style={{ backfaceVisibility: "hidden" }}>
-          <img src={selectedCard.imageUrl || `https://picsum.photos/seed/${selectedCard.id}/400/600`} alt={selectedCard.name} className="w-full h-full object-cover" />
+          <img src={selectedCard.imageUrl || `https://picsum.photos/seed/${selectedCard.id}/400/600`} alt={selectedCard.name} className="w-full h-full object-cover object-top" />
         </div>
         <div className="absolute inset-0 backface-hidden rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/20" style={{ transform: "rotateY(180deg)", backfaceVisibility: "hidden" }}>
           <img src={selectedCard.backImageUrl || selectedCard.imageUrl || `https://picsum.photos/seed/${selectedCard.id}/400/600`} alt="Back" className="w-full h-full object-cover" />
@@ -10579,6 +10597,659 @@ const safeStorage = {
       // Ignored
     }
   }
+};
+
+
+
+
+const MATCH_COLORS = [
+  { id: 'Red', name: { es: 'Rojo', en: 'Red' }, bg: 'bg-red-500' },
+  { id: 'Blue', name: { es: 'Azul', en: 'Blue' }, bg: 'bg-blue-500' },
+  { id: 'Green', name: { es: 'Verde', en: 'Green' }, bg: 'bg-green-500' },
+  { id: 'Yellow', name: { es: 'Amarillo', en: 'Yellow' }, bg: 'bg-yellow-500' },
+  { id: 'Black', name: { es: 'Negro', en: 'Black' }, bg: 'bg-gray-800' },
+  { id: 'White', name: { es: 'Blanco', en: 'White' }, bg: 'bg-white text-black' },
+  { id: 'Multi', name: { es: 'Multicolor', en: 'Multi' }, bg: 'bg-gradient-to-r from-red-500 via-blue-500 to-green-500' }
+];
+
+const TOURNEY_TYPES = [
+  { id: 'local', name: { es: 'Local', en: 'Local' } },
+  { id: 'regional', name: { es: 'Regional', en: 'Regional' } },
+  { id: 'online', name: { es: 'Online', en: 'Online' } },
+  { id: 'finals', name: { es: 'Finales', en: 'Finals' } },
+  { id: 'test', name: { es: 'Test/Amistoso', en: 'Test/Friendly' } }
+];
+
+const MATCH_RESULTS = [
+  { id: 'win', name: { es: 'Victoria', en: 'Win' }, color: 'text-green-500 bg-green-500/10 border-green-500/20' },
+  { id: 'loss', name: { es: 'Derrota', en: 'Loss' }, color: 'text-red-500 bg-red-500/10 border-red-500/20' }
+];
+
+const MatchesView = ({ matches, onBack, lang, userUid, gameType, cards }: { matches: MatchRecord[], onBack: () => void, lang: 'es' | 'en', userUid: string, gameType: 'masters' | 'fusion', cards: Card[] }) => {
+  const [isAdding, setIsAdding] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [viewMode, setViewMode] = useState<'list' | 'stats'>('list');
+  const [editingMatchId, setEditingMatchId] = useState<string | null>(null);
+  const [expandedYears, setExpandedYears] = useState<Record<string, boolean>>({ [new Date().getFullYear().toString()]: true });
+  const [expandedMonths, setExpandedMonths] = useState<Record<string, boolean>>({ [`${new Date().getFullYear()}-${new Date().getMonth()}`]: true });
+  const [leaderModal, setLeaderModal] = useState<'my' | 'opp' | null>(null);
+  const [leaderSearch, setLeaderSearch] = useState('');
+  const [leaderColorFilter, setLeaderColorFilter] = useState('');
+
+  const [formData, setFormData] = useState({
+    date: new Date().toISOString().split('T')[0],
+    leaderId: '',
+    opponentLeader: '',
+    tournamentType: 'local',
+    result: 'win' as 'win'|'loss'|'draw',
+    notes: '',
+    myDecklist: '',
+    oppDecklist: ''
+  });
+
+  const handleDelete = async (matchId?: string) => {
+    if (!matchId) return;
+    if (confirm(lang === 'es' ? '¿Estás seguro de que quieres borrar esta partida?' : 'Are you sure you want to delete this match?')) {
+      try {
+        await deleteDoc(doc(db, 'matches', matchId));
+      } catch (error) {
+        console.error("Error deleting match:", error);
+      }
+    }
+  };
+  
+  const handleEdit = (match: MatchRecord) => {
+    setEditingMatchId(match.id);
+    setFormData({
+      date: match.date,
+      leaderId: match.leaderId,
+      opponentLeader: match.opponentLeader,
+      tournamentType: match.tournamentType,
+      result: match.result,
+      notes: match.notes || '',
+      myDecklist: match.myDecklist || '',
+      oppDecklist: match.oppDecklist || ''
+    });
+    setIsAdding(true);
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!userUid || !formData.leaderId || !formData.opponentLeader) return;
+    setIsSaving(true);
+    
+    const myLeaderCard = cards.find(c => c.id === formData.leaderId);
+    const oppLeaderCard = cards.find(c => c.id === formData.opponentLeader);
+
+    try {
+      if (editingMatchId) {
+        await updateDoc(doc(db, 'matches', editingMatchId), {
+          date: formData.date,
+          leaderId: formData.leaderId,
+          leaderColor: myLeaderCard?.color || 'Red',
+          opponentLeader: formData.opponentLeader,
+          opponentColor: oppLeaderCard?.color || 'Red',
+          tournamentType: formData.tournamentType,
+          result: formData.result,
+          notes: formData.notes,
+          myDecklist: formData.myDecklist,
+          oppDecklist: formData.oppDecklist
+        });
+      } else {
+        await addDoc(collection(db, 'matches'), {
+          ownerId: userUid,
+          gameType,
+          date: formData.date,
+          leaderId: formData.leaderId,
+          leaderColor: myLeaderCard?.color || 'Red',
+          opponentLeader: formData.opponentLeader,
+          opponentColor: oppLeaderCard?.color || 'Red',
+          tournamentType: formData.tournamentType,
+          result: formData.result,
+          notes: formData.notes,
+          myDecklist: formData.myDecklist,
+          oppDecklist: formData.oppDecklist,
+          createdAt: serverTimestamp()
+        });
+      }
+      setIsAdding(false);
+      setEditingMatchId(null);
+      setFormData({
+        date: new Date().toISOString().split('T')[0],
+        leaderId: '',
+        opponentLeader: '',
+        tournamentType: 'local',
+        result: 'win',
+        notes: '',
+        myDecklist: '',
+        oppDecklist: ''
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    setIsSaving(false);
+  };
+
+  const filteredMatches = matches.filter(m => m.gameType === gameType);
+  
+  const groupedMatches = useMemo(() => {
+    const groups: Record<string, Record<string, MatchRecord[]>> = {};
+    filteredMatches.forEach(m => {
+      const d = new Date(m.date);
+      const year = d.getFullYear().toString();
+      const month = d.getMonth().toString(); // 0-11
+      if (!groups[year]) groups[year] = {};
+      if (!groups[year][month]) groups[year][month] = [];
+      groups[year][month].push(m);
+    });
+    return groups;
+  }, [filteredMatches]);
+  
+  const monthNames = lang === 'es' 
+    ? ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+    : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+
+  // Stats
+  const totalMatches = filteredMatches.length;
+  const wins = filteredMatches.filter(m => m.result === 'win').length;
+  const losses = filteredMatches.filter(m => m.result === 'loss').length;
+  const winRate = totalMatches > 0 ? Math.round((wins / totalMatches) * 100) : 0;
+
+  const leaderCounts = filteredMatches.reduce((acc, m) => {
+    const baseId = m.leaderId.split('_')[0];
+    acc[baseId] = (acc[baseId] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+  const topLeaderId = Object.entries(leaderCounts).sort((a, b) => b[1] - a[1])[0]?.[0];
+  const topLeaderCard = cards.find(c => c.id === topLeaderId);
+
+  const oppCounts = filteredMatches.reduce((acc, m) => {
+    const baseId = m.opponentLeader.split('_')[0];
+    acc[baseId] = (acc[baseId] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+  const topOpponentId = Object.entries(oppCounts).sort((a, b) => b[1] - a[1])[0]?.[0];
+  const topOpponentCard = cards.find(c => c.id === topOpponentId);
+
+  // Win percentage calculations
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth();
+  const currentYear = currentDate.getFullYear();
+  
+  let topLeaderMonthWins = 0;
+  let topLeaderMonthTotal = 0;
+  let topLeaderYearWins = 0;
+  let topLeaderYearTotal = 0;
+  
+  if (topLeaderId) {
+    filteredMatches.forEach(m => {
+      const baseId = m.leaderId.split('_')[0];
+      if (baseId === topLeaderId) {
+        const mDate = new Date(m.date);
+        if (mDate.getFullYear() === currentYear) {
+          topLeaderYearTotal++;
+          if (m.result === 'win') topLeaderYearWins++;
+          if (mDate.getMonth() === currentMonth) {
+            topLeaderMonthTotal++;
+            if (m.result === 'win') topLeaderMonthWins++;
+          }
+        }
+      }
+    });
+  }
+  
+  const topLeaderMonthWinPct = topLeaderMonthTotal > 0 ? Math.round((topLeaderMonthWins / topLeaderMonthTotal) * 100) : 0;
+  const topLeaderYearWinPct = topLeaderYearTotal > 0 ? Math.round((topLeaderYearWins / topLeaderYearTotal) * 100) : 0;
+  
+  const tourneyCounts = filteredMatches.reduce((acc, m) => {
+    acc[m.tournamentType] = (acc[m.tournamentType] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+  const topTourneyId = Object.entries(tourneyCounts).sort((a, b) => b[1] - a[1])[0]?.[0];
+  const topTourneyType = topTourneyId ? TOURNEY_TYPES.find(t => t.id === topTourneyId) : null;
+
+
+  const availableLeaders = useMemo(() => {
+    let list = cards.filter(c => c.type === 'Leader' && !c.id.includes('_'));
+    if (leaderSearch) {
+      const s = leaderSearch.toLowerCase();
+      list = list.filter(c => c.name.toLowerCase().includes(s) || c.cardNumber.toLowerCase().includes(s));
+    }
+    if (leaderColorFilter) {
+      if (leaderColorFilter === 'Multi') {
+        list = list.filter(c => c.color.includes('/') || c.color.includes('-') || c.color.toLowerCase().includes('multi'));
+      } else {
+        list = list.filter(c => c.color.includes(leaderColorFilter));
+      }
+    }
+    return list;
+  }, [cards, leaderSearch, leaderColorFilter]);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={onBack}
+            className="p-2 bg-white/5 rounded-xl text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+          >
+            <ChevronLeft size={24} />
+          </button>
+          <h2 className="text-2xl font-black text-white uppercase tracking-tight">
+            {lang === 'es' ? 'Tracker de Partidas' : 'Match Tracker'}
+          </h2>
+        </div>
+      </div>
+
+      {!isAdding ? (
+        <div className="space-y-4">
+          <div className="flex gap-2">
+            <button 
+              onClick={() => setViewMode('list')}
+              className={`flex-1 py-3 text-xs font-black uppercase rounded-xl transition-all ${viewMode === 'list' ? 'bg-white/20 text-white' : 'bg-white/5 text-gray-500 hover:bg-white/10'}`}
+            >
+              {lang === 'es' ? 'Historial' : 'History'}
+            </button>
+            <button 
+              onClick={() => setViewMode('stats')}
+              className={`flex-1 py-3 text-xs font-black uppercase rounded-xl transition-all ${viewMode === 'stats' ? 'bg-orange-500 text-black shadow-lg shadow-orange-500/20' : 'bg-white/5 text-gray-500 hover:bg-white/10'}`}
+            >
+              {lang === 'es' ? 'Estadísticas' : 'Stats'}
+            </button>
+          </div>
+
+          {viewMode === 'stats' ? (
+            <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-5 bg-white/5 rounded-2xl border border-white/5 text-center">
+                  <span className="block text-[10px] text-gray-500 font-bold uppercase mb-1">{lang === 'es' ? 'Total Partidas' : 'Total Matches'}</span>
+                  <span className="text-4xl font-black text-white">{totalMatches}</span>
+                </div>
+                <div className="p-5 bg-orange-500/10 rounded-2xl border border-orange-500/20 text-center">
+                  <span className="block text-[10px] text-orange-500 font-bold uppercase mb-1">Win Rate</span>
+                  <span className="text-4xl font-black text-orange-500">{winRate}%</span>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="flex-1 p-4 bg-green-500/10 rounded-xl border border-green-500/20 text-center">
+                  <span className="block text-xs font-black text-green-500">{wins} {lang === 'es' ? 'Victorias' : 'Wins'}</span>
+                </div>
+                <div className="flex-1 p-4 bg-red-500/10 rounded-xl border border-red-500/20 text-center">
+                  <span className="block text-xs font-black text-red-500">{losses} {lang === 'es' ? 'Derrotas' : 'Losses'}</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 bg-white/5 rounded-2xl border border-white/5 text-center flex flex-col items-center">
+                  <span className="block text-[10px] text-gray-500 font-bold uppercase mb-2">{lang === 'es' ? 'Líder más jugado' : 'Most played leader'}</span>
+                  {topLeaderCard ? (
+                    <>
+                      <img src={topLeaderCard.imageUrl} alt={topLeaderCard.name} className="w-20 rounded shadow-md mb-2 object-cover object-top aspect-[2/3]" referrerPolicy="no-referrer" />
+                      <span className="font-bold text-white text-xs truncate w-full">{topLeaderCard.name}</span>
+                    </>
+                  ) : (
+                    <span className="text-gray-500">-</span>
+                  )}
+                </div>
+                
+                <div className="p-4 bg-white/5 rounded-2xl border border-white/5 text-center flex flex-col items-center">
+                  <span className="block text-[10px] text-gray-500 font-bold uppercase mb-2">{lang === 'es' ? 'Más enfrentado' : 'Most faced'}</span>
+                  {topOpponentCard ? (
+                    <>
+                      <img src={topOpponentCard.imageUrl} alt={topOpponentCard.name} className="w-20 rounded shadow-md mb-2 object-cover object-top aspect-[2/3]" referrerPolicy="no-referrer" />
+                      <span className="font-bold text-white text-xs truncate w-full">{topOpponentCard.name}</span>
+                    </>
+                  ) : (
+                    <span className="text-gray-500">-</span>
+                  )}
+                </div>
+              </div>              <div className="p-4 bg-white/5 rounded-2xl border border-white/5 text-center flex flex-col items-center mt-4">
+                <span className="block text-[10px] text-gray-500 font-bold uppercase mb-2">{lang === 'es' ? 'Torneo más jugado' : 'Most played tournament'}</span>
+                <span className="font-bold text-white text-lg">{topTourneyType ? topTourneyType.name[lang] : '-'}</span>
+              </div>
+              
+              <div className="mt-8">
+                <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">{lang === 'es' ? 'Últimos Resultados' : 'Latest Results'}</h3>
+                <div className="space-y-3">
+                  {filteredMatches.slice(0, 5).map(match => {
+                    const resConf = MATCH_RESULTS.find(r => r.id === match.result);
+                    const tType = TOURNEY_TYPES.find(t => t.id === match.tournamentType);
+                    const myCard = cards.find(c => c.id === match.leaderId.split('_')[0]);
+                    const oppCard = cards.find(c => c.id === match.opponentLeader.split('_')[0]);
+                    return (
+                      <div key={match.id} className={`p-4 rounded-2xl border bg-black/40 ${resConf?.color}`}>
+                        <div className="flex justify-between items-start mb-3">
+                          <div className="flex flex-col">
+                            <span className="font-black uppercase text-sm">{resConf?.name[lang]}</span>
+                            <span className="text-[10px] opacity-70">{new Date(match.date).toLocaleDateString()} • {tType?.name[lang]}</span>
+                          </div>
+                          <div className="flex gap-2">
+                            <button onClick={() => handleEdit(match)} className="p-1.5 bg-black/50 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors" title="Edit">
+                              <Edit2 size={14} />
+                            </button>
+                            <button onClick={() => handleDelete(match.id)} className="p-1.5 bg-black/50 rounded-lg hover:bg-red-500/20 text-gray-400 hover:text-red-500 transition-colors" title="Delete">
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-3">
+                            {myCard ? (
+                              <img src={myCard.imageUrl} alt={myCard.name} className="w-12 rounded object-cover object-top aspect-[2/3] border border-white/10" referrerPolicy="no-referrer" />
+                            ) : <div className="w-12 aspect-[2/3] bg-white/5 rounded border border-white/10" />}
+                            <div className="flex flex-col">
+                              <span className="text-[10px] text-orange-500 font-black uppercase">{lang === 'es' ? 'Tú' : 'You'}</span>
+                              <span className="text-xs font-bold truncate max-w-[80px] sm:max-w-[140px] text-white mb-1">{myCard?.name || match.leaderId}</span>
+                              {match.myDecklist && (
+                                <a href={match.myDecklist} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[10px] text-gray-400 hover:text-orange-400 transition-colors bg-white/5 px-2 py-1 rounded-md w-max">
+                                  <ExternalLink size={10} />
+                                  {lang === 'es' ? 'Ver Lista' : 'View List'}
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center gap-3">
+                            <div className="flex flex-col items-end">
+                              <span className="text-[10px] text-blue-500 font-black uppercase">{lang === 'es' ? 'Rival' : 'Opponent'}</span>
+                              <span className="text-xs font-bold truncate max-w-[80px] sm:max-w-[140px] text-white mb-1">{oppCard?.name || match.opponentLeader}</span>
+                              {match.oppDecklist && (
+                                <a href={match.oppDecklist} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[10px] text-gray-400 hover:text-blue-400 transition-colors bg-white/5 px-2 py-1 rounded-md w-max">
+                                  {lang === 'es' ? 'Ver Lista' : 'View List'}
+                                  <ExternalLink size={10} />
+                                </a>
+                              )}
+                            </div>
+                            {oppCard ? (
+                              <img src={oppCard.imageUrl} alt={oppCard.name} className="w-12 rounded object-cover object-top aspect-[2/3] border border-white/10" referrerPolicy="no-referrer" />
+                            ) : <div className="w-12 aspect-[2/3] bg-white/5 rounded border border-white/10" />}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+            </div>
+          ) : (
+            <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4">
+              {topLeaderCard && (
+                <div className="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5 shadow-md">
+                  <div className="relative">
+                    <img src={topLeaderCard.imageUrl} alt={topLeaderCard.name} className="w-14 h-14 object-cover object-top rounded-full ring-2 ring-orange-500 shadow-lg shadow-orange-500/20" referrerPolicy="no-referrer" />
+                    <div className="absolute -bottom-1 -right-1 bg-orange-500 text-black text-[8px] font-black px-1.5 py-0.5 rounded-md">MVP</div>
+                  </div>
+                  <div className="flex flex-col flex-1 min-w-0">
+                    <span className="text-[10px] text-orange-500 font-black uppercase tracking-widest">{lang === 'es' ? 'Líder Favorito' : 'Favorite Leader'}</span>
+                    <span className="text-white font-bold text-sm truncate">{topLeaderCard.name}</span>
+                    <div className="flex gap-2 items-center text-[10px] font-bold mt-1">
+                      <span className="text-gray-500">{leaderCounts[topLeaderId]} {lang === 'es' ? 'partidas' : 'matches'}</span>
+                      <span className="text-white/20">•</span>
+                      <span className="text-green-400" title={lang === 'es' ? 'Win rate este mes' : 'Win rate this month'}>{topLeaderMonthWinPct}% {lang === 'es' ? 'mes' : 'month'}</span>
+                      <span className="text-white/20">•</span>
+                      <span className="text-green-500" title={lang === 'es' ? 'Win rate este año' : 'Win rate this year'}>{topLeaderYearWinPct}% {lang === 'es' ? 'año' : 'year'}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <button 
+                onClick={() => setIsAdding(true)}
+                className="w-full py-4 bg-orange-500 text-black font-black uppercase tracking-widest text-sm rounded-2xl shadow-lg shadow-orange-500/20 hover:bg-orange-400 transition-all flex items-center justify-center gap-2"
+              >
+                <Plus size={20} />
+                {lang === 'es' ? 'Registrar Partida' : 'Log Match'}
+              </button>
+
+              {filteredMatches.length === 0 ? (
+                <div className="p-8 bg-white/5 rounded-2xl text-center border border-white/5">
+                  <Sword size={32} className="mx-auto text-gray-500 mb-4" />
+                  <p className="text-gray-400">
+                    {lang === 'es' ? 'No hay partidas registradas en este modo.' : 'No matches logged in this mode.'}
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {filteredMatches.map(match => {
+                    const resConf = MATCH_RESULTS.find(r => r.id === match.result);
+                    const tType = TOURNEY_TYPES.find(t => t.id === match.tournamentType);
+                    const myCard = cards.find(c => c.id === match.leaderId.split('_')[0]);
+                    const oppCard = cards.find(c => c.id === match.opponentLeader.split('_')[0]);
+
+                    return (
+                      <div key={match.id} className={`p-4 rounded-2xl border bg-black/40 ${resConf?.color}`}>
+                        <div className="flex justify-between items-start mb-3">
+                          <div className="flex flex-col">
+                            <span className="font-black uppercase text-sm">{resConf?.name[lang]}</span>
+                            <span className="text-[10px] opacity-70">{new Date(match.date).toLocaleDateString()} • {tType?.name[lang]}</span>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-3">
+                            {myCard ? (
+                              <img src={myCard.imageUrl} alt={myCard.name} className="w-12 rounded object-cover object-top aspect-[2/3] border border-white/10" referrerPolicy="no-referrer" />
+                            ) : <div className="w-12 aspect-[2/3] bg-white/5 rounded border border-white/10" />}
+                            <div className="flex flex-col">
+                              <span className="text-[10px] text-orange-500 font-black uppercase">{lang === 'es' ? 'Tú' : 'You'}</span>
+                              <span className="text-xs font-bold truncate max-w-[80px] sm:max-w-[140px] text-white">{myCard?.name || match.leaderId}</span>
+                            </div>
+                          </div>
+                          
+                          <span className="text-gray-600 font-black italic">VS</span>
+
+                          <div className="flex items-center gap-3 text-right">
+                            <div className="flex flex-col items-end">
+                              <span className="text-[10px] text-blue-500 font-black uppercase">{lang === 'es' ? 'Rival' : 'Opponent'}</span>
+                              <span className="text-xs font-bold truncate max-w-[80px] sm:max-w-[140px] text-white">{oppCard?.name || match.opponentLeader}</span>
+                            </div>
+                            {oppCard ? (
+                              <img src={oppCard.imageUrl} alt={oppCard.name} className="w-12 rounded object-cover object-top aspect-[2/3] border border-white/10" referrerPolicy="no-referrer" />
+                            ) : <div className="w-12 aspect-[2/3] bg-white/5 rounded border border-white/10" />}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      ) : (
+        <form onSubmit={handleSave} className="space-y-6 bg-white/5 p-5 rounded-3xl border border-white/5 animate-in fade-in slide-in-from-bottom-4 relative">
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="font-black text-white">{lang === 'es' ? 'Nueva Partida' : 'New Match'}</h3>
+            <button type="button" onClick={() => setIsAdding(false)} className="p-2 bg-white/5 rounded-full hover:bg-white/10">
+              <X size={16} className="text-gray-400" />
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <label className="text-[10px] font-bold text-gray-500 uppercase">{lang === 'es' ? 'Fecha' : 'Date'}</label>
+              <input 
+                type="date" 
+                required
+                value={formData.date}
+                onChange={e => setFormData({...formData, date: e.target.value})}
+                className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white focus:border-orange-500 outline-none"
+                style={{ colorScheme: "dark" }}
+              />
+            </div>
+
+            <div className="flex flex-col items-center gap-4">
+              <label className="text-[10px] font-bold text-gray-500 uppercase w-full">{lang === 'es' ? 'Líderes' : 'Leaders'}</label>
+              <div className="flex w-full items-center justify-center gap-4">
+                {/* My Leader */}
+                <div className="flex flex-col items-center gap-2">
+                  <span className="text-[10px] font-black uppercase text-orange-500">{lang === 'es' ? 'Tú' : 'You'}</span>
+                  <button 
+                    type="button" 
+                    onClick={() => { setLeaderSearch(''); setLeaderColorFilter(''); setLeaderModal('my'); }}
+                    className="w-24 aspect-[2/3] rounded-xl border-2 border-dashed border-white/20 bg-black/40 hover:border-orange-500 transition-colors flex flex-col items-center justify-center overflow-hidden"
+                  >
+                    {formData.leaderId ? (
+                      <img src={cards.find(c => c.id === formData.leaderId)?.imageUrl} alt="My Leader" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                    ) : (
+                      <Plus size={24} className="text-gray-500" />
+                    )}
+                  </button>
+                </div>
+
+                <div className="text-gray-600 font-black text-2xl italic">VS</div>
+
+                {/* Opponent Leader */}
+                <div className="flex flex-col items-center gap-2">
+                  <span className="text-[10px] font-black uppercase text-blue-500">{lang === 'es' ? 'Rival' : 'Opponent'}</span>
+                  <button 
+                    type="button" 
+                    onClick={() => { setLeaderSearch(''); setLeaderColorFilter(''); setLeaderModal('opp'); }}
+                    className="w-24 aspect-[2/3] rounded-xl border-2 border-dashed border-white/20 bg-black/40 hover:border-blue-500 transition-colors flex flex-col items-center justify-center overflow-hidden"
+                  >
+                    {formData.opponentLeader ? (
+                      <img src={cards.find(c => c.id === formData.opponentLeader)?.imageUrl} alt="Opponent Leader" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                    ) : (
+                      <Plus size={24} className="text-gray-500" />
+                    )}
+                  </button>
+                </div>
+              </div>
+              <div className="flex w-full gap-4 mt-2">
+                <div className="flex-1">
+                  <input
+                    type="url"
+                    placeholder="URL Decklist"
+                    value={formData.myDecklist || ''}
+                    onChange={e => setFormData({...formData, myDecklist: e.target.value})}
+                    className="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-xs text-white focus:border-orange-500 outline-none placeholder:text-gray-600"
+                  />
+                </div>
+                <div className="flex-1">
+                  <input
+                    type="url"
+                    placeholder="URL Decklist"
+                    value={formData.oppDecklist || ''}
+                    onChange={e => setFormData({...formData, oppDecklist: e.target.value})}
+                    className="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-xs text-white focus:border-blue-500 outline-none placeholder:text-gray-600"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="text-[10px] font-bold text-gray-500 uppercase">{lang === 'es' ? 'Tipo de Torneo' : 'Tournament Type'}</label>
+              <select 
+                value={formData.tournamentType}
+                onChange={e => setFormData({...formData, tournamentType: e.target.value})}
+                className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white focus:border-orange-500 outline-none"
+              >
+                {TOURNEY_TYPES.map(t => (
+                  <option key={t.id} value={t.id}>{t.name[lang]}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="text-[10px] font-bold text-gray-500 uppercase">{lang === 'es' ? 'Resultado' : 'Result'}</label>
+              <div className="grid grid-cols-2 gap-2 mt-1">
+                {MATCH_RESULTS.map(r => (
+                  <button
+                    key={r.id}
+                    type="button"
+                    onClick={() => setFormData({...formData, result: r.id as any})}
+                    className={`py-3 rounded-xl font-black text-sm uppercase transition-all border ${formData.result === r.id ? r.color + ' shadow-lg' : 'bg-white/5 border-white/5 text-gray-500 hover:bg-white/10'}`}
+                  >
+                    {r.name[lang]}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <button 
+            type="submit" 
+            disabled={isSaving || !formData.leaderId || !formData.opponentLeader}
+            className="w-full py-4 bg-orange-500 text-black font-black uppercase tracking-widest text-sm rounded-xl hover:bg-orange-400 transition-colors disabled:opacity-50"
+          >
+            {isSaving ? (lang === 'es' ? 'Guardando...' : 'Saving...') : (lang === 'es' ? 'Guardar Partida' : 'Save Match')}
+          </button>
+        </form>
+      )}
+
+      {/* Leader Selection Modal */}
+      <AnimatePresence>
+        {leaderModal && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/90 z-[100] p-4 flex flex-col"
+          >
+            <div className="flex items-center gap-4 mb-4 pt-10">
+              <button 
+                onClick={() => setLeaderModal(null)}
+                className="p-2 bg-white/5 rounded-xl text-gray-400 hover:text-white hover:bg-white/10"
+              >
+                <ChevronLeft size={24} />
+              </button>
+              <h2 className="text-xl font-black text-white uppercase tracking-tight">
+                {lang === 'es' ? 'Selecciona un Líder' : 'Select a Leader'}
+              </h2>
+            </div>
+            
+            <div className="space-y-4 mb-4">
+              <input 
+                type="text" 
+                placeholder={lang === 'es' ? 'Buscar líder...' : 'Search leader...'}
+                value={leaderSearch}
+                onChange={e => setLeaderSearch(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white focus:border-orange-500 outline-none"
+              />
+              <div className="flex flex-wrap gap-2">
+                <button 
+                  onClick={() => setLeaderColorFilter('')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold ${leaderColorFilter === '' ? 'bg-white text-black' : 'bg-white/10 text-white'}`}
+                >
+                  All
+                </button>
+                {MATCH_COLORS.filter(c => gameType === 'fusion' ? c.id !== 'White' && c.id !== 'Multi' : true).map(c => (
+                  <button 
+                    key={c.id}
+                    onClick={() => setLeaderColorFilter(c.id)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 ${leaderColorFilter === c.id ? 'bg-white text-black' : 'bg-white/10 text-white'}`}
+                  >
+                    <div className={`w-2 h-2 rounded-full ${c.bg}`} />
+                    {c.id}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-y-auto grid grid-cols-3 md:grid-cols-5 gap-3 pb-24 px-1">
+              {availableLeaders.map(c => (
+                <CardItem 
+                  key={c.id}
+                  card={c}
+                  quantity={1}
+                  collectionGoal="collector"
+                  onClick={() => {
+                    if (leaderModal === 'my') setFormData({...formData, leaderId: c.id});
+                    else setFormData({...formData, opponentLeader: c.id});
+                    setLeaderModal(null);
+                  }}
+                />
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 };
 
 export default function TrackerApp() {
@@ -11528,6 +12199,7 @@ export default function TrackerApp() {
 
 
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
+  const [matches, setMatches] = useState<MatchRecord[]>([]);
   const [isInventoryLoading, setIsInventoryLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [renderCount, setRenderCount] = useState(0); // 0 means not chunking or done
@@ -12131,7 +12803,7 @@ export default function TrackerApp() {
       }
     }
   }, [unlockedQueue, unlockedAchievement, userAchievements]);
-  const [profileView, setProfileView] = useState<'main' | 'achievements'>('main');
+  const [profileView, setProfileView] = useState<'main' | 'achievements' | 'matches'>('main');
 
   const achievementsList = useMemo(() => getAchievementsList(cards, currentGroups, gameType), [cards, currentGroups, gameType]);
 
@@ -13257,6 +13929,26 @@ export default function TrackerApp() {
     } else {
       setIsInventoryLoading(false);
       if (!user) setInventory([]);
+    }
+  }, [user?.uid, isQuotaExceeded]);
+
+  // Matches listener
+  useEffect(() => {
+    if (user && !isQuotaExceeded) {
+      console.log("[Firestore] Subscribing to matches...");
+      const qMatches = query(collection(db, 'matches'), where('ownerId', '==', user.uid));
+      const unsubscribeMatches = onSnapshot(qMatches, 
+        (snapshot) => {
+          const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as MatchRecord));
+          // Sort descending by date
+          items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+          setMatches(items);
+        },
+        (error) => {
+          console.error("Matches listener error:", error);
+        }
+      );
+      return () => unsubscribeMatches();
     }
   }, [user?.uid, isQuotaExceeded]);
 
@@ -16798,6 +17490,21 @@ export default function TrackerApp() {
                     </div>
                   </button>
 
+                  {/* Matches link */}
+                  <button 
+                    onClick={() => setProfileView('matches')}
+                    className="w-full p-5 bg-white/5 rounded-2xl flex items-center justify-between hover:bg-white/10 transition-colors border border-white/5 text-white"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="p-2 bg-white/5 rounded-lg text-red-500"><Sword size={20} /></div>
+                      <span className="font-bold">{lang === 'es' ? 'Tracker de Partidas' : 'Match Tracker'}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-black text-white bg-red-500 px-2 py-1 rounded">BETA</span>
+                      <ChevronRight size={20} className="text-gray-600" />
+                    </div>
+                  </button>
+
                   <div className="p-5 bg-white/5 rounded-2xl border border-white/5 space-y-4">
                     <div className="flex items-center gap-4 text-gray-400">
                       <div className="p-2 bg-white/5 rounded-lg"><Settings size={20} /></div>
@@ -16941,7 +17648,7 @@ export default function TrackerApp() {
 
                 </div>
               </>
-            ) : (
+            ) : profileView === 'achievements' ? (
               <AchievementsView 
                 cards={cards}
                 inventory={inventory}
@@ -16951,6 +17658,8 @@ export default function TrackerApp() {
                 gameType={gameType}
                 onBack={() => setProfileView('main')}
               />
+            ) : (
+              <MatchesView matches={matches} onBack={() => setProfileView('main')} lang={lang} userUid={user?.uid || ''} gameType={gameType} cards={cards} />
             )}
 
             <div className="pt-8 pb-12 text-center flex flex-col items-center gap-1">
