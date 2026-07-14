@@ -125,7 +125,7 @@ const SET_BG: Record<string, string> = {
   'BT28': '/prismaticclash.jpg',
   'BT29': '/fearsomerivals.webp',
   'BT30': '/threegloriousfighters.webp',
-  'BT31': 'https://montalfan.com/wp-content/uploads/2026/04/BT31R.png',
+  'BT31': 'https://www.dbs-cardgame.com/images/top/mv_ultra-bout-series04.jpg?1',
   'TB1': '/the_tournament_of_power.png',
   'TB2': '/worldmartialartstournament.png',
   'TB3': '/clashoffates.jpg',
@@ -8197,7 +8197,7 @@ const Dashboard = ({
           {/* Full background image spanning 100% of the banner */}
           <div 
             className="absolute inset-0 opacity-20 bg-cover bg-no-repeat bg-center mix-blend-lighten pointer-events-none transition-opacity duration-700 group-hover:opacity-30 animate-fade-in"
-            style={{ backgroundImage: "url('https://montalfan.com/wp-content/uploads/2026/04/BT31R.png')" }}
+            style={{ backgroundImage: "url('https://www.dbs-cardgame.com/images/top/mv_ultra-bout-series04.jpg?1')" }}
           />
           
           {/* Ambient Glows */}
@@ -12229,9 +12229,9 @@ export default function TrackerApp() {
     setSearchQuery('');
   };
 
-  const ownedBaseIds = useMemo(() => {
-    const ids = new Set<string>();
-    if (!cards || !inventory) return ids;
+  const ownedBaseQuantities = useMemo(() => {
+    const quantities = new Map<string, number>();
+    if (!cards || !inventory) return quantities;
     
     // Map cardId to baseId for faster lookup
     const idToBaseId = new Map<string, string>();
@@ -12246,10 +12246,11 @@ export default function TrackerApp() {
     inventory.forEach(i => {
       if (i.quantity > 0) {
         const baseId = idToBaseId.get(i.cardId) || i.cardId.split('_')[0];
-        ids.add(baseId);
+        quantities.set(baseId, (quantities.get(baseId) || 0) + i.quantity);
       }
     });
-    return ids;
+
+    return quantities;
   }, [cards, inventory]);
 
   const filteredCards = cards.filter(card => {
@@ -12358,7 +12359,7 @@ export default function TrackerApp() {
       if (card.rarity === 'SPR' || card.rarity === 'GDR' || card.rarity === 'SCR' || card.id.includes('_SLR')) {
         baseId = `${baseId}_${card.rarity || 'SLR'}`;
       }
-      if (ownedBaseIds.has(baseId)) return false;
+      if (ownedBaseQuantities.has(baseId)) return false;
     }
 
     const cardTags = getCardTags(card);
@@ -12459,9 +12460,13 @@ export default function TrackerApp() {
       if (card.rarity === 'SPR' || card.rarity === 'GDR' || card.rarity === 'SCR' || card.id.includes('_SLR')) {
         baseId = `${baseId}_${card.rarity || 'SLR'}`;
       }
-      const isOwned = ownedBaseIds.has(baseId);
-      if (filters.owned === 'owned' && !isOwned) return false;
-      if (filters.owned === 'not-owned' && isOwned) return false;
+      const qty = ownedBaseQuantities.get(baseId) || 0;
+      
+      if (filters.owned === 'owned' && qty === 0) return false;
+      if (filters.owned === 'not-owned') {
+        const targetQty = getTargetQuantity(card, 'player');
+        if (qty >= targetQty) return false;
+      }
     }
 
     // Alternatives individual filters
