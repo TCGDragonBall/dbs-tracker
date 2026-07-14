@@ -74,7 +74,7 @@ import { useAuth } from './AuthContext';
 import emailjs from '@emailjs/browser';
 
 
-const APP_VERSION = '5.4.3';
+const APP_VERSION = '5.4.4';
 
 const CATEGORY_BG: Record<string, string> = {
   'box': '/fondobox.jpg',
@@ -5485,6 +5485,14 @@ const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata'
 
 const CHANGELOG = [
 // Removed Excel export changes from changelog during staging
+  
+  {
+    version: '5.4.4',
+    date: '14 de julio de 2026',
+    changes: [
+      { es: 'Corregida y perfeccionada la lógica de filtrado "No tengo / Faltantes" para respetar estrictamente las reglas de modo Jugador y Coleccionista. En modo Jugador, una carta desaparecerá si se tienen 4 copias, combinando las versiones normales y foil para determinar el playset. En modo Coleccionista, desaparecerá si se tiene al menos 1 copia, pero cada arte alternativo o versión rara especial se considerará de forma individual y seguirá apareciendo hasta tener su propia copia.', en: 'Fixed and perfected the "Not Owned / Missing" filtering logic to strictly adhere to Player and Collector modes. In Player mode, a card will be hidden if you have 4 copies, combining regular and foil versions to determine the playset. In Collector mode, it will be hidden if you have at least 1 copy, but each alternate art or special rare version will be considered individually and will continue to appear until you obtain its own copy.' }
+    ]
+  },
   {
     version: '5.4.3',
     date: '23 de junio de 2026',
@@ -12229,24 +12237,23 @@ export default function TrackerApp() {
     setSearchQuery('');
   };
 
-  const ownedBaseQuantities = useMemo(() => {
+  const ownedCardQuantities = useMemo(() => {
     const quantities = new Map<string, number>();
     if (!cards || !inventory) return quantities;
     
-    // Map cardId to baseId for faster lookup
-    const idToBaseId = new Map<string, string>();
+    // Map every variation ID to its base card ID (e.g. BT1-001_PR -> BT1-001)
+    const varToCardId = new Map<string, string>();
     cards.forEach(c => {
-      let baseId = c.cardNumber ? c.cardNumber.split('_')[0] : c.id.split('_')[0];
-      if (c.rarity === 'SPR' || c.rarity === 'GDR' || c.rarity === 'SCR' || c.id.includes('_SLR')) {
-        baseId = `${baseId}_${c.rarity || 'SLR'}`;
+      const vars = CARD_VARIATIONS[c.id];
+      if (vars) {
+        vars.forEach(v => varToCardId.set(v.id, c.id));
       }
-      idToBaseId.set(c.id, baseId);
     });
 
     inventory.forEach(i => {
       if (i.quantity > 0) {
-        const baseId = idToBaseId.get(i.cardId) || i.cardId.split('_')[0];
-        quantities.set(baseId, (quantities.get(baseId) || 0) + i.quantity);
+        const cardId = varToCardId.get(i.cardId) || i.cardId;
+        quantities.set(cardId, (quantities.get(cardId) || 0) + i.quantity);
       }
     });
 
@@ -12355,11 +12362,7 @@ export default function TrackerApp() {
     
     // If secret filter is active, only show cards not in inventory
     if (isSecretFilter && matchesSearch) {
-      let baseId = card.cardNumber ? card.cardNumber.split('_')[0] : card.id.split('_')[0];
-      if (card.rarity === 'SPR' || card.rarity === 'GDR' || card.rarity === 'SCR' || card.id.includes('_SLR')) {
-        baseId = `${baseId}_${card.rarity || 'SLR'}`;
-      }
-      if (ownedBaseQuantities.has(baseId)) return false;
+      if ((ownedCardQuantities.get(card.id) || 0) > 0) return false;
     }
 
     const cardTags = getCardTags(card);
@@ -12456,15 +12459,11 @@ export default function TrackerApp() {
 
     // Owned filter logic
     if (filters.owned !== 'all') {
-      let baseId = card.cardNumber ? card.cardNumber.split('_')[0] : card.id.split('_')[0];
-      if (card.rarity === 'SPR' || card.rarity === 'GDR' || card.rarity === 'SCR' || card.id.includes('_SLR')) {
-        baseId = `${baseId}_${card.rarity || 'SLR'}`;
-      }
-      const qty = ownedBaseQuantities.get(baseId) || 0;
+      const qty = ownedCardQuantities.get(card.id) || 0;
       
       if (filters.owned === 'owned' && qty === 0) return false;
       if (filters.owned === 'not-owned') {
-        const targetQty = getTargetQuantity(card, 'player');
+        const targetQty = getTargetQuantity(card, collectionGoal);
         if (qty >= targetQty) return false;
       }
     }
