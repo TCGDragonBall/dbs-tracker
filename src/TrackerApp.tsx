@@ -12362,22 +12362,26 @@ export default function TrackerApp() {
 
   const handleLongPress = (cardId: string) => {
     setIsMultiSelectMode(true);
-    const newSelected = new Set(selectedCardIds);
-    newSelected.add(cardId);
-    setSelectedCardIds(newSelected);
+    setSelectedCardIds(prev => {
+      const newSelected = new Set(prev);
+      newSelected.add(cardId);
+      return newSelected;
+    });
   };
 
   const toggleCardSelection = (cardId: string) => {
-    const newSelected = new Set(selectedCardIds);
-    if (newSelected.has(cardId)) {
-      newSelected.delete(cardId);
-      if (newSelected.size === 0) {
-        setIsMultiSelectMode(false);
+    setSelectedCardIds(prev => {
+      const newSelected = new Set(prev);
+      if (newSelected.has(cardId)) {
+        newSelected.delete(cardId);
+        if (newSelected.size === 0) {
+          setTimeout(() => setIsMultiSelectMode(false), 0);
+        }
+      } else {
+        newSelected.add(cardId);
       }
-    } else {
-      newSelected.add(cardId);
-    }
-    setSelectedCardIds(newSelected);
+      return newSelected;
+    });
   };
 
   const handleBulkUpdate = async (action?: 'add' | 'delete') => {
