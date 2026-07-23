@@ -1,0 +1,121 @@
+
+  // Keyboard navigation for card detail modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!selectedCard) return;
+      if (e.key === 'ArrowRight') handleNextCard();
+      if (e.key === 'ArrowLeft') handlePrevCard();
+      if (e.key === 'Escape') setSelectedCard(null);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedCard, handleNextCard, handlePrevCard]);
+
+  const handleUpdateQuantity = async (cardId: string, delta: number) => {
+    if (!user || isQuotaExceeded) return;
+    
+    try {
+      // OPTIMIZATION: Use local state instead of getDocs to find existing item
+      // This saves 1 read(!!!) per interaction.
+      const existingItem = inventory.find(i => i.cardId === cardId);
+      
+      let newInventoryState: InventoryItem[] | null = null;
+      
+      if (!existingItem) {
+        if (delta > 0) {
+          const docData = {
+            cardId,
+            ownerId: user.uid,
+            quantity: delta,
+            addedAt: serverTimestamp()
+          };
+          
+          await addDoc(collection(db, 'inventory'), docData);
+          // Calculate stats for new item manually to update profile immediately
+          newInventoryState = [...inventory, { ...docData, id: 'temp', addedAt: new Date() } as any];
+          
+          // Notify admin if someone finds the secret P-005_PR card
+          if (cardId === 'P-005_PR' && user.email !== 'anulix1983@gmail.com') {
+            const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+            const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+            const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+            if (serviceId && templateId && publicKey) {
+              emailjs.send(
+                serviceId,
+                templateId,
+                {
+                  from_name: 'DBS Tracker System',
+                  from_email: 'system@dbstracker.com',
+                  message: `🏆 ¡LOGRO OCULTO! El usuario ${user.displayName || user.email || 'Anónimo'} (${user.email}) ha encontrado la P-005_PR.`,
+                  to_email: 'anulix1983@gmail.com',
+                  reply_to: user.email,
+                },
+                publicKey
+              ).catch(e => console.error("Error notifying winner:", e));
+            }
+          }
+        } else {
+          return;
+        }
+      } else {
+        const itemDocId = existingItem.id;
+        const newQuantity = Math.max(0, existingItem.quantity + delta);
+        
+        if (newQuantity === 0) {
+          await deleteDoc(doc(db, 'inventory', itemDocId));
+          newInventoryState = inventory.filter(i => i.id !== itemDocId);
+        } else {
+          await updateDoc(doc(db, 'inventory', itemDocId), {
+            quantity: newQuantity
+          });
+          newInventoryState = inventory.map(i => i.id === itemDocId ? { ...i, quantity: newQuantity } : i);
+        }
+      }
+
+      // Denormalize stats to user profile to avoid expensive inventory scans for rankings
+      // This massively reduces reads for common UI elements.
+      if (newInventoryState) {
+        const uniqueCards = newInventoryState.filter(i => i.quantity > 0).length;
+        const totalCards = newInventoryState.reduce((sum, i) => sum + i.quantity, 0);
+        
+        updateDoc(doc(db, 'users', user.uid), {
+          uniqueCards,
+          totalCards,
+          lastStatsUpdate: serverTimestamp()
+        }).catch(err => {
+          if (!handleFirestoreError(err, OperationType.UPDATE, `users/${user.uid}`)) {
+            console.error("Failed to update user stats:", err);
+          }
+        });
+      }
+    } catch (error) {
+      handleFirestoreError(error, OperationType.WRITE, 'inventory');
+    }
+  };
+
+  const getExpansionName = (id: string) => {
+    if (id === 'Todos') return 'Todos';
+    for (const group of currentGroups) {
+      const item = group.items.find(i => i.id === id);
+      if (item) return typeof item.label === 'string' ? item.label : (item.label as any)[lang] || (item.label as any).en || item.label;
+      
+      // Check subItems
+      for (const it of group.items) {
+        if (it.subItems) {
+          const sub = it.subItems.find(s => s.id === id);
+          if (sub) return typeof sub.label === 'string' ? sub.label : (sub.label as any)[lang] || (sub.label as any).en || sub.label;
+        }
+      }
+    }
+    return id;
+  };
+
+  if (authLoading) return (
+    <div className="min-h-screen bg-[#0F0F0F] flex items-center justify-center">
+      <motion.div 
+        animate={{ rotate: 360 }}
+        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+        className="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full"
+      />
+    </div>

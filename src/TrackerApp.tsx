@@ -2234,7 +2234,7 @@ interface AchievementDef {
   subCategory?: string;
   hidden?: boolean;
   tiers?: { goal: number; title: Record<'es' | 'en', string> }[];
-  check: (cards: Card[], inventory: InventoryItem[]) => { earned: boolean; progress?: number; tier?: number };
+  check: (cards: Card[], inventory: InventoryItem[], inventoryMap: Map<string, number>) => { earned: boolean; progress?: number; tier?: number };
 }
 
 const SET_METADATA: Record<string, { sourceProduct: string; releaseDate?: string; description?: string; sourceUrl?: string }> = {
@@ -7443,19 +7443,20 @@ interface CardVariation {
 
 const CARD_VARIATIONS: Record<string, CardVariation[]> = {};
 
-const getCardQty = (cardId: string, inventory: InventoryItem[]): number => {
+const getCardQty = (cardId: string, inventory: InventoryItem[] | Map<string, number>): number => {
+  const isMap = inventory instanceof Map;
   const variations = CARD_VARIATIONS[cardId];
   if (variations) {
     return variations.reduce((sum, v) => {
-      const item = inventory.find(i => i.cardId === v.id);
-      return sum + (item ? item.quantity : 0);
+      const quantity = isMap ? inventory.get(v.id) : (inventory as InventoryItem[]).find(i => i.cardId === v.id)?.quantity;
+      return sum + (quantity || 0);
     }, 0);
   }
-  const item = inventory.find(i => i.cardId === cardId);
-  return item ? item.quantity : 0;
+  const quantity = isMap ? inventory.get(cardId) : (inventory as InventoryItem[]).find(i => i.cardId === cardId)?.quantity;
+  return quantity || 0;
 };
 
-const getDeduplicatedStats = (subsetCards: Card[], inventory: InventoryItem[], goal: 'collector' | 'player') => {
+const getDeduplicatedStats = (subsetCards: Card[], inventory: InventoryItem[] | Map<string, number>, goal: 'collector' | 'player') => {
   if (goal === 'collector') {
     let total = 0;
     let owned = 0;
@@ -7517,8 +7518,8 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
         title: { es: 'Tu camino comienza', en: 'Your journey begins' },
         description: { es: 'Consigue tu primera carta de Fusion World.', en: 'Obtain your first Fusion World card.' },
         type: 'unique',
-        check: (cards, inventory) => {
-          const owned = inventory.some(i => i.quantity > 0 && cards.some(c => c.id === i.cardId));
+        check: (cards, inventory, inventoryMap) => {
+          const owned = cards.some(c => (inventoryMap?.get(c.id) || 0) > 0);
           return { earned: owned, progress: owned ? 100 : 0 };
         }
       },
@@ -7535,8 +7536,8 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
           { goal: 300, title: { es: 'Maestro FW (300)', en: 'FW Master (300)' } },
           { goal: 500, title: { es: 'Gran Maestro FW (500)', en: 'Grand FW Master (500)' } }
         ],
-        check: (cards, inventory) => {
-          const count = inventory.filter(i => i.quantity > 0 && cards.some(c => c.id === i.cardId)).length;
+        check: (cards, inventory, inventoryMap) => {
+          const count = cards.filter(c => (inventoryMap?.get(c.id) || 0) > 0).length;
           const goals = [50, 150, 300, 500];
           let currentTier = -1;
           for (let i = 0; i < goals.length; i++) {
@@ -7577,12 +7578,11 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
           title: { es: `Completar al 100%: ${set.id}`, en: `100% Completion: ${set.id}` },
           description: { es: `Colecciona todas las cartas de la expansión ${set.label}.`, en: `Collect all cards from the ${set.label} expansion.` },
           type: 'unique',
-          check: (cards, inventory) => {
-            const sc = cards.filter(c => c.expansion === set.id);
-            if (sc.length === 0) return { earned: false, progress: 0 };
-            const owned = sc.filter(s => inventory.some(i => i.cardId === s.id && i.quantity > 0)).length;
-            const isDone = owned === sc.length && sc.length > 0;
-            return { earned: isDone, progress: sc.length > 0 ? (owned / sc.length) * 100 : 0 };
+          
+          check: (cards, inventory, inventoryMap) => {
+            const owned = setCards.filter(s => (inventoryMap?.get(s.id) || 0) > 0).length;
+            const isDone = owned === setCards.length;
+            return { earned: isDone, progress: (owned / setCards.length) * 100 };
           }
         });
 
@@ -7604,12 +7604,10 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
                 en: `Obtain all ${rarityNames[rarity]?.en || rarity} cards from ${set.label}.` 
               },
               type: 'unique',
-              check: (cards, inventory) => {
-                const rc = cards.filter(c => c.expansion === set.id && (c.rarity === rarity || c.rarity === `${rarity}*`));
-                if (rc.length === 0) return { earned: false, progress: 0 };
-                const owned = rc.filter(s => inventory.some(i => i.cardId === s.id && i.quantity > 0)).length;
-                const isDone = owned === rc.length && rc.length > 0;
-                return { earned: isDone, progress: rc.length > 0 ? (owned / rc.length) * 100 : 0 };
+              check: (cards, inventory, inventoryMap) => {
+                const owned = rarityCards.filter(s => (inventoryMap?.get(s.id) || 0) > 0).length;
+                const isDone = owned === rarityCards.length;
+                return { earned: isDone, progress: (owned / rarityCards.length) * 100 };
               }
             });
           }
@@ -7619,6 +7617,21 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
 
     return fusionList;
   }
+
+  const serranoCardGroups: Record<string, string[]> = {};
+  cards.forEach(c => {
+    const base = c.cardNumber.split('_')[0];
+    if (!serranoCardGroups[base]) serranoCardGroups[base] = [];
+    serranoCardGroups[base].push(c.id);
+  });
+  const serranoTargetBases = Object.keys(serranoCardGroups).filter(base => serranoCardGroups[base].length >= 5);
+
+  const globalLeaderCards = cards.filter(c => c.type.toLowerCase().includes('leader'));
+  const globalScrCards = cards.filter(c => c.rarity === 'SCR');
+  const globalGdrCards = cards.filter(c => c.rarity === 'GDR');
+  const globalBattleCards = cards.filter(c => c.type.toLowerCase().includes('battle'));
+  const globalDbrCards = cards.filter(c => c.rarity === 'DBR');
+  const globalFpCards = cards.filter(c => c.expansion === 'FP');
 
   const list: AchievementDef[] = [
     {
@@ -7634,8 +7647,8 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
         { goal: 500, title: { es: 'Veterano (500)', en: 'Veteran (500)' } },
         { goal: 1000, title: { es: 'Gran Maestro (1000)', en: 'Grand Master (1000)' } }
       ],
-      check: (cards, inventory) => {
-        const count = inventory.filter(i => i.quantity > 0 && cards.some(c => c.id === i.cardId)).length;
+      check: (cards, inventory, inventoryMap) => {
+        const count = inventoryMap ? inventoryMap.size : 0;
         const goals = [100, 250, 500, 1000];
         let currentTier = -1;
         for (let i = 0; i < goals.length; i++) {
@@ -7662,11 +7675,8 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
         { goal: 50, title: { es: '50 Líderes', en: '50 Leaders' } },
         { goal: 100, title: { es: '100 Líderes', en: '100 Leaders' } }
       ],
-      check: (cards, inventory) => {
-        const count = inventory.filter(i => {
-          const card = cards.find(c => c.id === i.cardId);
-          return i.quantity > 0 && card && card.type.toLowerCase().includes('leader');
-        }).length;
+      check: (cards, inventory, inventoryMap) => {
+        const count = globalLeaderCards.filter(c => (inventoryMap?.get(c.id) || 0) > 0).length;
         const goals = [10, 25, 50, 100];
         let currentTier = -1;
         for (let i = 0; i < goals.length; i++) {
@@ -7695,11 +7705,8 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
         { goal: 25, title: { es: 'Coleccionista SCR (25)', en: 'SCR Collector (25)' } },
         { goal: 50, title: { es: 'Omnipotente (50)', en: 'Omnipotent (50)' } }
       ],
-      check: (cards, inventory) => {
-        const count = inventory.filter(i => {
-          const card = cards.find(c => c.id === i.cardId);
-          return i.quantity > 0 && card && card.rarity === 'SCR';
-        }).length;
+      check: (cards, inventory, inventoryMap) => {
+        const count = globalScrCards.filter(c => (inventoryMap?.get(c.id) || 0) > 0).length;
         const goals = [1, 5, 10, 25, 50];
         let currentTier = -1;
         for (let i = 0; i < goals.length; i++) {
@@ -7728,11 +7735,8 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
         { goal: 25, title: { es: 'Poder Infinito (25)', en: 'Infinite Power (25)' } },
         { goal: 50, title: { es: 'Creador de Universos (50)', en: 'Creator of Universes (50)' } }
       ],
-      check: (cards, inventory) => {
-        const count = inventory.filter(i => {
-          const card = cards.find(c => i.cardId === c.id);
-          return i.quantity > 0 && card && card.rarity === 'GDR';
-        }).length;
+      check: (cards, inventory, inventoryMap) => {
+        const count = globalGdrCards.filter(c => (inventoryMap?.get(c.id) || 0) > 0).length;
         const goals = [1, 5, 10, 25, 50];
         let currentTier = -1;
         for (let i = 0; i < goals.length; i++) {
@@ -7754,11 +7758,10 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
       description: { es: 'Consigue TODAS las God Rares de la base de datos.', en: 'Collect ALL God Rares in the database.' },
       type: 'unique',
       hidden: true,
-      check: (cards, inventory) => {
-        const gdrCards = cards.filter(c => c.rarity === 'GDR');
-        if (gdrCards.length === 0) return { earned: false, progress: 0 };
-        const owned = gdrCards.filter(c => inventory.some(i => i.cardId === c.id && i.quantity > 0));
-        return { earned: owned.length === gdrCards.length && gdrCards.length > 0, progress: (owned.length / gdrCards.length) * 100 };
+      check: (cards, inventory, inventoryMap) => {
+        if (globalGdrCards.length === 0) return { earned: false, progress: 0 };
+        const owned = globalGdrCards.filter(c => (inventoryMap?.get(c.id) || 0) > 0);
+        return { earned: owned.length === globalGdrCards.length && globalGdrCards.length > 0, progress: (owned.length / globalGdrCards.length) * 100 };
       }
     },
     {
@@ -7769,8 +7772,8 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
       description: { es: 'Has encontrado la carta secreta de la Anime Expo 2017: Trunks P-005.', en: 'You have found the secret card from Anime Expo 2017: Trunks P-005.' },
       type: 'unique',
       hidden: true,
-      check: (cards, inventory) => {
-        const isOwned = inventory.some(i => i.cardId === 'P-005_PR' && i.quantity > 0);
+      check: (cards, inventory, inventoryMap) => {
+        const isOwned = (inventoryMap?.get('P-005_PR') || 0) > 0;
         return { earned: isOwned, progress: isOwned ? 100 : 0 };
       }
     },
@@ -7781,11 +7784,8 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
       title: { es: 'Especialista de Combate', en: 'Battle Specialist' },
       description: { es: 'Consigue 5 cartas únicas de tipo Battle.', en: 'Collect 5 unique Battle type cards.' },
       type: 'unique',
-      check: (cards, inventory) => {
-        const uniqueOwnedBattleCards = inventory.filter(i => {
-          const card = cards.find(c => c.id === i.cardId);
-          return i.quantity > 0 && card && card.type.toLowerCase().includes('battle');
-        });
+      check: (cards, inventory, inventoryMap) => {
+        const uniqueOwnedBattleCards = globalBattleCards.filter(c => (inventoryMap?.get(c.id) || 0) > 0);
         const uniqueCount = uniqueOwnedBattleCards.length;
         const progress = Math.min((uniqueCount / 5) * 100, 100);
         return { earned: uniqueCount >= 5, progress };
@@ -7799,9 +7799,9 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
       description: { es: 'Consigue los dos líderes Yamcha de BT5 y BT10.', en: 'Collect both Yamcha leaders from BT5 and BT10.' },
       type: 'unique',
       hidden: true,
-      check: (cards, inventory) => {
+      check: (cards, inventory, inventoryMap) => {
         const yamchaIds = ['BT5-001', 'BT10-001'];
-        const owned = inventory.filter(i => yamchaIds.includes(i.cardId) && i.quantity > 0);
+        const owned = yamchaIds.filter(id => (inventoryMap?.get(id) || 0) > 0);
         return { earned: owned.length === yamchaIds.length, progress: (owned.length / yamchaIds.length) * 100 };
       }
     },
@@ -7813,9 +7813,9 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
       description: { es: 'Consigue el líder Master Roshi de BT18.', en: 'Collect the Master Roshi leader from BT18.' },
       type: 'unique',
       hidden: true,
-      check: (cards, inventory) => {
+      check: (cards, inventory, inventoryMap) => {
         const roshiId = 'BT18-059';
-        const isOwned = inventory.some(i => i.cardId === roshiId && i.quantity > 0);
+        const isOwned = (inventoryMap?.get(roshiId) || 0) > 0;
         return { earned: isOwned, progress: isOwned ? 100 : 0 };
       }
     },
@@ -7827,10 +7827,9 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
       description: { es: 'Consigue las 7 cartas de rareza DBR (History of Dragon Ball).', en: 'Collect the 7 DBR rarity cards (History of Dragon Ball).' },
       type: 'unique',
       hidden: true,
-      check: (cards, inventory) => {
-        const dbrCards = cards.filter(c => c.rarity === 'DBR');
-        const dbrIds = dbrCards.map(c => c.id);
-        const owned = inventory.filter(i => dbrIds.includes(i.cardId) && i.quantity > 0);
+      check: (cards, inventory, inventoryMap) => {
+        const dbrIds = globalDbrCards.map(c => c.id);
+        const owned = dbrIds.filter(id => (inventoryMap?.get(id) || 0) > 0);
         if (dbrIds.length === 0) return { earned: false, progress: 0 };
         return { earned: owned.length >= dbrIds.length, progress: Math.min((owned.length / dbrIds.length) * 100, 100) };
       }
@@ -7843,9 +7842,9 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
       description: { es: 'Consigue los 4 líderes de Kefla: P-184, EX3-01, BT7-075 y BT23-100.', en: 'Collect the 4 Kefla leaders: P-184, EX3-01, BT7-075 and BT23-100.' },
       type: 'unique',
       hidden: true,
-      check: (cards, inventory) => {
+      check: (cards, inventory, inventoryMap) => {
         const keflaIds = ['P-184', 'EX3-01', 'BT7-075', 'BT23-100'];
-        const owned = inventory.filter(i => keflaIds.includes(i.cardId) && i.quantity > 0);
+        const owned = keflaIds.filter(id => (inventoryMap?.get(id) || 0) > 0);
         return { earned: owned.length === keflaIds.length, progress: (owned.length / keflaIds.length) * 100 };
       }
     },
@@ -7857,9 +7856,9 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
       description: { es: 'Consigue el líder Goku & Bulma (BT27-044 o SLR) y la carta Extra "Start of a Journey" (BT27-060).', en: 'Collect the Goku & Bulma leader (BT27-044 or SLR) and the Extra card "Start of a Journey" (BT27-060).' },
       type: 'unique',
       hidden: true,
-      check: (cards, inventory) => {
-        const hasLeader = inventory.some(i => (i.cardId === 'BT27-044' || i.cardId === 'BT27-044_SLR') && i.quantity > 0);
-        const hasExtra = inventory.some(i => i.cardId === 'BT27-060' && i.quantity > 0);
+      check: (cards, inventory, inventoryMap) => {
+        const hasLeader = (inventoryMap?.get('BT27-044') || 0) > 0 || (inventoryMap?.get('BT27-044_SLR') || 0) > 0;
+        const hasExtra = (inventoryMap?.get('BT27-060') || 0) > 0;
         const count = (hasLeader ? 1 : 0) + (hasExtra ? 1 : 0);
         return { earned: hasLeader && hasExtra, progress: (count / 2) * 100 };
       }
@@ -7872,8 +7871,8 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
       description: { es: 'Consigue la primera carta que existió del juego: el líder Son Goku Promo (BT1-030_PR).', en: 'Collect the first card that ever existed: the promo Son Goku leader (BT1-030_PR).' },
       type: 'unique',
       hidden: true,
-      check: (cards, inventory) => {
-        const isOwned = inventory.some(i => i.cardId === 'BT1-030_PR' && i.quantity > 0);
+      check: (cards, inventory, inventoryMap) => {
+        const isOwned = (inventoryMap?.get('BT1-030_PR') || 0) > 0;
         return { earned: isOwned, progress: isOwned ? 100 : 0 };
       }
     },
@@ -7885,14 +7884,11 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
       description: { es: 'Añade 10 o más unidades de la carta EX4-03.', en: 'Add 10 or more units of the card EX4-03.' },
       type: 'unique',
       hidden: true,
-      check: (cards, inventory) => {
+      check: (cards, inventory, inventoryMap) => {
         // Tolerant search for EX4-03 variants
-        const item = inventory.find(i => {
-          const id = i.cardId.replace(/^EX0+/, 'EX'); // Normalize EX04 to EX4
-          return id === 'EX4-03' || id === 'EX4-003' || i.cardId === 'EX4-03' || i.cardId === 'EX04-03';
-        });
-        const quantity = item?.quantity || 0;
-        if (quantity > 0) console.log(`[ACHIEVEMENT DEBUG] Kruskalf progress: ${quantity}/10 (Original CardId in inventory: ${item?.cardId})`);
+        let quantity = (inventoryMap?.get('EX4-03') || 0) + 
+                       (inventoryMap?.get('EX4-003') || 0) + 
+                       (inventoryMap?.get('EX04-03') || 0);
         return { earned: quantity >= 10, progress: Math.min((quantity / 10) * 100, 100) };
       }
     },
@@ -7904,9 +7900,9 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
       description: { es: 'Consigue las cartas BT28-106_SLR, BT28-150 y EX6-35.', en: 'Collect cards BT28-106_SLR, BT28-150 and EX6-35.' },
       type: 'unique',
       hidden: true,
-      check: (cards, inventory) => {
+      check: (cards, inventory, inventoryMap) => {
         const reqIds = ['BT28-106_SLR', 'BT28-150', 'EX6-35'];
-        const owned = inventory.filter(i => reqIds.includes(i.cardId) && i.quantity > 0);
+        const owned = reqIds.filter(id => (inventoryMap?.get(id) || 0) > 0);
         return { earned: owned.length === reqIds.length, progress: (owned.length / reqIds.length) * 100 };
       }
     },
@@ -7918,11 +7914,11 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
       description: { es: 'Consigue las cartas BT27-001_SLR, BT24-001_SLR, SD17-01 y BT30-001_SLR.', en: 'Collect cards BT27-001_SLR, BT24-001_SLR, SD17-01 and BT30-001_SLR.' },
       type: 'unique',
       hidden: true,
-      check: (cards, inventory) => {
+      check: (cards, inventory, inventoryMap) => {
         const reqIds = ['BT27-001_SLR', 'BT24-001_SLR', 'SD17-01', 'ST17-01', 'BT30-001_SLR'];
-        const owned = inventory.filter(i => reqIds.includes(i.cardId) && i.quantity > 0);
+        const owned = reqIds.filter(id => (inventoryMap?.get(id) || 0) > 0);
         // We count only unique matches in case both SD and ST exist (unlikely but safe)
-        const uniqueMatches = new Set(owned.map(i => i.cardId.replace('SD', 'ST'))).size;
+        const uniqueMatches = new Set(owned.map(id => id.replace('SD', 'ST'))).size;
         const targetCount = 4; // BT27, BT24, (SD17/ST17), BT30
         return { earned: uniqueMatches >= targetCount, progress: (uniqueMatches / targetCount) * 100 };
       }
@@ -7935,25 +7931,15 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
       description: { es: 'Consigue un playset (4 copias) de una carta que tenga al menos 4 versiones alternativas además de la original.', en: 'Collect a playset (4 copies) of a card that has at least 4 alternative versions besides the original.' },
       type: 'unique',
       hidden: true,
-      check: (cards, inventory) => {
-        const cardGroups: Record<string, string[]> = {};
-        cards.forEach(c => {
-          const base = c.cardNumber.split('_')[0];
-          if (!cardGroups[base]) cardGroups[base] = [];
-          cardGroups[base].push(c.id);
-        });
-
-        const targetBases = Object.keys(cardGroups).filter(base => cardGroups[base].length >= 5);
-        if (targetBases.length === 0) return { earned: false, progress: 0 };
+      check: (cards, inventory, inventoryMap) => {
+        if (serranoTargetBases.length === 0) return { earned: false, progress: 0 };
 
         let maxProgress = 0;
         let earned = false;
 
-        targetBases.forEach(base => {
-          const ids = cardGroups[base];
-          const totalOwned = inventory
-            .filter(i => ids.includes(i.cardId))
-            .reduce((sum, i) => sum + i.quantity, 0);
+        serranoTargetBases.forEach(base => {
+          const ids = serranoCardGroups[base];
+          const totalOwned = ids.reduce((sum, id) => sum + (inventoryMap?.get(id) || 0), 0);
           
           const progress = Math.min((totalOwned / 4) * 100, 100);
           if (progress > maxProgress) maxProgress = progress;
@@ -7971,12 +7957,9 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
       description: { es: 'Completa el playset (4 copias) de BT13-088, BT13-085, BT13-087 y BT13-086.', en: 'Complete the playset (4 copies) of BT13-088, BT13-085, BT13-087 and BT13-086.' },
       type: 'unique',
       hidden: true,
-      check: (cards, inventory) => {
+      check: (cards, inventory, inventoryMap) => {
         const reqIds = ['BT13-088', 'BT13-085', 'BT13-087', 'BT13-086'];
-        const completedCount = reqIds.filter(id => {
-          const item = inventory.find(i => i.cardId === id);
-          return (item?.quantity || 0) >= 4;
-        }).length;
+        const completedCount = reqIds.filter(id => (inventoryMap?.get(id) || 0) >= 4).length;
         const progress = (completedCount / reqIds.length) * 100;
         return { earned: completedCount === reqIds.length, progress };
       }
@@ -8021,6 +8004,7 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
         if (leaders.length > 0) {
           const achId = `${set.id.toLowerCase()}_leaders`;
           if (!seenIds.has(achId)) {
+            const setLeaders = cards.filter(c => c.expansion === set.id && c.type.toLowerCase().includes('leader'));
             list.push({
               id: achId,
               category: group.category,
@@ -8029,9 +8013,8 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
               title: { es: `Líderes de ${set.id}`, en: `${set.id} Leaders` },
               description: { es: `Consigue todos los líderes del set ${set.id}.`, en: `Collect all leaders from ${set.id}.` },
               type: 'unique',
-              check: (cards, inventory) => {
-                const setLeaders = cards.filter(c => c.expansion === set.id && c.type.toLowerCase().includes('leader'));
-                const owned = setLeaders.filter(l => inventory.some(i => i.cardId === l.id && i.quantity > 0));
+              check: (cards, inventory, inventoryMap) => {
+                const owned = setLeaders.filter(l => (inventoryMap?.get(l.id) || 0) > 0);
                 return { earned: owned.length === setLeaders.length && setLeaders.length > 0, progress: setLeaders.length > 0 ? (owned.length / setLeaders.length) * 100 : 0 };
               }
             });
@@ -8045,6 +8028,7 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
           
           const achId = `${set.id.toLowerCase()}_${r.toLowerCase()}_collector`;
           if (!seenIds.has(achId)) {
+            const rCards = cards.filter(c => c.expansion === set.id && c.rarity === r);
             list.push({
               id: achId,
               category: group.category,
@@ -8053,9 +8037,8 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
               title: { es: `${set.id}: Rareza ${r}`, en: `${set.id}: Rarity ${r}` },
               description: { es: `Consigue todas las cartas ${r} de ${set.id}.`, en: `Collect all ${r} cards from ${set.id}.` },
               type: 'unique',
-              check: (cards, inventory) => {
-                const rCards = cards.filter(c => c.expansion === set.id && c.rarity === r);
-                const owned = rCards.filter(l => inventory.some(i => i.cardId === l.id && i.quantity > 0));
+              check: (cards, inventory, inventoryMap) => {
+                const owned = rCards.filter(l => (inventoryMap?.get(l.id) || 0) > 0);
                 return { earned: owned.length === rCards.length && rCards.length > 0, progress: rCards.length > 0 ? (owned.length / rCards.length) * 100 : 0 };
               }
             });
@@ -8067,6 +8050,22 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
       // Base Set Achievement (Visible)
       const baseAchId = `${set.id.toLowerCase()}_complete_base`;
       if (!seenIds.has(baseAchId)) {
+        const cardTagsCheckBase = (c: Card, targetSetId: string) => {
+          const tags = getCardTags(c);
+          if (targetSetId === 'COL02') return tags.includes('giant') || (PACK_ARRAYS['COL02'] && PACK_ARRAYS['COL02'].includes(c.id));
+          if (targetSetId === 'COL08') return tags.includes('serial');
+          if (targetSetId === 'COL05') return tags.includes('event');
+          if (targetSetId === 'COL06') return tags.includes('tournament');
+          if (targetSetId === 'COL07') return tags.includes('judge');
+          if (PACK_ARRAYS[targetSetId]) return PACK_ARRAYS[targetSetId].includes(c.id);
+          if (c.expansion === targetSetId) return true;
+          if (targetSetId.startsWith('FB') && targetSetId !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${targetSetId}`]?.includes(c.id)) return true;
+          if (targetSetId === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
+          return false;
+        };
+        const isVirtual = isVirtualSet(set.id);
+        const sCardsBase = cards.filter(c => cardTagsCheckBase(c, set.id) && (isVirtual || !c.id.match(/_PR\d*$/) || c.rarity === 'SPR' || c.rarity === 'GDR'));
+
         list.push({
           id: baseAchId,
           category: group.category,
@@ -8075,26 +8074,9 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
           title: { es: `${set.id}: Set Base 100%`, en: `${set.id} Base Set 100%` },
           description: { es: `Completado el set base de ${set.label} (incluyendo SPR y GDR, sin variantes promo).`, en: `Completed ${set.label} base set (including SPR and GDR, excluding promo variants).` },
           type: 'unique',
-          check: (cards, inventory) => {
-            const cardTagsCheck = (c: Card, targetSetId: string) => {
-              const tags = getCardTags(c);
-              if (targetSetId === 'COL02') return tags.includes('giant') || (PACK_ARRAYS['COL02'] && PACK_ARRAYS['COL02'].includes(c.id));
-              if (targetSetId === 'COL08') return tags.includes('serial');
-              if (targetSetId === 'COL05') return tags.includes('event');
-              if (targetSetId === 'COL06') return tags.includes('tournament');
-              if (targetSetId === 'COL07') return tags.includes('judge');
-              if (PACK_ARRAYS[targetSetId]) return PACK_ARRAYS[targetSetId].includes(c.id);
-              if (c.expansion === targetSetId) return true;
-              if (targetSetId.startsWith('FB') && targetSetId !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${targetSetId}`]?.includes(c.id)) return true;
-              if (targetSetId === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
-              return false;
-            };
-            // Include cards from expansion but exclude those with alternate art suffixes (_PR, _PR01, etc)
-            // For virtual sets, we don't exclude _PR as they ARE the content
-            const isVirtual = isVirtualSet(set.id);
-            const sCards = cards.filter(c => cardTagsCheck(c, set.id) && (isVirtual || !c.id.match(/_PR\d*$/) || c.rarity === 'SPR' || c.rarity === 'GDR'));
-            const owned = sCards.filter(l => inventory.some(i => i.cardId === l.id && i.quantity > 0));
-            return { earned: owned.length === sCards.length && sCards.length > 0, progress: sCards.length > 0 ? (owned.length / sCards.length) * 100 : 0 };
+          check: (cards, inventory, inventoryMap) => {
+            const owned = sCardsBase.filter(l => (inventoryMap?.get(l.id) || 0) > 0);
+            return { earned: owned.length === sCardsBase.length && sCardsBase.length > 0, progress: sCardsBase.length > 0 ? (owned.length / sCardsBase.length) * 100 : 0 };
           }
         });
         seenIds.add(baseAchId);
@@ -8103,6 +8085,21 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
       // Master Set Achievement (Hidden)
       const masterAchId = `${set.id.toLowerCase()}_complete_master`;
       if (!seenIds.has(masterAchId)) {
+        const cardTagsCheckMaster = (c: Card, targetSetId: string) => {
+          const tags = getCardTags(c);
+          if (targetSetId === 'COL02') return tags.includes('giant') || (PACK_ARRAYS['COL02'] && PACK_ARRAYS['COL02'].includes(c.id));
+          if (targetSetId === 'COL08') return tags.includes('serial');
+          if (targetSetId === 'COL05') return tags.includes('event');
+          if (targetSetId === 'COL06') return tags.includes('tournament');
+          if (targetSetId === 'COL07') return tags.includes('judge');
+          if (PACK_ARRAYS[targetSetId]) return PACK_ARRAYS[targetSetId].includes(c.id);
+          if (c.expansion === targetSetId) return true;
+          if (targetSetId.startsWith('FB') && targetSetId !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${targetSetId}`]?.includes(c.id)) return true;
+          if (targetSetId === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
+          return false;
+        };
+        const sCardsMaster = cards.filter(c => cardTagsCheckMaster(c, set.id));
+
         list.push({
           id: masterAchId,
           category: group.category,
@@ -8112,28 +8109,13 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
           description: { es: `Completado al 100% el set ${set.label} incluyendo TODAS las variantes alternativas.`, en: `100% completed ${set.label} set including ALL alternative variants.` },
           type: 'unique',
           hidden: true,
-          check: (cards, inventory) => {
-            const cardTagsCheck = (c: Card, targetSetId: string) => {
-              const tags = getCardTags(c);
-              if (targetSetId === 'COL02') return tags.includes('giant') || (PACK_ARRAYS['COL02'] && PACK_ARRAYS['COL02'].includes(c.id));
-              if (targetSetId === 'COL08') return tags.includes('serial');
-              if (targetSetId === 'COL05') return tags.includes('event');
-              if (targetSetId === 'COL06') return tags.includes('tournament');
-              if (targetSetId === 'COL07') return tags.includes('judge');
-              if (PACK_ARRAYS[targetSetId]) return PACK_ARRAYS[targetSetId].includes(c.id);
-              if (c.expansion === targetSetId) return true;
-              if (targetSetId.startsWith('FB') && targetSetId !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${targetSetId}`]?.includes(c.id)) return true;
-              if (targetSetId === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
-              return false;
-            };
-            const sCards = cards.filter(c => cardTagsCheck(c, set.id));
-            const owned = sCards.filter(l => inventory.some(i => i.cardId === l.id && i.quantity > 0));
-            return { earned: owned.length === sCards.length && sCards.length > 0, progress: sCards.length > 0 ? (owned.length / sCards.length) * 100 : 0 };
+          check: (cards, inventory, inventoryMap) => {
+            const owned = sCardsMaster.filter(l => (inventoryMap?.get(l.id) || 0) > 0);
+            return { earned: owned.length === sCardsMaster.length && sCardsMaster.length > 0, progress: sCardsMaster.length > 0 ? (owned.length / sCardsMaster.length) * 100 : 0 };
           }
         });
         seenIds.add(masterAchId);
-      }
-    });
+      }    });
   });
 
   // Promos: Special calculation for each 100 cards
@@ -8149,11 +8131,8 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
       title: { es: `Coleccionista de Promos: ${goal}`, en: `Promo Collector: ${goal}` },
       description: { es: `Consigue ${goal} cartas promocionales únicas.`, en: `Collect ${goal} unique promo cards.` },
       type: 'unique',
-      check: (cards, inventory) => {
-        const ownedPromosCount = inventory.filter(inv => {
-          const card = cards.find(c => c.id === inv.cardId);
-          return inv.quantity > 0 && card && card.expansion === 'FP';
-        }).length;
+      check: (cards, inventory, inventoryMap) => {
+        const ownedPromosCount = globalFpCards.filter(c => (inventoryMap?.get(c.id) || 0) > 0).length;
         const progress = Math.min((ownedPromosCount / goal) * 100, 100);
         return { earned: ownedPromosCount >= goal, progress };
       }
@@ -8192,16 +8171,27 @@ const Dashboard = ({
 }) => {
   const t = translations[lang];
   
+  const exactInventoryMap = useMemo(() => {
+    const map = new Map<string, number>();
+    if (!inventory) return map;
+    for (const item of inventory) {
+      if (item.quantity > 0) {
+        map.set(item.cardId, item.quantity);
+      }
+    }
+    return map;
+  }, [inventory]);
+
   // Calculate completion based on goal
   const stats = useMemo(() => {
-    const { total: totalNeeded, owned: totalOwned } = getDeduplicatedStats(cards, inventory, collectionGoal);
+    const { total: totalNeeded, owned: totalOwned } = getDeduplicatedStats(cards, exactInventoryMap, collectionGoal);
 
     return {
       totalNeeded,
       totalOwned,
       percentage: totalNeeded > 0 ? Math.min(100, Math.round((totalOwned / totalNeeded) * 100)) : 0
     };
-  }, [cards, inventory, collectionGoal]);
+  }, [cards, exactInventoryMap, collectionGoal]);
 
   const chartData = [
     { name: t.completed, value: stats.totalOwned, color: '#FF8C00' },
@@ -8446,13 +8436,13 @@ const Dashboard = ({
               <CardItem 
                 key={`${card.id}-${card.expansion}-${idx}`} 
                 card={card} 
-                quantity={getCardQty(card.id, inventory)}
+                quantity={getCardQty(card.id, exactInventoryMap)}
                 collectionGoal={collectionGoal}
                 isSelected={selectedCardIds.has(card.id)}
                 isMultiSelectMode={isMultiSelectMode}
-                onLongPress={() => handleLongPress(card.id)}
-                onSelect={() => toggleCardSelection(card.id)}
-                onClick={() => setSelectedCard(card)} 
+                onLongPress={handleLongPress}
+                onSelect={toggleCardSelection}
+                onClick={setSelectedCard} 
               />
             ))}
           </div>
@@ -8479,6 +8469,17 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
   const [customTitle, setCustomTitle] = useState('');
 
   const { user, profile } = useAuth();
+
+  const exactInventoryMap = useMemo(() => {
+    const map = new Map<string, number>();
+    if (!inventory) return map;
+    for (const item of inventory) {
+      if (item.quantity > 0) {
+        map.set(item.cardId, item.quantity);
+      }
+    }
+    return map;
+  }, [inventory]);
 
   const achievementStats = useMemo(() => {
     const visible = achievementsList.filter(a => !a.hidden);
@@ -8509,7 +8510,7 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
     
     return validRarities.map(rarity => {
       const cardsOfRarity = cards.filter(c => c.rarity === rarity);
-      const { total, owned } = getDeduplicatedStats(cardsOfRarity, inventory, collectionGoal);
+      const { total, owned } = getDeduplicatedStats(cardsOfRarity, exactInventoryMap, collectionGoal);
       
       return {
         name: rarity,
@@ -8528,7 +8529,7 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
     
     return validColors.map(color => {
       const cardsOfColor = cards.filter(c => c.color === color);
-      const { total, owned } = getDeduplicatedStats(cardsOfColor, inventory, collectionGoal);
+      const { total, owned } = getDeduplicatedStats(cardsOfColor, exactInventoryMap, collectionGoal);
       
       return {
         name: color,
@@ -8557,7 +8558,7 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
 
     return validTypes.map(type => {
       const cardsOfType = effectiveCards.filter(c => getEffectiveType(c) === type);
-      const { total, owned } = getDeduplicatedStats(cardsOfType, inventory, collectionGoal);
+      const { total, owned } = getDeduplicatedStats(cardsOfType, exactInventoryMap, collectionGoal);
       
       return {
         name: type,
@@ -8606,15 +8607,14 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
     
     cards.forEach(c => {
       const target = getTargetQuantity(c, collectionGoal);
-      const invItem = inventory.find(i => i.cardId === c.id);
-      const quantity = invItem ? invItem.quantity : 0;
+      const quantity = exactInventoryMap.get(c.id) || 0;
       const ownedValue = Math.min(quantity, target);
       rawNeeded += target;
       rawOwned += ownedValue;
     });
     
     return rawNeeded > 0 ? (rawOwned / rawNeeded) * 100 : 0;
-  }, [cards, inventory, collectionGoal]);
+  }, [cards, exactInventoryMap, collectionGoal]);
 
   const tierConfig = useMemo(() => {
     const p = globalPercentage;
@@ -9756,13 +9756,13 @@ const CardListItem = React.memo(({
 }: { 
   card: Card, 
   quantity?: number, 
-  onClick: () => void, 
+  onClick: (card: Card) => void, 
   collectionGoal: 'collector' | 'player', 
   lang: 'es' | 'en',
   isSelected?: boolean,
   isMultiSelectMode?: boolean,
-  onLongPress?: () => void,
-  onSelect?: () => void
+  onLongPress?: (id: string) => void,
+  onSelect?: (id: string) => void
 }) => {
   const t = translations[lang];
   const isHorizontal = isHorizontalFormat(card);
@@ -9778,7 +9778,7 @@ const CardListItem = React.memo(({
     if (isMultiSelectMode) return;
     timerRef.current = setTimeout(() => {
       isLongPressActive.current = true;
-      onLongPress?.();
+      onLongPress?.(card.id);
     }, 500);
   };
 
@@ -9797,9 +9797,9 @@ const CardListItem = React.memo(({
     }
     
     if (isMultiSelectMode) {
-      onSelect?.();
+      onSelect?.(card.id);
     } else {
-      onClick();
+      onClick(card);
     }
   };
   
@@ -9861,7 +9861,7 @@ const CardListItem = React.memo(({
             {(t as any).colorNames?.[card.color] || card.color}
           </span>
           <span className="text-[9px] font-bold text-gray-400 uppercase">
-            {card.cardNumber} • {card.rarity.replace(/\*/g, '★')}
+            {card.cardNumber} • {(card.rarity || "").replace(/\*/g, '★')}
           </span>
         </div>
       </div>
@@ -9912,12 +9912,12 @@ const CardItem = React.memo(({
 }: { 
   card: Card, 
   quantity?: number, 
-  onClick: () => void, 
+  onClick: (card: Card) => void, 
   collectionGoal: 'collector' | 'player',
   isSelected?: boolean,
   isMultiSelectMode?: boolean,
-  onLongPress?: () => void,
-  onSelect?: () => void
+  onLongPress?: (id: string) => void,
+  onSelect?: (id: string) => void
 }) => {
   const isHorizontal = isHorizontalFormat(card);
   const isOwned = quantity && quantity > 0;
@@ -9933,7 +9933,7 @@ const CardItem = React.memo(({
     if (isMultiSelectMode) return;
     timerRef.current = setTimeout(() => {
       isLongPressActive.current = true;
-      onLongPress?.();
+      onLongPress?.(card.id);
     }, 500);
   };
 
@@ -9952,9 +9952,9 @@ const CardItem = React.memo(({
     }
     
     if (isMultiSelectMode) {
-      onSelect?.();
+      onSelect?.(card.id);
     } else {
-      onClick();
+      onClick(card);
     }
   };
 
@@ -10261,6 +10261,17 @@ const AchievementsView = ({
   const [expandedCategories, setExpandedCategories] = useState<string[]>(['General', 'Booster Box']);
   const [expandedSets, setExpandedSets] = useState<string[]>([]);
 
+  const exactInventoryMap = useMemo(() => {
+    const map = new Map<string, number>();
+    for (let i = 0; i < inventory.length; i++) {
+      const item = inventory[i];
+      if (item.quantity > 0) {
+        map.set(item.cardId, item.quantity);
+      }
+    }
+    return map;
+  }, [inventory]);
+
   const achievementsList = useMemo(() => getAchievementsList(cards, groups, gameType), [cards, groups, gameType]);
 
   const validUserAchievements = useMemo(() => {
@@ -10467,7 +10478,7 @@ const AchievementsView = ({
               </div>
 
               {(() => {
-                const { earned, progress, tier } = selectedAchievement.check(cards, inventory);
+                const { earned, progress, tier } = selectedAchievement.check(cards, inventory, exactInventoryMap);
                 const userAch = userAchievements.find(a => a.achievementId === selectedAchievement.id);
                 const isMaxTier = selectedAchievement.type === 'tiered' && tier !== undefined && tier >= (selectedAchievement.tiers?.length || 1) - 1;
                 
@@ -11571,7 +11582,7 @@ export default function TrackerApp() {
   const getCardAcquiredQty = (list: WantsList, cardId: string) => {
     const isSharedFromOther = sharedWantsList?.id === list.id && list.ownerId !== null && list.ownerId !== undefined && list.ownerId !== user?.uid;
     if (!isSharedFromOther) {
-      const inventoryQty = inventory.find(i => i.cardId === cardId)?.quantity || 0;
+      const inventoryQty = exactInventoryMap.get(cardId) || 0;
       if (collectionGoal === 'player') {
         const wantedQty = getCardWantedQty(list, cardId);
         return Math.min(inventoryQty, wantedQty);
@@ -12139,7 +12150,7 @@ export default function TrackerApp() {
       if (!canvas) return;
       const dataUrl = canvas.toDataURL('image/png');
       const link = document.createElement('a');
-      link.download = `${list.name.replace(/\s+/g, '_').toLowerCase()}_wants.png`;
+      link.download = `${(list.name || "").replace(/\s+/g, '_').toLowerCase()}_wants.png`;
       link.href = dataUrl;
       link.click();
     } catch (e) {
@@ -12174,7 +12185,7 @@ export default function TrackerApp() {
           return;
         }
 
-        const file = new File([blob], `${list.name.replace(/\s+/g, '_').toLowerCase()}_wants.png`, { type: 'image/png' });
+        const file = new File([blob], `${(list.name || "").replace(/\s+/g, '_').toLowerCase()}_wants.png`, { type: 'image/png' });
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
           try {
             await navigator.share({
@@ -12201,7 +12212,117 @@ export default function TrackerApp() {
 
 
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
+
+  const exactInventoryMap = useMemo(() => {
+    const map = new Map<string, number>();
+    if (!inventory) return map;
+    for (const item of inventory) {
+      if (item.quantity > 0) {
+        map.set(item.cardId, item.quantity);
+      }
+    }
+    return map;
+  }, [inventory]);
+
   const [matches, setMatches] = useState<MatchRecord[]>([]);
+
+  const cachedCategoryCards = useMemo(() => {
+    const catMap = new Map<string, Card[]>();
+    const subMap = new Map<string, Card[]>();
+    const setMap = new Map<string, Card[]>();
+    
+    for (const cat of currentCategories) {
+      if (cat.id === 'energy-markers') {
+        catMap.set(cat.id, cards.filter(c => c.expansion === (gameType === 'fusion' ? 'ENM_FW' : 'ENM')));
+        continue;
+      }
+      const subCategoriesList = cat.categories || [];
+      const groupsForCat = currentGroups.filter((g: any) => subCategoriesList.includes(g.category));
+      const itemsForCat = groupsForCat.flatMap((g: any) => g.items);
+      
+      const cardsInCat = cards.filter(c => {
+        const tags = getCardTags(c);
+        return itemsForCat.some((item: any) => {
+          if (item.id === 'COL02' || item.isGiant) return tags.includes('giant');
+          if (item.id === 'COL08') return tags.includes('serial');
+          if (item.id === 'COL05') return tags.includes('event');
+          if (item.id === 'COL06') return tags.includes('tournament');
+          if (item.id === 'COL07') return tags.includes('judge');
+          
+          const checkItemMatch = (checkItem: any): boolean => {
+            if (checkItem.id === c.id) return true;
+            if (c.expansion === checkItem.id) return true;
+            if (PACK_ARRAYS[checkItem.id] && PACK_ARRAYS[checkItem.id].includes(c.id)) return true;
+            if (checkItem.id.startsWith('FB') && checkItem.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
+            if (checkItem.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
+            if (checkItem.subItems) return checkItem.subItems.some((sub: any) => checkItemMatch(sub));
+            return false;
+          };
+          return checkItemMatch(item);
+        });
+      });
+      catMap.set(cat.id, cardsInCat);
+    }
+
+    for (const group of currentGroups) {
+      const itemsInSub = group.items;
+      const cardsInSub = cards.filter(c => {
+        const tags = getCardTags(c);
+        return itemsInSub.some((item: any) => {
+          if (item.id === 'COL02' || item.isGiant) return tags.includes('giant');
+          if (item.id === 'COL08') return tags.includes('serial');
+          if (item.id === 'COL05') return tags.includes('event');
+          if (item.id === 'COL06') return tags.includes('tournament');
+          if (item.id === 'COL07') return tags.includes('judge');
+          
+          const checkItemMatch = (checkItem: any): boolean => {
+            if (checkItem.id === c.id) return true;
+            if (c.expansion === checkItem.id) return true;
+            if (PACK_ARRAYS[checkItem.id] && PACK_ARRAYS[checkItem.id].includes(c.id)) return true;
+            if (checkItem.id.startsWith('FB') && checkItem.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
+            if (checkItem.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
+            if (checkItem.subItems) return checkItem.subItems.some((sub: any) => checkItemMatch(sub));
+            return false;
+          };
+          return checkItemMatch(item);
+        });
+      });
+      subMap.set(group.category, cardsInSub);
+
+      for (const item of group.items) {
+        const isPremium = group.category === 'Premium' || group.category === 'Special';
+        const cardsInSet = cards.filter(c => {
+          if (isPremium) return c.id === item.id;
+          const tags = getCardTags(c);
+          const checkItemMatch = (checkItem: any): boolean => {
+            if (checkItem.id === c.id) return true;
+            if (c.expansion === checkItem.id) return true;
+            if (PACK_ARRAYS[checkItem.id] && PACK_ARRAYS[checkItem.id].includes(c.id)) return true;
+            if (checkItem.id.startsWith('FB') && checkItem.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
+            if (checkItem.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
+            if (checkItem.subItems) return checkItem.subItems.some((sub: any) => checkItemMatch(sub));
+            return false;
+          };
+          if (item.id === 'COL02' || (item as any).isGiant) return tags.includes('giant');
+          if (item.id === 'COL08') return tags.includes('serial');
+          if (item.id === 'COL05') return tags.includes('event');
+          if (item.id === 'COL06') return tags.includes('tournament');
+          if (item.id === 'COL07') return tags.includes('judge');
+          return checkItemMatch(item);
+        });
+        setMap.set(item.id, cardsInSet);
+        
+        if (item.subItems) {
+          for (const sub of item.subItems) {
+             const cardsInSubItem = cards.filter(c => c.expansion === sub.id || (PACK_ARRAYS[sub.id] && PACK_ARRAYS[sub.id].includes(c.id)) || (sub.id.startsWith('FB') && sub.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${sub.id}`]?.includes(c.id)) || (sub.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)));
+             setMap.set(sub.id + '_sub', cardsInSubItem);
+          }
+        }
+      }
+    }
+
+    return { catMap, subMap, setMap };
+  }, [cards, currentCategories, currentGroups, gameType]);
   const [isInventoryLoading, setIsInventoryLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [renderCount, setRenderCount] = useState(0); // 0 means not chunking or done
@@ -12252,12 +12373,12 @@ export default function TrackerApp() {
     const filterColorActive = wantsFilterColor !== 'Todos';
     const filterRarityActive = wantsFilterRarity !== 'Todos';
 
+    const q = trimmedQuery.toLowerCase();
+    const normalize = (str: string) => (str || "").toLowerCase().replace(/[^a-z0-9]/g, '');
+    const nq = normalize(trimmedQuery);
+
     return cards.filter(card => {
       if (queryActive) {
-        const q = trimmedQuery.toLowerCase();
-        const normalize = (str: string) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
-        const nq = normalize(trimmedQuery);
-
         const cardNameMatches = card.name && (card.name.toLowerCase().includes(q) || normalize(card.name).includes(nq));
         const cardNumberMatches = card.cardNumber && (card.cardNumber.toLowerCase().includes(q) || normalize(card.cardNumber).includes(nq));
         const cardIdMatches = card.id && card.id.toLowerCase().includes(q);
@@ -12294,8 +12415,8 @@ export default function TrackerApp() {
       }
 
       if (filterRarityActive) {
-        const cleanCardRarity = card.rarity.replace(/\*/g, '');
-        const cleanFilterRarity = wantsFilterRarity.replace(/\*/g, '');
+        const cleanCardRarity = (card.rarity || "").replace(/\*/g, '');
+        const cleanFilterRarity = (wantsFilterRarity || "").replace(/\*/g, '');
         if (cleanCardRarity.toLowerCase() !== cleanFilterRarity.toLowerCase()) {
           return false;
         }
@@ -12362,16 +12483,16 @@ export default function TrackerApp() {
   const [isSyncing, setIsSyncing] = useState(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
 
-  const handleLongPress = (cardId: string) => {
+  const handleLongPress = useCallback((cardId: string) => {
     setIsMultiSelectMode(true);
     setSelectedCardIds(prev => {
       const newSelected = new Set(prev);
       newSelected.add(cardId);
       return newSelected;
     });
-  };
+  }, []);
 
-  const toggleCardSelection = (cardId: string) => {
+  const toggleCardSelection = useCallback((cardId: string) => {
     setSelectedCardIds(prev => {
       const newSelected = new Set(prev);
       if (newSelected.has(cardId)) {
@@ -12384,7 +12505,8 @@ export default function TrackerApp() {
       }
       return newSelected;
     });
-  };
+  }, []);
+
 
   const handleBulkUpdate = async (action?: 'add' | 'delete') => {
     if (selectedCardIds.size === 0 || !user || isQuotaExceeded) return;
@@ -12915,86 +13037,95 @@ export default function TrackerApp() {
     setSearchQuery('');
   };
 
+  const varToCardId = useMemo(() => {
+    const map = new Map<string, string>();
+    cards.forEach(c => {
+      const vars = CARD_VARIATIONS[c.id];
+      if (vars) {
+        vars.forEach(v => map.set(v.id, c.id));
+      }
+    });
+    return map;
+  }, [cards]);
+
   const ownedCardQuantities = useMemo(() => {
     const quantities = new Map<string, number>();
     if (!cards || !inventory) return quantities;
     
-    // Map every variation ID to its base card ID (e.g. BT1-001_PR -> BT1-001)
-    const varToCardId = new Map<string, string>();
-    cards.forEach(c => {
-      const vars = CARD_VARIATIONS[c.id];
-      if (vars) {
-        vars.forEach(v => varToCardId.set(v.id, c.id));
-      }
-    });
-
     inventory.forEach(i => {
       if (i.quantity > 0) {
         const cardId = varToCardId.get(i.cardId) || i.cardId;
         quantities.set(cardId, (quantities.get(cardId) || 0) + i.quantity);
       }
     });
-
     return quantities;
-  }, [cards, inventory]);
+  }, [inventory, varToCardId]);
 
-  const filteredCards = cards.filter(card => {
+  const filteredCards = useMemo(() => {
     const isSecretFilter = searchQuery.toLowerCase() === 'faltantes';
     const isDeluxeFilter = searchQuery.toLowerCase() === 'deluxe pack 2024 vol.1';
     const isUnionForceFilter = searchQuery.toLowerCase() === 'union force release tournament';
     const isCrossWorldsFilter = searchQuery.toLowerCase() === 'cross worlds release tournament';
     const isColossalWarfareFilter = searchQuery.toLowerCase() === 'colossal warfare release tournament';
     const isPuzzleHuntFilter = searchQuery.toLowerCase() === 'anime expo 2017' || searchQuery.toLowerCase() === 'puzzle hunt';
-    
+    const normalize = (str: string) => (str || "").toLowerCase().replace(/[^a-z0-9]/g, '');
+    const q = searchQuery.toLowerCase();
+    const nq = normalize(searchQuery);
+    const hasHyphen = searchQuery.includes('-');
+    const queryActive = q.length >= 2 && !isSecretFilter;
+
+    // Build expansion label map
+    const expansionLabels = new Map<string, string>();
+    if (queryActive && currentGroups) {
+      const traverse = (items: any[]) => {
+        if (!items) return;
+        for (const item of items) {
+          const label = typeof item.label === 'string' ? item.label : (item?.label?.[lang] || '');
+          expansionLabels.set(item.id, label.toLowerCase());
+          if (item.subItems) traverse(item.subItems);
+        }
+      };
+      for (const group of currentGroups) {
+        if (group.items) traverse(group.items);
+      }
+    }
+
+    return cards.filter(card => {
     // Hide P-005_PR by default (unless puzzle hunt searched or owned)
     if (card.id === 'P-005_PR') {
-      const isOwned = inventory.some(i => i.cardId === 'P-005_PR' && i.quantity > 0);
+      const isOwned = (exactInventoryMap?.get('P-005_PR') || 0) > 0;
       if (!isPuzzleHuntFilter && !isOwned) return false;
     }
 
     if (isDeluxeFilter) {
       return card.id === 'P-593_PR' || card.id === 'P-597_PR';
     }
-
     if (isUnionForceFilter) {
       return ['BT1-010_PR', 'BT1-045_PR', 'BT1-069_PR', 'BT1-100_PR'].includes(card.id);
     }
-
     if (isCrossWorldsFilter) {
-      return ['BT2-022_PR', 'BT2-052_PR', 'BT2-083_PR'].includes(card.id);
+      return ['BT2-005_PR', 'BT2-045_PR', 'BT2-073_PR', 'BT2-106_PR'].includes(card.id);
     }
-
     if (isColossalWarfareFilter) {
-      return ['BT3-005_PR', 'BT3-039_PR', 'BT3-075_PR', 'BT3-105_PR', 'BT3-117_PR'].includes(card.id);
+      return ['BT4-013_PR', 'BT4-046_PR', 'BT4-076_PR', 'BT4-098_PR'].includes(card.id);
     }
 
-    if (isPuzzleHuntFilter) {
-      return card.id === 'P-005_PR';
-    }
-    
-    // Check if card matches search
-    const normalize = (str: string) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
-    const normalizedQuery = normalize(searchQuery);
-    
     const specialCardInfo = CARD_METADATA[card.id];
     const sourceProduct = specialCardInfo?.sourceProduct || card.sourceProduct || '';
     const setMeta = SET_METADATA[card.expansion];
     const setName = setMeta?.sourceProduct || '';
 
     const matchesSearch = (() => {
-      const q = searchQuery.toLowerCase();
-      const nq = normalize(searchQuery);
-      
       if (isSecretFilter) return true;
-      if (q.length < 2) return true;
-
+      if (!queryActive) return true;
+      
       // Basic fields
       if (card.name && card.name.toLowerCase().includes(q)) return true;
       if (card.cardNumber && card.cardNumber.toLowerCase().includes(q)) return true;
       if (card.id && card.id.toLowerCase().includes(q)) return true;
       
-      // Normalized matching (only if query doesn't have hyphens to avoid false positives like "p-26" matching "hope 26")
-      if (!searchQuery.includes('-')) {
+      // Normalized matching
+      if (!hasHyphen) {
         if (card.name && normalize(card.name).includes(nq)) return true;
         if (card.cardNumber && normalize(card.cardNumber).includes(nq)) return true;
       }
@@ -13002,7 +13133,7 @@ export default function TrackerApp() {
       // Search by source product / pack name
       if (sourceProduct && sourceProduct.toLowerCase().includes(q)) return true;
       if (setName && setName.toLowerCase().includes(q)) return true;
-      if (!searchQuery.includes('-')) {
+      if (!hasHyphen) {
         if (sourceProduct && normalize(sourceProduct).includes(nq)) return true;
         if (setName && normalize(setName).includes(nq)) return true;
       }
@@ -13014,31 +13145,12 @@ export default function TrackerApp() {
       if (card.traits && card.traits.toLowerCase().includes(q)) return true;
       if (card.skill && card.skill.toLowerCase().includes(q)) return true;
       
-      // Search by expansion label from currentGroups
-      const findInGroups = (items: any[]): boolean => {
-        if (!items) return false;
-        for (const item of items) {
-          if (item.id === card.expansion) {
-            const label = typeof item.label === 'string' ? item.label : (item?.label?.[lang] || '');
-            if (label && label.toLowerCase().includes(q)) return true;
-          }
-          if (item.subItems) {
-            if (findInGroups(item.subItems)) return true;
-          }
-        }
-        return false;
-      };
-      
-      if (currentGroups) {
-        for (const group of currentGroups) {
-          if (group.items && findInGroups(group.items)) return true;
-        }
-      }
+      // Search by expansion label
+      const expLabel = expansionLabels.get(card.expansion);
+      if (expLabel && expLabel.includes(q)) return true;
       
       return false;
-    })();
-    
-    // If secret filter is active, only show cards not in inventory
+    })();    // If secret filter is active, only show cards not in inventory
     if (isSecretFilter && matchesSearch) {
       if ((ownedCardQuantities.get(card.id) || 0) > 0) return false;
     }
@@ -13066,27 +13178,6 @@ export default function TrackerApp() {
              if (id === setId) return [id]; // Handle self-referencing
              return getAllCardIds(id, visited);
            });
-  useEffect(() => {
-    if (filteredCards.length > 50) {
-      setRenderCount(50);
-      setIsRendering(true);
-    } else {
-      setRenderCount(filteredCards.length);
-      setIsRendering(false);
-    }
-  }, [filteredCards.length, filters, searchQuery, activeTab, currentCollectionCategory]);
-
-  useEffect(() => {
-    if (isRendering && renderCount < filteredCards.length) {
-      const timer = setTimeout(() => {
-        setRenderCount(prev => Math.min(prev + 100, filteredCards.length));
-      }, 0); // yielding to main thread
-      return () => clearTimeout(timer);
-    } else if (isRendering && renderCount >= filteredCards.length) {
-      setIsRendering(false);
-    }
-  }, [isRendering, renderCount, filteredCards.length]);
-
         };
         const expandedIds = getAllCardIds(filters.expansion);
         matchesExpansion = expandedIds.includes(card.id);
@@ -13225,7 +13316,7 @@ export default function TrackerApp() {
     }
     
     return aBaseIndex - bBaseIndex;
-  });
+  }); }, [cards, inventory, exactInventoryMap, searchQuery, filters, currentGroups, lang, ownedCardQuantities, gameType]);
 
   useEffect(() => {
     if (filteredCards.length > 50) {
@@ -13263,6 +13354,12 @@ export default function TrackerApp() {
 
   const availableOptions = useMemo(() => {
     // Filter cards by expansion and search query first to determine valid sub-filters
+    const q = searchQuery.toLowerCase();
+    const normalize = (str: string) => (str || "").toLowerCase().replace(/[^a-z0-9]/g, '');
+    const nq = normalize(searchQuery);
+    const hasHyphen = searchQuery.includes('-');
+    const queryActive = searchQuery.length >= 2 && searchQuery !== 'Promo Vol.4' && searchQuery !== 'Tournament Pack 2' && searchQuery !== 'Tournament Pack 3' && searchQuery !== 'Tournament Pack 4' && searchQuery !== 'Tournament Pack 5' && searchQuery !== 'Tournament Pack 6' && searchQuery !== 'Store Tournament Vol.1' && searchQuery !== 'Store Tournament Vol.2' && searchQuery !== 'Store Tournament Vol.3' && searchQuery !== 'Store Tournament Vol.4' && searchQuery !== 'Energy Marker Pack 01' && !searchQuery.startsWith('Union Force PR') && !searchQuery.startsWith('Cross Worlds PR') && !searchQuery.startsWith('Colossal Warfare PR') && searchQuery !== 'Puzzle Hunt';
+
     const expansionCards = cards.filter(card => {
       // 1. Check expansion
       if (filters.expansion !== 'Todos') {
@@ -13273,34 +13370,33 @@ export default function TrackerApp() {
         else if (filters.expansion === 'COL07' && !getCardTags(card).includes('judge')) return false;
         else if (PACK_ARRAYS[filters.expansion]) {
           if (!PACK_ARRAYS[filters.expansion].includes(card.id)) return false;
-        }
-        else if (filters.expansion === 'FP' && gameType === 'fusion') {
-          if (card.expansion !== 'FP' && !card.cardNumber.startsWith('FP-')) return false;
-        }
-        else {
-          let matchesExp = card.expansion === filters.expansion && !isGiant;
-          if (!matchesExp) {
-            if (filters.expansion.startsWith('FB') && filters.expansion !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${filters.expansion}`]?.includes(card.id)) matchesExp = true;
-            if (filters.expansion === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(card.id)) matchesExp = true;
-            if (gameType === 'fusion' && (filters.expansion.startsWith('FB') || filters.expansion.startsWith('FS') || filters.expansion.startsWith('SB'))) {
-              if (card.cardNumber.split('_')[0].startsWith(filters.expansion + '-')) matchesExp = true;
+        } else {
+          let matchesExp = false;
+          if (card.expansion === filters.expansion) matchesExp = true;
+          if (currentGroups) {
+            for (const g of currentGroups) {
+              const matchedItem = g.items?.find(i => i.id === filters.expansion);
+              if (matchedItem && matchedItem.subItems) {
+                if (matchedItem.subItems.some(sub => sub.id === card.expansion)) matchesExp = true;
+              }
             }
           }
           if (!matchesExp) return false;
         }
       }
-
+      
       // 2. Check search query (simplified version of the one used in filteredCards)
       if (searchQuery.length >= 2 && searchQuery !== 'Promo Vol.4' && searchQuery !== 'Tournament Pack 2' && searchQuery !== 'Tournament Pack 3' && searchQuery !== 'Tournament Pack 4' && searchQuery !== 'Tournament Pack 5' && searchQuery !== 'Tournament Pack 6' && searchQuery !== 'Store Tournament Vol.1' && searchQuery !== 'Store Tournament Vol.2' && searchQuery !== 'Store Tournament Vol.3' && searchQuery !== 'Store Tournament Vol.4' && searchQuery !== 'Energy Marker Pack 01' && !searchQuery.startsWith('Union Force PR') && !searchQuery.startsWith('Cross Worlds PR') && !searchQuery.startsWith('Colossal Warfare PR') && searchQuery !== 'Puzzle Hunt') {
         const q = searchQuery.toLowerCase();
-        const normalize = (str: string) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const normalize = (str: string) => (str || "").toLowerCase().replace(/[^a-z0-9]/g, '');
         const nq = normalize(searchQuery);
+        const hasHyphen = searchQuery.includes('-');
         
         let matchesSearch = false;
         if (card.name && card.name.toLowerCase().includes(q)) matchesSearch = true;
         else if (card.cardNumber && card.cardNumber.toLowerCase().includes(q)) matchesSearch = true;
-        else if (!searchQuery.includes('-') && card.name && normalize(card.name).includes(nq)) matchesSearch = true;
-        else if (!searchQuery.includes('-') && card.cardNumber && normalize(card.cardNumber).includes(nq)) matchesSearch = true;
+        else if (!hasHyphen && card.name && normalize(card.name).includes(nq)) matchesSearch = true;
+        else if (!hasHyphen && card.cardNumber && normalize(card.cardNumber).includes(nq)) matchesSearch = true;
         else {
           const specialCardInfo = CARD_METADATA[card.id];
           const sourceProduct = specialCardInfo?.sourceProduct || card.sourceProduct || '';
@@ -13388,8 +13484,7 @@ export default function TrackerApp() {
       const isAlt = isAlternative(c.id) && c.rarity !== 'SPR' && c.rarity !== 'GDR';
       
       const target = getTargetQuantity(c, collectionGoal);
-      const invItem = inventory.find(i => i.cardId === c.id);
-      const quantity = invItem ? invItem.quantity : 0;
+      const quantity = exactInventoryMap.get(c.id) || 0;
       const ownedValue = Math.min(quantity, target);
 
       // Raw stats (para el header)
@@ -14153,7 +14248,7 @@ export default function TrackerApp() {
       const addingInThisRun = new Set<string>();
       
       for (const def of achievementsList) {
-        const { earned, progress, tier } = def.check(cards, inventory);
+        const { earned, progress, tier } = def.check(cards, inventory, exactInventoryMap);
         const allMatching = userAchievementsRef.current.filter(a => a.achievementId === def.id);
         const existing = allMatching[0];
 
@@ -14284,7 +14379,7 @@ export default function TrackerApp() {
       }
     };
 
-    const timer = setTimeout(runChecks, 1500);
+    const timer = setTimeout(runChecks, 400);
     return () => clearTimeout(timer);
   }, [inventory, cards, user, isQuotaExceeded, achievementsList, userAchievements, isInventoryLoading]);
 
@@ -14490,12 +14585,36 @@ export default function TrackerApp() {
     if (!user || isQuotaExceeded) return;
     
     try {
-      // OPTIMIZATION: Use local state instead of getDocs to find existing item
-      // This saves 1 read(!!!) per interaction.
       const existingItem = inventory.find(i => i.cardId === cardId);
+      let newInventoryState: InventoryItem[] = [];
       
-      let newInventoryState: InventoryItem[] | null = null;
-      
+      // OPTIMISTIC UPDATE: Update React State Immediately to eliminate UI lag
+      setInventory(prevInventory => {
+        const existingIdx = prevInventory.findIndex(i => i.cardId === cardId);
+        let updated = [...prevInventory];
+        if (existingIdx === -1) {
+          if (delta > 0) {
+             updated.push({
+                 id: 'temp-' + Date.now(),
+                 cardId,
+                 ownerId: user.uid,
+                 quantity: delta,
+                 addedAt: new Date()
+             } as any);
+          }
+        } else {
+          const item = updated[existingIdx];
+          const newQty = Math.max(0, item.quantity + delta);
+          if (newQty === 0) {
+            updated.splice(existingIdx, 1);
+          } else {
+            updated[existingIdx] = { ...item, quantity: newQty };
+          }
+        }
+        newInventoryState = updated;
+        return updated;
+      });
+
       if (!existingItem) {
         if (delta > 0) {
           const docData = {
@@ -14505,16 +14624,12 @@ export default function TrackerApp() {
             addedAt: serverTimestamp()
           };
           
-          await addDoc(collection(db, 'inventory'), docData);
-          // Calculate stats for new item manually to update profile immediately
-          newInventoryState = [...inventory, { ...docData, id: 'temp', addedAt: new Date() } as any];
+          addDoc(collection(db, 'inventory'), docData).catch(e => console.error("Error adding doc:", e));
           
-          // Notify admin if someone finds the secret P-005_PR card
           if (cardId === 'P-005_PR' && user.email !== 'anulix1983@gmail.com') {
             const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
             const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
             const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
             if (serviceId && templateId && publicKey) {
               emailjs.send(
                 serviceId,
@@ -14530,40 +14645,37 @@ export default function TrackerApp() {
               ).catch(e => console.error("Error notifying winner:", e));
             }
           }
-        } else {
-          return;
         }
       } else {
         const itemDocId = existingItem.id;
         const newQuantity = Math.max(0, existingItem.quantity + delta);
         
         if (newQuantity === 0) {
-          await deleteDoc(doc(db, 'inventory', itemDocId));
-          newInventoryState = inventory.filter(i => i.id !== itemDocId);
+          deleteDoc(doc(db, 'inventory', itemDocId)).catch(e => console.error("Error deleting doc:", e));
         } else {
-          await updateDoc(doc(db, 'inventory', itemDocId), {
+          updateDoc(doc(db, 'inventory', itemDocId), {
             quantity: newQuantity
-          });
-          newInventoryState = inventory.map(i => i.id === itemDocId ? { ...i, quantity: newQuantity } : i);
+          }).catch(e => console.error("Error updating doc:", e));
         }
       }
 
-      // Denormalize stats to user profile to avoid expensive inventory scans for rankings
-      // This massively reduces reads for common UI elements.
-      if (newInventoryState) {
-        const uniqueCards = newInventoryState.filter(i => i.quantity > 0).length;
-        const totalCards = newInventoryState.reduce((sum, i) => sum + i.quantity, 0);
-        
-        updateDoc(doc(db, 'users', user.uid), {
-          uniqueCards,
-          totalCards,
-          lastStatsUpdate: serverTimestamp()
-        }).catch(err => {
-          if (!handleFirestoreError(err, OperationType.UPDATE, `users/${user.uid}`)) {
-            console.error("Failed to update user stats:", err);
+      // Denormalize stats to user profile asynchronously
+      setTimeout(() => {
+          if (newInventoryState.length > 0 || inventory.length > 0) {
+            const stateToUse = newInventoryState.length > 0 ? newInventoryState : inventory;
+            const uniqueCards = stateToUse.filter(i => i.quantity > 0).length;
+            const totalCards = stateToUse.reduce((sum, i) => sum + i.quantity, 0);
+            
+            updateDoc(doc(db, 'users', user.uid), {
+              uniqueCards,
+              totalCards,
+              lastStatsUpdate: serverTimestamp()
+            }).catch(err => {
+              console.error("Failed to update user stats:", err);
+            });
           }
-        });
-      }
+      }, 0);
+
     } catch (error) {
       handleFirestoreError(error, OperationType.WRITE, 'inventory');
     }
@@ -15991,11 +16103,12 @@ export default function TrackerApp() {
                         const targetCatName = cat.categories[0];
                         const group = currentGroups.find(g => g.category === targetCatName);
                         if (group && group.items && group.items.length > 0) {
-                           let firstId = group.items[0].id;
+                           let firstCards: Card[] = [];
                            if (group.items[0].subItems && group.items[0].subItems.length > 0) {
-                             firstId = group.items[0].subItems[0].id;
+                             firstCards = cachedCategoryCards.setMap.get(group.items[0].subItems[0].id + '_sub') || [];
+                           } else {
+                             firstCards = cachedCategoryCards.setMap.get(group.items[0].id) || [];
                            }
-                           const firstCards = cards.filter(c => c.expansion === firstId || (PACK_ARRAYS[firstId] && PACK_ARRAYS[firstId].includes(c.id)) || (firstId.startsWith('FB') && firstId !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${firstId}`]?.includes(c.id)) || (firstId === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)));
                            if (firstCards.length > 0) {
                              bgImage = firstCards[0].imageUrl;
                              if (bgImage && !bgImage.startsWith('http') && !bgImage.startsWith('/')) {
@@ -16016,31 +16129,9 @@ export default function TrackerApp() {
                       const groupsForCat = currentGroups.filter((g: any) => subCategoriesList.includes(g.category));
                       const itemsForCat = groupsForCat.flatMap((g: any) => g.items);
                       
-                      const cardsInCat = cat.id === 'energy-markers'
-                        ? cards.filter(c => c.expansion === (gameType === 'fusion' ? 'ENM_FW' : 'ENM'))
-                        : cards.filter(c => {
-                          const tags = getCardTags(c);
-                          return itemsForCat.some((item: any) => {
-                            if (item.id === 'COL02' || item.isGiant) return tags.includes('giant');
-                            if (item.id === 'COL08') return tags.includes('serial');
-                            if (item.id === 'COL05') return tags.includes('event');
-                            if (item.id === 'COL06') return tags.includes('tournament');
-                            if (item.id === 'COL07') return tags.includes('judge');
-                            
-                            const checkItemMatch = (checkItem: any): boolean => {
-                              if (checkItem.id === c.id) return true;
-                              if (c.expansion === checkItem.id) return true;
-                              if (PACK_ARRAYS[checkItem.id] && PACK_ARRAYS[checkItem.id].includes(c.id)) return true;
-                              if (checkItem.id.startsWith('FB') && checkItem.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
-                              if (checkItem.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
-                              if (checkItem.subItems) return checkItem.subItems.some((subItem: any) => checkItemMatch(subItem));
-                              return false;
-                            };
-                            return checkItemMatch(item);
-                          });
-                        });
+                      const cardsInCat = cachedCategoryCards.catMap.get(cat.id) || [];
                       
-                      const { total: catTotal, owned: catOwned } = getDeduplicatedStats(cardsInCat, inventory, collectionGoal);
+                      const { total: catTotal, owned: catOwned } = getDeduplicatedStats(cardsInCat, exactInventoryMap, collectionGoal);
                       const catProgress = catTotal > 0 ? Math.min(100, Math.round((catOwned / catTotal) * 100)) : 0;
 
                       return (
@@ -16147,29 +16238,9 @@ export default function TrackerApp() {
                             }
                           }
 
-                          const cardsInSub = cards.filter(c => {
-                            const tags = getCardTags(c);
-                            return itemsInSub.some((item: any) => {
-                              if (item.id === 'COL02' || item.isGiant) return tags.includes('giant');
-                              if (item.id === 'COL08') return tags.includes('serial');
-                              if (item.id === 'COL05') return tags.includes('event');
-                              if (item.id === 'COL06') return tags.includes('tournament');
-                              if (item.id === 'COL07') return tags.includes('judge');
-                              
-                              const checkItemMatch = (checkItem: any): boolean => {
-                                if (checkItem.id === c.id) return true;
-                                if (c.expansion === checkItem.id) return true;
-                                if (PACK_ARRAYS[checkItem.id] && PACK_ARRAYS[checkItem.id].includes(c.id)) return true;
-                                if (checkItem.id.startsWith('FB') && checkItem.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
-                                if (checkItem.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
-                                if (checkItem.subItems) return checkItem.subItems.some((subItem: any) => checkItemMatch(subItem));
-                                return false;
-                              };
-                              return checkItemMatch(item);
-                            });
-                          });
+                          const cardsInSub = cachedCategoryCards.subMap.get(sub) || [];
 
-                          const { total: subTotal, owned: subOwned } = getDeduplicatedStats(cardsInSub, inventory, collectionGoal);
+                          const { total: subTotal, owned: subOwned } = getDeduplicatedStats(cardsInSub, exactInventoryMap, collectionGoal);
                           const subProgress = subTotal > 0 ? Math.min(100, Math.round((subOwned / subTotal) * 100)) : 0;
 
                           let subBgImage = undefined;
@@ -16279,37 +16350,19 @@ export default function TrackerApp() {
                           return (
                             <div className="space-y-3">
                                {activeGroup.items.map((item, index) => {
-                                 const cardsInSet = cards.filter(c => {
-                                   if (isPremium) return c.id === item.id;
-                                   const tags = getCardTags(c);
-                                   const checkItemMatch = (checkItem: any): boolean => {
-                                     if (checkItem.id === c.id) return true;
-                                     if (c.expansion === checkItem.id) return true;
-                                     if (PACK_ARRAYS[checkItem.id] && PACK_ARRAYS[checkItem.id].includes(c.id)) return true;
-                                     if (checkItem.id.startsWith('FB') && checkItem.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
-                                     if (checkItem.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
-                                     if (checkItem.subItems) return checkItem.subItems.some((sub: any) => checkItemMatch(sub));
-                                     return false;
-                                   };
-                                   if (item.id === 'COL02' || (item as any).isGiant) return tags.includes('giant');
-                                   if (item.id === 'COL08') return tags.includes('serial');
-                                   if (item.id === 'COL05') return tags.includes('event');
-                                   if (item.id === 'COL06') return tags.includes('tournament');
-                                   if (item.id === 'COL07') return tags.includes('judge');
-                                   return checkItemMatch(item);
-                                 });
+                                 const cardsInSet = cachedCategoryCards.setMap.get(item.id) || [];
 
                                  const isExpandable = !!item.subItems && item.subItems.length > 0;
                                  const isExpanded = expandedCategories.includes(item.id);
 
-                                 const { total: neededInSet, owned: ownedInSet } = getDeduplicatedStats(cardsInSet, inventory, collectionGoal);
+                                 const { total: neededInSet, owned: ownedInSet } = getDeduplicatedStats(cardsInSet, exactInventoryMap, collectionGoal);
                                  const progress = neededInSet > 0 ? Math.min(100, Math.round((ownedInSet / neededInSet) * 100)) : 0;
                                  
                                  const firstCard = cardsInSet[0];
                                  let firstCardImage = firstCard ? firstCard.imageUrl : undefined;
                                  if (!firstCardImage && item.subItems?.[0]) {
                                    const subId = item.subItems[0].id;
-                                   const fallbackCards = cards.filter(c => c.expansion === subId || (PACK_ARRAYS[subId] && PACK_ARRAYS[subId].includes(c.id)) || (subId.startsWith('FB') && subId !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${subId}`]?.includes(c.id)) || (subId === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)));
+                                   const fallbackCards = cachedCategoryCards.setMap.get(subId + '_sub') || [];
                                    firstCardImage = fallbackCards[0]?.imageUrl;
                                  }
                                  const cardFallback = firstCardImage ? (firstCardImage.startsWith('http') || firstCardImage.startsWith('/') ? firstCardImage : `/${firstCardImage}`) : undefined;
@@ -16325,13 +16378,13 @@ export default function TrackerApp() {
                                           <CardItem 
                                             key={card.id} 
                                             card={card} 
-                                            quantity={getCardQty(card.id, inventory)}
+                                            quantity={getCardQty(card.id, exactInventoryMap)}
                                             collectionGoal={collectionGoal}
                                             isSelected={selectedCardIds.has(card.id)}
                                             isMultiSelectMode={isMultiSelectMode}
-                                            onLongPress={() => handleLongPress(card.id)}
-                                            onSelect={() => toggleCardSelection(card.id)}
-                                            onClick={() => setSelectedCard(card)} 
+                                            onLongPress={handleLongPress}
+                                            onSelect={toggleCardSelection}
+                                            onClick={setSelectedCard} 
                                           />
                                        ))}
                                      </div>
@@ -16398,8 +16451,8 @@ export default function TrackerApp() {
                                            className="bg-black/20 border-t border-white/5 p-3 space-y-1"
                                          >
                                            {(item.subItems || []).map(sub => {
-                                              const cardsInSub = cards.filter(c => c.expansion === sub.id || (PACK_ARRAYS[sub.id] && PACK_ARRAYS[sub.id].includes(c.id)) || (sub.id.startsWith('FB') && sub.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${sub.id}`]?.includes(c.id)) || (sub.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)));
-                                              const { total: neededInSub, owned: ownedInSub } = getDeduplicatedStats(cardsInSub, inventory, collectionGoal);
+                                              const cardsInSub = cachedCategoryCards.setMap.get(sub.id + '_sub') || [];
+                                              const { total: neededInSub, owned: ownedInSub } = getDeduplicatedStats(cardsInSub, exactInventoryMap, collectionGoal);
                                               const subProgress = neededInSub > 0 ? Math.min(100, Math.round((ownedInSub / neededInSub) * 100)) : 0;
 
                                               return (
@@ -16485,26 +16538,26 @@ export default function TrackerApp() {
                       <CardItem 
                         key={`${card.id}-${card.expansion}-${idx}`} 
                         card={card} 
-                        quantity={getCardQty(card.id, inventory)}
+                        quantity={getCardQty(card.id, exactInventoryMap)}
                         collectionGoal={collectionGoal}
                         isSelected={selectedCardIds.has(card.id)}
                         isMultiSelectMode={isMultiSelectMode}
-                        onLongPress={() => handleLongPress(card.id)}
-                        onSelect={() => toggleCardSelection(card.id)}
-                        onClick={() => setSelectedCard(card)} 
+                        onLongPress={handleLongPress}
+                        onSelect={toggleCardSelection}
+                        onClick={setSelectedCard} 
                       />
                     ) : (
                       <CardListItem
                         key={`${card.id}-${card.expansion}-${idx}`}
                         card={card}
-                        quantity={getCardQty(card.id, inventory)}
+                        quantity={getCardQty(card.id, exactInventoryMap)}
                         collectionGoal={collectionGoal}
                         lang={lang}
                         isSelected={selectedCardIds.has(card.id)}
                         isMultiSelectMode={isMultiSelectMode}
-                        onLongPress={() => handleLongPress(card.id)}
-                        onSelect={() => toggleCardSelection(card.id)}
-                        onClick={() => setSelectedCard(card)}
+                        onLongPress={handleLongPress}
+                        onSelect={toggleCardSelection}
+                        onClick={setSelectedCard}
                       />
                     )
                   ))}
@@ -16813,7 +16866,7 @@ export default function TrackerApp() {
                                   </option>
                                   {allAvailableRarities.filter(r => r !== 'Todos').map(rarity => (
                                     <option key={rarity} value={rarity} className="bg-[#1E1E1E]">
-                                      {rarity.replace(/\*/g, '★')}
+                                      {((rarity as string) || "").replace(/\*/g, "★")}
                                     </option>
                                   ))}
                                 </select>
@@ -16890,7 +16943,7 @@ export default function TrackerApp() {
                                                 </p>
                                                 <p className="text-[9px] text-orange-500 font-extrabold uppercase tracking-widest flex items-center justify-between">
                                                   <span>{card.cardNumber}</span>
-                                                  <span className="text-gray-400 text-[8px]">{card.rarity.replace(/\*/g, '')}</span>
+                                                  <span className="text-gray-400 text-[8px]">{(card.rarity || "").replace(/\*/g, '')}</span>
                                                 </p>
                                               </div>
                                             </div>
@@ -16974,7 +17027,7 @@ export default function TrackerApp() {
                               const wantedQty = getCardWantedQty(list, card.id);
                               const acquiredQty = getCardAcquiredQty(list, card.id);
                               const isAcquired = isCardFullyAcquired(list, card.id);
-                              const inventoryQty = getCardQty(card.id, inventory);
+                              const inventoryQty = getCardQty(card.id, exactInventoryMap);
                               const isOwnedInInventory = inventoryQty > 0;
 
                               return (
@@ -17034,7 +17087,7 @@ export default function TrackerApp() {
                                       </p>
                                       <p className="text-[9px] text-orange-500 font-extrabold uppercase tracking-widest mb-1.5 flex items-center justify-between">
                                         <span>{card.cardNumber}</span>
-                                        <span className="text-gray-400 text-[8px]">{card.rarity.replace(/\*/g, '')}</span>
+                                        <span className="text-gray-400 text-[8px]">{(card.rarity || "").replace(/\*/g, '')}</span>
                                       </p>
 
                                       {/* Quantity Editors for Owner */}
@@ -17406,13 +17459,13 @@ export default function TrackerApp() {
                       <CardItem 
                         key={`${card.id}-${card.expansion}-${idx}`} 
                         card={card} 
-                        quantity={getCardQty(card.id, inventory)}
+                        quantity={getCardQty(card.id, exactInventoryMap)}
                         collectionGoal={collectionGoal}
                         isSelected={selectedCardIds.has(card.id)}
                         isMultiSelectMode={isMultiSelectMode}
-                        onLongPress={() => handleLongPress(card.id)}
-                        onSelect={() => toggleCardSelection(card.id)}
-                        onClick={() => setSelectedCard(card)} 
+                        onLongPress={handleLongPress}
+                        onSelect={toggleCardSelection}
+                        onClick={setSelectedCard} 
                       />
                     ))}
                   </div>
@@ -17852,7 +17905,7 @@ export default function TrackerApp() {
                 >
                   <div className="bg-black/80 px-4 py-1.5 rounded-full border border-white/20 backdrop-blur-md shadow-2xl flex items-center justify-center -mb-2">
                     <span className="text-sm font-black tracking-widest text-white/90 uppercase">
-                      {selectedCard.cardNumber} <span className="text-orange-500 mx-2">•</span> {(cardToRender || selectedCard).rarity.replace(/\*/g, '★')}
+                      {selectedCard.cardNumber} <span className="text-orange-500 mx-2">•</span> {((cardToRender || selectedCard).rarity || "").replace(/\*/g, '★')}
                     </span>
                   </div>
 
@@ -18001,7 +18054,7 @@ export default function TrackerApp() {
                           <div className="flex-1 min-w-0 pt-1">
                             <h2 className="text-base font-black tracking-tight text-white leading-tight mb-1">{selectedCard.name}</h2>
                             <p className="text-[11px] text-cyan-400 font-bold mb-3">
-                              {selectedCard.cardNumber} • {(cardToRender || selectedCard).rarity.replace(/\*/g, '★')} • {(() => {
+                              {selectedCard.cardNumber} • {((cardToRender || selectedCard).rarity || "").replace(/\*/g, '★')} • {(() => {
                                 const expId = selectedCard.expansion;
                                 for (const g of currentGroups) {
                                   for (const i of g.items) {
@@ -18227,7 +18280,7 @@ export default function TrackerApp() {
                       }`}>
                         {CARD_VARIATIONS[selectedCard.id].map((v) => {
                           const isActive = selectedVariationId === v.id;
-                          const vQty = inventory.find(i => i.cardId === v.id)?.quantity || 0;
+                          const vQty = exactInventoryMap.get(v.id) || 0;
                           return (
                             <button
                               key={v.id}
@@ -18259,7 +18312,7 @@ export default function TrackerApp() {
                     <div className="flex items-center gap-3">
                       <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">{t.quantity}</span>
                       <span className="text-2xl font-black text-white tabular-nums">
-                        {inventory.find(i => i.cardId === (selectedVariationId || selectedCard.id))?.quantity || 0}
+                        {exactInventoryMap.get(selectedVariationId || selectedCard.id) || 0}
                       </span>
                     </div>
                     <button 
@@ -18639,7 +18692,7 @@ export default function TrackerApp() {
                     </button>
                   </div>
                   <MultiSelect
-                    options={availableOptions.rarities.map(r => ({ value: r, label: r.replace(/\*/g, '★') }))}
+                    options={availableOptions.rarities.map(r => ({ value: r, label: (r || "").replace(/\*/g, "★") }))}
                     values={filters.rarities}
                     onChange={(newRarities) => setFilters({...filters, rarities: newRarities})}
                     placeholder={lang === 'es' ? 'Seleccionar rarezas...' : 'Select rarities...'}

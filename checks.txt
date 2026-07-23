@@ -1,0 +1,335 @@
+2232-  type: 'unique' | 'tiered';
+2233-  category: string;
+2234-  subCategory?: string;
+2235-  hidden?: boolean;
+2236-  tiers?: { goal: number; title: Record<'es' | 'en', string> }[];
+2237:  check: (cards: Card[], inventory: InventoryItem[], inventoryMap: Map<string, number>) => { earned: boolean; progress?: number; tier?: number };
+2238-}
+2239-
+2240-const SET_METADATA: Record<string, { sourceProduct: string; releaseDate?: string; description?: string; sourceUrl?: string }> = {
+2241-  'BT1': { sourceProduct: 'Galactic Battle', releaseDate: '28 de julio de 2017' },
+2242-  'BT2': { sourceProduct: 'Union Force', releaseDate: '3 de noviembre de 2017' },
+--
+7516-        category: 'General',
+7517-        icon: 'Sparkles',
+7518-        title: { es: 'Tu camino comienza', en: 'Your journey begins' },
+7519-        description: { es: 'Consigue tu primera carta de Fusion World.', en: 'Obtain your first Fusion World card.' },
+7520-        type: 'unique',
+7521:        check: (cards, inventory, inventoryMap) => {
+7522-          const owned = cards.some(c => (inventoryMap?.get(c.id) || 0) > 0);
+7523-          return { earned: owned, progress: owned ? 100 : 0 };
+7524-        }
+7525-      },
+7526-      {
+--
+7534-          { goal: 50, title: { es: 'Iniciación (50)', en: 'Initiation (50)' } },
+7535-          { goal: 150, title: { es: 'Coleccionista (150)', en: 'Collector (150)' } },
+7536-          { goal: 300, title: { es: 'Maestro FW (300)', en: 'FW Master (300)' } },
+7537-          { goal: 500, title: { es: 'Gran Maestro FW (500)', en: 'Grand FW Master (500)' } }
+7538-        ],
+7539:        check: (cards, inventory, inventoryMap) => {
+7540-          const count = cards.filter(c => (inventoryMap?.get(c.id) || 0) > 0).length;
+7541-          const goals = [50, 150, 300, 500];
+7542-          let currentTier = -1;
+7543-          for (let i = 0; i < goals.length; i++) {
+7544-            if (count >= goals[i]) currentTier = i;
+--
+7578-          icon: 'Package',
+7579-          title: { es: `Completar al 100%: ${set.id}`, en: `100% Completion: ${set.id}` },
+7580-          description: { es: `Colecciona todas las cartas de la expansión ${set.label}.`, en: `Collect all cards from the ${set.label} expansion.` },
+7581-          type: 'unique',
+7582-          
+7583:          check: (cards, inventory, inventoryMap) => {
+7584-            if (sc.length === 0) return { earned: false, progress: 0 };
+7585-            const owned = sc.filter(s => (inventoryMap?.get(s.id) || 0) > 0).length;
+7586-            const isDone = owned === sc.length && sc.length > 0;
+7587-            return { earned: isDone, progress: sc.length > 0 ? (owned / sc.length) * 100 : 0 };
+7588-          }
+--
+7604-              description: { 
+7605-                es: `Consigue todas las cartas de rareza ${rarityNames[rarity]?.es || rarity} de ${set.label}.`, 
+7606-                en: `Obtain all ${rarityNames[rarity]?.en || rarity} cards from ${set.label}.` 
+7607-              },
+7608-              type: 'unique',
+7609:              check: (cards, inventory, inventoryMap) => {
+7610-                const rc = cards.filter(c => c.expansion === set.id && (c.rarity === rarity || c.rarity === `${rarity}*`));
+7611-                if (rc.length === 0) return { earned: false, progress: 0 };
+7612-                const owned = rc.filter(s => (inventoryMap?.get(s.id) || 0) > 0).length;
+7613-                const isDone = owned === rc.length && rc.length > 0;
+7614-                return { earned: isDone, progress: rc.length > 0 ? (owned / rc.length) * 100 : 0 };
+--
+7634-        { goal: 100, title: { es: 'Primeras 100', en: 'First 100' } },
+7635-        { goal: 250, title: { es: 'Colección Estable (250)', en: 'Steady Collection (250)' } },
+7636-        { goal: 500, title: { es: 'Veterano (500)', en: 'Veteran (500)' } },
+7637-        { goal: 1000, title: { es: 'Gran Maestro (1000)', en: 'Grand Master (1000)' } }
+7638-      ],
+7639:      check: (cards, inventory, inventoryMap) => {
+7640-          const count = cards.filter(c => (inventoryMap?.get(c.id) || 0) > 0).length;
+7641-        const goals = [100, 250, 500, 1000];
+7642-        let currentTier = -1;
+7643-        for (let i = 0; i < goals.length; i++) {
+7644-          if (count >= goals[i]) currentTier = i;
+--
+7662-        { goal: 10, title: { es: '10 Líderes', en: '10 Leaders' } },
+7663-        { goal: 25, title: { es: '25 Líderes', en: '25 Leaders' } },
+7664-        { goal: 50, title: { es: '50 Líderes', en: '50 Leaders' } },
+7665-        { goal: 100, title: { es: '100 Líderes', en: '100 Leaders' } }
+7666-      ],
+7667:      check: (cards, inventory, inventoryMap) => {
+7668-        const leaderCards = cards.filter(c => c.type.toLowerCase().includes('leader'));
+7669-        const count = leaderCards.filter(c => (inventoryMap?.get(c.id) || 0) > 0).length;
+7670-        const goals = [10, 25, 50, 100];
+7671-        let currentTier = -1;
+7672-        for (let i = 0; i < goals.length; i++) {
+--
+7693-        { goal: 5, title: { es: 'Elite SCR (5)', en: 'Elite SCR (5)' } },
+7694-        { goal: 10, title: { es: 'Maestro de Secretas (10)', en: 'Secret Master (10)' } },
+7695-        { goal: 25, title: { es: 'Coleccionista SCR (25)', en: 'SCR Collector (25)' } },
+7696-        { goal: 50, title: { es: 'Omnipotente (50)', en: 'Omnipotent (50)' } }
+7697-      ],
+7698:      check: (cards, inventory, inventoryMap) => {
+7699-        const scrCards = cards.filter(c => c.rarity === 'SCR');
+7700-        const count = scrCards.filter(c => (inventoryMap?.get(c.id) || 0) > 0).length;
+7701-        const goals = [1, 5, 10, 25, 50];
+7702-        let currentTier = -1;
+7703-        for (let i = 0; i < goals.length; i++) {
+--
+7724-        { goal: 5, title: { es: 'Iluminado (5)', en: 'Enlightened (5)' } },
+7725-        { goal: 10, title: { es: 'Avatar de los Dioses (10)', en: 'Avatar of the Gods (10)' } },
+7726-        { goal: 25, title: { es: 'Poder Infinito (25)', en: 'Infinite Power (25)' } },
+7727-        { goal: 50, title: { es: 'Creador de Universos (50)', en: 'Creator of Universes (50)' } }
+7728-      ],
+7729:      check: (cards, inventory, inventoryMap) => {
+7730-        const gdrCards = cards.filter(c => c.rarity === 'GDR');
+7731-        const count = gdrCards.filter(c => (inventoryMap?.get(c.id) || 0) > 0).length;
+7732-        const goals = [1, 5, 10, 25, 50];
+7733-        let currentTier = -1;
+7734-        for (let i = 0; i < goals.length; i++) {
+--
+7748-      icon: 'Zap',
+7749-      title: { es: 'Elegido de los Dioses', en: 'Chosen of the Gods' },
+7750-      description: { es: 'Consigue TODAS las God Rares de la base de datos.', en: 'Collect ALL God Rares in the database.' },
+7751-      type: 'unique',
+7752-      hidden: true,
+7753:      check: (cards, inventory, inventoryMap) => {
+7754-        const gdrCards = cards.filter(c => c.rarity === 'GDR');
+7755-        if (gdrCards.length === 0) return { earned: false, progress: 0 };
+7756-        const owned = gdrCards.filter(c => (inventoryMap?.get(c.id) || 0) > 0);
+7757-        return { earned: owned.length === gdrCards.length && gdrCards.length > 0, progress: (owned.length / gdrCards.length) * 100 };
+7758-      }
+--
+7763-      icon: 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-005.png',
+7764-      title: { es: 'Búsqueda del tesoro', en: 'Treasure Hunt' },
+7765-      description: { es: 'Has encontrado la carta secreta de la Anime Expo 2017: Trunks P-005.', en: 'You have found the secret card from Anime Expo 2017: Trunks P-005.' },
+7766-      type: 'unique',
+7767-      hidden: true,
+7768:      check: (cards, inventory, inventoryMap) => {
+7769-        const isOwned = (inventoryMap?.get('P-005_PR') || 0) > 0;
+7770-        return { earned: isOwned, progress: isOwned ? 100 : 0 };
+7771-      }
+7772-    },
+7773-    {
+--
+7775-      category: 'General',
+7776-      icon: 'Sword',
+7777-      title: { es: 'Especialista de Combate', en: 'Battle Specialist' },
+7778-      description: { es: 'Consigue 5 cartas únicas de tipo Battle.', en: 'Collect 5 unique Battle type cards.' },
+7779-      type: 'unique',
+7780:      check: (cards, inventory, inventoryMap) => {
+7781-        const battleCards = cards.filter(c => c.type.toLowerCase().includes('battle'));
+7782-        const uniqueOwnedBattleCards = battleCards.filter(c => (inventoryMap?.get(c.id) || 0) > 0);
+7783-        const uniqueCount = uniqueOwnedBattleCards.length;
+7784-        const progress = Math.min((uniqueCount / 5) * 100, 100);
+7785-        return { earned: uniqueCount >= 5, progress };
+--
+7791-      icon: '/assets/achievements/yamcha.jpg',
+7792-      title: { es: 'El Lobo Solitario del Desierto', en: 'Lone Wolf of the Desert' },
+7793-      description: { es: 'Consigue los dos líderes Yamcha de BT5 y BT10.', en: 'Collect both Yamcha leaders from BT5 and BT10.' },
+7794-      type: 'unique',
+7795-      hidden: true,
+7796:      check: (cards, inventory, inventoryMap) => {
+7797-        const yamchaIds = ['BT5-001', 'BT10-001'];
+7798-        const owned = yamchaIds.filter(id => (inventoryMap?.get(id) || 0) > 0);
+7799-        return { earned: owned.length === yamchaIds.length, progress: (owned.length / yamchaIds.length) * 100 };
+7800-      }
+7801-    },
+--
+7805-      icon: '/assets/achievements/masterroshi.jpg',
+7806-      title: { es: 'Turtle School', en: 'Turtle School' },
+7807-      description: { es: 'Consigue el líder Master Roshi de BT18.', en: 'Collect the Master Roshi leader from BT18.' },
+7808-      type: 'unique',
+7809-      hidden: true,
+7810:      check: (cards, inventory, inventoryMap) => {
+7811-        const roshiId = 'BT18-059';
+7812-        const isOwned = (inventoryMap?.get(roshiId) || 0) > 0;
+7813-        return { earned: isOwned, progress: isOwned ? 100 : 0 };
+7814-      }
+7815-    },
+--
+7819-      icon: '/assets/achievements/oolong.jpg',
+7820-      title: { es: 'Historia de Dragon Ball', en: 'Dragon Ball History' },
+7821-      description: { es: 'Consigue las 7 cartas de rareza DBR (History of Dragon Ball).', en: 'Collect the 7 DBR rarity cards (History of Dragon Ball).' },
+7822-      type: 'unique',
+7823-      hidden: true,
+7824:      check: (cards, inventory, inventoryMap) => {
+7825-        const dbrCards = cards.filter(c => c.rarity === 'DBR');
+7826-        const dbrIds = dbrCards.map(c => c.id);
+7827-        const owned = dbrIds.filter(id => (inventoryMap?.get(id) || 0) > 0);
+7828-        if (dbrIds.length === 0) return { earned: false, progress: 0 };
+7829-        return { earned: owned.length >= dbrIds.length, progress: Math.min((owned.length / dbrIds.length) * 100, 100) };
+--
+7835-      icon: '/assets/achievements/kefla.jpg',
+7836-      title: { es: 'Keflaaaaaa', en: 'Keflaaaaaa' },
+7837-      description: { es: 'Consigue los 4 líderes de Kefla: P-184, EX3-01, BT7-075 y BT23-100.', en: 'Collect the 4 Kefla leaders: P-184, EX3-01, BT7-075 and BT23-100.' },
+7838-      type: 'unique',
+7839-      hidden: true,
+7840:      check: (cards, inventory, inventoryMap) => {
+7841-        const keflaIds = ['P-184', 'EX3-01', 'BT7-075', 'BT23-100'];
+7842-        const owned = keflaIds.filter(id => (inventoryMap?.get(id) || 0) > 0);
+7843-        return { earned: owned.length === keflaIds.length, progress: (owned.length / keflaIds.length) * 100 };
+7844-      }
+7845-    },
+--
+7849-      icon: '/assets/achievements/gokubulma.jpg',
+7850-      title: { es: 'Así empezó todo', en: 'How it all started' },
+7851-      description: { es: 'Consigue el líder Goku & Bulma (BT27-044 o SLR) y la carta Extra "Start of a Journey" (BT27-060).', en: 'Collect the Goku & Bulma leader (BT27-044 or SLR) and the Extra card "Start of a Journey" (BT27-060).' },
+7852-      type: 'unique',
+7853-      hidden: true,
+7854:      check: (cards, inventory, inventoryMap) => {
+7855-        const hasLeader = (inventoryMap?.get('BT27-044') || 0) > 0 || (inventoryMap?.get('BT27-044_SLR') || 0) > 0;
+7856-        const hasExtra = (inventoryMap?.get('BT27-060') || 0) > 0;
+7857-        const count = (hasLeader ? 1 : 0) + (hasExtra ? 1 : 0);
+7858-        return { earned: hasLeader && hasExtra, progress: (count / 2) * 100 };
+7859-      }
+--
+7864-      icon: '/assets/achievements/comingsoon.png',
+7865-      title: { es: 'Contigo empezó todo', en: 'It all started with you' },
+7866-      description: { es: 'Consigue la primera carta que existió del juego: el líder Son Goku Promo (BT1-030_PR).', en: 'Collect the first card that ever existed: the promo Son Goku leader (BT1-030_PR).' },
+7867-      type: 'unique',
+7868-      hidden: true,
+7869:      check: (cards, inventory, inventoryMap) => {
+7870-        const isOwned = (inventoryMap?.get('BT1-030_PR') || 0) > 0;
+7871-        return { earned: isOwned, progress: isOwned ? 100 : 0 };
+7872-      }
+7873-    },
+7874-    {
+--
+7877-      icon: '/assets/achievements/kruskalf.jpg',
+7878-      title: { es: 'Kruskalf', en: 'Kruskalf' },
+7879-      description: { es: 'Añade 10 o más unidades de la carta EX4-03.', en: 'Add 10 or more units of the card EX4-03.' },
+7880-      type: 'unique',
+7881-      hidden: true,
+7882:      check: (cards, inventory, inventoryMap) => {
+7883-        // Tolerant search for EX4-03 variants
+7884-        let quantity = (inventoryMap?.get('EX4-03') || 0) + 
+7885-                       (inventoryMap?.get('EX4-003') || 0) + 
+7886-                       (inventoryMap?.get('EX04-03') || 0);
+7887-        return { earned: quantity >= 10, progress: Math.min((quantity / 10) * 100, 100) };
+--
+7893-      icon: '/assets/achievements/belmod.jpg',
+7894-      title: { es: 'Payasada Nuclear', en: 'Nuclear Clown Business' },
+7895-      description: { es: 'Consigue las cartas BT28-106_SLR, BT28-150 y EX6-35.', en: 'Collect cards BT28-106_SLR, BT28-150 and EX6-35.' },
+7896-      type: 'unique',
+7897-      hidden: true,
+7898:      check: (cards, inventory, inventoryMap) => {
+7899-        const reqIds = ['BT28-106_SLR', 'BT28-150', 'EX6-35'];
+7900-        const owned = reqIds.filter(id => (inventoryMap?.get(id) || 0) > 0);
+7901-        return { earned: owned.length === reqIds.length, progress: (owned.length / reqIds.length) * 100 };
+7902-      }
+7903-    },
+--
+7907-      icon: '/assets/achievements/tarraco.jpg',
+7908-      title: { es: 'The Tarraco One', en: 'The Tarraco One' },
+7909-      description: { es: 'Consigue las cartas BT27-001_SLR, BT24-001_SLR, SD17-01 y BT30-001_SLR.', en: 'Collect cards BT27-001_SLR, BT24-001_SLR, SD17-01 and BT30-001_SLR.' },
+7910-      type: 'unique',
+7911-      hidden: true,
+7912:      check: (cards, inventory, inventoryMap) => {
+7913-        const reqIds = ['BT27-001_SLR', 'BT24-001_SLR', 'SD17-01', 'ST17-01', 'BT30-001_SLR'];
+7914-        const owned = reqIds.filter(id => (inventoryMap?.get(id) || 0) > 0);
+7915-        // We count only unique matches in case both SD and ST exist (unlikely but safe)
+7916-        const uniqueMatches = new Set(owned.map(i => (i.cardId || "").replace('SD', 'ST'))).size;
+7917-        const targetCount = 4; // BT27, BT24, (SD17/ST17), BT30
+--
+7924-      icon: '/serranos.jpg',
+7925-      title: { es: 'Serrano Style', en: 'Serrano Style' },
+7926-      description: { es: 'Consigue un playset (4 copias) de una carta que tenga al menos 4 versiones alternativas además de la original.', en: 'Collect a playset (4 copies) of a card that has at least 4 alternative versions besides the original.' },
+7927-      type: 'unique',
+7928-      hidden: true,
+7929:      check: (cards, inventory, inventoryMap) => {
+7930-        const cardGroups: Record<string, string[]> = {};
+7931-        cards.forEach(c => {
+7932-          const base = c.cardNumber.split('_')[0];
+7933-          if (!cardGroups[base]) cardGroups[base] = [];
+7934-          cardGroups[base].push(c.id);
+--
+7960-      icon: '/Chilled.jpg',
+7961-      title: { es: 'Picolansa el campero', en: 'Picolansa the Camper' },
+7962-      description: { es: 'Completa el playset (4 copias) de BT13-088, BT13-085, BT13-087 y BT13-086.', en: 'Complete the playset (4 copies) of BT13-088, BT13-085, BT13-087 and BT13-086.' },
+7963-      type: 'unique',
+7964-      hidden: true,
+7965:      check: (cards, inventory, inventoryMap) => {
+7966-        const reqIds = ['BT13-088', 'BT13-085', 'BT13-087', 'BT13-086'];
+7967-        const completedCount = reqIds.filter(id => (inventoryMap?.get(id) || 0) >= 4).length;
+7968-        const progress = (completedCount / reqIds.length) * 100;
+7969-        return { earned: completedCount === reqIds.length, progress };
+7970-      }
+--
+8016-              subCategory: set.label,
+8017-              icon: 'Trophy',
+8018-              title: { es: `Líderes de ${set.id}`, en: `${set.id} Leaders` },
+8019-              description: { es: `Consigue todos los líderes del set ${set.id}.`, en: `Collect all leaders from ${set.id}.` },
+8020-              type: 'unique',
+8021:              check: (cards, inventory, inventoryMap) => {
+8022-                const owned = setLeaders.filter(l => (inventoryMap?.get(l.id) || 0) > 0);
+8023-                return { earned: owned.length === setLeaders.length && setLeaders.length > 0, progress: setLeaders.length > 0 ? (owned.length / setLeaders.length) * 100 : 0 };
+8024-              }
+8025-            });
+8026-            seenIds.add(achId);
+--
+8040-              subCategory: set.label,
+8041-              icon: ['SPR', 'SCR', 'GDR', 'GFR', 'DR', 'DPR'].includes(r) ? 'Star' : 'Award',
+8042-              title: { es: `${set.id}: Rareza ${r}`, en: `${set.id}: Rarity ${r}` },
+8043-              description: { es: `Consigue todas las cartas ${r} de ${set.id}.`, en: `Collect all ${r} cards from ${set.id}.` },
+8044-              type: 'unique',
+8045:              check: (cards, inventory, inventoryMap) => {
+8046-                const owned = rCards.filter(l => (inventoryMap?.get(l.id) || 0) > 0);
+8047-                return { earned: owned.length === rCards.length && rCards.length > 0, progress: rCards.length > 0 ? (owned.length / rCards.length) * 100 : 0 };
+8048-              }
+8049-            });
+8050-            seenIds.add(achId);
+--
+8077-          subCategory: set.label,
+8078-          icon: 'Trophy',
+8079-          title: { es: `${set.id}: Set Base 100%`, en: `${set.id} Base Set 100%` },
+8080-          description: { es: `Completado el set base de ${set.label} (incluyendo SPR y GDR, sin variantes promo).`, en: `Completed ${set.label} base set (including SPR and GDR, excluding promo variants).` },
+8081-          type: 'unique',
+8082:          check: (cards, inventory, inventoryMap) => {
+8083-            const owned = sCardsBase.filter(l => (inventoryMap?.get(l.id) || 0) > 0);
+8084-            return { earned: owned.length === sCardsBase.length && sCardsBase.length > 0, progress: sCardsBase.length > 0 ? (owned.length / sCardsBase.length) * 100 : 0 };
+8085-          }
+8086-        });
+8087-        seenIds.add(baseAchId);
+--
+8112-          icon: 'Crown',
+8113-          title: { es: `${set.id}: Maestro de Set`, en: `${set.id} Set Master` },
+8114-          description: { es: `Completado al 100% el set ${set.label} incluyendo TODAS las variantes alternativas.`, en: `100% completed ${set.label} set including ALL alternative variants.` },
+8115-          type: 'unique',
+8116-          hidden: true,
+8117:          check: (cards, inventory, inventoryMap) => {
+8118-            const owned = sCardsMaster.filter(l => (inventoryMap?.get(l.id) || 0) > 0);
+8119-            return { earned: owned.length === sCardsMaster.length && sCardsMaster.length > 0, progress: sCardsMaster.length > 0 ? (owned.length / sCardsMaster.length) * 100 : 0 };
+8120-          }
+8121-        });
+8122-        seenIds.add(masterAchId);
+--
+8134-      category: 'Promos',
+8135-      icon: 'Layers',
+8136-      title: { es: `Coleccionista de Promos: ${goal}`, en: `Promo Collector: ${goal}` },
+8137-      description: { es: `Consigue ${goal} cartas promocionales únicas.`, en: `Collect ${goal} unique promo cards.` },
+8138-      type: 'unique',
+8139:      check: (cards, inventory, inventoryMap) => {
+8140-        const fpCards = cards.filter(c => c.expansion === 'FP');
+8141-        const ownedPromosCount = fpCards.filter(c => (inventoryMap?.get(c.id) || 0) > 0).length;
+8142-        const progress = Math.min((ownedPromosCount / goal) * 100, 100);
+8143-        return { earned: ownedPromosCount >= goal, progress };
+8144-      }
