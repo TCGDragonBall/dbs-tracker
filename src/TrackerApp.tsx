@@ -2552,6 +2552,7 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
   'BT14-122_EP10': { sourceProduct: 'Event Pack 10' },
   'BT14-135_EP10': { sourceProduct: 'Event Pack 10' },
   'EX6-27_EP10': { sourceProduct: 'Event Pack 10' },
+  'EX6-27_PR': { sourceProduct: 'Premium Anniversary Box 2023' },
   'P-333_EP10': { sourceProduct: 'Event Pack 10' },
   'EB1-62_EP10': { sourceProduct: 'Event Pack 10' },
   // Event Pack 11
@@ -4945,6 +4946,7 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'BT14-122_EP10': 'https://static.dbscards.fr/cards/en/evp10/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-bt14-122-sr-event-pack-10-zenkai-series-ss4-bardock-spirit-resonance.webp',
   'BT14-135_EP10': 'https://static.dbscards.fr/cards/en/evp10/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-bt14-135-sr-event-pack-10-zenkai-series-oceanus-shenron-negative-energy-explosion.webp',
   'EX6-27_EP10': 'https://static.dbscards.fr/cards/en/evp10/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-ex06-27-ex-event-pack-10-zenkai-series-swift-retaliation-cooler.webp',
+  'EX6-27_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/EX06-27_PR.png',
   'P-333_EP10': 'https://static.dbscards.fr/cards/en/evp10/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-p-333-pr-event-pack-10-zenkai-series-intoxicated-by-justice.webp',
   'EB1-62_EP10': 'https://static.dbscards.fr/cards/en/evp10/image-trading-cards-dragon-ball-super-card-game-tcg-dbscards-en-eb1-62-sr-event-pack-10-zenkai-series-android-17-and-android-18-siblings-revived.webp',
   // Event Pack 11
