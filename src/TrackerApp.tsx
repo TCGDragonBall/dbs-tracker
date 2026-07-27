@@ -1353,7 +1353,7 @@ const FUSION_EXPANSION_GROUPS: ExpansionGroup[] = [
       { id: 'FB11', label: 'FB11: BRIGHTNESS OF HOPE (Próximamente)', sub: 'Main Set', locked: true },
       { id: 'SB01', label: 'SB01: Manga booster 01', sub: 'Special Set', locked: false },
       { id: 'SB02', label: 'SB02: Manga booster 02', sub: 'Special Set', locked: false },
-      { id: 'ST01', label: 'ST01: STORY BOOSTER 01 (Próximamente)', sub: 'Special Set', locked: true },
+      { id: 'ST01', label: 'ST01: STORY BOOSTER 01', sub: 'Special Set', locked: false },
     ]
   },
   {
@@ -1877,6 +1877,7 @@ import { fusionWorldData } from './data/fusion_world';
 import { sealedCardsData } from './data/sealed';
 import { playmatsData } from './data/playmats';
 import { casesData, separatorsData } from './data/accessories';
+import { st01Data } from './data/st01';
 import { initGA, trackPageView, trackEvent } from './utils/analytics';
 
 // --- Types ---
@@ -13587,7 +13588,7 @@ export default function TrackerApp() {
     const loadCards = async () => {
       console.log(`[DATA] Loading cards for gameType: ${gameType}`);
       const mastersDataRaw = `${bt1Data}\n${promoData}\n${startersData}\n${expertsData}\n${expansionsData}\n${tb3Data}\n${tb2Data}\n${tb1Data}\n${eb1Data}\n${db3Data}\n${db2Data}\n${db1Data}\n${bt2Data}\n${bt3Data}\n${bt4Data}\n${bt5Data}\n${bt6Data}\n${bt7Data}\n${bt8Data}\n${bt9Data}\n${bt10Data}\n${bt11Data}\n${bt12Data}\n${bt13Data}\n${bt14Data}\n${bt15Data}\n${bt16Data}\n${bt17Data}\n${bt18Data}\n${bt19Data}\n${bt20Data}\n${bt21Data}\n${bt22Data}\n${bt23Data}\n${bt24Data}\n${bt25Data}\n${bt26Data}\n${bt27Data}\n${bt28Data}\n${bt29Data}\n${bt30Data}\n${bt31Data}\n${energyMarkersData}\n${tokensData}\n${meritsData}\n${sealedCardsData}\n${sleevesData}\n${playmatsData}\n${casesData}\n${separatorsData}`;
-      const combinedData = gameType === 'fusion' ? fusionWorldData : mastersDataRaw;
+      const combinedData = gameType === 'fusion' ? `${fusionWorldData}\n${st01Data}` : mastersDataRaw;
 
       let parsedCards: (Card & { baseIndex?: number })[] = combinedData.split('\n').filter(line => line.trim()).map((line, i) => {
         const parts = line.split('\t').map(s => s?.trim() || '');
