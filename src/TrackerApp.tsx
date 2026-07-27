@@ -2698,6 +2698,7 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
     releaseDate: 'Diciembre de 2018' 
   },
   'BT1-005_PR02': { sourceProduct: 'US: National Championship Finals 2018' },
+  'BT5-053_PR': { sourceProduct: 'Gift Box 01' },
   'BT1-010_PR': { sourceProduct: 'Winner - UNION FORCE Release Tournament' },
   'BT1-014_PR': { sourceProduct: 'Anniversary Box 2019' },
   'BT1-030_PR': { sourceProduct: 'Launch Kit' },
@@ -2712,6 +2713,8 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
   'BT3-015_PR': { sourceProduct: 'Winner - MIRACULOUS REVIVAL Release Tournament' },
   'BT2-064_PR': { sourceProduct: 'Winner - DESTROYER KINGS Release Tournament' },
   'BT2-064_PR02': { sourceProduct: 'Mythic Booster' },
+  'TB3-045_MB': { sourceProduct: 'Mythic Booster' },
+  'TB3-051_MB': { sourceProduct: 'Mythic Booster' },
   'P-172_PR': { sourceProduct: 'Mythic Booster' },
   'P-212_PR': { sourceProduct: 'Mythic Booster' },
   'P-219_TV': { sourceProduct: '2021 Tournament Pack Vault Set' },
@@ -2966,6 +2969,11 @@ const EXTRA_VARIANTS_OTAKON: Record<string, { id: string; label: Record<string, 
 };
 
 const IMAGE_OVERRIDES: Record<string, string> = {
+  'BT1-030_PR_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT1-030_PR_b.png',
+  'BT5-053_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT5-053_PR.png',
+  'BT5-053_PR_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT5-053_PR_b.png',
+  'TB3-051_MB': 'https://tcgplayer-cdn.tcgplayer.com/product/253704_in_1000x1000.jpg',
+  'TB3-045_MB': 'https://tcgplayer-cdn.tcgplayer.com/product/256774_in_1000x1000.jpg',
   'P-212_PR': 'https://tcgplayer-cdn.tcgplayer.com/product/214964_in_1000x1000.jpg',
   'P-219_TV': 'https://tcgplayer-cdn.tcgplayer.com/product/257215_in_1000x1000.jpg',
   'P-219_MB': 'https://tcgplayer-cdn.tcgplayer.com/product/256762_in_1000x1000.jpg',
@@ -4757,6 +4765,7 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'P-036_JP02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-036_PR.png',
   'P-036_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-036_PR02.png',
   'P-040_JP03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-040_PR.png',
+  'BT4-118_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT4-118_PR02.png',
   'P-048_JP03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-048_PR.png',
   'P-049_JP03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-049_PR.png',
   'P-052_JP03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-052_PR.png',
@@ -7502,7 +7511,7 @@ const getTargetQuantity = (card: Card, goal: 'collector' | 'player') => {
   const isOneUnitOnly = 
     (card.type.includes('Leader') && !card.type.toLowerCase().includes('z-leader')) || 
     card.id.includes('_SLR') || 
-    card.type.includes('Marker') || 
+    card.type.includes('Marker') || card.type.toLowerCase().includes('merit') || 
     ['SCR', 'GDR', 'LEADER RARE'].includes(card.rarity);
   return isOneUnitOnly ? 1 : 4;
 };
@@ -12314,7 +12323,24 @@ export default function TrackerApp() {
         
         if (item.subItems) {
           for (const sub of item.subItems) {
-             const cardsInSubItem = cards.filter(c => c.expansion === sub.id || (PACK_ARRAYS[sub.id] && PACK_ARRAYS[sub.id].includes(c.id)) || (sub.id.startsWith('FB') && sub.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${sub.id}`]?.includes(c.id)) || (sub.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)));
+             const cardsInSubItem = cards.filter(c => {
+               const tags = getCardTags(c);
+               const checkItemMatch = (checkItem: any): boolean => {
+                 if (checkItem.id === c.id) return true;
+                 if (c.expansion === checkItem.id) return true;
+                 if (PACK_ARRAYS[checkItem.id] && PACK_ARRAYS[checkItem.id].includes(c.id)) return true;
+                 if (checkItem.id.startsWith('FB') && checkItem.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
+                 if (checkItem.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
+                 if (checkItem.subItems) return checkItem.subItems.some((s: any) => checkItemMatch(s));
+                 return false;
+               };
+               if (sub.id === 'COL02' || (sub as any).isGiant) return tags.includes('giant');
+               if (sub.id === 'COL08') return tags.includes('serial');
+               if (sub.id === 'COL05') return tags.includes('event');
+               if (sub.id === 'COL06') return tags.includes('tournament');
+               if (sub.id === 'COL07') return tags.includes('judge');
+               return checkItemMatch(sub);
+             });
              setMap.set(sub.id + '_sub', cardsInSubItem);
           }
         }
@@ -16238,7 +16264,14 @@ export default function TrackerApp() {
                             }
                           }
 
-                          const cardsInSub = cachedCategoryCards.subMap.get(sub) || [];
+                          let cardsInSub: Card[] = [];
+                          if (isColeccionismo || isStoreEvents || isChampionship) {
+                            cardsInSub = itemsInSub.flatMap(item => 
+                              cachedCategoryCards.setMap.get(item.id + '_sub') || cachedCategoryCards.setMap.get(item.id) || []
+                            );
+                          } else {
+                            cardsInSub = cachedCategoryCards.subMap.get(sub) || [];
+                          }
 
                           const { total: subTotal, owned: subOwned } = getDeduplicatedStats(cardsInSub, exactInventoryMap, collectionGoal);
                           const subProgress = subTotal > 0 ? Math.min(100, Math.round((subOwned / subTotal) * 100)) : 0;
@@ -16350,7 +16383,7 @@ export default function TrackerApp() {
                           return (
                             <div className="space-y-3">
                                {activeGroup.items.map((item, index) => {
-                                 const cardsInSet = cachedCategoryCards.setMap.get(item.id) || [];
+                                 const cardsInSet = cachedCategoryCards.setMap.get(item.id + '_sub') || cachedCategoryCards.setMap.get(item.id) || [];
 
                                  const isExpandable = !!item.subItems && item.subItems.length > 0;
                                  const isExpanded = expandedCategories.includes(item.id);
@@ -16451,7 +16484,7 @@ export default function TrackerApp() {
                                            className="bg-black/20 border-t border-white/5 p-3 space-y-1"
                                          >
                                            {(item.subItems || []).map(sub => {
-                                              const cardsInSub = cachedCategoryCards.setMap.get(sub.id + '_sub') || [];
+                                              const cardsInSub = cachedCategoryCards.setMap.get(sub.id + '_sub') || cachedCategoryCards.setMap.get(sub.id) || [];
                                               const { total: neededInSub, owned: ownedInSub } = getDeduplicatedStats(cardsInSub, exactInventoryMap, collectionGoal);
                                               const subProgress = neededInSub > 0 ? Math.min(100, Math.round((ownedInSub / neededInSub) * 100)) : 0;
 

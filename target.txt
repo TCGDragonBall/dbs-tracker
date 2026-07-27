@@ -1,0 +1,9 @@
+const getTargetQuantity = (card: Card, goal: 'collector' | 'player') => {
+  if (goal === 'collector') return 1;
+  const isOneUnitOnly = 
+    (card.type.includes('Leader') && !card.type.toLowerCase().includes('z-leader')) || 
+    card.id.includes('_SLR') || 
+    card.type.includes('Marker') || 
+    ['SCR', 'GDR', 'LEADER RARE'].includes(card.rarity);
+  return isOneUnitOnly ? 1 : 4;
+};
