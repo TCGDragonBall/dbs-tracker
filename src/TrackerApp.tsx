@@ -2371,6 +2371,13 @@ const getDynamicPromoSource = (cardNumber: string): string | undefined => {
 };
 
 const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: string }> = {
+  'P-219_TV_FIN': { sourceProduct: 'Championship 2021 Vault Set Finalist' },
+  'P-261_TV_FIN': { sourceProduct: 'Championship 2021 Vault Set Finalist' },
+  'P-284_TV_FIN': { sourceProduct: 'Championship 2021 Vault Set Finalist' },
+  'P-293_TV_FIN': { sourceProduct: 'Championship 2021 Vault Set Finalist' },
+  'P-302_TV_FIN': { sourceProduct: 'Championship 2021 Vault Set Finalist' },
+  'P-310_TV_FIN': { sourceProduct: 'Championship 2021 Vault Set Finalist' },
+
   'P-219_TV_SE': { sourceProduct: 'Championship 2021 Vault Set Side Event' },
   'P-261_TV_SE': { sourceProduct: 'Championship 2021 Vault Set Side Event' },
   'P-284_TV_SE': { sourceProduct: 'Championship 2021 Vault Set Side Event' },
@@ -2977,6 +2984,13 @@ const EXTRA_VARIANTS_OTAKON: Record<string, { id: string; label: Record<string, 
 };
 
 const IMAGE_OVERRIDES: Record<string, string> = {
+  'P-219_TV_FIN': 'https://dragonball.center/files/module_dbc/objetos/130/kivv116571.jpg',
+  'P-261_TV_FIN': 'https://dragonball.center/files/module_dbc/objetos/75/jn0t116572.jpg',
+  'P-284_TV_FIN': 'https://dragonball.center/files/module_dbc/objetos/102/go4p116573.jpg',
+  'P-293_TV_FIN': 'https://dragonball.center/files/module_dbc/objetos/16/eyr1116574.jpg',
+  'P-302_TV_FIN': 'https://dragonball.center/files/module_dbc/objetos/70/nj16116575.jpg',
+  'P-310_TV_FIN': 'https://dragonball.center/files/module_dbc/objetos/15/9pz5116576.jpg',
+
   'P-219_TV_SE': 'https://dragonball.center/files/module_dbc/objetos/51/yvvb116583.jpg',
   'P-261_TV_SE': 'https://dragonball.center/files/module_dbc/objetos/69/7u90116584.jpg',
   'P-284_TV_SE': 'https://dragonball.center/files/module_dbc/objetos/78/bxl2116585.jpg',
@@ -5532,6 +5546,14 @@ const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata'
 
 const CHANGELOG = [
   {
+    version: '4.1.13',
+    date: '8 de mayo de 2026',
+    changes: [
+      { es: 'Añadidas las cartas de Championship 2021 Tournament Pack Vault Set Finalist en la categoría de coleccionismo.', en: 'Added Championship 2021 Tournament Pack Vault Set Finalist cards in collections.' }
+    ]
+  },
+
+  {
     version: '4.1.12',
     date: '8 de mayo de 2026',
     changes: [
@@ -7221,7 +7243,7 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_CHAMPIONSHIP_2020_V1': ['SEALED_CHAMPIONSHIP_2020_V1', 'P-201', 'P-202', 'P-203', 'P-204', 'P-205', 'P-206', 'P-207', 'P-208', 'P-209', 'P-210'],
   'MASTERS_CHAMPIONSHIP_2020_V2': ['SEALED_CHAMPIONSHIP_2020_V2', 'P-233', 'P-234', 'P-235', 'P-236', 'P-237', 'P-238', 'P-239', 'P-240', 'P-241', 'P-242'],
   'MASTERS_CHAMPIONSHIP_2021': ['BT16-001_CM21_1ST', 'BT16-001_CM21_METAL_1ST', 'BT10-093_CM21_2ND', 'BT10-093_CM21_METAL_2ND', 'SD15-01_CM21_3RD', 'SD15-01_CM21_METAL_3RD', 'BT12-122_CM21_TOP16', 'BT12-122_CM21_METAL_TOP16'],
-  'MASTERS_CHAMPIONSHIP_2021_VAULT': ['P-329_CM21_VS', 'P-329_CM21_VS_FIN', 'P-329_CM21_VS_SEW', 'P-331_CM21_VS', 'P-331_CM21_VS_FIN', 'P-331_CM21_VS_SEW', 'P-335_CM21_VS', 'P-335_CM21_VS_FIN', 'P-335_CM21_VS_SEW', 'P-337_CM21_VS', 'P-337_CM21_VS_FIN', 'P-337_CM21_VS_SEW', 'P-355_CM21_VS', 'P-355_CM21_VS_FIN', 'P-355_CM21_VS_SEW', 'P-357_CM21_VS', 'P-357_CM21_VS_FIN', 'P-357_CM21_VS_SEW', 'P-219_TV', 'P-219_TV_SE', 'P-261_TV', 'P-261_TV_SE', 'P-284_TV', 'P-284_TV_SE', 'P-293_TV', 'P-293_TV_SE', 'P-302_TV', 'P-302_TV_SE', 'P-310_TV', 'P-310_TV_SE'],
+  'MASTERS_CHAMPIONSHIP_2021_VAULT': ['P-329_CM21_VS', 'P-329_CM21_VS_FIN', 'P-329_CM21_VS_SEW', 'P-331_CM21_VS', 'P-331_CM21_VS_FIN', 'P-331_CM21_VS_SEW', 'P-335_CM21_VS', 'P-335_CM21_VS_FIN', 'P-335_CM21_VS_SEW', 'P-337_CM21_VS', 'P-337_CM21_VS_FIN', 'P-337_CM21_VS_SEW', 'P-355_CM21_VS', 'P-355_CM21_VS_FIN', 'P-355_CM21_VS_SEW', 'P-357_CM21_VS', 'P-357_CM21_VS_FIN', 'P-357_CM21_VS_SEW', 'P-219_TV', 'P-219_TV_SE', 'P-219_TV_FIN', 'P-261_TV', 'P-261_TV_SE', 'P-261_TV_FIN', 'P-284_TV', 'P-284_TV_SE', 'P-284_TV_FIN', 'P-293_TV', 'P-293_TV_SE', 'P-293_TV_FIN', 'P-302_TV', 'P-302_TV_SE', 'P-302_TV_FIN', 'P-310_TV', 'P-310_TV_SE', 'P-310_TV_FIN'],
   'MASTERS_CHAMPIONSHIP_2021_V1': ['SEALED_CHAMPIONSHIP_2021_V1', 'P-328', 'P-329', 'P-330', 'P-331', 'P-332'],
   'MASTERS_CHAMPIONSHIP_2021_V2': ['SEALED_CHAMPIONSHIP_2021_V2', 'P-333', 'P-334', 'P-335', 'P-336', 'P-337'],
   'MASTERS_CHAMPIONSHIP_2021_V3': ['SEALED_CHAMPIONSHIP_2021_V3', 'P-355', 'P-356', 'P-357', 'P-358', 'P-359'],
