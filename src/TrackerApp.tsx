@@ -2371,6 +2371,10 @@ const getDynamicPromoSource = (cardNumber: string): string | undefined => {
 };
 
 const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: string }> = {
+  'BT6-029_PR': { sourceProduct: 'Magnificent Collection' },
+
+  'BT6-007_PR': { sourceProduct: 'Magnificent Collection' },
+
   'P-219_TV_FIN': { sourceProduct: 'Championship 2021 Vault Set Finalist' },
   'P-261_TV_FIN': { sourceProduct: 'Championship 2021 Vault Set Finalist' },
   'P-284_TV_FIN': { sourceProduct: 'Championship 2021 Vault Set Finalist' },
@@ -2984,6 +2988,10 @@ const EXTRA_VARIANTS_OTAKON: Record<string, { id: string; label: Record<string, 
 };
 
 const IMAGE_OVERRIDES: Record<string, string> = {
+  'BT6-029_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT6-029_PR.png',
+
+  'BT6-007_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT6-007_PR.png',
+
   'P-219_TV_FIN': 'https://dragonball.center/files/module_dbc/objetos/130/kivv116571.jpg',
   'P-261_TV_FIN': 'https://dragonball.center/files/module_dbc/objetos/75/jn0t116572.jpg',
   'P-284_TV_FIN': 'https://dragonball.center/files/module_dbc/objetos/102/go4p116573.jpg',
@@ -4025,9 +4033,16 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'BT16-071_PR02_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT16-071_PR02_b.png',
   'BT16-124_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT16-124_PR03.png',
   'BT16-140_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT16-140_PR02.png',
+  'BT11-005_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT11-005_PR.png',
+  'BT11-153_PR02': 'https://dragonball.center/files/module_dbc/objetos/109/dcgd122935.jpg',
+  'BT11-065_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT11-065_PR.png',
+  'BT11-065_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT11-065_PR.png',
   'BT11-005_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT11-005_PR03.png',
-  'BT11-054_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT11-054_PR03.png',
-  'BT11-097_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT11-097_PR03.png',
+  'BT11-005_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT11-005_PR.png',
+  'BT11-054_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT11-054_PR.png',
+  'BT11-054_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT11-054_PR.png',
+  'BT11-097_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT11-097_PR.png',
+  'BT11-097_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT11-097_PR.png',
   'BT11-130_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT11-130_PR03.png',
   'BT9-133_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT9-133_PR02.png',
   'BT10-045_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT10-045_PR02.png',
@@ -5546,9 +5561,39 @@ const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata'
 
 const CHANGELOG = [
   {
+    version: '4.1.15',
+    date: '1 de agosto de 2026',
+    changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
+      { es: 'Añadidas imágenes para BT11-054_PR y BT11-097_PR.', en: 'Added images for BT11-054_PR and BT11-097_PR.' },
+      { es: 'Añadida imagen para BT11-065_PR.', en: 'Added image for BT11-065_PR.' },
+      { es: 'Añadidas las cartas BT6-007_PR y BT6-029_PR de Magnificent Collection.', en: 'Added BT6-007_PR and BT6-029_PR cards from Magnificent Collection.' },
+      { es: 'Eliminadas las cartas duplicadas BT9-131_PR y BT9-133_PR.', en: 'Removed duplicate cards BT9-131_PR and BT9-133_PR.' },
+      { es: 'Añadidas las cartas BT10-098, BT10-099 y BT10-099_PR (eliminada BT10-098_PR por estar duplicada).', en: 'Added cards BT10-098, BT10-099 and BT10-099_PR (removed BT10-098_PR as it was duplicated).' },
+      { es: 'Registrada la imagen para BT11-005_PR.', en: 'Registered image for BT11-005_PR.' },
+      { es: 'Eliminadas cartas duplicadas BT11-034_PR y BT11-052_PR. Vinculadas BT11-005_PR y BT11-005_PR02 a EXP19 y eliminada BT10-098_PR de BT10.', en: 'Removed duplicate cards BT11-034_PR and BT11-052_PR. Linked BT11-005_PR and BT11-005_PR02 to EXP19 and removed BT10-098_PR from BT10.' },
+      { es: 'Registradas nuevas variantes PR03 para BT11-054, BT11-065 y BT11-097 y añadidas explícitamente a la colección base BT11.', en: 'Registered new PR03 variants for BT11-054, BT11-065 and BT11-097 and added explicitly to BT11 base collection.' },
+      { es: 'Registrada nueva variante PR02 para BT11-153 con nuevo arte y añadida explícitamente a BT11.', en: 'Registered new PR02 variant for BT11-153 with new art and added explicitly to BT11.' },
+    ]
+  },
+
+  {
+    version: '4.1.14',
+    date: '29 de julio de 2026',
+    changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
+      { es: 'Eliminado el icono redundante en la cabecera de los sets y eliminada la carta duplicada BT13-071_PR.', en: 'Removed redundant icon in set headers and deleted duplicate card BT13-071_PR.' }
+    ]
+  },
+
+  {
     version: '4.1.13',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas las cartas de Championship 2021 Tournament Pack Vault Set Finalist en la categoría de coleccionismo.', en: 'Added Championship 2021 Tournament Pack Vault Set Finalist cards in collections.' }
     ]
   },
@@ -5557,6 +5602,8 @@ const CHANGELOG = [
     version: '4.1.12',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas las cartas de Championship 2021 Tournament Pack Vault Set Side Event en la categoría de coleccionismo y corregido el formato de rarezas ALT y (★★).', en: 'Added Championship 2021 Tournament Pack Vault Set Side Event cards in collections and fixed ALT and (★★) rarity formats.' }
     ]
   },
@@ -5567,6 +5614,8 @@ const CHANGELOG = [
     version: '5.4.4',
     date: '14 de julio de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregida y perfeccionada la lógica de filtrado "No tengo / Faltantes" para respetar estrictamente las reglas de modo Jugador y Coleccionista. En modo Jugador, una carta desaparecerá si se tienen 4 copias, combinando las versiones normales y foil para determinar el playset. En modo Coleccionista, desaparecerá si se tiene al menos 1 copia, pero cada arte alternativo o versión rara especial se considerará de forma individual y seguirá apareciendo hasta tener su propia copia.', en: 'Fixed and perfected the "Not Owned / Missing" filtering logic to strictly adhere to Player and Collector modes. In Player mode, a card will be hidden if you have 4 copies, combining regular and foil versions to determine the playset. In Collector mode, it will be hidden if you have at least 1 copy, but each alternate art or special rare version will be considered individually and will continue to appear until you obtain its own copy.' }
     ]
   },
@@ -5574,6 +5623,8 @@ const CHANGELOG = [
     version: '5.4.3',
     date: '23 de junio de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidos los nuevos sobres y conjuntos de cartas de Championship Pack 2020 Vol. 2, Event Pack 06, Event Pack 07, y UW Tournament Pack Vol. 1 y Vol. 2 en el módulo de Coleccionismo y Sellado con imágenes oficiales de alta calidad.', en: 'Added new pack profiles and card sets for Championship Pack 2020 Vol. 2, Event Pack 06, Event Pack 07, and UW Tournament Pack Vol. 1 and Vol. 2 in both Coleccionismo and Sealed modules with high-quality official images.' }
     ]
   },
@@ -5581,6 +5632,8 @@ const CHANGELOG = [
     version: '5.4.2',
     date: '23 de junio de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadida la nueva sección "Fundas (Sleeves)" a "Coleccionismo" en el modo Masters, registrando la primera funda oficial "Gogeta Blue" con su descripción detallada (Draft Box 05 Tournament) e imagen de alta definición.', en: 'Added the new "Fundas (Sleeves)" section to "Coleccionismo" in Masters mode, registering the first official "Gogeta Blue" sleeve with its detailed description (Draft Box 05 Tournament) and high-definition image.' }
     ]
   },
@@ -5588,6 +5641,8 @@ const CHANGELOG = [
     version: '5.4.1',
     date: '23 de junio de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Habilitado y enlazado el catálogo completo de cartas "Draft Box Tournament" de DB1 y DB2/Divine Multiverse, asociando urls de imágenes oficiales de alta definición directamente. Eliminados varios registros duplicados innecesarios de cartas de DB1 (DB1-002_PR, DB1-021_PR02, DB1-040_PR y DB1-057_PR02).', en: 'Enabled and linked full "Draft Box Tournament" card catalog variants for DB1 and DB2/Divine Multiverse, associating official high-definition image URLs directly. Removed unnecessary DB1 duplicate card mappings (DB1-002_PR, DB1-021_PR02, DB1-040_PR, and DB1-057_PR02).' }
     ]
   },
@@ -5595,6 +5650,8 @@ const CHANGELOG = [
     version: '5.4.0',
     date: '22 de junio de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas las cartas de Collection\'s Selection Vol. 1, 2 y 3, así como las dos Theme Selection (History of Son Goku y History of Vegeta).', en: 'Added Collector\'s Selection Vol. 1, 2 and 3 cards, along with the two Theme Selection sets (History of Son Goku and History of Vegeta).' }
     ]
   },
@@ -5602,6 +5659,8 @@ const CHANGELOG = [
     version: '5.3.0',
     date: '5 de junio de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas las nuevas cartas promocionales del Ultimate Battle 2026 Vol. 3 (Participation Promo FP-092, Top 8 Extra FB09-096_UB_26_V3_T8 y Winner Battle FB10-040_UB_26_V3_W).', en: 'Added new promo cards for Ultimate Battle 2026 Vol. 3 (Participation Promo FP-092, Top 8 Extra FB09-096_UB_26_V3_T8, and Winner Battle FB10-040_UB_26_V3_W).' }
     ]
   },
@@ -5609,6 +5668,8 @@ const CHANGELOG = [
     version: '5.2.0',
     date: '2 de junio de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Incorporada la nueva colección Dragon Ball Super Card Game Fusion World: FB10 Ultimate Squad.', en: 'Added the new Dragon Ball Super Card Game Fusion World set: FB10 Ultimate Squad.' },
       { es: 'Actualizados de forma detallada todos los últimos Energy Markers y marcadores físicos en el catálogo.', en: 'Detailed update for all the latest Energy Markers and physical markers in the catalog.' },
       { es: 'Optimización de las estadísticas de progreso global con límite del 100% para prevenir desbordamientos visuales de interfaz.', en: 'Optimization of global progress statistics with a 100% cap to prevent visual layout overflows.' }
@@ -5618,6 +5679,8 @@ const CHANGELOG = [
     version: '5.1.0',
     date: '28 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: '¡Lanzamiento del nuevo Modo Listas! Renombrado el sistema anterior de "Selecciones" a "Tus Listas" en toda la plataforma. Corregida la lógica para que los playsets respeten las reglas propias de copia (1 copia para líderes y cartas SCR/GDR en Masters; 1 copia para líderes en Fusion World), con vinculación en tiempo real de las cantidades obtenidas directamente de tu inventario para ambos modos de colección.', en: 'New List Mode Launch! Renamed the previous "selections" system to "Your Lists" across the platform. Corrected the playset logical system to respect individual copy limits (1 copy for leaders and SCR/GDR in Masters; 1 copy for leaders in Fusion World), linking obtained status directly with local inventory in real-time.' }
     ]
   },
@@ -5625,6 +5688,8 @@ const CHANGELOG = [
     version: '5.0.26',
     date: '22 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizadas múltiples cartas promocionales de Masters (se han añadido P-442_PR02/PR03 y P-479_PR02/PR03, se han configurado URLs específicas para variantes existentes y se ha corregido el formato para la carta P-270_JP14). Se han eliminado variantes incorrectas.', en: 'Updated multiple Masters promo cards (added P-442_PR02/PR03 and P-479_PR02/PR03, configured specific URLs for existing variants, and fixed format for P-270_JP14). Removed incorrect variants.' }
     ]
   },
@@ -5632,6 +5697,8 @@ const CHANGELOG = [
     version: '5.0.25',
     date: '22 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas las nuevas cartas promocionales de Masters (Ultra-bout Series TOURNAMENT PACK VOL.3 P-739 a P-754 con sus variantes Winner).', en: 'Added new Masters promo cards (Ultra-bout Series TOURNAMENT PACK VOL.3 P-739 to P-754 with Winner variants).' }
     ]
   },
@@ -5639,6 +5706,8 @@ const CHANGELOG = [
     version: '5.0.24',
     date: '21 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminados duplicados de PR02/PR03 no solicitados explícitamente en cartas que ya tenían variante Winner (_W).', en: 'Removed explicitly unrequested PR02/PR03 duplicates on cards that already had a Winner (_W) variant.' }
     ]
   },
@@ -5646,6 +5715,8 @@ const CHANGELOG = [
     version: '5.0.23',
     date: '21 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Resuelto problema con imágenes de promos terminadas en _W (Winner).', en: 'Resolved issue with images for promos ending in _W (Winner).' }
     ]
   },
@@ -5653,6 +5724,8 @@ const CHANGELOG = [
     version: '5.0.22',
     date: '21 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes de DB2 y EX, y eliminación de la promo EX6-30_PR.', en: 'Added DB2 and EX variants, and removed the EX6-30_PR promo.' }
     ]
   },
@@ -5660,6 +5733,8 @@ const CHANGELOG = [
     version: '5.0.21',
     date: '21 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizadas variantes de EB1 y DB1, añadiendo imágenes correctas para los PR y eliminando repeticiones', en: 'Updated EB1 and DB1 variants, adding correct images for PRs and removing repetitions.' }
     ]
   },
@@ -5667,6 +5742,8 @@ const CHANGELOG = [
     version: '5.0.20',
     date: '21 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminadas promos de EB1 inexistentes y añadida la imagen de la promo EB1-22_PR03.', en: 'Removed some non-existent EB1 promos and added EB1-22_PR03 image.' }
     ]
   },
@@ -5674,6 +5751,8 @@ const CHANGELOG = [
     version: '5.0.19',
     date: '21 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizadas variantes de TB1, eliminada promo inexistente de TB3 y corregidos los IDs de las cartas del set EB1.', en: 'Updated TB1 variants, removed non-existent TB3 promo, and fixed EB1 set card IDs.' }
     ]
   },
@@ -5681,6 +5760,8 @@ const CHANGELOG = [
     version: '5.0.18',
     date: '21 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizada la lista de cartas baneadas y limitadas (efectivos desde el 3 de julio de 2026).', en: 'Updated the banned and limited cards list (effective July 3, 2026).' }
     ]
   },
@@ -5688,6 +5769,8 @@ const CHANGELOG = [
     version: '5.0.17',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Restauradas las marcas de limitación y baneo que habían desaparecido por error de la interfaz.', en: 'Restored the limitation and ban marks that had mistakenly disappeared from the interface.' },
       { es: 'Añadidas las cartas limitadas a 1 copia en Fusion World.', en: 'Added the cards limited to 1 copy in Fusion World.' }
     ]
@@ -5696,6 +5779,8 @@ const CHANGELOG = [
     version: '5.0.16',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas imágenes para promos de BT19, BT21, BT22 y BT23, y eliminadas entradas redundantes.', en: 'Added images for BT19, BT21, BT22, and BT23 promos, and removed redundant entries.' }
     ]
   },
@@ -5703,6 +5788,8 @@ const CHANGELOG = [
     version: '5.0.15',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas imágenes para promos de BT17 y BT18, y limpiezas menores en data.', en: 'Added images for BT17 and BT18 promos, and minor cleanups in data.' }
     ]
   },
@@ -5710,6 +5797,8 @@ const CHANGELOG = [
     version: '5.0.14',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas imágenes para promos de BT14, BT15 y BT16.', en: 'Added images for BT14, BT15, and BT16 promos.' }
     ]
   },
@@ -5717,6 +5806,8 @@ const CHANGELOG = [
     version: '5.0.13',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas imágenes para promos de BT11.', en: 'Added images for BT11 promos.' }
     ]
   },
@@ -5724,6 +5815,8 @@ const CHANGELOG = [
     version: '5.0.12',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas imágenes para promos de BT9 y BT10.', en: 'Added images for BT9 and BT10 promos.' }
     ]
   },
@@ -5731,6 +5824,8 @@ const CHANGELOG = [
     version: '5.0.11',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregida imagen de BT7-073_EP17, BT7-057_PR y añadida BT8-017_PR02.', en: 'Fixed BT7-073_EP17, BT7-057_PR images and added BT8-017_PR02.' }
     ]
   },
@@ -5738,6 +5833,8 @@ const CHANGELOG = [
     version: '5.0.10',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregidas imágenes de promos de BT7.', en: 'Fixed BT7 promo images.' }
     ]
   },
@@ -5745,6 +5842,8 @@ const CHANGELOG = [
     version: '5.0.9',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregidas imágenes de promos de BT6.', en: 'Fixed BT6 promo images.' }
     ]
   },
@@ -5752,6 +5851,8 @@ const CHANGELOG = [
     version: '5.0.8',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregidas imágenes de promos de BT5 y añadida BT5-050_PR03.', en: 'Fixed BT5 promo images and added BT5-050_PR03.' }
     ]
   },
@@ -5759,6 +5860,8 @@ const CHANGELOG = [
     version: '5.0.7',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregidas imágenes de promos de BT3.', en: 'Fixed BT3 promo images.' }
     ]
   },
@@ -5766,6 +5869,8 @@ const CHANGELOG = [
     version: '5.0.6',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregida imagen de BT2-064_PR02.', en: 'Fixed BT2-064_PR02 image.' }
     ]
   },
@@ -5773,6 +5878,8 @@ const CHANGELOG = [
     version: '5.0.5',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregidas varias promos y metadatos de BT1, y arreglado BT24-138 GDR.', en: 'Fixed several BT1 promos/metadata and fixed BT24-138 GDR.' }
     ]
   },
@@ -5780,6 +5887,8 @@ const CHANGELOG = [
     version: '5.0.4',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregidas las imágenes de los Judge Packs 04 y 05, y ajustado el orden lógico dentro de sus sets base.', en: 'Fix Judge Packs 04 and 05 images and logic sort inside their expansion set.' }
     ]
   },
@@ -5787,6 +5896,8 @@ const CHANGELOG = [
     version: '5.0.3',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas las cartas de los Judge Store y Event Packs 04 y 05 para Fusion World.', en: 'Added Judge Store and Event Packs 04 and 05 cards to Fusion World.' }
     ]
   },
@@ -5794,6 +5905,8 @@ const CHANGELOG = [
     version: '5.0.2',
     date: '15 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Nuevo tutorial interactivo para ayudar a los nuevos usuarios a familiarizarse con la app.', en: 'New interactive tutorial to help new users familiarize themselves with the app.' },
       { es: 'Añadidos Empty States visuales cuando no hay cartas en la colección o al buscar.', en: 'Added visual Empty States when there are no cards in the collection or searching.' }
     ]
@@ -5802,6 +5915,8 @@ const CHANGELOG = [
     version: '5.0.1',
     date: '15 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadido botón de donaciones en el perfil para apoyar el proyecto mediante Ko-fi.', en: 'Added donation button in profile to support the project via Ko-fi.' },
       { es: 'Raffinada la lógica de filtros y opciones de versiones alternativas separando Fusion World y Masters.', en: 'Refined filtering logic and alternative versions choices separating Fusion World and Masters.' },
       { es: 'Corregida la etiqueta de secciones de color en el menú de filtros.', en: 'Fixed color section label in the filters menu.' }
@@ -5811,6 +5926,8 @@ const CHANGELOG = [
     version: '5.0.0',
     date: '14 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: '¡Hito alcanzado! Catálogo de Fusion World completado al 100%.', en: 'Milestone reached! Fusion World catalog 100% complete.' },
       { es: 'Lanzamiento de la versión mayor 5.0.0 con todas las colecciones y variantes registradas.', en: 'Major version 5.0.0 launch with all collections and variants registered.' }
     ]
@@ -5819,6 +5936,8 @@ const CHANGELOG = [
     version: '4.6.0',
     date: '13 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Implementado el sistema avanzado de origen de cartas con navegación inteligente al pack/set correspondiente.', en: 'Implemented advanced card origin system with smart navigation to the corresponding pack/set.' },
       { es: 'Mejorada la navegación en la sección de Colección, mostrando nombres descriptivos en lugar de identificadores técnicos.', en: 'Improved navigation in the Collection section, showing descriptive names instead of technical identifiers.' },
       { es: 'Añadida la subcategoría "Winner Release Event FB02" a Promos.', en: 'Added "Winner Release Event FB02" subcategory to Promos.' }
@@ -5828,6 +5947,8 @@ const CHANGELOG = [
     version: '4.5.0',
     date: '13 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Nueva categoría "Ultimate Battle" añadida con subcategorías por años.', en: 'New "Ultimate Battle" category added with subcategories by year.' },
       { es: 'Añadidas las cartas de Ultimate Battle 2024 Vol.1 (Winner y Top 8).', en: 'Added Ultimate Battle 2024 Vol.1 cards (Winner and Top 8).' },
       { es: 'Mejorado el sistema de origen de las cartas para permitir navegación directa al pack correspondiente.', en: 'Improved card origin system to allow direct navigation to the corresponding pack.' }
@@ -5837,6 +5958,8 @@ const CHANGELOG = [
     version: '4.4.0',
     date: '13 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas las cartas del Tournament Pack 02 (Normal y Winner) a Fusion World.', en: 'Added Tournament Pack 02 cards (Normal and Winner) to Fusion World.' },
       { es: 'Movida la carta de Ganador de Son Gohan (Release Event FB02) a la categoría de Promos.', en: 'Moved Son Gohan Winner card (Release Event FB02) to the Promos category.' },
       { es: 'Mejorada la visualización del origen de obtención en el detalle de las cartas (Tournament, Championship, Playmat, Anniversary).', en: 'Improved display of card origin in card details (Tournament, Championship, Playmat, Anniversary).' }
@@ -5846,6 +5969,8 @@ const CHANGELOG = [
     version: '4.3.0',
     date: '13 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas nuevas categorías a Fusion World: Sleeves, Premium Card Collection, Cases, Serial Cards y Accessories.', en: 'Added new categories to Fusion World: Sleeves, Premium Card Collection, Cases, Serial Cards, and Accessories.' },
       { es: 'Actualizados los fondos de las categorías principales con imágenes de producto en alta calidad.', en: 'Updated main category backgrounds with high-quality product images.' },
       { es: 'Corregidas las imágenes de las Premium Card Collection 01 y 02 con las versiones oficiales correctas.', en: 'Fixed images for Premium Card Collection 01 and 02 with the correct official versions.' },
@@ -5856,6 +5981,8 @@ const CHANGELOG = [
     version: '4.2.1',
     date: '9 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Optimizaciones críticas de Firestore para reducir el consumo de cuota de lectura.', en: 'Critical Firestore optimizations to reduce read quota consumption.' },
       { es: 'Implementado sistema de caché persistente (IndexedDB) para mejorar la velocidad y ahorrar datos.', en: 'Implemented persistent cache (IndexedDB) to improve speed and save data.' },
       { es: 'Denormalización de estadísticas de usuario para un ranking más eficiente.', en: 'User stats denormalization for more efficient rankings.' }
@@ -5865,6 +5992,8 @@ const CHANGELOG = [
     version: '4.2.0',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Implementado filtro de propiedad (Tengo / No tengo) en todas las vistas.', en: 'Implemented ownership filter (Owned / Not Owned) across all views.' },
       { es: 'Optimización de filtros en la pestaña de búsqueda.', en: 'Filter optimization in the search tab.' }
     ]
@@ -5873,6 +6002,8 @@ const CHANGELOG = [
     version: '4.1.11',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Implementado formato apaisado (landscape) especial para Playmats en todas las vistas.', en: 'Implemented special landscape format for Playmats across all views.' },
       { es: 'Añadidos los Playmats oficiales a la base de datos de cartas.', en: 'Added official Playmats to the card database.' }
     ]
@@ -5881,6 +6012,8 @@ const CHANGELOG = [
     version: '4.1.10',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizada la imagen del Playmat 40th Anniversary y optimizada la navegación de Playmats.', en: 'Updated 40th Anniversary Playmat image and optimized Playmats navigation.' },
       { es: 'Acceso directo al listado de Playmats habilitado desde el menú principal.', en: 'Direct access to Playmats list enabled from the main menu.' }
     ]
@@ -5889,6 +6022,8 @@ const CHANGELOG = [
     version: '4.1.9',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadido el nuevo Playmat oficial del 40 aniversario (40th Anniversary ver.) y habilitada la categoría de Playmats.', en: 'Added the new official 40th Anniversary Playmat and enabled the Playmats category.' }
     ]
   },
@@ -5896,6 +6031,8 @@ const CHANGELOG = [
     version: '4.1.8',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Nuevas imágenes de fondo para las expansiones ST01 (Starter Deck) y FB10 (Ultimate Squad).', en: 'New background images for ST01 (Starter Deck) and FB10 (Ultimate Squad) expansions.' }
     ]
   },
@@ -5903,6 +6040,8 @@ const CHANGELOG = [
     version: '4.1.7',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas ilustraciones para cartas promocionales FB06, FB07 y FB08 en Fusion World.', en: 'Added artworks for FB06, FB07, and FB08 promotional cards in Fusion World.' },
       { es: 'Nuevos enlaces directos para variantes de Goku Black, Kefla y Son Goku (Ultra Instinct).', en: 'New direct links for Goku Black, Kefla, and Son Goku (Ultra Instinct) variants.' }
     ]
@@ -5911,6 +6050,8 @@ const CHANGELOG = [
     version: '4.1.6',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizadas múltiples ilustraciones de cartas promocionales FB05 en Fusion World.', en: 'Updated multiple FB05 promotional card artworks in Fusion World.' },
       { es: 'Corregidos enlaces de imágenes para variantes específicas de Goku, Vegeta y otros líderes.', en: 'Fixed image links for specific variants of Goku, Vegeta, and other leaders.' }
     ]
@@ -5919,6 +6060,8 @@ const CHANGELOG = [
     version: '4.1.5',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Optimizado el acceso a Box en Fusion World: ahora redirige directamente al listado.', en: 'Optimized access to Box in Fusion World: now redirects directly to the list.' },
       { es: 'Ajustes finales en la lógica de Energy Markers y sus imágenes predeterminadas.', en: 'Final adjustments to Energy Markers logic and their default images.' }
     ]
@@ -5927,6 +6070,8 @@ const CHANGELOG = [
     version: '4.1.4',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidos Energy Markers de Fusion World (E01, E02, E03) y múltiples versiones alternativas.', en: 'Added Fusion World Energy Markers (E01, E02, E03) and multiple alternative versions.' },
       { es: 'Implementada imagen de reserva (fallback) para Energy Markers en Fusion y Masters.', en: 'Implemented fallback image for Energy Markers in Fusion and Masters.' },
       { es: 'Actualizadas imágenes especiales para marcadores de eventos y promocionales.', en: 'Updated special images for event and promotional markers.' }
@@ -5936,6 +6081,8 @@ const CHANGELOG = [
     version: '4.1.3',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Activada la categoría de Energy Markers en la sección de Fusion World.', en: 'Activated the Energy Markers category in the Fusion World section.' },
       { es: 'Listado completo de Energy Markers disponibles (E01-01 a E-147) con versiones alternativas ya accesible.', en: 'Full list of available Energy Markers (E01-01 to E-147) with alternative versions now accessible.' }
     ]
@@ -5944,6 +6091,8 @@ const CHANGELOG = [
     version: '4.1.1',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregida la ruta de la imagen para la carta promocional FB01-049_A_FB03, asegurando que se muestre la versión correcta (p3).', en: 'Fixed the image path for celebratory card FB01-049_A_FB03, ensuring the correct version (p3) is displayed.' },
       { es: 'Revisiones aplicadas a las URLs de los banners de los sets FB05 a FB08 para mejorar la fiabilidad de carga.', en: 'Applied revisions to the banner URLs for sets FB05 to FB08 to improve loading reliability.' },
       { es: 'Ajustada la lógica de sufijos para todas las reimpresiones de Fusion World.', en: 'Adjusted suffix logic for all Fusion World reprints.' }
@@ -5953,6 +6102,8 @@ const CHANGELOG = [
     version: '4.1.0',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Mejorada la lógica de carga de imágenes para Fusion World, garantizando que todas las versiones promocionales y reimpresiones se muestren correctamente mediante un sistema de overrides unificado.', en: 'Improved image loading logic for Fusion World, ensuring all promotional and reprint versions display correctly via a unified overrides system.' },
       { es: 'Añadido soporte para nuevas imágenes de alta calidad de Energy Markers y verificada la integración con TCGPlayer.', en: 'Added support for new high-quality Energy Marker images and verified TCGPlayer integration.' },
       { es: 'Mejoras de estabilidad general en el mapeo de imágenes de cartas para las colecciones Masters y Fusion World.', en: 'General stability improvements in card image mapping for both Masters and Fusion World collections.' }
@@ -5962,6 +6113,8 @@ const CHANGELOG = [
     version: '4.0.0',
     date: '7 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: '¡Lanzamiento oficial de Dragon Ball Super Card Game Fusion World para todos los usuarios!', en: 'Official release of Dragon Ball Super Card Game Fusion World for all users!' },
       { es: 'Nuevo selector de juego al inicio: elige entre Masters y Fusion World cada día.', en: 'New game selector on startup: choose between Masters and Fusion World every day.' },
       { es: 'Liberada la colección de Fusion World (anteriormente en fase de pruebas).', en: 'Released Fusion World collection (previously in testing phase).' }
@@ -5971,6 +6124,8 @@ const CHANGELOG = [
     version: '3.3.4',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Modificados los filtros para permitir la selección múltiple de rarezas simultáneamente.', en: 'Modified filters to allow multiple rarity selections simultaneously.' }
     ]
   },
@@ -5978,6 +6133,8 @@ const CHANGELOG = [
     version: '3.3.3',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Desactivado el menú contextual nativo en móviles para mejorar la experiencia de selección múltiple al mantener pulsado.', en: 'Disabled native context menu on mobile to improve long-press multi-select experience.' }
     ]
   },
@@ -5985,6 +6142,8 @@ const CHANGELOG = [
     version: '3.3.2',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Optimizado el tiempo de respuesta de la pulsación larga (500ms) y eliminada la necesidad de mover el cursor para activar la selección.', en: 'Optimized long-press response time (500ms) and removed the need to move the cursor to activate selection.' }
     ]
   },
@@ -5992,6 +6151,8 @@ const CHANGELOG = [
     version: '3.3.1',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Refinada la visualización en selección múltiple: las cartas no obtenidas permanecen en blanco y negro si no están seleccionadas para facilitar la identificación de faltantes.', en: 'Refined multi-select visualization: unowned cards stay in black and white if not selected to make missing ones easier to spot.' }
     ]
   },
@@ -5999,6 +6160,8 @@ const CHANGELOG = [
     version: '3.3.0',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Implementado sistema de selección múltiple manteniendo pulsada una carta.', en: 'Implemented multi-selection system by long-pressing a card.' },
       { es: 'Añadida barra de acciones masivas para actualizar inventario en lote.', en: 'Added bulk action bar for batch inventory updates.' },
       { es: 'Permite seleccionar cantidad masiva en el modo de perfil jugador.', en: 'Allows bulk quantity selection in player profile mode.' }
@@ -6008,6 +6171,8 @@ const CHANGELOG = [
     version: '3.2.6',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregido el conteo total de cartas Leader Rare (_SLR) en las estadísticas.', en: 'Fixed total count of Leader Rare cards (_SLR) in statistics.' },
       { es: 'Actualizada la lógica de cartas alternativas para incluir SLR como base.', en: 'Updated alternative card logic to include SLR as base.' }
     ]
@@ -6016,6 +6181,8 @@ const CHANGELOG = [
     version: '3.2.5',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Traducción de los nombres de colores en estadísticas y filtros.', en: 'Translation of color names in statistics and filters.' },
       { es: 'Corregido el conteo de estadísticas para cartas Leader Rare (_SLR).', en: 'Fixed statistics counting for Leader Rare cards (_SLR).' },
       { es: 'Eliminada la rareza inexistente EP12 de las estadísticas.', en: 'Removed non-existent rarity EP12 from statistics.' }
@@ -6025,6 +6192,8 @@ const CHANGELOG = [
     version: '3.2.4',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminada la carta duplicada EX13-30_PR del catálogo.', en: 'Removed duplicate card EX13-30_PR from the catalog.' }
     ]
   },
@@ -6032,6 +6201,8 @@ const CHANGELOG = [
     version: '3.2.3',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Sincronización persistente de preferencias (idioma y tipo de coleccionista) en la nube: ahora tus ajustes se mantienen entre dispositivos y sesiones al iniciar sesión.', en: 'Persistent cloud synchronization of preferences (language and collector type): your settings now remain consistent across devices and sessions when logging in.' },
       { es: 'Optimización del flujo de onboarding para evitar repeticiones innecesarias.', en: 'Optimized onboarding flow to avoid unnecessary repetitions.' }
     ]
@@ -6040,6 +6211,8 @@ const CHANGELOG = [
     version: '3.2.2',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Migración masiva de imágenes de fondo al directorio local (/public) para garantizar su correcta visualización.', en: 'Mass migration of background images to the local directory (/public) to guarantee correct display.' },
       { es: 'Normalizados nombres de archivos (eliminando espacios) para mayor compatibilidad con navegadores.', en: 'Normalized filenames (removing spaces) for better browser compatibility.' }
     ]
@@ -6048,6 +6221,8 @@ const CHANGELOG = [
     version: '3.2.1',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregida la consistencia del número de versión en la interfaz y el sistema de actualización.', en: 'Fixed version number consistency in the UI and update system.' }
     ]
   },
@@ -6055,6 +6230,8 @@ const CHANGELOG = [
     version: '3.2.0',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas imágenes de fondo personalizadas para todos los Starter Decks (SD1-SD23) y Expert Decks (XD1-XD3).', en: 'Added custom background images for all Starter Decks (SD1-SD23) and Expert Decks (XD1-XD3).' },
       { es: 'Incorporadas ilustraciones temáticas para las categorías de coleccionismo: Merit Cards, Energy Markers, Serial Cards y Tokens.', en: 'Incorporated thematic illustrations for collectible categories: Merit Cards, Energy Markers, Serial Cards, and Tokens.' },
       { es: 'Ajustada la posición de los fondos (60%) para una mejor visibilidad del arte en dispositivos móviles y escritorio.', en: 'Adjusted background position (60%) for better artwork visibility on mobile and desktop devices.' }
@@ -6064,6 +6241,8 @@ const CHANGELOG = [
     version: '3.1.0',
     date: '4 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'La aplicación ha sido renombrada oficialmente a DBSCG Masters Tracker.', en: 'The application has been officially renamed to DBSCG Masters Tracker.' },
       { es: 'Limpieza masiva de cartas promocionales duplicadas e incorrectas en la sección Promos.', en: 'Massive cleanup of duplicate and incorrect promotional cards in the Promos section.' },
       { es: 'Añadidas imágenes de alta calidad para las promos P-514, P-515, P-516 y el rango P-588 a P-592.', en: 'Added high-quality images for promos P-514, P-515, P-516 and the range P-588 to P-592.' },
@@ -6074,6 +6253,8 @@ const CHANGELOG = [
     version: '3.0.0',
     date: '2 de mayo de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Versión 3.0.0 establecida tras la reestructuración completa y correcta inclusión de las versiones promocionales (Event Packs y Judge Packs) integradas numéricamente junto a sus versiones base dentro de cada set, eliminando duplicados.', en: 'Version 3.0.0 established after the complete restructuring and correct inclusion of promotional versions (Event Packs and Judge Packs) numerically integrated next to their base versions within each set, eliminating duplicates.' }
     ]
   },
@@ -6081,6 +6262,8 @@ const CHANGELOG = [
     version: '2.9.8',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizadas las imágenes de los ENERGY MARKERS con URLs de alta calidad de TCGPlayer.', en: 'Updated ENERGY MARKERS images with high-quality URLs from TCGPlayer.' }
     ]
   },
@@ -6088,6 +6271,8 @@ const CHANGELOG = [
     version: '2.9.7',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Nueva categoría de coleccionismo: ENERGY MARKERS. Incluye listado completo M-01 a M-53 con sus imágenes correspondientes.', en: 'New collection category: ENERGY MARKERS. Includes complete list M-01 to M-53 with corresponding images.' }
     ]
   },
@@ -6095,6 +6280,8 @@ const CHANGELOG = [
     version: '2.9.6',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Reducido el tamaño de fuente de los títulos de los sets para un diseño más estilizado y compacto.', en: 'Reduced set title font size for a more stylized and compact design.' }
     ]
   },
@@ -6102,6 +6289,8 @@ const CHANGELOG = [
     version: '2.9.5',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Mejorada la interfaz de las categorías: nombres de sets siempre alineados a la izquierda y eliminación de subtítulos redundantes.', en: 'Improved category interface: set names always left-aligned and removal of redundant subtitles.' }
     ]
   },
@@ -6109,6 +6298,8 @@ const CHANGELOG = [
     version: '2.9.4',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'El aviso a la comunidad ahora se muestra una vez por semana. Mejoras en la navegación y scroll del modal en dispositivos móviles.', en: 'Community notice now appears once a week. Improved modal navigation and scrolling on mobile devices.' }
     ]
   },
@@ -6116,6 +6307,8 @@ const CHANGELOG = [
     version: '2.9.3',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregida la alineación de los nombres de los sets (siempre a la izquierda) y eliminados los subtítulos redundantes en las listas de expansiones.', en: 'Fixed set names alignment (always left-aligned) and removed redundant sub-titles in expansion lists.' }
     ]
   },
@@ -6123,6 +6316,8 @@ const CHANGELOG = [
     version: '2.9.2',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminadas las cartas con el sufijo genérico _JP que estaban duplicadas respecto a sus versiones en Judge Packs específicos (ej. _JP07).', en: 'Removed cards with the generic _JP suffix that were duplicates of their specific Judge Pack versions (e.g. _JP07).' }
     ]
   },
@@ -6130,6 +6325,8 @@ const CHANGELOG = [
     version: '2.9.1',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminadas las cartas con el sufijo genérico _EP que estaban duplicadas respecto a sus versiones en Event Packs específicos (ej. _EP03).', en: 'Removed cards with the generic _EP suffix that were duplicates of their specific Event Pack versions (e.g. _EP03).' },
       { es: 'Añadida navegación directa haciendo click en el apartado "Incluida en el set" del detalle de cada carta.', en: 'Added direct navigation by clicking the "Included in set" section in the card detail modal.' }
     ]
@@ -6138,6 +6335,8 @@ const CHANGELOG = [
     version: '2.9.0',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas Merit Cards como nueva categoría de coleccionismo: 22 cartas exclusivas de eventos añadidas al listado.', en: 'Added Merit Cards as a new collectible category: 22 event-exclusive cards added to the list.' }
     ]
   },
@@ -6145,6 +6344,8 @@ const CHANGELOG = [
     version: '2.8.1',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminadas cartas duplicadas de la sección Promos que ya estaban disponibles en Event Packs y Judge Packs.', en: 'Removed duplicate cards from Promos section that were already available in Event Packs and Judge Packs.' }
     ]
   },
@@ -6152,6 +6353,8 @@ const CHANGELOG = [
     version: '2.8.0',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidos Tokens como nueva categoría de coleccionismo con todas sus variantes (Tokens de Campeonato, etc).', en: 'Added Tokens as a new collectible category with all their variants (Championship Tokens, etc).' },
       { es: 'Añadidos Judge Packs 16, 17 y 18 con todas sus variantes promocionales de arte alternativo.', en: 'Added Judge Packs 16, 17, and 18 with all their alternate art promo variants.' },
       { es: 'Reorganizadas las cartas de arte alternativo correspondientes a los paquetes de torneos para mantener la consistencia.', en: 'Reorganized alternate art cards corresponding to tournament packs to maintain consistency.' }
@@ -6161,6 +6364,8 @@ const CHANGELOG = [
     version: '2.1.05',
     date: '25 de abril de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizada la lista de cartas baneadas con más de 60 nuevas incorporaciones.', en: 'Updated the banned cards list with over 60 new entries.' },
       { es: 'Corregidos estados legales que pasaron de Errata/Limitada a Baneada.', en: 'Corrected legal statuses that changed from Errata/Limited to Banned.' }
     ]
@@ -6169,6 +6374,8 @@ const CHANGELOG = [
     version: '2.1.04',
     date: '25 de abril de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadida referencia oficial para cartas baneadas y limitadas.', en: 'Added official reference for banned and limited cards.' }
     ]
   },
@@ -6176,6 +6383,8 @@ const CHANGELOG = [
     version: '2.1.03',
     date: '25 de abril de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregido el estado legal de la última tanda de cartas a "Limitadas" (1 copia).', en: 'Corrected legal status of the latest batch of cards to "Limited" (1 copy).' },
       { es: 'Mantenida la infraestructura para futuros baneos en formato BO1.', en: 'Maintained infrastructure for future BO1 format bans.' }
     ]
@@ -6184,6 +6393,8 @@ const CHANGELOG = [
     version: '2.1.02',
     date: '25 de abril de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadido el estado legal "Baneada (BO1)" y listado de cartas baneadas en este formato.', en: 'Added "Banned (BO1)" legal status and list of banned cards for this format.' },
       { es: 'Actualizada la lista de cartas con restricciones legales.', en: 'Updated the list of cards with legal restrictions.' }
     ]
@@ -6192,6 +6403,8 @@ const CHANGELOG = [
     version: '2.1.01',
     date: '25 de abril de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Nuevo formato de versión implementado (2.1.01).', en: 'New version format implemented (2.1.01).' },
       { es: 'Eliminado el correo electrónico del ranking de coleccionistas para mayor privacidad.', en: 'Removed email from collectors ranking for better privacy.' },
       { es: 'Solucionado el error de notificaciones repetitivas en logros de set (ej. SD10).', en: 'Fixed repetitive notification bug in set achievements (e.g., SD10).' },
@@ -6203,6 +6416,8 @@ const CHANGELOG = [
     version: '2.1.00',
     date: '25 de abril de 2026',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregido error de persistencia en notificaciones de logros.', en: 'Fixed persistence bug in achievement notifications.' },
       { es: 'Corrección de imagen para la carta BT24-063_SPR.', en: 'Image fix for card BT24-063_SPR.' },
       { es: 'Mejorada la sincronización de logros entre sesiones.', en: 'Improved achievement synchronization between sessions.' }
@@ -6212,6 +6427,8 @@ const CHANGELOG = [
     version: '2.0.0',
     date: '24 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: '¡Versión 2.0! Completada la integración de todas las variantes oficiales (PR, SPR, etc.) detectadas en la web oficial.', en: 'Version 2.0! Completed integration of all official variants (PR, SPR, etc.) detected from the official website.' },
       { es: 'Añadidas más de 400 nuevas versiones de cartas de productos especiales (SD, XD, TB, DB, EB, EX).', en: 'Added over 400 new card versions from special products (SD, XD, TB, DB, EB, EX).' }
     ]
@@ -6220,6 +6437,8 @@ const CHANGELOG = [
     version: '1.9.7',
     date: '24 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR de BT26 y BT27: 33 nuevas versiones añadidas.', en: 'Added PR variants for BT26 and BT27: 33 new versions added.' }
     ]
   },
@@ -6227,6 +6446,8 @@ const CHANGELOG = [
     version: '1.9.6',
     date: '24 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR y SPR de BT25 Legend of the Dragon Balls: 26 nuevas versiones añadidas.', en: 'Added PR and SPR variants for BT25 Legend of the Dragon Balls: 26 new versions added.' }
     ]
   },
@@ -6234,6 +6455,8 @@ const CHANGELOG = [
     version: '1.9.5',
     date: '24 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR y SPR de BT24 Beyond Evolution: 95 nuevas versiones añadidas.', en: 'Added PR and SPR variants for BT24 Beyond Evolution: 95 new versions added.' }
     ]
   },
@@ -6241,6 +6464,8 @@ const CHANGELOG = [
     version: '1.9.4',
     date: '24 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR de BT23 Perfect Combination: 10 nuevas versiones añadidas.', en: 'Added PR variants for BT23 Perfect Combination: 10 new versions added.' }
     ]
   },
@@ -6248,6 +6473,8 @@ const CHANGELOG = [
     version: '1.9.3',
     date: '24 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR de BT22 Critical Blow: 21 nuevas versiones añadidas.', en: 'Added PR variants for BT22 Critical Blow: 21 new versions added.' }
     ]
   },
@@ -6255,6 +6482,8 @@ const CHANGELOG = [
     version: '1.9.2',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR de BT21 Wild Resurgence: 17 nuevas versiones añadidas.', en: 'Added PR variants for BT21 Wild Resurgence: 17 new versions added.' }
     ]
   },
@@ -6262,6 +6491,8 @@ const CHANGELOG = [
     version: '1.9.1',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR de BT20 Power Absorbed: 78 nuevas versiones añadidas al catálogo.', en: 'Added PR variants for BT20 Power Absorbed: 78 new versions added to the catalog.' }
     ]
   },
@@ -6269,6 +6500,8 @@ const CHANGELOG = [
     version: '1.9.0',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR y SPR de BT19 Fighter’s Ambition: 18 nuevas versiones añadidas.', en: 'Added PR and SPR variants for BT19 Fighter’s Ambition: 18 new versions added.' }
     ]
   },
@@ -6276,6 +6509,8 @@ const CHANGELOG = [
     version: '1.8.9',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR y SPR de BT18 Dawn of the Z-Legends: 31 nuevas versiones añadidas.', en: 'Added PR and SPR variants for BT18 Dawn of the Z-Legends: 31 new versions added.' }
     ]
   },
@@ -6283,6 +6518,8 @@ const CHANGELOG = [
     version: '1.8.8',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR y SPR de BT17 Ultimate Fusion: 14 nuevas versiones añadidas.', en: 'Added PR and SPR variants for BT17 Ultimate Fusion: 14 new versions added.' }
     ]
   },
@@ -6290,6 +6527,8 @@ const CHANGELOG = [
     version: '1.8.7',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR y SPR de BT16 Realm of the Gods: 19 nuevas versiones añadidas.', en: 'Added PR and SPR variants for BT16 Realm of the Gods: 19 new versions added.' }
     ]
   },
@@ -6297,6 +6536,8 @@ const CHANGELOG = [
     version: '1.8.6',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) y SPR de BT15: 9 nuevas versiones añadidas al catálogo.', en: 'Added BT15 Promo variants (Alter) and SPRs: 9 new versions added to the catalog.' }
     ]
   },
@@ -6304,6 +6545,8 @@ const CHANGELOG = [
     version: '1.8.5',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT14: 14 nuevas versiones añadidas al catálogo.', en: 'Added BT14 Promo variants (Alter): 14 new versions added to the catalog.' }
     ]
   },
@@ -6311,6 +6554,8 @@ const CHANGELOG = [
     version: '1.8.4',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT13: 15 nuevas versiones añadidas al catálogo.', en: 'Added BT13 Promo variants (Alter): 15 new versions added to the catalog.' }
     ]
   },
@@ -6318,6 +6563,8 @@ const CHANGELOG = [
     version: '2.7.1',
     date: '29 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Diseño de cartas más moderno con bordes menos redondeados.', en: 'More modern card design with less rounded corners.' },
       { es: 'Eliminada sincronización manual; ahora el ranking se actualiza al instante.', en: 'Manual sync removed; ranking now updates instantly.' },
       { es: 'Limpieza de herramientas administrativas en el perfil.', en: 'Cleaned up administrative tools in profile.' }
@@ -6327,6 +6574,8 @@ const CHANGELOG = [
     version: '2.7.0',
     date: '28 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidos Event Packs 13, 14, 15, 16, 17 y 18 con todas sus variantes promocionales.', en: 'Added Event Packs 13, 14, 15, 16, 17, and 18 with all their promo variants.' }
     ]
   },
@@ -6334,6 +6583,8 @@ const CHANGELOG = [
     version: '2.6.0',
     date: '27 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizado Event Pack 11 con 10 nuevas cartas promocionales.', en: 'Updated Event Pack 11 with 10 new promo cards.' }
     ]
   },
@@ -6341,6 +6592,8 @@ const CHANGELOG = [
     version: '2.5.0',
     date: '27 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadido Event Pack 12 con 17 nuevas cartas promocionales.', en: 'Added Event Pack 12 with 17 new promo cards.' }
     ]
   },
@@ -6348,6 +6601,8 @@ const CHANGELOG = [
     version: '2.4.0',
     date: '27 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadido Event Pack 11 con la nueva carta promocional SS4 Vegeta.', en: 'Added Event Pack 11 with the new SS4 Vegeta promo card.' }
     ]
   },
@@ -6355,6 +6610,8 @@ const CHANGELOG = [
     version: '2.3.0',
     date: '27 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadido Event Pack 10 con 10 nuevas cartas promocionales.', en: 'Added Event Pack 10 with 10 new promo cards.' },
       { es: 'Corregido error de filtrado en las pestañas de Event Packs 08, 09 y 10.', en: 'Fixed filtering bug in Event Packs 08, 09, and 10 tabs.' }
     ]
@@ -6363,6 +6620,8 @@ const CHANGELOG = [
     version: '2.2.0',
     date: '27 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizada la lógica de progreso global: ahora el 100% solo se alcanza si se tienen todas las versiones físicas (incluyendo variantes y SPRs).', en: 'Updated global progress logic: 100% is now only reached if all physical versions (including variants and SPRs) are owned.' },
       { es: 'Añadido selector de idioma persistente para nuevos usuarios.', en: 'Added persistent language selector for new users.' },
       { es: 'Corregida la procedencia y el etiquetado de los Event Packs 08 y 09.', en: 'Fixed sourcing and tagging for Event Packs 08 and 09.' }
@@ -6372,6 +6631,8 @@ const CHANGELOG = [
     version: '1.8.3',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT12: 11 nuevas versiones añadidas al catálogo.', en: 'Added BT12 Promo variants (Alter): 11 new versions added to the catalog.' }
     ]
   },
@@ -6379,6 +6640,8 @@ const CHANGELOG = [
     version: '1.8.2',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT10 y BT11: 56 nuevas versiones añadidas al catálogo.', en: 'Added BT10 & BT11 Promo variants (Alter): 56 new versions added to the catalog.' }
     ]
   },
@@ -6386,6 +6649,8 @@ const CHANGELOG = [
     version: '1.8.1',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT9: 11 nuevas versiones añadidas al catálogo.', en: 'Added BT9 Promo variants (Alter): 11 new versions added to the catalog.' }
     ]
   },
@@ -6393,6 +6658,8 @@ const CHANGELOG = [
     version: '1.8.0',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadido soporte para variantes Promo de BT8 Malicious Machinations.', en: 'Added support for BT8 Malicious Machinations Promo variants.' }
     ]
   },
@@ -6400,6 +6667,8 @@ const CHANGELOG = [
     version: '1.7.9',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT7: 115 nuevas versiones añadidas al catálogo.', en: 'Added BT7 Promo variants (Alter): 115 new versions added to the catalog.' }
     ]
   },
@@ -6407,6 +6676,8 @@ const CHANGELOG = [
     version: '1.7.8',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT6: 70 nuevas versiones añadidas al catálogo.', en: 'Added BT6 Promo variants (Alter): 70 new versions added to the catalog.' }
     ]
   },
@@ -6414,6 +6685,8 @@ const CHANGELOG = [
     version: '1.7.7',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT5: 21 nuevas versiones añadidas al catálogo.', en: 'Added BT5 Promo variants (Alter): 21 new versions added to the catalog.' }
     ]
   },
@@ -6421,6 +6694,8 @@ const CHANGELOG = [
     version: '1.7.6',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT4: 17 nuevas versiones añadidas al catálogo.', en: 'Added BT4 Promo variants (Alter): 17 new versions added to the catalog.' }
     ]
   },
@@ -6428,6 +6703,8 @@ const CHANGELOG = [
     version: '1.7.5',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregida errata en número de carta: BT3-063_PR2 ahora es BT3-063_PR02.', en: 'Corrected card number typo: BT3-063_PR2 is now BT3-063_PR02.' }
     ]
   },
@@ -6435,6 +6712,8 @@ const CHANGELOG = [
     version: '1.7.4',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT3: 22 nuevas versiones añadidas al catálogo.', en: 'Added BT3 Promo variants (Alter): 22 new versions added to the catalog.' }
     ]
   },
@@ -6442,6 +6721,8 @@ const CHANGELOG = [
     version: '1.7.3',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregidas y añadidas variantes Promo (Alter) de BT2: BT2-039_PR integrada correctamente.', en: 'Corrected and added BT2 Promo variants (Alter): BT2-039_PR correctly integrated.' }
     ]
   },
@@ -6449,6 +6730,8 @@ const CHANGELOG = [
     version: '1.7.2',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminada información automática de promociones a petición del usuario', en: 'Removed automatic promo information per user request' }
     ]
   },
@@ -6456,6 +6739,8 @@ const CHANGELOG = [
     version: '1.7.1',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregida P-002: eliminada nota regional que solo aplica a P-001', en: 'Fixed P-002: removed regional note only applying to P-001' },
       { es: 'Refinado formato oficial: añadido prefijo \"PR CARD\" a todas las notas', en: 'Refined official format: added \"PR CARD\" prefix to all notes' },
       { es: 'Ajustada precisión en packs promocionales y dash packs de todas las series', en: 'Adjusted precision in promo packs and dash packs for all series' }
@@ -6465,6 +6750,8 @@ const CHANGELOG = [
     version: '1.7.0',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Sincronización estricta de procedencia con la web oficial (campo Notes)', en: 'Strict synchronization of source origin with the official website (Notes field)' },
       { es: 'Corregida la procedencia de P-001 a P-600 con datos reales paso a paso', en: 'Fixed source origin for P-001 to P-600 with real step-by-step data' },
       { es: 'Añadidas notas específicas de regiones (ej. Latin America para P-001)', en: 'Added region-specific notes (e.g. Latin America for P-001)' }
@@ -6474,6 +6761,8 @@ const CHANGELOG = [
     version: '1.6.0',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Sistema de procedencia de cartas: Ahora puedes ver el producto original de donde proviene cada carta (Tournament Pack, Dash Pack, etc.).', en: 'Card source system: You can now see the original product where each card comes from (Tournament Pack, Dash Pack, etc.).' },
       { es: 'Enriquecimiento de metadatos para más de 700 cartas promocionales y todos los sets principales.', en: 'Metadata enrichment for over 700 promo cards and all main sets.' }
     ]
@@ -6482,6 +6771,8 @@ const CHANGELOG = [
     version: '1.5.0',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Sistema de efectos de brillo (Foil) mejorado y progresivo según la rareza de la carta (R, SR, SPR, SCR, GDR).', en: 'Improved and progressive foil effects based on card rarity (R, SR, SPR, SCR, GDR).' }
     ]
   },
@@ -6489,6 +6780,8 @@ const CHANGELOG = [
     version: '1.4.0',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Ampliación de la colección BT1: Añadidas variantes Promo de BT1-109 y BT1-110.', en: 'BT1 collection expansion: Added Promo variants for BT1-109 and BT1-110.' }
     ]
   },
@@ -6496,6 +6789,8 @@ const CHANGELOG = [
     version: '1.3.9',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo BT1-107_PR y BT1-107_PR02.', en: 'Added BT1-107_PR and BT1-107_PR02 Promo variants.' }
     ]
   },
@@ -6503,6 +6798,8 @@ const CHANGELOG = [
     version: '1.3.8',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo de BT1: BT1-069_PR, BT1-079_PR, BT1-080_PR/02 y BT1-100_PR.', en: 'Added BT1 Promo variants: BT1-069_PR, BT1-079_PR, BT1-080_PR/02 and BT1-100_PR.' }
     ]
   },
@@ -6510,6 +6807,8 @@ const CHANGELOG = [
     version: '1.3.7',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminadas las referencias a precios y valores de mercado del tracker.', en: 'Removed all price and market value references from the tracker.' }
     ]
   },
@@ -6517,6 +6816,8 @@ const CHANGELOG = [
     version: '1.3.6',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregidos datos de BT1: Eliminada variante SPR inexistente de Beerus (BT1-041).', en: 'Fixed BT1 data: Removed non-existent Beerus SPR (BT1-041).' }
     ]
   },
@@ -6524,6 +6825,8 @@ const CHANGELOG = [
     version: '1.3.5',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualización visual y de identidad para un logro secreto.', en: 'Visual and identity update for a secret achievement.' }
     ]
   },
@@ -6531,6 +6834,8 @@ const CHANGELOG = [
     version: '1.3.4',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Nuevo logro secreto para coleccionistas de variantes.', en: 'New secret achievement for variant collectors.' }
     ]
   },
@@ -6538,6 +6843,8 @@ const CHANGELOG = [
     version: '1.3.3',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminado filtro por coste de energía por errores en los datos.', en: 'Removed energy cost filter due to data inaccuracies.' }
     ]
   },
@@ -6545,6 +6852,8 @@ const CHANGELOG = [
     version: '1.3.2',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Implementado filtro por coste de energía (comenzando por BT1).', en: 'Implemented energy cost filter (starting with BT1).' },
       { es: 'Añadidos datos de coste de energía a la colección Galactic Battle (BT1).', en: 'Added energy cost data to Galactic Battle collection (BT1).' }
     ]
@@ -6553,6 +6862,8 @@ const CHANGELOG = [
     version: '1.3.1',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizado estado legal de Senzu Bean (Errata) y añadidas variantes de Whis\'s Coercion.', en: 'Updated Senzu Bean legal status (Errata) and added Whis\'s Coercion variants.' },
       { es: 'Inclusión de metadatos de obtención para las nuevas promos de BT1.', en: 'Included acquisition metadata for new BT1 promos.' }
     ]
@@ -6561,6 +6872,8 @@ const CHANGELOG = [
     version: '1.3.0',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Expansión masiva de la base de datos promocional de BT1 (Champa, Piccolo, Cabba, Objection, Senzu).', en: 'Massive BT1 promo database expansion (Champa, Piccolo, Cabba, Objection, Senzu).' },
       { es: 'Actualización de estados legales y metadatos de obtención para cartas clásicas.', en: 'Updated legal status and acquisition metadata for classic cards.' },
       { es: 'Ajustes en la iconografía de logros de comunidad.', en: 'Adjustments to community achievement iconography.' }
@@ -6570,6 +6883,8 @@ const CHANGELOG = [
     version: '1.2.9',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Mejorada la búsqueda de cartas permitiendo omitir guiones y caracteres especiales en los códigos.', en: 'Improved card search allowing users to omit hyphens and special characters in codes.' },
       { es: 'Normalización de búsqueda para mayor flexibilidad en nombres y números de carta.', en: 'Search normalization for greater flexibility in names and card numbers.' }
     ]
@@ -6578,6 +6893,8 @@ const CHANGELOG = [
     version: '1.2.8',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes promo de BT1-005 (Champa) con metadatos específicos.', en: 'Added BT1-005 (Champa) promo variants with specific metadata.' },
       { es: 'Actualización de la base de datos de cartas licenciadas.', en: 'Updated licensed card database.' }
     ]
@@ -6586,6 +6903,8 @@ const CHANGELOG = [
     version: '1.2.7',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualización del sistema de gestión de activos y optimización de versiones.', en: 'Asset management system update and version optimization.' },
       { es: 'Añadidos nuevos trofeos ocultos al sistema de logros.', en: 'Added new hidden trophies to the achievement system.' }
     ]
@@ -6594,6 +6913,8 @@ const CHANGELOG = [
     version: '1.2.6',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Refactorización de la interfaz de estados legales.', en: 'Refactored legal status interface.' },
       { es: 'Implementación de indicadores visuales (dots) en miniaturas de cartas.', en: 'Implemented visual status indicators (dots) on card thumbnails.' },
       { es: 'Añadidos filtros avanzados por estado legal (Baneada, Limitada, Errata).', en: 'Added advanced filters by legal status (Banned, Limited, Errata).' }
@@ -6603,6 +6924,8 @@ const CHANGELOG = [
     version: '1.2.5',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Implementación de metadatos por expansión (BT1: Galactic Battle).', en: 'Implemented set metadata system (BT1: Galactic Battle).' },
       { es: 'Visualización de legalidad y fechas de lanzamiento en el visor de detalles.', en: 'Legal status and release date visualization in details viewer.' }
     ]
@@ -6611,6 +6934,8 @@ const CHANGELOG = [
     version: '1.2.4',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Unificación de base de datos para estados legales y fechas.', en: 'Unified database for legal status and dates.' },
       { es: 'Mejoras en la consistencia de metadatos globales.', en: 'Global metadata consistency improvements.' }
     ]
@@ -6619,6 +6944,8 @@ const CHANGELOG = [
     version: '1.2.3',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidos activos visuales para logros de colección avanzada.', en: 'Added visual assets for advanced collection achievements.' },
       { es: 'Correcciones menores en la visualización de iconos.', en: 'Minor icon visualization fixes.' }
     ]
@@ -6627,6 +6954,8 @@ const CHANGELOG = [
     version: '1.2.2',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualización de iconos del sistema de logros generales.', en: 'General achievement system icon updates.' },
       { es: 'Optimización de carga de recursos estáticos.', en: 'Static asset loading optimization.' }
     ]
@@ -6635,6 +6964,8 @@ const CHANGELOG = [
     version: '1.2.1',
     date: '21 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Mejoras en el rendimiento de los filtros de búsqueda.', en: 'Search filter performance improvements.' },
       { es: 'Sincronización optimizada con Firestore para inventarios grandes.', en: 'Optimized Firestore sync for large inventories.' }
     ]
@@ -6643,6 +6974,8 @@ const CHANGELOG = [
     version: '1.2.0',
     date: '20 de abril, 2024',
     changes: [
+      { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
+      { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Lanzamiento del nuevo sistema de Logros y Títulos.', en: 'Launch of the new Achievement and Titles system.' },
       { es: 'Nueva vista de estadísticas detalladas por rareza y color.', en: 'New detailed statistics view by rarity and color.' },
       { es: 'Rediseño del panel de perfil de usuario.', en: 'User profile panel redesign.' }
@@ -7084,6 +7417,14 @@ const FUSION_JUDGE_EVENT_PACK_02 = ['FB02-029_JEP02', 'FB02-040_JEP02', 'FB03-01
 const FUSION_JUDGE_EVENT_PACK_03 = ['FB04-007_JEP03', 'FB04-042_JEP03', 'FB04-060_JEP03', 'FB04-072_JEP03', 'FB04-089_JEP03', 'FB04-092_JEP03', 'FB04-112_JEP03', 'FB04-125_JEP03', 'FS06-05_JEP03', 'FS07-06_JEP03'];
 const FUSION_JUDGE_EVENT_PACK_04 = ['FB05-011_JEP04', 'FB05-018_JEP04', 'FB05-041_JEP04', 'FB05-062_JEP04', 'FB05-083_JEP04', 'FB05-114_JEP04', 'FB06-026_JEP04', 'FB06-061_JEP04', 'FB06-085_JEP04', 'FB06-108_JEP04'];
 const FUSION_JUDGE_EVENT_PACK_05 = ['FB07-007_JEP05', 'FB07-011_JEP05', 'FB07-027_JEP05', 'FB07-043_JEP05', 'FB07-063_JEP05', 'FB07-069_JEP05', 'FB07-080_JEP05', 'FB07-085_JEP05', 'FB07-103_JEP05', 'FB07-116_JEP05'];
+
+const EXTRA_SET_CARDS: Record<string, string[]> = {
+  'EXP7': ['BT1-052_PR03', 'BT1-055_PR02', 'BT6-007_PR', 'BT6-029_PR'],
+  'EXP8': ['BT1-053_PR02', 'BT1-110_PR03'],
+  'EXP19': ['BT11-005_PR', 'BT11-005_PR02', 'BT11-054_PR', 'BT11-065_PR', 'BT11-097_PR'],
+  'BT11': ['BT11-054_PR03', 'BT11-065_PR03', 'BT11-097_PR03', 'BT11-153_PR02'],
+  'SD22': ['BT10-098', 'BT10-099', 'BT10-099_PR']
+};
 
 const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_SEALED_TP_FOLDER': [
@@ -8042,6 +8383,7 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
           if (targetSetId === 'COL07') return tags.includes('judge');
           if (PACK_ARRAYS[targetSetId]) return PACK_ARRAYS[targetSetId].includes(c.id);
           if (c.expansion === targetSetId) return true;
+          if (typeof EXTRA_SET_CARDS !== 'undefined' && EXTRA_SET_CARDS[targetSetId] && EXTRA_SET_CARDS[targetSetId].includes(c.id)) return true;
           if (targetSetId.startsWith('FB') && targetSetId !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${targetSetId}`]?.includes(c.id)) return true;
           if (targetSetId === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
           return false;
@@ -8116,6 +8458,7 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
           if (targetSetId === 'COL07') return tags.includes('judge');
           if (PACK_ARRAYS[targetSetId]) return PACK_ARRAYS[targetSetId].includes(c.id);
           if (c.expansion === targetSetId) return true;
+          if (typeof EXTRA_SET_CARDS !== 'undefined' && EXTRA_SET_CARDS[targetSetId] && EXTRA_SET_CARDS[targetSetId].includes(c.id)) return true;
           if (targetSetId.startsWith('FB') && targetSetId !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${targetSetId}`]?.includes(c.id)) return true;
           if (targetSetId === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
           return false;
@@ -8151,6 +8494,7 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
           if (targetSetId === 'COL07') return tags.includes('judge');
           if (PACK_ARRAYS[targetSetId]) return PACK_ARRAYS[targetSetId].includes(c.id);
           if (c.expansion === targetSetId) return true;
+          if (typeof EXTRA_SET_CARDS !== 'undefined' && EXTRA_SET_CARDS[targetSetId] && EXTRA_SET_CARDS[targetSetId].includes(c.id)) return true;
           if (targetSetId.startsWith('FB') && targetSetId !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${targetSetId}`]?.includes(c.id)) return true;
           if (targetSetId === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
           return false;
@@ -12309,6 +12653,7 @@ export default function TrackerApp() {
           const checkItemMatch = (checkItem: any): boolean => {
             if (checkItem.id === c.id) return true;
             if (c.expansion === checkItem.id) return true;
+            if (typeof EXTRA_SET_CARDS !== 'undefined' && EXTRA_SET_CARDS[checkItem.id] && EXTRA_SET_CARDS[checkItem.id].includes(c.id)) return true;
             if (PACK_ARRAYS[checkItem.id] && PACK_ARRAYS[checkItem.id].includes(c.id)) return true;
             if (checkItem.id.startsWith('FB') && checkItem.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
             if (checkItem.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
@@ -12335,6 +12680,7 @@ export default function TrackerApp() {
           const checkItemMatch = (checkItem: any): boolean => {
             if (checkItem.id === c.id) return true;
             if (c.expansion === checkItem.id) return true;
+            if (typeof EXTRA_SET_CARDS !== 'undefined' && EXTRA_SET_CARDS[checkItem.id] && EXTRA_SET_CARDS[checkItem.id].includes(c.id)) return true;
             if (PACK_ARRAYS[checkItem.id] && PACK_ARRAYS[checkItem.id].includes(c.id)) return true;
             if (checkItem.id.startsWith('FB') && checkItem.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
             if (checkItem.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
@@ -12354,6 +12700,7 @@ export default function TrackerApp() {
           const checkItemMatch = (checkItem: any): boolean => {
             if (checkItem.id === c.id) return true;
             if (c.expansion === checkItem.id) return true;
+            if (typeof EXTRA_SET_CARDS !== 'undefined' && EXTRA_SET_CARDS[checkItem.id] && EXTRA_SET_CARDS[checkItem.id].includes(c.id)) return true;
             if (PACK_ARRAYS[checkItem.id] && PACK_ARRAYS[checkItem.id].includes(c.id)) return true;
             if (checkItem.id.startsWith('FB') && checkItem.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
             if (checkItem.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
@@ -12376,6 +12723,7 @@ export default function TrackerApp() {
                const checkItemMatch = (checkItem: any): boolean => {
                  if (checkItem.id === c.id) return true;
                  if (c.expansion === checkItem.id) return true;
+            if (typeof EXTRA_SET_CARDS !== 'undefined' && EXTRA_SET_CARDS[checkItem.id] && EXTRA_SET_CARDS[checkItem.id].includes(c.id)) return true;
                  if (PACK_ARRAYS[checkItem.id] && PACK_ARRAYS[checkItem.id].includes(c.id)) return true;
                  if (checkItem.id.startsWith('FB') && checkItem.id !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${checkItem.id}`]?.includes(c.id)) return true;
                  if (checkItem.id === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(c.id)) return true;
@@ -12468,7 +12816,7 @@ export default function TrackerApp() {
         } else if (PACK_ARRAYS[wantsFilterExpansion]) {
           if (!PACK_ARRAYS[wantsFilterExpansion].includes(card.id)) return false;
         } else {
-          let matchesExp = card.expansion === wantsFilterExpansion;
+          let matchesExp = card.expansion === wantsFilterExpansion || (typeof EXTRA_SET_CARDS !== 'undefined' && EXTRA_SET_CARDS[wantsFilterExpansion] && EXTRA_SET_CARDS[wantsFilterExpansion].includes(card.id));
           if (gameType === 'fusion') {
             if (wantsFilterExpansion.startsWith('FB') && wantsFilterExpansion !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${wantsFilterExpansion}`]?.includes(card.id)) matchesExp = true;
             if (wantsFilterExpansion === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(card.id)) matchesExp = true;
@@ -13262,6 +13610,7 @@ export default function TrackerApp() {
       else {
         matchesExpansion = card.expansion === filters.expansion && !isGiant;
         if (!matchesExpansion && filters.expansion) {
+          if (typeof EXTRA_SET_CARDS !== 'undefined' && EXTRA_SET_CARDS[filters.expansion] && EXTRA_SET_CARDS[filters.expansion].includes(card.id)) matchesExpansion = true;
           if (filters.expansion.startsWith('FB') && filters.expansion !== 'FB10' && PACK_ARRAYS[`FP_RELEASE_${filters.expansion}`]?.includes(card.id)) matchesExpansion = true;
           if (filters.expansion === 'SB01' && PACK_ARRAYS['RE_SB01_FOLDER']?.includes(card.id)) matchesExpansion = true;
           
@@ -13282,7 +13631,9 @@ export default function TrackerApp() {
     const isAlt = isAlternative(card.id) && card.rarity !== 'SPR' && card.rarity !== 'GDR';
     const isVirtual = isVirtualSet(filters.expansion);
     
-    if (!isVirtual && filters.expansion !== 'Todos' && isAlt && !showAlternatives) return false;
+    const isExplicitExtraInAnySet = typeof EXTRA_SET_CARDS !== 'undefined' && Object.values(EXTRA_SET_CARDS).some(arr => arr.includes(card.id));
+    const isExplicitExtra = isExplicitExtraInAnySet || (filters.expansion !== 'Todos' && typeof EXTRA_SET_CARDS !== 'undefined' && EXTRA_SET_CARDS[filters.expansion] && EXTRA_SET_CARDS[filters.expansion].includes(card.id));
+    if (!isVirtual && !isExplicitExtra && filters.expansion !== 'Todos' && isAlt && !showAlternatives) return false;
 
     // Filters from the modal
     const matchesRarity = filters.rarities.length === 0 || filters.rarities.includes(card.rarity);
@@ -13447,6 +13798,7 @@ export default function TrackerApp() {
         } else {
           let matchesExp = false;
           if (card.expansion === filters.expansion) matchesExp = true;
+          if (typeof EXTRA_SET_CARDS !== 'undefined' && EXTRA_SET_CARDS[filters.expansion] && EXTRA_SET_CARDS[filters.expansion].includes(card.id)) matchesExp = true;
           if (currentGroups) {
             for (const g of currentGroups) {
               const matchedItem = g.items?.find(i => i.id === filters.expansion);
@@ -16569,9 +16921,6 @@ export default function TrackerApp() {
               <div className="space-y-6">
                 <div className="flex justify-between items-center bg-[#1E1E1E] p-4 rounded-2xl border border-white/5 shadow-xl">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-orange-500/10 rounded-xl flex items-center justify-center text-orange-500">
-                      <Layers size={20} />
-                    </div>
                     <div className="text-left flex-1">
                       <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest leading-none mb-1">{t.currentSet}</p>
                       <h3 className="font-black text-sm text-white leading-tight uppercase italic">{getExpansionName(filters.expansion)}</h3>
