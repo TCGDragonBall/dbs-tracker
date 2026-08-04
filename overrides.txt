@@ -1,0 +1,8 @@
+  'BT18-089_GOLD': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT18-089_PR.png',
+  'BT18-089_GOLD_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT18-089_PR02_b.png',
+  'BT19-034_GOLD': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT19-034.png',
+  'BT19-034_GOLD_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT19-034_PR_b.png',
+  'BT20-114_GOLD': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT20-114.png',
+  'BT20-114_GOLD_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT20-114_PR_b.png',
+  'BT22-054_GOLD': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT22-054.png',
+  'BT22-054_GOLD_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT22-054_PR_b.png',

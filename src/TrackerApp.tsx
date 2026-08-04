@@ -2988,6 +2988,17 @@ const EXTRA_VARIANTS_OTAKON: Record<string, { id: string; label: Record<string, 
 };
 
 const IMAGE_OVERRIDES: Record<string, string> = {
+  'BT18-089_ANNY': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT18-089_PR.png',
+  'BT18-089_ANNY_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT18-089_PR02_b.png',
+  'BT19-034_ANNY': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT19-034.png',
+  'BT19-034_ANNY_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT19-034_PR_b.png',
+  'BT20-114_ANNY': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT20-114.png',
+  'BT20-114_ANNY_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT20-114_PR_b.png',
+  'BT22-054_ANNY': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT22-054.png',
+  'BT22-054_ANNY_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT22-054_PR_b.png',
+  'SD17-01_PR_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/SD17-01_PR_b.png',
+  'SD22-01_PR_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/SD22-01_PR_b.png',
+  'SD23-01_PR_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/SD23-01_PR_b.png',
   'BT6-029_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT6-029_PR.png',
 
   'BT6-007_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT6-007_PR.png',
@@ -5564,6 +5575,8 @@ const CHANGELOG = [
     version: '4.1.15',
     date: '1 de agosto de 2026',
     changes: [
+      { es: 'Añadidas versiones prerelease doradas independientes (BT18-089_ANNY, BT19-034_ANNY, BT20-114_ANNY, BT22-054_ANNY).', en: 'Added independent gold prerelease versions (BT18-089_ANNY, BT19-034_ANNY, BT20-114_ANNY, BT22-054_ANNY).' },
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas imágenes para BT11-054_PR y BT11-097_PR.', en: 'Added images for BT11-054_PR and BT11-097_PR.' },
@@ -5582,6 +5595,7 @@ const CHANGELOG = [
     version: '4.1.14',
     date: '29 de julio de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminado el icono redundante en la cabecera de los sets y eliminada la carta duplicada BT13-071_PR.', en: 'Removed redundant icon in set headers and deleted duplicate card BT13-071_PR.' }
@@ -5592,6 +5606,7 @@ const CHANGELOG = [
     version: '4.1.13',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas las cartas de Championship 2021 Tournament Pack Vault Set Finalist en la categoría de coleccionismo.', en: 'Added Championship 2021 Tournament Pack Vault Set Finalist cards in collections.' }
@@ -5602,6 +5617,7 @@ const CHANGELOG = [
     version: '4.1.12',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas las cartas de Championship 2021 Tournament Pack Vault Set Side Event en la categoría de coleccionismo y corregido el formato de rarezas ALT y (★★).', en: 'Added Championship 2021 Tournament Pack Vault Set Side Event cards in collections and fixed ALT and (★★) rarity formats.' }
@@ -5614,6 +5630,7 @@ const CHANGELOG = [
     version: '5.4.4',
     date: '14 de julio de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregida y perfeccionada la lógica de filtrado "No tengo / Faltantes" para respetar estrictamente las reglas de modo Jugador y Coleccionista. En modo Jugador, una carta desaparecerá si se tienen 4 copias, combinando las versiones normales y foil para determinar el playset. En modo Coleccionista, desaparecerá si se tiene al menos 1 copia, pero cada arte alternativo o versión rara especial se considerará de forma individual y seguirá apareciendo hasta tener su propia copia.', en: 'Fixed and perfected the "Not Owned / Missing" filtering logic to strictly adhere to Player and Collector modes. In Player mode, a card will be hidden if you have 4 copies, combining regular and foil versions to determine the playset. In Collector mode, it will be hidden if you have at least 1 copy, but each alternate art or special rare version will be considered individually and will continue to appear until you obtain its own copy.' }
@@ -5623,6 +5640,7 @@ const CHANGELOG = [
     version: '5.4.3',
     date: '23 de junio de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidos los nuevos sobres y conjuntos de cartas de Championship Pack 2020 Vol. 2, Event Pack 06, Event Pack 07, y UW Tournament Pack Vol. 1 y Vol. 2 en el módulo de Coleccionismo y Sellado con imágenes oficiales de alta calidad.', en: 'Added new pack profiles and card sets for Championship Pack 2020 Vol. 2, Event Pack 06, Event Pack 07, and UW Tournament Pack Vol. 1 and Vol. 2 in both Coleccionismo and Sealed modules with high-quality official images.' }
@@ -5632,6 +5650,7 @@ const CHANGELOG = [
     version: '5.4.2',
     date: '23 de junio de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadida la nueva sección "Fundas (Sleeves)" a "Coleccionismo" en el modo Masters, registrando la primera funda oficial "Gogeta Blue" con su descripción detallada (Draft Box 05 Tournament) e imagen de alta definición.', en: 'Added the new "Fundas (Sleeves)" section to "Coleccionismo" in Masters mode, registering the first official "Gogeta Blue" sleeve with its detailed description (Draft Box 05 Tournament) and high-definition image.' }
@@ -5641,6 +5660,7 @@ const CHANGELOG = [
     version: '5.4.1',
     date: '23 de junio de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Habilitado y enlazado el catálogo completo de cartas "Draft Box Tournament" de DB1 y DB2/Divine Multiverse, asociando urls de imágenes oficiales de alta definición directamente. Eliminados varios registros duplicados innecesarios de cartas de DB1 (DB1-002_PR, DB1-021_PR02, DB1-040_PR y DB1-057_PR02).', en: 'Enabled and linked full "Draft Box Tournament" card catalog variants for DB1 and DB2/Divine Multiverse, associating official high-definition image URLs directly. Removed unnecessary DB1 duplicate card mappings (DB1-002_PR, DB1-021_PR02, DB1-040_PR, and DB1-057_PR02).' }
@@ -5650,6 +5670,7 @@ const CHANGELOG = [
     version: '5.4.0',
     date: '22 de junio de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas las cartas de Collection\'s Selection Vol. 1, 2 y 3, así como las dos Theme Selection (History of Son Goku y History of Vegeta).', en: 'Added Collector\'s Selection Vol. 1, 2 and 3 cards, along with the two Theme Selection sets (History of Son Goku and History of Vegeta).' }
@@ -5659,6 +5680,7 @@ const CHANGELOG = [
     version: '5.3.0',
     date: '5 de junio de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas las nuevas cartas promocionales del Ultimate Battle 2026 Vol. 3 (Participation Promo FP-092, Top 8 Extra FB09-096_UB_26_V3_T8 y Winner Battle FB10-040_UB_26_V3_W).', en: 'Added new promo cards for Ultimate Battle 2026 Vol. 3 (Participation Promo FP-092, Top 8 Extra FB09-096_UB_26_V3_T8, and Winner Battle FB10-040_UB_26_V3_W).' }
@@ -5668,6 +5690,7 @@ const CHANGELOG = [
     version: '5.2.0',
     date: '2 de junio de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Incorporada la nueva colección Dragon Ball Super Card Game Fusion World: FB10 Ultimate Squad.', en: 'Added the new Dragon Ball Super Card Game Fusion World set: FB10 Ultimate Squad.' },
@@ -5679,6 +5702,7 @@ const CHANGELOG = [
     version: '5.1.0',
     date: '28 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: '¡Lanzamiento del nuevo Modo Listas! Renombrado el sistema anterior de "Selecciones" a "Tus Listas" en toda la plataforma. Corregida la lógica para que los playsets respeten las reglas propias de copia (1 copia para líderes y cartas SCR/GDR en Masters; 1 copia para líderes en Fusion World), con vinculación en tiempo real de las cantidades obtenidas directamente de tu inventario para ambos modos de colección.', en: 'New List Mode Launch! Renamed the previous "selections" system to "Your Lists" across the platform. Corrected the playset logical system to respect individual copy limits (1 copy for leaders and SCR/GDR in Masters; 1 copy for leaders in Fusion World), linking obtained status directly with local inventory in real-time.' }
@@ -5688,6 +5712,7 @@ const CHANGELOG = [
     version: '5.0.26',
     date: '22 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizadas múltiples cartas promocionales de Masters (se han añadido P-442_PR02/PR03 y P-479_PR02/PR03, se han configurado URLs específicas para variantes existentes y se ha corregido el formato para la carta P-270_JP14). Se han eliminado variantes incorrectas.', en: 'Updated multiple Masters promo cards (added P-442_PR02/PR03 and P-479_PR02/PR03, configured specific URLs for existing variants, and fixed format for P-270_JP14). Removed incorrect variants.' }
@@ -5697,6 +5722,7 @@ const CHANGELOG = [
     version: '5.0.25',
     date: '22 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas las nuevas cartas promocionales de Masters (Ultra-bout Series TOURNAMENT PACK VOL.3 P-739 a P-754 con sus variantes Winner).', en: 'Added new Masters promo cards (Ultra-bout Series TOURNAMENT PACK VOL.3 P-739 to P-754 with Winner variants).' }
@@ -5706,6 +5732,7 @@ const CHANGELOG = [
     version: '5.0.24',
     date: '21 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminados duplicados de PR02/PR03 no solicitados explícitamente en cartas que ya tenían variante Winner (_W).', en: 'Removed explicitly unrequested PR02/PR03 duplicates on cards that already had a Winner (_W) variant.' }
@@ -5715,6 +5742,7 @@ const CHANGELOG = [
     version: '5.0.23',
     date: '21 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Resuelto problema con imágenes de promos terminadas en _W (Winner).', en: 'Resolved issue with images for promos ending in _W (Winner).' }
@@ -5724,6 +5752,7 @@ const CHANGELOG = [
     version: '5.0.22',
     date: '21 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes de DB2 y EX, y eliminación de la promo EX6-30_PR.', en: 'Added DB2 and EX variants, and removed the EX6-30_PR promo.' }
@@ -5733,6 +5762,7 @@ const CHANGELOG = [
     version: '5.0.21',
     date: '21 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizadas variantes de EB1 y DB1, añadiendo imágenes correctas para los PR y eliminando repeticiones', en: 'Updated EB1 and DB1 variants, adding correct images for PRs and removing repetitions.' }
@@ -5742,6 +5772,7 @@ const CHANGELOG = [
     version: '5.0.20',
     date: '21 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminadas promos de EB1 inexistentes y añadida la imagen de la promo EB1-22_PR03.', en: 'Removed some non-existent EB1 promos and added EB1-22_PR03 image.' }
@@ -5751,6 +5782,7 @@ const CHANGELOG = [
     version: '5.0.19',
     date: '21 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizadas variantes de TB1, eliminada promo inexistente de TB3 y corregidos los IDs de las cartas del set EB1.', en: 'Updated TB1 variants, removed non-existent TB3 promo, and fixed EB1 set card IDs.' }
@@ -5760,6 +5792,7 @@ const CHANGELOG = [
     version: '5.0.18',
     date: '21 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizada la lista de cartas baneadas y limitadas (efectivos desde el 3 de julio de 2026).', en: 'Updated the banned and limited cards list (effective July 3, 2026).' }
@@ -5769,6 +5802,7 @@ const CHANGELOG = [
     version: '5.0.17',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Restauradas las marcas de limitación y baneo que habían desaparecido por error de la interfaz.', en: 'Restored the limitation and ban marks that had mistakenly disappeared from the interface.' },
@@ -5779,6 +5813,7 @@ const CHANGELOG = [
     version: '5.0.16',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas imágenes para promos de BT19, BT21, BT22 y BT23, y eliminadas entradas redundantes.', en: 'Added images for BT19, BT21, BT22, and BT23 promos, and removed redundant entries.' }
@@ -5788,6 +5823,7 @@ const CHANGELOG = [
     version: '5.0.15',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas imágenes para promos de BT17 y BT18, y limpiezas menores en data.', en: 'Added images for BT17 and BT18 promos, and minor cleanups in data.' }
@@ -5797,6 +5833,7 @@ const CHANGELOG = [
     version: '5.0.14',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas imágenes para promos de BT14, BT15 y BT16.', en: 'Added images for BT14, BT15, and BT16 promos.' }
@@ -5806,6 +5843,7 @@ const CHANGELOG = [
     version: '5.0.13',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas imágenes para promos de BT11.', en: 'Added images for BT11 promos.' }
@@ -5815,6 +5853,7 @@ const CHANGELOG = [
     version: '5.0.12',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas imágenes para promos de BT9 y BT10.', en: 'Added images for BT9 and BT10 promos.' }
@@ -5824,6 +5863,7 @@ const CHANGELOG = [
     version: '5.0.11',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregida imagen de BT7-073_EP17, BT7-057_PR y añadida BT8-017_PR02.', en: 'Fixed BT7-073_EP17, BT7-057_PR images and added BT8-017_PR02.' }
@@ -5833,6 +5873,7 @@ const CHANGELOG = [
     version: '5.0.10',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregidas imágenes de promos de BT7.', en: 'Fixed BT7 promo images.' }
@@ -5842,6 +5883,7 @@ const CHANGELOG = [
     version: '5.0.9',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregidas imágenes de promos de BT6.', en: 'Fixed BT6 promo images.' }
@@ -5851,6 +5893,7 @@ const CHANGELOG = [
     version: '5.0.8',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregidas imágenes de promos de BT5 y añadida BT5-050_PR03.', en: 'Fixed BT5 promo images and added BT5-050_PR03.' }
@@ -5860,6 +5903,7 @@ const CHANGELOG = [
     version: '5.0.7',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregidas imágenes de promos de BT3.', en: 'Fixed BT3 promo images.' }
@@ -5869,6 +5913,7 @@ const CHANGELOG = [
     version: '5.0.6',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregida imagen de BT2-064_PR02.', en: 'Fixed BT2-064_PR02 image.' }
@@ -5878,6 +5923,7 @@ const CHANGELOG = [
     version: '5.0.5',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregidas varias promos y metadatos de BT1, y arreglado BT24-138 GDR.', en: 'Fixed several BT1 promos/metadata and fixed BT24-138 GDR.' }
@@ -5887,6 +5933,7 @@ const CHANGELOG = [
     version: '5.0.4',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregidas las imágenes de los Judge Packs 04 y 05, y ajustado el orden lógico dentro de sus sets base.', en: 'Fix Judge Packs 04 and 05 images and logic sort inside their expansion set.' }
@@ -5896,6 +5943,7 @@ const CHANGELOG = [
     version: '5.0.3',
     date: '20 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas las cartas de los Judge Store y Event Packs 04 y 05 para Fusion World.', en: 'Added Judge Store and Event Packs 04 and 05 cards to Fusion World.' }
@@ -5905,6 +5953,7 @@ const CHANGELOG = [
     version: '5.0.2',
     date: '15 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Nuevo tutorial interactivo para ayudar a los nuevos usuarios a familiarizarse con la app.', en: 'New interactive tutorial to help new users familiarize themselves with the app.' },
@@ -5915,6 +5964,7 @@ const CHANGELOG = [
     version: '5.0.1',
     date: '15 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadido botón de donaciones en el perfil para apoyar el proyecto mediante Ko-fi.', en: 'Added donation button in profile to support the project via Ko-fi.' },
@@ -5926,6 +5976,7 @@ const CHANGELOG = [
     version: '5.0.0',
     date: '14 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: '¡Hito alcanzado! Catálogo de Fusion World completado al 100%.', en: 'Milestone reached! Fusion World catalog 100% complete.' },
@@ -5936,6 +5987,7 @@ const CHANGELOG = [
     version: '4.6.0',
     date: '13 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Implementado el sistema avanzado de origen de cartas con navegación inteligente al pack/set correspondiente.', en: 'Implemented advanced card origin system with smart navigation to the corresponding pack/set.' },
@@ -5947,6 +5999,7 @@ const CHANGELOG = [
     version: '4.5.0',
     date: '13 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Nueva categoría "Ultimate Battle" añadida con subcategorías por años.', en: 'New "Ultimate Battle" category added with subcategories by year.' },
@@ -5958,6 +6011,7 @@ const CHANGELOG = [
     version: '4.4.0',
     date: '13 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas las cartas del Tournament Pack 02 (Normal y Winner) a Fusion World.', en: 'Added Tournament Pack 02 cards (Normal and Winner) to Fusion World.' },
@@ -5969,6 +6023,7 @@ const CHANGELOG = [
     version: '4.3.0',
     date: '13 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas nuevas categorías a Fusion World: Sleeves, Premium Card Collection, Cases, Serial Cards y Accessories.', en: 'Added new categories to Fusion World: Sleeves, Premium Card Collection, Cases, Serial Cards, and Accessories.' },
@@ -5981,6 +6036,7 @@ const CHANGELOG = [
     version: '4.2.1',
     date: '9 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Optimizaciones críticas de Firestore para reducir el consumo de cuota de lectura.', en: 'Critical Firestore optimizations to reduce read quota consumption.' },
@@ -5992,6 +6048,7 @@ const CHANGELOG = [
     version: '4.2.0',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Implementado filtro de propiedad (Tengo / No tengo) en todas las vistas.', en: 'Implemented ownership filter (Owned / Not Owned) across all views.' },
@@ -6002,6 +6059,7 @@ const CHANGELOG = [
     version: '4.1.11',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Implementado formato apaisado (landscape) especial para Playmats en todas las vistas.', en: 'Implemented special landscape format for Playmats across all views.' },
@@ -6012,6 +6070,7 @@ const CHANGELOG = [
     version: '4.1.10',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizada la imagen del Playmat 40th Anniversary y optimizada la navegación de Playmats.', en: 'Updated 40th Anniversary Playmat image and optimized Playmats navigation.' },
@@ -6022,6 +6081,7 @@ const CHANGELOG = [
     version: '4.1.9',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadido el nuevo Playmat oficial del 40 aniversario (40th Anniversary ver.) y habilitada la categoría de Playmats.', en: 'Added the new official 40th Anniversary Playmat and enabled the Playmats category.' }
@@ -6031,6 +6091,7 @@ const CHANGELOG = [
     version: '4.1.8',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Nuevas imágenes de fondo para las expansiones ST01 (Starter Deck) y FB10 (Ultimate Squad).', en: 'New background images for ST01 (Starter Deck) and FB10 (Ultimate Squad) expansions.' }
@@ -6040,6 +6101,7 @@ const CHANGELOG = [
     version: '4.1.7',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas ilustraciones para cartas promocionales FB06, FB07 y FB08 en Fusion World.', en: 'Added artworks for FB06, FB07, and FB08 promotional cards in Fusion World.' },
@@ -6050,6 +6112,7 @@ const CHANGELOG = [
     version: '4.1.6',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizadas múltiples ilustraciones de cartas promocionales FB05 en Fusion World.', en: 'Updated multiple FB05 promotional card artworks in Fusion World.' },
@@ -6060,6 +6123,7 @@ const CHANGELOG = [
     version: '4.1.5',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Optimizado el acceso a Box en Fusion World: ahora redirige directamente al listado.', en: 'Optimized access to Box in Fusion World: now redirects directly to the list.' },
@@ -6070,6 +6134,7 @@ const CHANGELOG = [
     version: '4.1.4',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidos Energy Markers de Fusion World (E01, E02, E03) y múltiples versiones alternativas.', en: 'Added Fusion World Energy Markers (E01, E02, E03) and multiple alternative versions.' },
@@ -6081,6 +6146,7 @@ const CHANGELOG = [
     version: '4.1.3',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Activada la categoría de Energy Markers en la sección de Fusion World.', en: 'Activated the Energy Markers category in the Fusion World section.' },
@@ -6091,6 +6157,7 @@ const CHANGELOG = [
     version: '4.1.1',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregida la ruta de la imagen para la carta promocional FB01-049_A_FB03, asegurando que se muestre la versión correcta (p3).', en: 'Fixed the image path for celebratory card FB01-049_A_FB03, ensuring the correct version (p3) is displayed.' },
@@ -6102,6 +6169,7 @@ const CHANGELOG = [
     version: '4.1.0',
     date: '8 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Mejorada la lógica de carga de imágenes para Fusion World, garantizando que todas las versiones promocionales y reimpresiones se muestren correctamente mediante un sistema de overrides unificado.', en: 'Improved image loading logic for Fusion World, ensuring all promotional and reprint versions display correctly via a unified overrides system.' },
@@ -6113,6 +6181,7 @@ const CHANGELOG = [
     version: '4.0.0',
     date: '7 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: '¡Lanzamiento oficial de Dragon Ball Super Card Game Fusion World para todos los usuarios!', en: 'Official release of Dragon Ball Super Card Game Fusion World for all users!' },
@@ -6124,6 +6193,7 @@ const CHANGELOG = [
     version: '3.3.4',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Modificados los filtros para permitir la selección múltiple de rarezas simultáneamente.', en: 'Modified filters to allow multiple rarity selections simultaneously.' }
@@ -6133,6 +6203,7 @@ const CHANGELOG = [
     version: '3.3.3',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Desactivado el menú contextual nativo en móviles para mejorar la experiencia de selección múltiple al mantener pulsado.', en: 'Disabled native context menu on mobile to improve long-press multi-select experience.' }
@@ -6142,6 +6213,7 @@ const CHANGELOG = [
     version: '3.3.2',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Optimizado el tiempo de respuesta de la pulsación larga (500ms) y eliminada la necesidad de mover el cursor para activar la selección.', en: 'Optimized long-press response time (500ms) and removed the need to move the cursor to activate selection.' }
@@ -6151,6 +6223,7 @@ const CHANGELOG = [
     version: '3.3.1',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Refinada la visualización en selección múltiple: las cartas no obtenidas permanecen en blanco y negro si no están seleccionadas para facilitar la identificación de faltantes.', en: 'Refined multi-select visualization: unowned cards stay in black and white if not selected to make missing ones easier to spot.' }
@@ -6160,6 +6233,7 @@ const CHANGELOG = [
     version: '3.3.0',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Implementado sistema de selección múltiple manteniendo pulsada una carta.', en: 'Implemented multi-selection system by long-pressing a card.' },
@@ -6171,6 +6245,7 @@ const CHANGELOG = [
     version: '3.2.6',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregido el conteo total de cartas Leader Rare (_SLR) en las estadísticas.', en: 'Fixed total count of Leader Rare cards (_SLR) in statistics.' },
@@ -6181,6 +6256,7 @@ const CHANGELOG = [
     version: '3.2.5',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Traducción de los nombres de colores en estadísticas y filtros.', en: 'Translation of color names in statistics and filters.' },
@@ -6192,6 +6268,7 @@ const CHANGELOG = [
     version: '3.2.4',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminada la carta duplicada EX13-30_PR del catálogo.', en: 'Removed duplicate card EX13-30_PR from the catalog.' }
@@ -6201,6 +6278,7 @@ const CHANGELOG = [
     version: '3.2.3',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Sincronización persistente de preferencias (idioma y tipo de coleccionista) en la nube: ahora tus ajustes se mantienen entre dispositivos y sesiones al iniciar sesión.', en: 'Persistent cloud synchronization of preferences (language and collector type): your settings now remain consistent across devices and sessions when logging in.' },
@@ -6211,6 +6289,7 @@ const CHANGELOG = [
     version: '3.2.2',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Migración masiva de imágenes de fondo al directorio local (/public) para garantizar su correcta visualización.', en: 'Mass migration of background images to the local directory (/public) to guarantee correct display.' },
@@ -6221,6 +6300,7 @@ const CHANGELOG = [
     version: '3.2.1',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregida la consistencia del número de versión en la interfaz y el sistema de actualización.', en: 'Fixed version number consistency in the UI and update system.' }
@@ -6230,6 +6310,7 @@ const CHANGELOG = [
     version: '3.2.0',
     date: '5 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas imágenes de fondo personalizadas para todos los Starter Decks (SD1-SD23) y Expert Decks (XD1-XD3).', en: 'Added custom background images for all Starter Decks (SD1-SD23) and Expert Decks (XD1-XD3).' },
@@ -6241,6 +6322,7 @@ const CHANGELOG = [
     version: '3.1.0',
     date: '4 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'La aplicación ha sido renombrada oficialmente a DBSCG Masters Tracker.', en: 'The application has been officially renamed to DBSCG Masters Tracker.' },
@@ -6253,6 +6335,7 @@ const CHANGELOG = [
     version: '3.0.0',
     date: '2 de mayo de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Versión 3.0.0 establecida tras la reestructuración completa y correcta inclusión de las versiones promocionales (Event Packs y Judge Packs) integradas numéricamente junto a sus versiones base dentro de cada set, eliminando duplicados.', en: 'Version 3.0.0 established after the complete restructuring and correct inclusion of promotional versions (Event Packs and Judge Packs) numerically integrated next to their base versions within each set, eliminating duplicates.' }
@@ -6262,6 +6345,7 @@ const CHANGELOG = [
     version: '2.9.8',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizadas las imágenes de los ENERGY MARKERS con URLs de alta calidad de TCGPlayer.', en: 'Updated ENERGY MARKERS images with high-quality URLs from TCGPlayer.' }
@@ -6271,6 +6355,7 @@ const CHANGELOG = [
     version: '2.9.7',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Nueva categoría de coleccionismo: ENERGY MARKERS. Incluye listado completo M-01 a M-53 con sus imágenes correspondientes.', en: 'New collection category: ENERGY MARKERS. Includes complete list M-01 to M-53 with corresponding images.' }
@@ -6280,6 +6365,7 @@ const CHANGELOG = [
     version: '2.9.6',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Reducido el tamaño de fuente de los títulos de los sets para un diseño más estilizado y compacto.', en: 'Reduced set title font size for a more stylized and compact design.' }
@@ -6289,6 +6375,7 @@ const CHANGELOG = [
     version: '2.9.5',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Mejorada la interfaz de las categorías: nombres de sets siempre alineados a la izquierda y eliminación de subtítulos redundantes.', en: 'Improved category interface: set names always left-aligned and removal of redundant subtitles.' }
@@ -6298,6 +6385,7 @@ const CHANGELOG = [
     version: '2.9.4',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'El aviso a la comunidad ahora se muestra una vez por semana. Mejoras en la navegación y scroll del modal en dispositivos móviles.', en: 'Community notice now appears once a week. Improved modal navigation and scrolling on mobile devices.' }
@@ -6307,6 +6395,7 @@ const CHANGELOG = [
     version: '2.9.3',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregida la alineación de los nombres de los sets (siempre a la izquierda) y eliminados los subtítulos redundantes en las listas de expansiones.', en: 'Fixed set names alignment (always left-aligned) and removed redundant sub-titles in expansion lists.' }
@@ -6316,6 +6405,7 @@ const CHANGELOG = [
     version: '2.9.2',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminadas las cartas con el sufijo genérico _JP que estaban duplicadas respecto a sus versiones en Judge Packs específicos (ej. _JP07).', en: 'Removed cards with the generic _JP suffix that were duplicates of their specific Judge Pack versions (e.g. _JP07).' }
@@ -6325,6 +6415,7 @@ const CHANGELOG = [
     version: '2.9.1',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminadas las cartas con el sufijo genérico _EP que estaban duplicadas respecto a sus versiones en Event Packs específicos (ej. _EP03).', en: 'Removed cards with the generic _EP suffix that were duplicates of their specific Event Pack versions (e.g. _EP03).' },
@@ -6335,6 +6426,7 @@ const CHANGELOG = [
     version: '2.9.0',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas Merit Cards como nueva categoría de coleccionismo: 22 cartas exclusivas de eventos añadidas al listado.', en: 'Added Merit Cards as a new collectible category: 22 event-exclusive cards added to the list.' }
@@ -6344,6 +6436,7 @@ const CHANGELOG = [
     version: '2.8.1',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminadas cartas duplicadas de la sección Promos que ya estaban disponibles en Event Packs y Judge Packs.', en: 'Removed duplicate cards from Promos section that were already available in Event Packs and Judge Packs.' }
@@ -6353,6 +6446,7 @@ const CHANGELOG = [
     version: '2.8.0',
     date: '30 de abril de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidos Tokens como nueva categoría de coleccionismo con todas sus variantes (Tokens de Campeonato, etc).', en: 'Added Tokens as a new collectible category with all their variants (Championship Tokens, etc).' },
@@ -6364,6 +6458,7 @@ const CHANGELOG = [
     version: '2.1.05',
     date: '25 de abril de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizada la lista de cartas baneadas con más de 60 nuevas incorporaciones.', en: 'Updated the banned cards list with over 60 new entries.' },
@@ -6374,6 +6469,7 @@ const CHANGELOG = [
     version: '2.1.04',
     date: '25 de abril de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadida referencia oficial para cartas baneadas y limitadas.', en: 'Added official reference for banned and limited cards.' }
@@ -6383,6 +6479,7 @@ const CHANGELOG = [
     version: '2.1.03',
     date: '25 de abril de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregido el estado legal de la última tanda de cartas a "Limitadas" (1 copia).', en: 'Corrected legal status of the latest batch of cards to "Limited" (1 copy).' },
@@ -6393,6 +6490,7 @@ const CHANGELOG = [
     version: '2.1.02',
     date: '25 de abril de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadido el estado legal "Baneada (BO1)" y listado de cartas baneadas en este formato.', en: 'Added "Banned (BO1)" legal status and list of banned cards for this format.' },
@@ -6403,6 +6501,7 @@ const CHANGELOG = [
     version: '2.1.01',
     date: '25 de abril de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Nuevo formato de versión implementado (2.1.01).', en: 'New version format implemented (2.1.01).' },
@@ -6416,6 +6515,7 @@ const CHANGELOG = [
     version: '2.1.00',
     date: '25 de abril de 2026',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregido error de persistencia en notificaciones de logros.', en: 'Fixed persistence bug in achievement notifications.' },
@@ -6427,6 +6527,7 @@ const CHANGELOG = [
     version: '2.0.0',
     date: '24 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: '¡Versión 2.0! Completada la integración de todas las variantes oficiales (PR, SPR, etc.) detectadas en la web oficial.', en: 'Version 2.0! Completed integration of all official variants (PR, SPR, etc.) detected from the official website.' },
@@ -6437,6 +6538,7 @@ const CHANGELOG = [
     version: '1.9.7',
     date: '24 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR de BT26 y BT27: 33 nuevas versiones añadidas.', en: 'Added PR variants for BT26 and BT27: 33 new versions added.' }
@@ -6446,6 +6548,7 @@ const CHANGELOG = [
     version: '1.9.6',
     date: '24 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR y SPR de BT25 Legend of the Dragon Balls: 26 nuevas versiones añadidas.', en: 'Added PR and SPR variants for BT25 Legend of the Dragon Balls: 26 new versions added.' }
@@ -6455,6 +6558,7 @@ const CHANGELOG = [
     version: '1.9.5',
     date: '24 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR y SPR de BT24 Beyond Evolution: 95 nuevas versiones añadidas.', en: 'Added PR and SPR variants for BT24 Beyond Evolution: 95 new versions added.' }
@@ -6464,6 +6568,7 @@ const CHANGELOG = [
     version: '1.9.4',
     date: '24 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR de BT23 Perfect Combination: 10 nuevas versiones añadidas.', en: 'Added PR variants for BT23 Perfect Combination: 10 new versions added.' }
@@ -6473,6 +6578,7 @@ const CHANGELOG = [
     version: '1.9.3',
     date: '24 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR de BT22 Critical Blow: 21 nuevas versiones añadidas.', en: 'Added PR variants for BT22 Critical Blow: 21 new versions added.' }
@@ -6482,6 +6588,7 @@ const CHANGELOG = [
     version: '1.9.2',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR de BT21 Wild Resurgence: 17 nuevas versiones añadidas.', en: 'Added PR variants for BT21 Wild Resurgence: 17 new versions added.' }
@@ -6491,6 +6598,7 @@ const CHANGELOG = [
     version: '1.9.1',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR de BT20 Power Absorbed: 78 nuevas versiones añadidas al catálogo.', en: 'Added PR variants for BT20 Power Absorbed: 78 new versions added to the catalog.' }
@@ -6500,6 +6608,7 @@ const CHANGELOG = [
     version: '1.9.0',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR y SPR de BT19 Fighter’s Ambition: 18 nuevas versiones añadidas.', en: 'Added PR and SPR variants for BT19 Fighter’s Ambition: 18 new versions added.' }
@@ -6509,6 +6618,7 @@ const CHANGELOG = [
     version: '1.8.9',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR y SPR de BT18 Dawn of the Z-Legends: 31 nuevas versiones añadidas.', en: 'Added PR and SPR variants for BT18 Dawn of the Z-Legends: 31 new versions added.' }
@@ -6518,6 +6628,7 @@ const CHANGELOG = [
     version: '1.8.8',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR y SPR de BT17 Ultimate Fusion: 14 nuevas versiones añadidas.', en: 'Added PR and SPR variants for BT17 Ultimate Fusion: 14 new versions added.' }
@@ -6527,6 +6638,7 @@ const CHANGELOG = [
     version: '1.8.7',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes PR y SPR de BT16 Realm of the Gods: 19 nuevas versiones añadidas.', en: 'Added PR and SPR variants for BT16 Realm of the Gods: 19 new versions added.' }
@@ -6536,6 +6648,7 @@ const CHANGELOG = [
     version: '1.8.6',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) y SPR de BT15: 9 nuevas versiones añadidas al catálogo.', en: 'Added BT15 Promo variants (Alter) and SPRs: 9 new versions added to the catalog.' }
@@ -6545,6 +6658,7 @@ const CHANGELOG = [
     version: '1.8.5',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT14: 14 nuevas versiones añadidas al catálogo.', en: 'Added BT14 Promo variants (Alter): 14 new versions added to the catalog.' }
@@ -6554,6 +6668,7 @@ const CHANGELOG = [
     version: '1.8.4',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT13: 15 nuevas versiones añadidas al catálogo.', en: 'Added BT13 Promo variants (Alter): 15 new versions added to the catalog.' }
@@ -6563,6 +6678,7 @@ const CHANGELOG = [
     version: '2.7.1',
     date: '29 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Diseño de cartas más moderno con bordes menos redondeados.', en: 'More modern card design with less rounded corners.' },
@@ -6574,6 +6690,7 @@ const CHANGELOG = [
     version: '2.7.0',
     date: '28 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidos Event Packs 13, 14, 15, 16, 17 y 18 con todas sus variantes promocionales.', en: 'Added Event Packs 13, 14, 15, 16, 17, and 18 with all their promo variants.' }
@@ -6583,6 +6700,7 @@ const CHANGELOG = [
     version: '2.6.0',
     date: '27 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizado Event Pack 11 con 10 nuevas cartas promocionales.', en: 'Updated Event Pack 11 with 10 new promo cards.' }
@@ -6592,6 +6710,7 @@ const CHANGELOG = [
     version: '2.5.0',
     date: '27 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadido Event Pack 12 con 17 nuevas cartas promocionales.', en: 'Added Event Pack 12 with 17 new promo cards.' }
@@ -6601,6 +6720,7 @@ const CHANGELOG = [
     version: '2.4.0',
     date: '27 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadido Event Pack 11 con la nueva carta promocional SS4 Vegeta.', en: 'Added Event Pack 11 with the new SS4 Vegeta promo card.' }
@@ -6610,6 +6730,7 @@ const CHANGELOG = [
     version: '2.3.0',
     date: '27 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadido Event Pack 10 con 10 nuevas cartas promocionales.', en: 'Added Event Pack 10 with 10 new promo cards.' },
@@ -6620,6 +6741,7 @@ const CHANGELOG = [
     version: '2.2.0',
     date: '27 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizada la lógica de progreso global: ahora el 100% solo se alcanza si se tienen todas las versiones físicas (incluyendo variantes y SPRs).', en: 'Updated global progress logic: 100% is now only reached if all physical versions (including variants and SPRs) are owned.' },
@@ -6631,6 +6753,7 @@ const CHANGELOG = [
     version: '1.8.3',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT12: 11 nuevas versiones añadidas al catálogo.', en: 'Added BT12 Promo variants (Alter): 11 new versions added to the catalog.' }
@@ -6640,6 +6763,7 @@ const CHANGELOG = [
     version: '1.8.2',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT10 y BT11: 56 nuevas versiones añadidas al catálogo.', en: 'Added BT10 & BT11 Promo variants (Alter): 56 new versions added to the catalog.' }
@@ -6649,6 +6773,7 @@ const CHANGELOG = [
     version: '1.8.1',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT9: 11 nuevas versiones añadidas al catálogo.', en: 'Added BT9 Promo variants (Alter): 11 new versions added to the catalog.' }
@@ -6658,6 +6783,7 @@ const CHANGELOG = [
     version: '1.8.0',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadido soporte para variantes Promo de BT8 Malicious Machinations.', en: 'Added support for BT8 Malicious Machinations Promo variants.' }
@@ -6667,6 +6793,7 @@ const CHANGELOG = [
     version: '1.7.9',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT7: 115 nuevas versiones añadidas al catálogo.', en: 'Added BT7 Promo variants (Alter): 115 new versions added to the catalog.' }
@@ -6676,6 +6803,7 @@ const CHANGELOG = [
     version: '1.7.8',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT6: 70 nuevas versiones añadidas al catálogo.', en: 'Added BT6 Promo variants (Alter): 70 new versions added to the catalog.' }
@@ -6685,6 +6813,7 @@ const CHANGELOG = [
     version: '1.7.7',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT5: 21 nuevas versiones añadidas al catálogo.', en: 'Added BT5 Promo variants (Alter): 21 new versions added to the catalog.' }
@@ -6694,6 +6823,7 @@ const CHANGELOG = [
     version: '1.7.6',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT4: 17 nuevas versiones añadidas al catálogo.', en: 'Added BT4 Promo variants (Alter): 17 new versions added to the catalog.' }
@@ -6703,6 +6833,7 @@ const CHANGELOG = [
     version: '1.7.5',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregida errata en número de carta: BT3-063_PR2 ahora es BT3-063_PR02.', en: 'Corrected card number typo: BT3-063_PR2 is now BT3-063_PR02.' }
@@ -6712,6 +6843,7 @@ const CHANGELOG = [
     version: '1.7.4',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo (Alter) de BT3: 22 nuevas versiones añadidas al catálogo.', en: 'Added BT3 Promo variants (Alter): 22 new versions added to the catalog.' }
@@ -6721,6 +6853,7 @@ const CHANGELOG = [
     version: '1.7.3',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregidas y añadidas variantes Promo (Alter) de BT2: BT2-039_PR integrada correctamente.', en: 'Corrected and added BT2 Promo variants (Alter): BT2-039_PR correctly integrated.' }
@@ -6730,6 +6863,7 @@ const CHANGELOG = [
     version: '1.7.2',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminada información automática de promociones a petición del usuario', en: 'Removed automatic promo information per user request' }
@@ -6739,6 +6873,7 @@ const CHANGELOG = [
     version: '1.7.1',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregida P-002: eliminada nota regional que solo aplica a P-001', en: 'Fixed P-002: removed regional note only applying to P-001' },
@@ -6750,6 +6885,7 @@ const CHANGELOG = [
     version: '1.7.0',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Sincronización estricta de procedencia con la web oficial (campo Notes)', en: 'Strict synchronization of source origin with the official website (Notes field)' },
@@ -6761,6 +6897,7 @@ const CHANGELOG = [
     version: '1.6.0',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Sistema de procedencia de cartas: Ahora puedes ver el producto original de donde proviene cada carta (Tournament Pack, Dash Pack, etc.).', en: 'Card source system: You can now see the original product where each card comes from (Tournament Pack, Dash Pack, etc.).' },
@@ -6771,6 +6908,7 @@ const CHANGELOG = [
     version: '1.5.0',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Sistema de efectos de brillo (Foil) mejorado y progresivo según la rareza de la carta (R, SR, SPR, SCR, GDR).', en: 'Improved and progressive foil effects based on card rarity (R, SR, SPR, SCR, GDR).' }
@@ -6780,6 +6918,7 @@ const CHANGELOG = [
     version: '1.4.0',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Ampliación de la colección BT1: Añadidas variantes Promo de BT1-109 y BT1-110.', en: 'BT1 collection expansion: Added Promo variants for BT1-109 and BT1-110.' }
@@ -6789,6 +6928,7 @@ const CHANGELOG = [
     version: '1.3.9',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo BT1-107_PR y BT1-107_PR02.', en: 'Added BT1-107_PR and BT1-107_PR02 Promo variants.' }
@@ -6798,6 +6938,7 @@ const CHANGELOG = [
     version: '1.3.8',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes Promo de BT1: BT1-069_PR, BT1-079_PR, BT1-080_PR/02 y BT1-100_PR.', en: 'Added BT1 Promo variants: BT1-069_PR, BT1-079_PR, BT1-080_PR/02 and BT1-100_PR.' }
@@ -6807,6 +6948,7 @@ const CHANGELOG = [
     version: '1.3.7',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminadas las referencias a precios y valores de mercado del tracker.', en: 'Removed all price and market value references from the tracker.' }
@@ -6816,6 +6958,7 @@ const CHANGELOG = [
     version: '1.3.6',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Corregidos datos de BT1: Eliminada variante SPR inexistente de Beerus (BT1-041).', en: 'Fixed BT1 data: Removed non-existent Beerus SPR (BT1-041).' }
@@ -6825,6 +6968,7 @@ const CHANGELOG = [
     version: '1.3.5',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualización visual y de identidad para un logro secreto.', en: 'Visual and identity update for a secret achievement.' }
@@ -6834,6 +6978,7 @@ const CHANGELOG = [
     version: '1.3.4',
     date: '23 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Nuevo logro secreto para coleccionistas de variantes.', en: 'New secret achievement for variant collectors.' }
@@ -6843,6 +6988,7 @@ const CHANGELOG = [
     version: '1.3.3',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Eliminado filtro por coste de energía por errores en los datos.', en: 'Removed energy cost filter due to data inaccuracies.' }
@@ -6852,6 +6998,7 @@ const CHANGELOG = [
     version: '1.3.2',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Implementado filtro por coste de energía (comenzando por BT1).', en: 'Implemented energy cost filter (starting with BT1).' },
@@ -6862,6 +7009,7 @@ const CHANGELOG = [
     version: '1.3.1',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualizado estado legal de Senzu Bean (Errata) y añadidas variantes de Whis\'s Coercion.', en: 'Updated Senzu Bean legal status (Errata) and added Whis\'s Coercion variants.' },
@@ -6872,6 +7020,7 @@ const CHANGELOG = [
     version: '1.3.0',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Expansión masiva de la base de datos promocional de BT1 (Champa, Piccolo, Cabba, Objection, Senzu).', en: 'Massive BT1 promo database expansion (Champa, Piccolo, Cabba, Objection, Senzu).' },
@@ -6883,6 +7032,7 @@ const CHANGELOG = [
     version: '1.2.9',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Mejorada la búsqueda de cartas permitiendo omitir guiones y caracteres especiales en los códigos.', en: 'Improved card search allowing users to omit hyphens and special characters in codes.' },
@@ -6893,6 +7043,7 @@ const CHANGELOG = [
     version: '1.2.8',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidas variantes promo de BT1-005 (Champa) con metadatos específicos.', en: 'Added BT1-005 (Champa) promo variants with specific metadata.' },
@@ -6903,6 +7054,7 @@ const CHANGELOG = [
     version: '1.2.7',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualización del sistema de gestión de activos y optimización de versiones.', en: 'Asset management system update and version optimization.' },
@@ -6913,6 +7065,7 @@ const CHANGELOG = [
     version: '1.2.6',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Refactorización de la interfaz de estados legales.', en: 'Refactored legal status interface.' },
@@ -6924,6 +7077,7 @@ const CHANGELOG = [
     version: '1.2.5',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Implementación de metadatos por expansión (BT1: Galactic Battle).', en: 'Implemented set metadata system (BT1: Galactic Battle).' },
@@ -6934,6 +7088,7 @@ const CHANGELOG = [
     version: '1.2.4',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Unificación de base de datos para estados legales y fechas.', en: 'Unified database for legal status and dates.' },
@@ -6944,6 +7099,7 @@ const CHANGELOG = [
     version: '1.2.3',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Añadidos activos visuales para logros de colección avanzada.', en: 'Added visual assets for advanced collection achievements.' },
@@ -6954,6 +7110,7 @@ const CHANGELOG = [
     version: '1.2.2',
     date: '22 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Actualización de iconos del sistema de logros generales.', en: 'General achievement system icon updates.' },
@@ -6964,6 +7121,7 @@ const CHANGELOG = [
     version: '1.2.1',
     date: '21 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Mejoras en el rendimiento de los filtros de búsqueda.', en: 'Search filter performance improvements.' },
@@ -6974,6 +7132,7 @@ const CHANGELOG = [
     version: '1.2.0',
     date: '20 de abril, 2024',
     changes: [
+      { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
       { es: 'Eliminada la carta BT13-012_PR.', en: 'Removed card BT13-012_PR.' },
       { es: 'Lanzamiento del nuevo sistema de Logros y Títulos.', en: 'Launch of the new Achievement and Titles system.' },
@@ -7901,7 +8060,8 @@ const getTargetQuantity = (card: Card, goal: 'collector' | 'player') => {
     (card.type.includes('Leader') && !card.type.toLowerCase().includes('z-leader')) || 
     card.id.includes('_SLR') || 
     card.type.includes('Marker') || card.type.toLowerCase().includes('merit') || 
-    ['SCR', 'GDR', 'LEADER RARE'].includes(card.rarity);
+    ['SCR', 'GDR', 'LEADER RARE'].includes(card.rarity) ||
+    /_CS[1-3]$/.test(card.id);
   return isOneUnitOnly ? 1 : 4;
 };
 

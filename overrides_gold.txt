@@ -1,0 +1,2 @@
+  'BT18-089_GOLD': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT18-089.png',
+  'BT18-089_GOLD_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT18-089_PR02_b.png',
