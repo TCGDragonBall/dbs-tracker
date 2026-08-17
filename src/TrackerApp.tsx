@@ -7301,7 +7301,7 @@ const isAlternative = (cardId: string) => {
 };
 
 const isVirtualSet = (setId: string) => {
-  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'PB_FOLDER', 'PB01', 'PB02', 'PB03', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP04_FOLDER', 'JP04_LVL2', 'JP05', 'JP05_FOLDER', 'JP05_LVL2', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP_FOLDER', 'TP01_NORMAL_VIEW', 'SEALED_TP_FOLDER', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', 'UB26-3', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'SLEEVES_MASTERS_FOLDER', 'PLAYMATS_FOLDER', 'CASES_MASTERS_FOLDER', 'CASE_CELEBRATIONS_2019', 'CASE_CHAMPIONSHIP_2021', 'CASE_UNIVERSAL_ONSLAUGHT_PRE', 'CASE_UNIVERSAL_ONSLAUGHT', 'SEPARATORS_MASTERS_FOLDER', 'SEP_CELEBRATIONS_2019', 'PM_CELEBRATIONS_2019', 'SL_CELEBRATIONS_2019', 'PLAYMATS_MASTERS_FOLDER', 'ANIMENEXT_2019', 'ORIGINS_2019', 'ANIME_EXPO_2019', 'OTAKON_2019', 'PM_CHAMPIONSHIP_2019', 'PM_PRE_RELEASE_UWS2', 'PM_PREMIER_TO_2020', 'PM_CHAMPIONSHIP_2020', 'PM_ONLINE_CHAMPIONS_CUP_2021', 'PM_CHAMPIONSHIP_2021', 'MASTERS_EU_INVITATION_2019', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER', 'ENM', 'ENM_FW', 'CS01', 'CS02', 'CS03', 'COL09', 'TS01', 'TS02', 'COL10', 'COL11'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_') || setId.startsWith('SEALED_') || setId.startsWith('MASTERS_') || setId.startsWith('EP') || setId.startsWith('CASE-');
+  return ['COL01', 'COL02', 'COL03', 'COL05', 'COL08', 'PB_FOLDER', 'PB01', 'PB02', 'PB03', 'COL06', 'COL07', 'JP01', 'JP02', 'JP03', 'JP04', 'JP04_FOLDER', 'JP04_LVL2', 'JP05', 'JP05_FOLDER', 'JP05_LVL2', 'JP06', 'JP07', 'JP08', 'JP09', 'JP10', 'JP11', 'JP12', 'JP13', 'JP14', 'JP15', 'JP16', 'JP17', 'JP18', 'TP_FOLDER', 'TP01_NORMAL_VIEW', 'TP01', 'TP02', 'TP03', 'TP04', 'TP05', 'TP06', 'TP07', 'TP08', 'TP09', 'TP10', 'TP11', 'UB24-1', 'UB24-2', 'UB24-3', 'UB25-1', 'UB25-2', 'UB25-4', 'UB25-5', 'UB26-1', 'UB26-2', 'UB26-3', '1ST_ANNIV', '1ST_ANNIV_FOLDER', '40TH_ANNIV', '40TH_ANNIV_V2', '40TH_ANNIV_FOLDER', '40TH_ANNIV_FOLDER_MAIN', '40TH_ANNIV_VOL1_FOLDER', '40TH_ANNIV_VOL2_FOLDER', 'LP01', 'LP01_FOLDER', 'LP02', 'LP02_FOLDER', 'BCG_FEST_24', 'FP', 'AS2025', 'AS2026', 'PCC01', 'PCC02', 'ANNIVERSARY_FOLDER', 'SLEEVES_FOLDER', 'SLEEVES_MASTERS_FOLDER', 'PLAYMATS_FOLDER', 'CASES_MASTERS_FOLDER', 'CASE_CELEBRATIONS_2019', 'CASE_CHAMPIONSHIP_2021', 'CASE_UNIVERSAL_ONSLAUGHT_PRE', 'CASE_UNIVERSAL_ONSLAUGHT', 'SEPARATORS_MASTERS_FOLDER', 'SEP_CELEBRATIONS_2019', 'PM_CELEBRATIONS_2019', 'SL_CELEBRATIONS_2019', 'PLAYMATS_MASTERS_FOLDER', 'ANIMENEXT_2019', 'ORIGINS_2019', 'ANIME_EXPO_2019', 'OTAKON_2019', 'PM_CHAMPIONSHIP_2019', 'PM_PRE_RELEASE_UWS2', 'PM_PREMIER_TO_2020', 'PM_CHAMPIONSHIP_2020', 'PM_ONLINE_CHAMPIONS_CUP_2021', 'PM_CHAMPIONSHIP_2021', 'MASTERS_EU_INVITATION_2019', 'PREMIUM_COLLECTION_FOLDER', 'CARD_CASE_FOLDER', 'RE_SB01_FOLDER', 'RE_SB02_FOLDER', 'UB_2024_FOLDER', 'UB_2025_FOLDER', 'UB_2026_FOLDER', 'CH2026_FOLDER', 'CH26_W1_FOLDER', 'BCG_FEST_FOLDER', 'ENM', 'ENM_FW', 'CS01', 'CS02', 'CS03', 'COL09', 'TS01', 'TS02', 'COL10', 'COL11'].includes(setId) || setId.startsWith('FP_') || setId.startsWith('CP_') || setId.startsWith('SL') || setId.startsWith('PM') || setId.startsWith('CC-') || setId.startsWith('ACS') || setId.startsWith('CH2024_') || setId.startsWith('CH25_') || setId.startsWith('CH26_') || setId.startsWith('SP01_') || setId.startsWith('TR_') || setId.startsWith('SEALED_') || setId.startsWith('MASTERS_') || setId.startsWith('EP') || setId.startsWith('CASE-');
 };
 
 const EXPANSION_SET_TOURNAMENT_PACK = ['P-177', 'P-178', 'P-179', 'P-180', 'P-181', 'P-182', 'P-183', 'P-184', 'P-185', 'P-186'];
@@ -7318,7 +7318,7 @@ const EVENT_PACK_02 = [
 ];
 
 const EVENT_PACK_03 = [
-  'SEALED_EVENT_PACK_03', 'BT4-012_EP03', 'BT4-048_EP03', 'BT1-052_EP03', 'BT6-060_EP03',
+  'BT4-012_EP03', 'BT4-048_EP03', 'BT1-052_EP03', 'BT6-060_EP03',
   'BT4-093_EP03', 'BT1-109_EP03', 'BT5-112_EP03', 'BT5-117_EP03',
   'BT4-118_EP03', 'BT3-120_EP03'
 ];
@@ -7419,11 +7419,11 @@ const EVENT_PACK_18 = [
 ];
 
 const EVENT_PACK_19 = [
-  'SEALED_EVENT_PACK_19', 'BT27-025_EP19', 'BT5-044_EP19', 'BT5-112_EP19', 'BT10-010_EP19', 'BT21-041_EP19', 'BT24-083_EP19', 'BT27-021_EP19', 'BT27-059_EP19', 'BT27-064_EP19', 'BT27-076_EP19', 'BT28-034_EP19', 'BT28-113_EP19', 'BT28-124_EP19', 'BT28-139_EP19', 'DB3-089_EP19', 'EX10-05_EP19', 'P-473_EP19', 'P-680_EP19'
+  'BT27-025_EP19', 'BT5-044_EP19', 'BT5-112_EP19', 'BT10-010_EP19', 'BT21-041_EP19', 'BT24-083_EP19', 'BT27-021_EP19', 'BT27-059_EP19', 'BT27-064_EP19', 'BT27-076_EP19', 'BT28-034_EP19', 'BT28-113_EP19', 'BT28-124_EP19', 'BT28-139_EP19', 'DB3-089_EP19', 'EX10-05_EP19', 'P-473_EP19', 'P-680_EP19'
 ];
 
 const CHAMPIONSHIP_PACS_2026_V2 = [
-  'SEALED_CHAMPIONSHIP_PACS_2026_V2', 'BT22-034_PACS2', 'BT26-128_PACS2', 'BT27-059_PACS2', 'BT28-003_PACS2', 'BT28-083_PACS2'
+  'BT22-034_PACS2', 'BT26-128_PACS2', 'BT27-059_PACS2', 'BT28-003_PACS2', 'BT28-083_PACS2'
 ];
 
 const JUDGE_PACK_01 = ['P-003_JP01', 'P-015_JP01', 'P-016_JP01', 'P-018_JP01'];
@@ -7587,14 +7587,13 @@ const EXTRA_SET_CARDS: Record<string, string[]> = {
 
 const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_SEALED_TP_FOLDER': [
-    'SEALED_TP01', 'SEALED_TP02', 'SEALED_TP03', 'SEALED_TP04', 'SEALED_TP05_2018', 'SEALED_TP05_2019', 'SEALED_TP06', 'SEALED_TP07', 'SEALED_TP08', 'SEALED_TP09', 'SEALED_EX_TP', 'SEALED_TP_UW1', 'SEALED_TP_UW2', 'SEALED_TP_UW3', 'SEALED_TP_UW4', 'SEALED_TP_UW5', 'SEALED_TP_UW6', 'SEALED_TP_UW7', 'SEALED_TP_UW8', 'SEALED_ZENKAI_START_PACK', 'SEALED_ZENKAI_TP_V1',
-    'SEALED_ZENKAI_TP_V2', 'SEALED_Z03_DASH_PACK', 'SEALED_ZENKAI_TP_V3', 'SEALED_ZENKAI_TP_V4', 'SEALED_ZENKAI_TP_V5', 'SEALED_ZENKAI_TP_V6', 'SEALED_ZENKAI_TP_V7', 'SEALED_DELUXE_PACK_2024_V1', 'SEALED_ZENKAI_TP_V8', 'SEALED_DELUXE_PACK_2024_V2', 'SEALED_ZENKAI_TP_V9', 'SEALED_ZENKAI_TP_V10', 'SEALED_DELUXE_PACK_2025_V1', 'SEALED_ZENKAI_TP_V11', 'SEALED_ZENKAI_TP_V12', 'SEALED_DELUXE_PACK_2025_V2', 'SEALED_ULTRA_BOUT_TP_V13', 'SEALED_ULTRA_BOUT_TP_V1', 'SEALED_DELUXE_PACK_2026_V1', 'SEALED_DELUXE_PACK_2026_V2', 'SEALED_ULTRA_BOUT_TP_V2', 'SEALED_ULTRA_BOUT_TP_V3'
+    'SEALED_TP01', 'SEALED_TP02', 'SEALED_TP03', 'SEALED_TP04', 'SEALED_TP05_2019', 'SEALED_TP06', 'SEALED_TP07', 'SEALED_TP08', 'SEALED_TP09', 'SEALED_EX_TP', 'SEALED_TP_UW1', 'SEALED_TP_UW2', 'SEALED_TP_UW3', 'SEALED_TP_UW4', 'SEALED_TP_UW5', 'SEALED_TP_UW6', 'SEALED_TP_UW7', 'SEALED_TP_UW8', 'SEALED_ZENKAI_START_PACK', 'SEALED_ZENKAI_TP_V1', 'SEALED_ZENKAI_SERIES_PACK_V1', 'SEALED_ZENKAI_TP_V2', 'SEALED_Z03_DASH_PACK', 'SEALED_ZENKAI_TP_V3', 'SEALED_ZENKAI_TP_V4', 'SEALED_ZENKAI_TP_V5', 'SEALED_ZENKAI_TP_V6', 'SEALED_ZENKAI_TP_V7', 'SEALED_DELUXE_PACK_2024_V1', 'SEALED_ZENKAI_TP_V8', 'SEALED_DELUXE_PACK_2024_V2', 'SEALED_ZENKAI_TP_V9', 'SEALED_ZENKAI_TP_V10', 'SEALED_DELUXE_PACK_2025_V1', 'SEALED_ZENKAI_TP_V11', 'SEALED_ZENKAI_TP_V12', 'SEALED_DELUXE_PACK_2025_V2', 'SEALED_ULTRA_BOUT_TP_V13', 'SEALED_ULTRA_BOUT_TP_V1', 'SEALED_DELUXE_PACK_2026_V1', 'SEALED_DELUXE_PACK_2026_V2', 'SEALED_ULTRA_BOUT_TP_V2', 'SEALED_ULTRA_BOUT_TP_V3'
   ],
   'MASTERS_SEALED_TP01': ['SEALED_TP01'],
   'MASTERS_SEALED_TP02': ['SEALED_TP02'],
   'MASTERS_SEALED_TP03': ['SEALED_TP03'],
   'MASTERS_SEALED_TP04': ['SEALED_TP04'],
-  'MASTERS_SEALED_TP05': ['SEALED_TP05_2018', 'SEALED_TP05_2019'],
+  'MASTERS_SEALED_TP05': ['SEALED_TP05_2019'],
   'MASTERS_SEALED_TP06': ['SEALED_TP06'], 
   'MASTERS_SEALED_TP07': ['SEALED_TP07'], 
   'MASTERS_SEALED_TP08': ['SEALED_TP08'], 
@@ -7635,8 +7634,7 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_SEALED_ULTRA_BOUT_TP_V2': ['SEALED_ULTRA_BOUT_TP_V2'],
   'MASTERS_SEALED_ULTRA_BOUT_TP_V3': ['SEALED_ULTRA_BOUT_TP_V3'],
   'MASTERS_SEALED_EP_FOLDER': [
-    'SEALED_EVENT_PACK_01', 'SEALED_EVENT_PACK_02', 'SEALED_EVENT_PACK_03', 'SEALED_EVENT_PACK_04', 'SEALED_EVENT_PACK_05', 'SEALED_EVENT_PACK_06', 'SEALED_EVENT_PACK_07', 'SEALED_EVENT_PACK_08', 'SEALED_EVENT_PACK_09', 'SEALED_EVENT_PACK_10',
-    'SEALED_EVENT_PACK_11', 'SEALED_EVENT_PACK_12', 'SEALED_EVENT_PACK_13', 'SEALED_EVENT_PACK_14', 'SEALED_EVENT_PACK_15', 'SEALED_EVENT_PACK_16', 'SEALED_EVENT_PACK_17', 'SEALED_EVENT_PACK_18', 'SEALED_EVENT_PACK_19'
+    'SEALED_EVENT_PACK_01', 'SEALED_EVENT_PACK_02', 'SEALED_EVENT_PACK_03', 'SEALED_EVENT_PACK_04', 'SEALED_EVENT_PACK_05', 'SEALED_EVENT_PACK_06', 'SEALED_EVENT_PACK_07', 'SEALED_EVENT_PACK_08', 'SEALED_EVENT_PACK_09', 'SEALED_EVENT_PACK_10', 'SEALED_EVENT_PACK_11', 'SEALED_EVENT_PACK_12', 'SEALED_EVENT_PACK_13', 'SEALED_EVENT_PACK_14', 'SEALED_EVENT_PACK_15', 'SEALED_EVENT_PACK_16', 'SEALED_EVENT_PACK_17', 'SEALED_EVENT_PACK_18', 'SEALED_EVENT_PACK_19'
   ],
   'MASTERS_SEALED_EP01': ['SEALED_EVENT_PACK_01'],
   'MASTERS_SEALED_EP02': ['SEALED_EVENT_PACK_02'], 
@@ -7658,13 +7656,14 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_SEALED_EP18': ['SEALED_EVENT_PACK_18'],
   'MASTERS_SEALED_EP19': ['SEALED_EVENT_PACK_19'],
   'MASTERS_SEALED_SPECIAL_TOKEN_PACK': ['SEALED_SPECIAL_TOKEN_PACK'],
-  'MASTERS_SEALED_PB_FOLDER': ['SEALED_PB01', 'SEALED_PB02', 'SEALED_PB03'],
+  'MASTERS_SEALED_PB_FOLDER': [
+    'SEALED_PB01', 'SEALED_PB02', 'SEALED_PB03'
+  ],
   'MASTERS_SEALED_PB01': ['SEALED_PB01'],
   'MASTERS_SEALED_PB02': ['SEALED_PB02'], 
   'MASTERS_SEALED_PB03': ['SEALED_PB03'],
   'MASTERS_SEALED_CHAMPIONSHIP_FOLDER': [
-    'SEALED_CHAMPIONSHIP_2018', 'SEALED_CHAMPIONSHIP_2019', 'SEALED_CHAMPIONSHIP_2020_V1', 'SEALED_CHAMPIONSHIP_2020_V2', 'SEALED_CHAMPIONSHIP_2021_V1', 'SEALED_CHAMPIONSHIP_2021_V2', 'SEALED_CHAMPIONSHIP_2021_V3', 'SEALED_CHAMPIONSHIP_2022_V1', 'SEALED_CHAMPIONSHIP_2022_V2', 'SEALED_CHAMPIONSHIP_2022_V3',
-    'SEALED_CHAMPIONSHIP_2022_CEL', 'SEALED_CHAMPIONSHIP_2022_FP', 'SEALED_CHAMPIONSHIP_2022_ZS', 'SEALED_CHAMPIONSHIP_2023_CEL', 'SEALED_CHAMPIONSHIP_2023_ZENKAI', 'SEALED_CHAMPIONSHIP_2024_FINALS', 'SEALED_CHAMPIONSHIP_2024_ZENKAI'
+    'SEALED_CHAMPIONSHIP_2018', 'SEALED_CHAMPIONSHIP_2019', 'SEALED_CHAMPIONSHIP_2020_V1', 'SEALED_CHAMPIONSHIP_2020_V2', 'SEALED_CHAMPIONSHIP_2021_V1', 'SEALED_CHAMPIONSHIP_2021_V2', 'SEALED_CHAMPIONSHIP_2021_V3', 'SEALED_CHAMPIONSHIP_2022_V1', 'SEALED_CHAMPIONSHIP_2022_V2', 'SEALED_CHAMPIONSHIP_2022_V3', 'SEALED_CHAMPIONSHIP_2022_CEL', 'SEALED_CHAMPIONSHIP_2022_FP', 'SEALED_CHAMPIONSHIP_2022_ZS', 'SEALED_CHAMPIONSHIP_2023_CEL', 'SEALED_CHAMPIONSHIP_2023_ZENKAI', 'SEALED_CHAMPIONSHIP_2024_FINALS', 'SEALED_CHAMPIONSHIP_2024_ZENKAI', 'SEALED_CHAMPIONSHIP_PACS_2026_V2'
   ],
   'MASTERS_SEALED_CHAMPIONSHIP_2018': ['SEALED_CHAMPIONSHIP_2018'], 
   'MASTERS_SEALED_CHAMPIONSHIP_2019': ['SEALED_CHAMPIONSHIP_2019'],
@@ -7723,63 +7722,63 @@ const PACK_ARRAYS: Record<string, string[]> = {
   'ANIME_EXPO_2019': ['PM-AX2019-01', 'PM-AX2019-02'],
   'ANIMENEXT_2019': ['PM-AN2019-01', 'PM-AN2019-02', 'PM-AN2019-03', 'PM-AN2019-04', 'PM-AN2019-05'],
   'ORIGINS_2019': ['PM-OR2019-01', 'PM-OR2019-02', 'PM-OR2019-03', 'PM-OR2019-04', 'PM-OR2019-05', 'PM-OR2019-06', 'PM-OR2019-07', 'PM-OR2019-08', 'PM-OR2019-09', 'PM-OR2019-10', 'PM-OR2019-11', 'PM-OR2019-12', 'PM-OR2019-13', 'PM-OR2019-14', 'PM-OR2019-15', 'PM-OR2019-16', 'PM-OR2019-17', 'PM-OR2019-18', 'PM-OR2019-19', 'PM-OR2019-20', 'PM-OR2019-21', 'PM-OR2019-22'],
-  'MASTERS_TP01': ['SEALED_TP01', 'P-002', 'P-003', 'P-004', 'P-005', 'P-006', 'P-007', 'P-008', 'P-009'],
-  'MASTERS_TP02': ['SEALED_TP02', 'P-012', 'P-013', 'P-014', 'P-015', 'P-016', 'P-017', 'P-018', 'P-019'],
-  'MASTERS_TP03': ['SEALED_TP03', 'P-030', 'P-031', 'P-032', 'P-033', 'P-034', 'P-035', 'P-036', 'P-037'],
-  'MASTERS_TP04': ['SEALED_TP04', 'P-049', 'P-050', 'P-051', 'P-052', 'P-053', 'P-054', 'P-055', 'P-056'],
-  'MASTERS_TP05': ['SEALED_TP05_2018', 'SEALED_TP05_2019', 'P-077', 'P-078', 'P-079', 'P-080', 'P-081', 'P-082', 'P-083', 'P-084'],
-  'MASTERS_TP06': ['SEALED_TP06', 'P-095', 'P-096', 'P-097', 'P-098', 'P-099', 'P-100', 'P-101', 'P-102'], 
-  'MASTERS_TP07': ['SEALED_TP07', 'P-126', 'P-127', 'P-128', 'P-129', 'P-130', 'P-131', 'P-132', 'P-133'], 
-  'MASTERS_TP08': ['SEALED_TP08', 'P-165', 'P-166', 'P-167', 'P-168', 'P-169', 'P-170', 'P-171', 'P-172', 'P-172_PR'], 
-  'MASTERS_TP09': ['SEALED_TP09', 'P-188', 'P-189', 'P-190', 'P-191', 'P-192', 'P-193', 'P-194', 'P-195'], 
-  'MASTERS_EX_TP': ['SEALED_EX_TP', ...EXPANSION_SET_TOURNAMENT_PACK],
+  'MASTERS_TP01': ['P-002', 'P-003', 'P-004', 'P-005', 'P-006', 'P-007', 'P-008', 'P-009'],
+  'MASTERS_TP02': ['P-012', 'P-013', 'P-014', 'P-015', 'P-016', 'P-017', 'P-018', 'P-019'],
+  'MASTERS_TP03': ['P-030', 'P-031', 'P-032', 'P-033', 'P-034', 'P-035', 'P-036', 'P-037'],
+  'MASTERS_TP04': ['P-049', 'P-050', 'P-051', 'P-052', 'P-053', 'P-054', 'P-055', 'P-056'],
+  'MASTERS_TP05': ['P-077', 'P-078', 'P-079', 'P-080', 'P-081', 'P-082', 'P-083', 'P-084'],
+  'MASTERS_TP06': ['P-095', 'P-096', 'P-097', 'P-098', 'P-099', 'P-100', 'P-101', 'P-102'], 
+  'MASTERS_TP07': ['P-126', 'P-127', 'P-128', 'P-129', 'P-130', 'P-131', 'P-132', 'P-133'], 
+  'MASTERS_TP08': ['P-165', 'P-166', 'P-167', 'P-168', 'P-169', 'P-170', 'P-171', 'P-172', 'P-172_PR'], 
+  'MASTERS_TP09': ['P-188', 'P-189', 'P-190', 'P-191', 'P-192', 'P-193', 'P-194', 'P-195'], 
+  'MASTERS_EX_TP': [...EXPANSION_SET_TOURNAMENT_PACK],
   'MASTERS_PB01': POWER_BOOSTER_01,
   'MASTERS_PB02': POWER_BOOSTER_02, 
-  'MASTERS_PB03': ['SEALED_PB03', ...POWER_BOOSTER_03],
-  'MASTERS_CHAMPIONSHIP_2018': ['SEALED_CHAMPIONSHIP_2018', 'P-063', 'P-064', 'P-065', 'P-066', 'P-067'], 
-  'MASTERS_CHAMPIONSHIP_2019': ['SEALED_CHAMPIONSHIP_2019', 'P-036_CM19', 'P-078_CM19', 'P-091_GS', 'P-092_GS', 'P-138', 'P-139', 'P-140', 'P-141', 'P-142', 'BT7-025_CM19_1ST', 'BT7-025_CM19_METAL', 'P-092_CM19_2ND', 'P-092_CM19_METAL', 'EX3-07_CM19_3RD', 'EX3-07_CM19_METAL', 'BT7-026_CM19_METAL', 'PM-CM19-01', 'PM-CM19-02', 'PM-CM19-03', 'PM-CM19-04', 'PM-CM19-05', 'PM-CM19-06', 'PM-CM19-07', 'PM-CM19-08', 'PM-CM19-09'],
+  'MASTERS_PB03': [...POWER_BOOSTER_03],
+  'MASTERS_CHAMPIONSHIP_2018': ['P-063', 'P-064', 'P-065', 'P-066', 'P-067'], 
+  'MASTERS_CHAMPIONSHIP_2019': ['P-036_CM19', 'P-078_CM19', 'P-091_GS', 'P-092_GS', 'P-138', 'P-139', 'P-140', 'P-141', 'P-142', 'BT7-025_CM19_1ST', 'BT7-025_CM19_METAL', 'P-092_CM19_2ND', 'P-092_CM19_METAL', 'EX3-07_CM19_3RD', 'EX3-07_CM19_METAL', 'BT7-026_CM19_METAL', 'PM-CM19-01', 'PM-CM19-02', 'PM-CM19-03', 'PM-CM19-04', 'PM-CM19-05', 'PM-CM19-06', 'PM-CM19-07', 'PM-CM19-08', 'PM-CM19-09'],
   'MASTERS_EU_INVITATION_2019': ['BT8-066_EU19_METAL', 'BT8-067_EU19_METAL'],
   'MASTERS_CHAMPIONSHIP_25': ['UB25-5'], // Placeholder / mapped properly
-  'MASTERS_CHAMPIONSHIP_2020_V1': ['SEALED_CHAMPIONSHIP_2020_V1', 'P-201', 'P-202', 'P-203', 'P-204', 'P-205', 'P-206', 'P-207', 'P-208', 'P-209', 'P-210'],
-  'MASTERS_CHAMPIONSHIP_2020_V2': ['SEALED_CHAMPIONSHIP_2020_V2', 'P-233', 'P-234', 'P-235', 'P-236', 'P-237', 'P-238', 'P-239', 'P-240', 'P-241', 'P-242'],
+  'MASTERS_CHAMPIONSHIP_2020_V1': ['P-201', 'P-202', 'P-203', 'P-204', 'P-205', 'P-206', 'P-207', 'P-208', 'P-209', 'P-210'],
+  'MASTERS_CHAMPIONSHIP_2020_V2': ['P-233', 'P-234', 'P-235', 'P-236', 'P-237', 'P-238', 'P-239', 'P-240', 'P-241', 'P-242'],
   'MASTERS_CHAMPIONSHIP_2021': ['BT16-001_CM21_1ST', 'BT16-001_CM21_METAL_1ST', 'BT10-093_CM21_2ND', 'BT10-093_CM21_METAL_2ND', 'SD15-01_CM21_3RD', 'SD15-01_CM21_METAL_3RD', 'BT12-122_CM21_TOP16', 'BT12-122_CM21_METAL_TOP16'],
   'MASTERS_CHAMPIONSHIP_2021_VAULT': ['P-329_CM21_VS', 'P-329_CM21_VS_FIN', 'P-329_CM21_VS_SEW', 'P-331_CM21_VS', 'P-331_CM21_VS_FIN', 'P-331_CM21_VS_SEW', 'P-335_CM21_VS', 'P-335_CM21_VS_FIN', 'P-335_CM21_VS_SEW', 'P-337_CM21_VS', 'P-337_CM21_VS_FIN', 'P-337_CM21_VS_SEW', 'P-355_CM21_VS', 'P-355_CM21_VS_FIN', 'P-355_CM21_VS_SEW', 'P-357_CM21_VS', 'P-357_CM21_VS_FIN', 'P-357_CM21_VS_SEW', 'P-219_TV', 'P-219_TV_SE', 'P-219_TV_FIN', 'P-261_TV', 'P-261_TV_SE', 'P-261_TV_FIN', 'P-284_TV', 'P-284_TV_SE', 'P-284_TV_FIN', 'P-293_TV', 'P-293_TV_SE', 'P-293_TV_FIN', 'P-302_TV', 'P-302_TV_SE', 'P-302_TV_FIN', 'P-310_TV', 'P-310_TV_SE', 'P-310_TV_FIN'],
-  'MASTERS_CHAMPIONSHIP_2021_V1': ['SEALED_CHAMPIONSHIP_2021_V1', 'P-328', 'P-329', 'P-330', 'P-331', 'P-332'],
-  'MASTERS_CHAMPIONSHIP_2021_V2': ['SEALED_CHAMPIONSHIP_2021_V2', 'P-333', 'P-334', 'P-335', 'P-336', 'P-337'],
-  'MASTERS_CHAMPIONSHIP_2021_V3': ['SEALED_CHAMPIONSHIP_2021_V3', 'P-355', 'P-356', 'P-357', 'P-358', 'P-359'],
-  'MASTERS_TP_UW1': ['SEALED_TP_UW1', 'P-214', 'P-215', 'P-216', 'P-217', 'P-218', 'P-219', 'P-220', 'P-221', 'P-222', 'P-223', 'P-224', 'P-225', 'P-226', 'P-227', 'P-228', 'P-229', 'P-230', 'P-231'],
-  'MASTERS_TP_UW2': ['SEALED_TP_UW2', 'P-246', 'P-247', 'P-248', 'P-249', 'P-250', 'P-251', 'P-252', 'P-253', 'P-254', 'P-255', 'P-256', 'P-257', 'P-258', 'P-259', 'P-260', 'P-261', 'P-262', 'P-263'],
-  'MASTERS_TP_UW3': ['SEALED_TP_UW3', 'P-272', 'P-273', 'P-274', 'P-275', 'P-276', 'P-277', 'P-278', 'P-279', 'P-280', 'P-281', 'P-282', 'P-283', 'P-284', 'P-285', 'P-286', 'P-287', 'P-288', 'P-289'],
-  'MASTERS_TP_UW4': ['SEALED_TP_UW4', 'P-293', 'P-294', 'P-295', 'P-296', 'P-297', 'P-298', 'P-299', 'P-300', 'P-301', 'P-302', 'P-303', 'P-304', 'P-305', 'P-306', 'P-307', 'P-308', 'P-309', 'P-310'],
-  'MASTERS_TP_UW5': ['SEALED_TP_UW5', 'P-314', 'P-315', 'P-316', 'P-317', 'P-318', 'P-319', 'P-320', 'P-321', 'P-322', 'P-323', 'P-324', 'P-325', 'P-326', 'P-327', 'BT11-030_PR', 'DB3-069_PR'],
-  'MASTERS_TP_UW6': ['SEALED_TP_UW6', 'P-341', 'P-342', 'P-343', 'P-344', 'P-345', 'P-346', 'P-347', 'P-348', 'P-349', 'P-350', 'P-351', 'P-352', 'P-353', 'P-354', 'P-355', 'P-356', 'P-357', 'P-358', 'BT7-083_PR', 'DB1-057_PR'],
-  'MASTERS_TP_UW7': ['SEALED_TP_UW7', 'P-363', 'P-364', 'P-365', 'P-366', 'P-367', 'P-368', 'P-369', 'P-370', 'P-371', 'P-372', 'P-373', 'P-374', 'P-375', 'P-376', 'DB1-012_PR', 'DB2-061_PR'],
-  'MASTERS_CHAMPIONSHIP_2022_V1': ['SEALED_CHAMPIONSHIP_2022_V1', 'P-394', 'P-395', 'P-396', 'P-397', 'P-398'],
-  'MASTERS_TP_UW8': ['SEALED_TP_UW8', 'P-380', 'P-381', 'P-382', 'P-383', 'P-384', 'P-385', 'P-386', 'P-387', 'P-388', 'P-389', 'P-390', 'P-391', 'P-392', 'P-393', 'DB3-136_PR', 'DB3-142_PR'],
-  'MASTERS_CHAMPIONSHIP_2022_V2': ['SEALED_CHAMPIONSHIP_2022_V2', 'P-420', 'P-421', 'P-422', 'P-423', 'P-424'],
-  'MASTERS_CHAMPIONSHIP_2022_V3': ['SEALED_CHAMPIONSHIP_2022_V3', 'P-428', 'P-429', 'P-430', 'P-431', 'P-432'],
-  'MASTERS_ZENKAI_START_PACK': ['SEALED_ZENKAI_START_PACK', 'P-402', 'P-403', 'P-404', 'P-405'],
-  'MASTERS_ZENKAI_TP_V1': ['SEALED_ZENKAI_TP_V1', 'P-406', 'P-407', 'P-408', 'P-409', 'P-410', 'P-411', 'P-412', 'P-413', 'P-414', 'P-415', 'P-416', 'P-417', 'P-418', 'P-419', 'BT15-096_PR', 'DB3-124_PR'],
-  'MASTERS_ZENKAI_SERIES_PACK_V1': ['SEALED_ZENKAI_SERIES_PACK_V1', 'BT18-009_PR', 'BT18-062_PR', 'BT19-065_PR', 'BT20-131_PR', 'BT19-109_PR', 'BT19-110_PR', 'EX21-03_PR', 'EX21-05_PR', 'EX21-28_PR', 'BT18-086_PR'],
-  'MASTERS_ZENKAI_TP_V2': ['SEALED_ZENKAI_TP_V2', 'P-437', 'P-438', 'P-439', 'P-440', 'P-441', 'P-442', 'P-443', 'P-444', 'P-445', 'P-446', 'P-447', 'P-448', 'P-449', 'P-450', 'P-451', 'P-452'],
-  'MASTERS_Z03_DASH_PACK': ['SEALED_Z03_DASH_PACK', 'P-458', 'P-459', 'P-460', 'P-461', 'P-462', 'P-463', 'P-464', 'P-465', 'P-466', 'P-467', 'P-468', 'P-469', 'P-470', 'P-471', 'P-472', 'P-473', 'P-474', 'P-475'],
-  'MASTERS_ZENKAI_TP_V3': ['SEALED_ZENKAI_TP_V3', 'P-479', 'P-480', 'P-481', 'P-482', 'P-483', 'P-484', 'P-485', 'P-486', 'P-487', 'P-488', 'P-489', 'P-490', 'P-491', 'P-492', 'P-493', 'P-494'],
-  'MASTERS_ZENKAI_TP_V4': ['SEALED_ZENKAI_TP_V4', 'P-498', 'P-499', 'P-500', 'P-501', 'P-502', 'P-503', 'P-504', 'P-505', 'P-506', 'P-507', 'P-508', 'P-509', 'P-510', 'P-511', 'P-512', 'P-513'],
-  'MASTERS_ZENKAI_TP_V5': ['SEALED_ZENKAI_TP_V5', 'P-520', 'P-521', 'P-522', 'P-523', 'P-524', 'P-525', 'P-526', 'P-527', 'P-528', 'P-529', 'P-530', 'P-531', 'P-532', 'P-533', 'P-534', 'P-535'],
-  'MASTERS_ZENKAI_TP_V6': ['SEALED_ZENKAI_TP_V6', 'P-554', 'P-555', 'P-556', 'P-557', 'P-558', 'P-559', 'P-560', 'P-561', 'P-562', 'P-563', 'P-564', 'P-565', 'P-566', 'P-567', 'P-568', 'P-569'],
-  'MASTERS_ZENKAI_TP_V7': ['SEALED_ZENKAI_TP_V7', 'P-572', 'P-573', 'P-574', 'P-575', 'P-576', 'P-577', 'P-578', 'P-579', 'P-580', 'P-581', 'P-582', 'P-583', 'P-584', 'P-585', 'P-586', 'P-587'],
-  'MASTERS_ZENKAI_TP_V8': ['SEALED_ZENKAI_TP_V8', 'P-601', 'P-602', 'P-603', 'P-604', 'P-605', 'P-606', 'P-607', 'P-608', 'P-609', 'P-610', 'P-611', 'P-612', 'P-613', 'P-614', 'P-615', 'P-616'],
-  'MASTERS_ZENKAI_TP_V9': ['SEALED_ZENKAI_TP_V9', 'P-625', 'P-626', 'P-627', 'P-628', 'P-629', 'P-630', 'P-631', 'P-632', 'P-633', 'P-634', 'P-635', 'P-636', 'P-637', 'P-638', 'P-639', 'P-640'],
-  'MASTERS_ZENKAI_TP_V10': ['SEALED_ZENKAI_TP_V10', 'P-641', 'P-642', 'P-643', 'P-644', 'P-645', 'P-646', 'P-647', 'P-648', 'P-649', 'P-650', 'P-651', 'P-652', 'P-653', 'P-654', 'P-655', 'P-656'],
-  'MASTERS_ZENKAI_TP_V11': ['SEALED_ZENKAI_TP_V11', 'P-665', 'P-666', 'P-667', 'P-668', 'P-669', 'P-670', 'P-671', 'P-672', 'P-673', 'P-674', 'P-675', 'P-676', 'P-677', 'P-678', 'P-679', 'P-680'],
-  'MASTERS_ZENKAI_TP_V12': ['SEALED_ZENKAI_TP_V12', 'P-681', 'P-682', 'P-683', 'P-684', 'P-685', 'P-686', 'P-687', 'P-688'],
-  'MASTERS_DELUXE_PACK_2025_V2': ['SEALED_DELUXE_PACK_2025_V2', 'P-689', 'P-690', 'P-691', 'P-692', 'P-693', 'P-694'],
-  'MASTERS_ULTRA_BOUT_TP_V13': ['SEALED_ULTRA_BOUT_TP_V13', 'P-697', 'P-698', 'P-699', 'P-700', 'P-701', 'P-702', 'P-703', 'P-704', 'P-705', 'P-706', 'P-707', 'P-708', 'P-709', 'P-710', 'P-711', 'P-712'],
-  'MASTERS_DELUXE_PACK_2026_V1': ['SEALED_DELUXE_PACK_2026_V1', 'SEALED_DELUXE_PACK_2026_V2', 'P-717', 'P-718', 'P-719', 'P-720', 'P-721', 'P-722'],
-  'MASTERS_DELUXE_PACK_2026_V2': ['SEALED_DELUXE_PACK_2026_V2', 'P-757', 'P-758', 'P-759', 'P-760', 'P-761', 'P-761_PR', 'P-762', 'P-762_PR'],
+  'MASTERS_CHAMPIONSHIP_2021_V1': ['P-328', 'P-329', 'P-330', 'P-331', 'P-332'],
+  'MASTERS_CHAMPIONSHIP_2021_V2': ['P-333', 'P-334', 'P-335', 'P-336', 'P-337'],
+  'MASTERS_CHAMPIONSHIP_2021_V3': ['P-355', 'P-356', 'P-357', 'P-358', 'P-359'],
+  'MASTERS_TP_UW1': ['P-214', 'P-215', 'P-216', 'P-217', 'P-218', 'P-219', 'P-220', 'P-221', 'P-222', 'P-223', 'P-224', 'P-225', 'P-226', 'P-227', 'P-228', 'P-229', 'P-230', 'P-231'],
+  'MASTERS_TP_UW2': ['P-246', 'P-247', 'P-248', 'P-249', 'P-250', 'P-251', 'P-252', 'P-253', 'P-254', 'P-255', 'P-256', 'P-257', 'P-258', 'P-259', 'P-260', 'P-261', 'P-262', 'P-263'],
+  'MASTERS_TP_UW3': ['P-272', 'P-273', 'P-274', 'P-275', 'P-276', 'P-277', 'P-278', 'P-279', 'P-280', 'P-281', 'P-282', 'P-283', 'P-284', 'P-285', 'P-286', 'P-287', 'P-288', 'P-289'],
+  'MASTERS_TP_UW4': ['P-293', 'P-294', 'P-295', 'P-296', 'P-297', 'P-298', 'P-299', 'P-300', 'P-301', 'P-302', 'P-303', 'P-304', 'P-305', 'P-306', 'P-307', 'P-308', 'P-309', 'P-310'],
+  'MASTERS_TP_UW5': ['P-314', 'P-315', 'P-316', 'P-317', 'P-318', 'P-319', 'P-320', 'P-321', 'P-322', 'P-323', 'P-324', 'P-325', 'P-326', 'P-327', 'BT11-030_PR', 'DB3-069_PR'],
+  'MASTERS_TP_UW6': ['P-341', 'P-342', 'P-343', 'P-344', 'P-345', 'P-346', 'P-347', 'P-348', 'P-349', 'P-350', 'P-351', 'P-352', 'P-353', 'P-354', 'P-355', 'P-356', 'P-357', 'P-358', 'BT7-083_PR', 'DB1-057_PR'],
+  'MASTERS_TP_UW7': ['P-363', 'P-364', 'P-365', 'P-366', 'P-367', 'P-368', 'P-369', 'P-370', 'P-371', 'P-372', 'P-373', 'P-374', 'P-375', 'P-376', 'DB1-012_PR', 'DB2-061_PR'],
+  'MASTERS_CHAMPIONSHIP_2022_V1': ['P-394', 'P-395', 'P-396', 'P-397', 'P-398'],
+  'MASTERS_TP_UW8': ['P-380', 'P-381', 'P-382', 'P-383', 'P-384', 'P-385', 'P-386', 'P-387', 'P-388', 'P-389', 'P-390', 'P-391', 'P-392', 'P-393', 'DB3-136_PR', 'DB3-142_PR'],
+  'MASTERS_CHAMPIONSHIP_2022_V2': ['P-420', 'P-421', 'P-422', 'P-423', 'P-424'],
+  'MASTERS_CHAMPIONSHIP_2022_V3': ['P-428', 'P-429', 'P-430', 'P-431', 'P-432'],
+  'MASTERS_ZENKAI_START_PACK': ['P-402', 'P-403', 'P-404', 'P-405'],
+  'MASTERS_ZENKAI_TP_V1': ['P-406', 'P-407', 'P-408', 'P-409', 'P-410', 'P-411', 'P-412', 'P-413', 'P-414', 'P-415', 'P-416', 'P-417', 'P-418', 'P-419', 'BT15-096_PR', 'DB3-124_PR'],
+  'MASTERS_ZENKAI_SERIES_PACK_V1': ['BT18-009_PR', 'BT18-062_PR', 'BT19-065_PR', 'BT20-131_PR', 'BT19-109_PR', 'BT19-110_PR', 'EX21-03_PR', 'EX21-05_PR', 'EX21-28_PR', 'BT18-086_PR'],
+  'MASTERS_ZENKAI_TP_V2': ['P-437', 'P-438', 'P-439', 'P-440', 'P-441', 'P-442', 'P-443', 'P-444', 'P-445', 'P-446', 'P-447', 'P-448', 'P-449', 'P-450', 'P-451', 'P-452'],
+  'MASTERS_Z03_DASH_PACK': ['P-458', 'P-459', 'P-460', 'P-461', 'P-462', 'P-463', 'P-464', 'P-465', 'P-466', 'P-467', 'P-468', 'P-469', 'P-470', 'P-471', 'P-472', 'P-473', 'P-474', 'P-475'],
+  'MASTERS_ZENKAI_TP_V3': ['P-479', 'P-480', 'P-481', 'P-482', 'P-483', 'P-484', 'P-485', 'P-486', 'P-487', 'P-488', 'P-489', 'P-490', 'P-491', 'P-492', 'P-493', 'P-494'],
+  'MASTERS_ZENKAI_TP_V4': ['P-498', 'P-499', 'P-500', 'P-501', 'P-502', 'P-503', 'P-504', 'P-505', 'P-506', 'P-507', 'P-508', 'P-509', 'P-510', 'P-511', 'P-512', 'P-513'],
+  'MASTERS_ZENKAI_TP_V5': ['P-520', 'P-521', 'P-522', 'P-523', 'P-524', 'P-525', 'P-526', 'P-527', 'P-528', 'P-529', 'P-530', 'P-531', 'P-532', 'P-533', 'P-534', 'P-535'],
+  'MASTERS_ZENKAI_TP_V6': ['P-554', 'P-555', 'P-556', 'P-557', 'P-558', 'P-559', 'P-560', 'P-561', 'P-562', 'P-563', 'P-564', 'P-565', 'P-566', 'P-567', 'P-568', 'P-569'],
+  'MASTERS_ZENKAI_TP_V7': ['P-572', 'P-573', 'P-574', 'P-575', 'P-576', 'P-577', 'P-578', 'P-579', 'P-580', 'P-581', 'P-582', 'P-583', 'P-584', 'P-585', 'P-586', 'P-587'],
+  'MASTERS_ZENKAI_TP_V8': ['P-601', 'P-602', 'P-603', 'P-604', 'P-605', 'P-606', 'P-607', 'P-608', 'P-609', 'P-610', 'P-611', 'P-612', 'P-613', 'P-614', 'P-615', 'P-616'],
+  'MASTERS_ZENKAI_TP_V9': ['P-625', 'P-626', 'P-627', 'P-628', 'P-629', 'P-630', 'P-631', 'P-632', 'P-633', 'P-634', 'P-635', 'P-636', 'P-637', 'P-638', 'P-639', 'P-640'],
+  'MASTERS_ZENKAI_TP_V10': ['P-641', 'P-642', 'P-643', 'P-644', 'P-645', 'P-646', 'P-647', 'P-648', 'P-649', 'P-650', 'P-651', 'P-652', 'P-653', 'P-654', 'P-655', 'P-656'],
+  'MASTERS_ZENKAI_TP_V11': ['P-665', 'P-666', 'P-667', 'P-668', 'P-669', 'P-670', 'P-671', 'P-672', 'P-673', 'P-674', 'P-675', 'P-676', 'P-677', 'P-678', 'P-679', 'P-680'],
+  'MASTERS_ZENKAI_TP_V12': ['P-681', 'P-682', 'P-683', 'P-684', 'P-685', 'P-686', 'P-687', 'P-688'],
+  'MASTERS_DELUXE_PACK_2025_V2': ['P-689', 'P-690', 'P-691', 'P-692', 'P-693', 'P-694'],
+  'MASTERS_ULTRA_BOUT_TP_V13': ['P-697', 'P-698', 'P-699', 'P-700', 'P-701', 'P-702', 'P-703', 'P-704', 'P-705', 'P-706', 'P-707', 'P-708', 'P-709', 'P-710', 'P-711', 'P-712'],
+  'MASTERS_DELUXE_PACK_2026_V1': ['P-717', 'P-718', 'P-719', 'P-720', 'P-721', 'P-722'],
+  'MASTERS_DELUXE_PACK_2026_V2': ['P-757', 'P-758', 'P-759', 'P-760', 'P-761', 'P-761_PR', 'P-762', 'P-762_PR'],
 
-  'MASTERS_ULTRA_BOUT_TP_V2': ['SEALED_ULTRA_BOUT_TP_V2', 'P-723', 'P-724', 'P-725', 'P-726', 'P-727', 'P-728', 'P-729', 'P-730', 'P-731', 'P-732', 'P-733', 'P-734', 'P-735', 'P-736', 'P-737', 'P-738'],
-  'MASTERS_ULTRA_BOUT_TP_V3': ['SEALED_ULTRA_BOUT_TP_V3', 'P-739', 'P-740', 'P-741', 'P-742', 'P-743', 'P-744', 'P-745', 'P-746', 'P-747', 'P-748', 'P-749', 'P-750', 'P-751', 'P-752', 'P-753', 'P-754'],
+  'MASTERS_ULTRA_BOUT_TP_V2': ['P-723', 'P-724', 'P-725', 'P-726', 'P-727', 'P-728', 'P-729', 'P-730', 'P-731', 'P-732', 'P-733', 'P-734', 'P-735', 'P-736', 'P-737', 'P-738'],
+  'MASTERS_ULTRA_BOUT_TP_V3': ['P-739', 'P-740', 'P-741', 'P-742', 'P-743', 'P-744', 'P-745', 'P-746', 'P-747', 'P-748', 'P-749', 'P-750', 'P-751', 'P-752', 'P-753', 'P-754'],
   'MASTERS_DELUXE_PACK_2024_V1': ['SEALED_DELUXE_PACK_2024_V1'],
   'MASTERS_DELUXE_PACK_2024_V2': ['SEALED_DELUXE_PACK_2024_V2'],
   'MASTERS_DELUXE_PACK_2025_V1': ['SEALED_DELUXE_PACK_2025_V1'],
@@ -8060,8 +8059,10 @@ const getTargetQuantity = (card: Card, goal: 'collector' | 'player') => {
     (card.type.includes('Leader') && !card.type.toLowerCase().includes('z-leader')) || 
     card.id.includes('_SLR') || 
     card.type.includes('Marker') || card.type.toLowerCase().includes('merit') || 
+    card.type.includes('Playmat') || 
     ['SCR', 'GDR', 'LEADER RARE'].includes(card.rarity) ||
-    /_CS[1-3]$/.test(card.id);
+    /_CS[1-3]/.test(card.id) ||
+    /_TS0[1-9]/.test(card.id);
   return isOneUnitOnly ? 1 : 4;
 };
 
@@ -10441,20 +10442,21 @@ function areEqualListItem(prevProps: any, nextProps: any) {
 };
 
 const ModalCard = ({ selectedCard, isFlipped, setIsFlipped }: { selectedCard: Card, isFlipped: boolean, setIsFlipped: (f: boolean) => void }) => {
+  const isHorizontal = isHorizontalFormat(selectedCard);
   return (
     <div
       onClick={() => setIsFlipped(!isFlipped)}
-      className="relative w-full max-w-sm aspect-[2/3] cursor-pointer mx-auto transition-transform duration-300"
+      className={`relative w-full ${isHorizontal ? 'max-w-xl aspect-[1.8/1] sm:aspect-[2/1]' : 'max-w-sm aspect-[2/3]'} cursor-pointer mx-auto transition-transform duration-300`}
     >
       <div 
         className="w-full h-full relative transition-all duration-500"
         style={{ transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)", transformStyle: "preserve-3d" }}
       >
         <div className="absolute inset-0 backface-hidden rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/20" style={{ backfaceVisibility: "hidden" }}>
-          <img src={selectedCard.imageUrl || `https://picsum.photos/seed/${selectedCard.id}/400/600`} alt={selectedCard.name} className="w-full h-full object-cover object-top" />
+          <img src={selectedCard.imageUrl || `https://picsum.photos/seed/${selectedCard.id}/400/600`} alt={selectedCard.name} className={`w-full h-full ${isHorizontal ? 'object-contain' : 'object-cover object-top'}`} />
         </div>
         <div className="absolute inset-0 backface-hidden rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/20" style={{ transform: "rotateY(180deg)", backfaceVisibility: "hidden" }}>
-          <img src={selectedCard.backImageUrl || selectedCard.imageUrl || `https://picsum.photos/seed/${selectedCard.id}/400/600`} alt="Back" className="w-full h-full object-cover" />
+          <img src={selectedCard.backImageUrl || selectedCard.imageUrl || `https://picsum.photos/seed/${selectedCard.id}/400/600`} alt="Back" className={`w-full h-full ${isHorizontal ? 'object-contain' : 'object-cover'}`} />
         </div>
       </div>
     </div>
@@ -13062,6 +13064,31 @@ export default function TrackerApp() {
   const [isMultiSelectMode, setIsMultiSelectMode] = useState(false);
   const [selectedCardIds, setSelectedCardIds] = useState<Set<string>>(new Set());
   const [bulkQuantity, setBulkQuantity] = useState(1);
+  const [bulkVariantLabelEn, setBulkVariantLabelEn] = useState<string>('Normal');
+
+  const commonVariants = useMemo(() => {
+    if (selectedCardIds.size === 0) return [];
+    let currentCommon: Record<'es' | 'en', string>[] | null = null;
+    
+    for (const cardId of selectedCardIds) {
+      const variations = CARD_VARIATIONS[cardId] || [{ id: cardId, label: { es: 'Normal', en: 'Normal' }, isFoil: false }];
+      
+      if (currentCommon === null) {
+        currentCommon = variations.map(v => v.label);
+      } else {
+        const variationLabels = variations.map(v => v.label.en);
+        currentCommon = currentCommon.filter(c => variationLabels.includes(c.en));
+      }
+    }
+    
+    return currentCommon || [];
+  }, [selectedCardIds]);
+
+  useEffect(() => {
+    if (commonVariants.length > 0 && !commonVariants.some(v => v.en === bulkVariantLabelEn)) {
+      setBulkVariantLabelEn(commonVariants[0].en);
+    }
+  }, [commonVariants, bulkVariantLabelEn]);
   const [isSyncing, setIsSyncing] = useState(false);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
 
@@ -13097,9 +13124,22 @@ export default function TrackerApp() {
     try {
       const batch = writeBatch(db);
       const now = serverTimestamp();
-      const updatedCardIds = Array.from(selectedCardIds);
+      const updatedBaseCardIds = Array.from(selectedCardIds);
       
       let newInventory = [...inventory];
+
+      // Determine the specific variation ID for each selected base card
+      const getTargetId = (baseId: string) => {
+        if (!bulkVariantLabelEn) return baseId;
+        const variations = CARD_VARIATIONS[baseId];
+        if (variations) {
+          const match = variations.find(v => v.label.en === bulkVariantLabelEn);
+          if (match) return match.id;
+        }
+        return baseId; // Fallback
+      };
+
+      const updatedCardIds = updatedBaseCardIds.map(getTargetId);
 
       // Determine if this is a deletion
       const isDeletion = action === 'delete' || (
@@ -15353,17 +15393,17 @@ export default function TrackerApp() {
                 setLang(targetLang);
                 safeStorage.setItem('lang', targetLang);
               }}
-              className="flex items-center gap-1.5 bg-white/5 hover:bg-white/10 active:scale-95 text-xs text-white/90 px-3 py-1.5 rounded-xl border border-white/10 transition-all font-black uppercase tracking-wider"
+              className="flex items-center gap-1.5 bg-white/5 hover:bg-white/10 active:scale-95 text-xs text-white/90 px-2 sm:px-3 py-1.5 rounded-xl border border-white/10 transition-all font-black uppercase tracking-wider"
             >
               <Globe size={13} className="text-orange-500 animate-pulse" />
-              {lang === 'es' ? 'English' : 'Español'}
+              <span className="hidden sm:inline">{lang === 'es' ? 'English' : 'Español'}</span>
             </button>
             <button
               onClick={() => setShowLoginModal(true)}
-              className="flex items-center gap-1.5 bg-orange-600 hover:bg-orange-500 active:scale-95 text-xs text-white px-3.5 py-1.5 rounded-xl border border-orange-500/50 transition-all font-black uppercase tracking-wider shadow-md shadow-orange-950/40"
+              className="flex items-center gap-1.5 bg-orange-600 hover:bg-orange-500 active:scale-95 text-xs text-white px-2.5 sm:px-3.5 py-1.5 rounded-xl border border-orange-500/50 transition-all font-black uppercase tracking-wider shadow-md shadow-orange-950/40"
             >
               <User size={13} />
-              {lang === 'es' ? 'Iniciar Sesión' : 'Sign In'}
+              <span className="hidden sm:inline">{lang === 'es' ? 'Iniciar Sesión' : 'Sign In'}</span>
             </button>
           </div>
         </header>
@@ -15377,7 +15417,7 @@ export default function TrackerApp() {
             <section className="w-full flex flex-col justify-center space-y-6">
               
               <div className="text-center flex flex-col items-center">
-                <span className="inline-flex items-center gap-1.5 text-xs font-black text-orange-400 bg-orange-500/10 border border-orange-500/20 px-2.5 py-1 rounded-full uppercase tracking-widest mb-3">
+                <span className="inline-flex items-center gap-1.5 text-[9px] sm:text-xs font-black text-orange-400 bg-orange-500/10 border border-orange-500/20 px-2.5 py-1 rounded-full uppercase tracking-widest mb-3 text-center flex-wrap justify-center">
                   <Zap size={12} className="text-orange-400" />
                   {lang === 'es' ? 'COMPAÑERO DE COLECCIÓN NO OFICIAL' : 'UNOFFICIAL COLLECTION COMPANION'}
                 </span>
@@ -15460,7 +15500,7 @@ export default function TrackerApp() {
                         className="space-y-4 flex-1 flex flex-col justify-between"
                       >
                         <div>
-                          <div className="flex items-center justify-between mb-2">
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 mb-2">
                             <h4 className="text-[11px] font-black uppercase text-orange-400 tracking-wider flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 px-2 py-0.5 rounded">
                               <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping"></span>
                               {lang === 'es' ? 'Archivador Interactivo (Demo)' : 'Interactive Binder Playground'}
@@ -15575,7 +15615,7 @@ export default function TrackerApp() {
                         className="space-y-4 flex-1 flex flex-col justify-between"
                       >
                         <div>
-                          <div className="flex items-center justify-between mb-2">
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 mb-2">
                             <h4 className="text-[11px] font-black uppercase text-orange-400 tracking-wider flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 px-2 py-0.5 rounded">
                               <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
                               {lang === 'es' ? 'Tus Listas de Deseos' : 'Your Custom Checklists'}
@@ -15592,7 +15632,7 @@ export default function TrackerApp() {
                         </div>
 
                         {/* List switcher buttons */}
-                        <div className="flex gap-2 bg-black/60 p-1 rounded-xl self-start">
+                        <div className="flex flex-wrap gap-2 bg-black/60 p-1 rounded-xl self-start">
                           <button
                             type="button"
                             onClick={() => setLandingActiveList('deck_red')}
@@ -15694,7 +15734,7 @@ export default function TrackerApp() {
                         className="space-y-4 flex-1 flex flex-col justify-between"
                       >
                         <div>
-                          <div className="flex items-center justify-between mb-2">
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 mb-2">
                             <h4 className="text-[11px] font-black uppercase text-orange-400 tracking-wider flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 px-2 py-0.5 rounded">
                               <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
                               {lang === 'es' ? 'Estadísticas de Coleccionista' : 'Collector Analytics'}
@@ -15711,7 +15751,7 @@ export default function TrackerApp() {
                         </div>
 
                         {/* Interactive UI stats meters */}
-                        <div className="grid grid-cols-2 gap-4 py-2 flex-1 items-center">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-2 flex-1 items-center">
                           {/* Radial Progress representation */}
                           <div className="bg-black/25 border border-white/5 rounded-2xl p-4 flex flex-col items-center justify-center relative">
                             <div className="relative w-24 h-24 flex items-center justify-center">
@@ -15791,7 +15831,7 @@ export default function TrackerApp() {
                         className="space-y-4 flex-1 flex flex-col justify-between"
                       >
                         <div>
-                          <div className="flex items-center justify-between mb-2">
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 mb-2">
                             <h4 className="text-[11px] font-black uppercase text-orange-400 tracking-wider flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 px-2 py-0.5 rounded">
                               <Trophy size={11} className="text-orange-400 animate-pulse" />
                               {lang === 'es' ? 'Logros de Coleccionista' : 'Collector Milestones'}
@@ -18609,7 +18649,7 @@ export default function TrackerApp() {
                               targetExpansion = 'EP' + numStr;
                               targetSub = 'Eventos especiales';
                             } else if (selectedCard.id.startsWith('SEALED_CHAMPIONSHIP_')) {
-                              targetExpansion = selectedCard.id.replace('SEALED_CHAMPIONSHIP_', 'MASTERS_CHAMPIONSHIP_');
+                              targetExpansion = selectedCard.id.replace('SEALED_', 'MASTERS_');
                               targetSub = 'Championship Packs';
                             } else if (selectedCard.id.startsWith('SEALED_')) {
                               targetExpansion = selectedCard.id.replace('SEALED_', 'MASTERS_');
@@ -18638,7 +18678,7 @@ export default function TrackerApp() {
                     >
                       <div className="bg-black/50 p-3 sm:p-5 rounded-3xl border border-white/10 backdrop-blur-2xl shadow-2xl flex flex-col gap-5 text-left w-full">
                         <div className={`flex gap-3 sm:gap-4 ${isHorizontalFormat(selectedCard) ? 'flex-col items-center' : ''}`}>
-                          <div className={`${isHorizontalFormat(selectedCard) ? 'w-full max-w-[400px]' : 'w-[88px] sm:w-24 shrink-0'} shadow-xl rounded-xl`} >
+                          <div className={`${isHorizontalFormat(selectedCard) ? 'w-full max-w-[600px]' : 'w-[88px] sm:w-24 shrink-0'} shadow-xl rounded-xl`} >
                             <ModalCard selectedCard={cardToRender || selectedCard} isFlipped={isFlipped} setIsFlipped={setIsFlipped} />
                           </div>
                           <div className="flex-1 min-w-0 pt-1">
@@ -19630,6 +19670,24 @@ export default function TrackerApp() {
                   <X size={20} />
                 </button>
               </div>
+
+              {commonVariants.length > 1 && (
+                <div className="flex items-center gap-2 px-2 overflow-x-auto custom-scrollbar no-scrollbar">
+                  {commonVariants.map(variant => (
+                    <button
+                      key={variant.en}
+                      onClick={() => setBulkVariantLabelEn(variant.en)}
+                      className={`whitespace-nowrap px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-wider transition-colors ${
+                        bulkVariantLabelEn === variant.en 
+                          ? 'bg-orange-500 text-white shadow-[0_0_10px_rgba(249,115,22,0.3)]' 
+                          : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                      }`}
+                    >
+                      {lang === 'es' ? variant.es : variant.en}
+                    </button>
+                  ))}
+                </div>
+              )}
 
               <div className="flex items-center gap-2 sm:gap-3 w-full">
                 {collectionGoal === 'player' && (
