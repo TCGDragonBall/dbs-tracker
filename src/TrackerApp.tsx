@@ -8765,33 +8765,33 @@ const Dashboard = ({
       {/* Sponsor Banner */}
       {gameType === 'masters' ? (
         <motion.a
-          href="https://montalfan.com/producto/dragon-ball-super-card-game-ultra-bout-series-04-impact-beyond-dimensions-dbs-b31/"
+          href="https://montalfan.com/producto/dragon-ball-super-card-game-ultra-bout-series-05-chromatic-ascension-dbs-b32/"
           target="_blank"
           rel="noopener noreferrer"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           whileHover={{ scale: 1.01 }}
           whileTap={{ scale: 0.99 }}
-          className="block bg-gradient-to-r from-orange-600/25 via-[#1E1102]/90 to-[#0B1E36]/90 rounded-2xl p-6 border border-white/10 relative overflow-hidden group shadow-2xl min-h-[140px] flex items-center"
+          className="block bg-gradient-to-r from-purple-600/25 via-[#1E1102]/90 to-[#0B1E36]/90 rounded-2xl p-6 border border-white/10 relative overflow-hidden group shadow-2xl min-h-[140px] flex items-center"
         >
           {/* Full background image spanning 100% of the banner */}
           <div 
             className="absolute inset-0 opacity-20 bg-cover bg-no-repeat bg-center mix-blend-lighten pointer-events-none transition-opacity duration-700 group-hover:opacity-30 animate-fade-in"
-            style={{ backgroundImage: "url('https://www.dbs-cardgame.com/images/top/mv_ultra-bout-series04.jpg?1')" }}
+            style={{ backgroundImage: "url('https://www.dbs-cardgame.com/images/product/dbs-b32/img_item.png?v01')" }}
           />
           
           {/* Ambient Glows */}
-          <div className="absolute top-0 right-0 w-48 h-48 bg-orange-500/10 rounded-full -mr-12 -mt-12 blur-3xl group-hover:bg-orange-500/25 transition-all duration-700" />
+          <div className="absolute top-0 right-0 w-48 h-48 bg-purple-500/10 rounded-full -mr-12 -mt-12 blur-3xl group-hover:bg-purple-500/25 transition-all duration-700" />
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/10 rounded-full -ml-12 -mb-12 blur-3xl group-hover:bg-blue-500/25 transition-all duration-700" />
 
           <div className="relative z-10 w-full flex flex-row items-center justify-between gap-4">
             {/* Left Column: Sponsor & Reservation info */}
             <div className="flex flex-col items-start text-left flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-2">
-                <p className="text-[9px] font-black tracking-widest text-orange-500 uppercase italic">
+                <p className="text-[9px] font-black tracking-widest text-purple-400 uppercase italic">
                   {lang === 'es' ? 'PATROCINADOR OFICIAL' : 'OFFICIAL SPONSOR'}
                 </p>
-                <div className="h-1.5 w-1.5 bg-orange-500 rounded-full animate-ping" />
+                <div className="h-1.5 w-1.5 bg-purple-500 rounded-full animate-ping" />
               </div>
               
               <img 
@@ -8800,56 +8800,56 @@ const Dashboard = ({
                 className="h-8 object-contain mb-3 group-hover:scale-105 transition-transform duration-500"
               />
               
-              <h3 className="text-white font-extrabold text-[#FFF] text-md sm:text-lg md:text-xl tracking-tight leading-tight uppercase mb-1.5 group-hover:text-orange-400 transition-colors truncate w-full">
-                ¡Reserva BT31 Impact Beyond Dimensions!
+              <h3 className="text-white font-extrabold text-[#FFF] text-md sm:text-lg md:text-xl tracking-tight leading-tight uppercase mb-1.5 group-hover:text-purple-400 transition-colors truncate w-full">
+                {lang === 'es' ? '¡Reserva BT32 Chromatic Ascension!' : 'Pre-order BT32 Chromatic Ascension!'}
               </h3>
               
-              <p className="text-orange-400 font-extrabold text-[10px] sm:text-[11px] tracking-wider uppercase flex flex-wrap items-center gap-x-2 gap-y-1">
-                <span className="bg-orange-500/20 text-orange-400 border border-orange-500/30 px-1.5 py-0.5 rounded text-[8px] font-bold">CÓDIGO ANULIX</span>
+              <p className="text-purple-400 font-extrabold text-[10px] sm:text-[11px] tracking-wider uppercase flex flex-wrap items-center gap-x-2 gap-y-1">
+                <span className="bg-purple-500/20 text-purple-400 border border-purple-500/30 px-1.5 py-0.5 rounded text-[8px] font-bold">CÓDIGO ANULIX</span>
                 <span>para un descuento</span>
               </p>
             </div>
 
             {/* Right Column: Release Date badge */}
             <div className="flex flex-col items-end text-right shrink-0">
-              <span className="text-[9px] font-black tracking-widest text-orange-400/70 uppercase">
+              <span className="text-[9px] font-black tracking-widest text-purple-400/70 uppercase">
                 {lang === 'es' ? 'SALIDA' : 'RELEASES'}
               </span>
-              <span className="text-white font-black text-xs sm:text-sm md:text-md tracking-tight uppercase bg-orange-500/20 text-orange-400 border border-orange-500/30 px-2.5 sm:px-3 py-1 rounded-xl shadow-[0_0_15px_rgba(249,115,22,0.15)] mt-1 whitespace-nowrap">
-                {lang === 'es' ? '3 de Julio' : 'July 3rd'}
+              <span className="text-white font-black text-xs sm:text-sm md:text-md tracking-tight uppercase bg-purple-500/20 text-purple-400 border border-purple-500/30 px-2.5 sm:px-3 py-1 rounded-xl shadow-[0_0_15px_rgba(168,85,247,0.15)] mt-1 whitespace-nowrap">
+                {lang === 'es' ? '27 de Noviembre' : 'November 27th'}
               </span>
             </div>
           </div>
         </motion.a>
       ) : (
         <motion.a
-          href="https://montalfan.com/"
+          href="https://montalfan.com/producto/dragon-ball-super-card-game-fusion-world-fb-11-brightness-of-hope-booster-box-24-sobres/"
           target="_blank"
           rel="noopener noreferrer"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           whileHover={{ scale: 1.01 }}
           whileTap={{ scale: 0.99 }}
-          className="block bg-gradient-to-r from-red-600/25 via-[#1C0511]/90 to-[#0A1024]/90 rounded-2xl p-6 border border-white/10 relative overflow-hidden group shadow-2xl min-h-[140px] flex items-center"
+          className="block bg-gradient-to-r from-amber-600/25 via-[#1A1A05]/90 to-[#0A1024]/90 rounded-2xl p-6 border border-white/10 relative overflow-hidden group shadow-2xl min-h-[140px] flex items-center"
         >
           {/* Full background image spanning 100% of the banner */}
           <div 
             className="absolute inset-0 opacity-20 bg-cover bg-no-repeat bg-center mix-blend-lighten pointer-events-none transition-opacity duration-700 group-hover:opacity-30 animate-fade-in"
-            style={{ backgroundImage: "url('https://www.dbs-cardgame.com/fw/bccard/en/news/2025/05/02/nBCg0NGTfrlDxjTh/SB01.png')" }}
+            style={{ backgroundImage: "url('https://www.dbs-cardgame.com/fw/bccard/en/news/2026/07/13/QEmqKplY9vNPu74H/EN_banner_FB11.jpg')" }}
           />
           
           {/* Ambient Glows */}
-          <div className="absolute top-0 right-0 w-48 h-48 bg-red-500/10 rounded-full -mr-12 -mt-12 blur-3xl group-hover:bg-red-500/25 transition-all duration-700" />
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 rounded-full -ml-12 -mb-12 blur-3xl group-hover:bg-purple-500/25 transition-all duration-700" />
+          <div className="absolute top-0 right-0 w-48 h-48 bg-amber-500/10 rounded-full -mr-12 -mt-12 blur-3xl group-hover:bg-amber-500/25 transition-all duration-700" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-sky-500/10 rounded-full -ml-12 -mb-12 blur-3xl group-hover:bg-sky-500/25 transition-all duration-700" />
 
           <div className="relative z-10 w-full flex flex-row items-center justify-between gap-4">
             {/* Left Column: Sponsor & Reservation info */}
             <div className="flex flex-col items-start text-left flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-2">
-                <p className="text-[9px] font-black tracking-widest text-red-400 uppercase italic">
+                <p className="text-[9px] font-black tracking-widest text-amber-400 uppercase italic">
                   {lang === 'es' ? 'PATROCINADOR OFICIAL' : 'OFFICIAL SPONSOR'}
                 </p>
-                <div className="h-1.5 w-1.5 bg-red-500 rounded-full animate-ping" />
+                <div className="h-1.5 w-1.5 bg-amber-500 rounded-full animate-ping" />
               </div>
               
               <img 
@@ -8858,23 +8858,23 @@ const Dashboard = ({
                 className="h-8 object-contain mb-3 group-hover:scale-105 transition-transform duration-500"
               />
               
-              <h3 className="text-white font-extrabold text-[#FFF] text-md sm:text-lg md:text-xl tracking-tight leading-tight uppercase mb-1.5 group-hover:text-red-400 transition-colors truncate w-full">
-                {lang === 'es' ? '¡Próximamente Story Booster 01!' : '¡Story Booster 01 Coming Soon!'}
+              <h3 className="text-white font-extrabold text-[#FFF] text-md sm:text-lg md:text-xl tracking-tight leading-tight uppercase mb-1.5 group-hover:text-amber-400 transition-colors truncate w-full">
+                {lang === 'es' ? '¡Reserva FB11 Brightness of Hope!' : 'Pre-order FB11 Brightness of Hope!'}
               </h3>
               
-              <p className="text-red-400 font-extrabold text-[10px] sm:text-[11px] tracking-wider uppercase flex flex-wrap items-center gap-x-2 gap-y-1">
-                <span className="bg-red-500/20 text-red-400 border border-red-500/30 px-1.5 py-0.5 rounded text-[8px] font-bold">CÓDIGO ANULIX</span>
+              <p className="text-amber-400 font-extrabold text-[10px] sm:text-[11px] tracking-wider uppercase flex flex-wrap items-center gap-x-2 gap-y-1">
+                <span className="bg-amber-500/20 text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded text-[8px] font-bold">CÓDIGO ANULIX</span>
                 <span>para un descuento</span>
               </p>
             </div>
 
             {/* Right Column: Release Date badge */}
             <div className="flex flex-col items-end text-right shrink-0">
-              <span className="text-[9px] font-black tracking-widest text-red-400/70 uppercase">
+              <span className="text-[9px] font-black tracking-widest text-amber-400/70 uppercase">
                 {lang === 'es' ? 'SALIDA' : 'RELEASES'}
               </span>
-              <span className="text-white font-black text-xs sm:text-sm md:text-md tracking-tight uppercase bg-red-500/20 text-red-300 border border-red-500/30 px-2.5 sm:px-3 py-1 rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.15)] mt-1 whitespace-nowrap">
-                {lang === 'es' ? '21 de Agosto' : 'August 21st'}
+              <span className="text-white font-black text-xs sm:text-sm md:text-md tracking-tight uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2.5 sm:px-3 py-1 rounded-xl shadow-[0_0_15px_rgba(245,158,11,0.15)] mt-1 whitespace-nowrap">
+                {lang === 'es' ? '26 de Octubre' : 'October 26th'}
               </span>
             </div>
           </div>
@@ -18255,16 +18255,42 @@ export default function TrackerApp() {
                     </div>
                   </div>
 
-                  {/* <button 
-                    onClick={() => setIsExportModalOpen(true)}
-                    className="w-full p-5 bg-blue-500/10 rounded-2xl flex items-center justify-between hover:bg-blue-500/20 transition-colors border border-blue-500/20 text-blue-400"
+                  <button 
+                    onClick={() => {
+                      const exportData = cards.map(c => ({
+                        cardNumber: c.cardNumber,
+                        name: c.name,
+                        type: c.type,
+                        color: c.color,
+                        power: c.power && c.power !== '-' ? parseInt(c.power.replace(/\\D/g, '')) || 0 : 0,
+                        energyCost: c.energy && c.energy !== '-' ? parseInt(c.energy.split('(')[0]) || 0 : 0,
+                        comboPower: c.comboPower && c.comboPower !== '-' ? parseInt(c.comboPower) || 0 : 0,
+                        comboCost: c.comboEnergy && c.comboEnergy !== '-' ? parseInt(c.comboEnergy) || 0 : 0,
+                        character: c.character || '',
+                        specialTrait: c.specialTrait || '',
+                        era: c.era || '',
+                        skillText: c.skill || '',
+                        imageUrl: c.imageUrl
+                      }));
+                      const blob = new Blob([JSON.stringify(exportData, null, 2)], {type: "application/json"});
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.download = `dbs_cards_db_${gameType}.json`;
+                      a.click();
+                      URL.revokeObjectURL(url);
+                    }}
+                    className="w-full p-5 bg-emerald-500/10 rounded-2xl flex items-center justify-between hover:bg-emerald-500/20 transition-colors border border-emerald-500/20 text-emerald-400 mt-2"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="p-2 bg-blue-500/10 rounded-lg"><Download size={20} /></div>
-                      <span className="font-bold">{lang === 'es' ? 'Exportar Faltas a Excel' : 'Export Missing Cards to Excel'}</span>
+                      <div className="p-2 bg-emerald-500/10 rounded-lg text-emerald-500"><Download size={20} /></div>
+                      <div className="flex flex-col items-start">
+                        <span className="font-bold text-sm leading-tight">{lang === 'es' ? 'Exportar DB Simulador' : 'Export Simulator DB'}</span>
+                        <span className="text-[10px] text-emerald-500/70">{lang === 'es' ? 'Descargar JSON completo (.json)' : 'Download full cards JSON'}</span>
+                      </div>
                     </div>
-                    <ChevronRight size={20} className="text-blue-900" />
-                  </button> */}
+                    <ChevronRight size={20} className="text-emerald-500/50" />
+                  </button>
 
                   <button 
                     onClick={() => setIsFeedbackModalOpen(true)}
