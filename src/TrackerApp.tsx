@@ -69,6 +69,7 @@ import {
 import { collection, query, onSnapshot, where, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, getDocFromServer, writeBatch, getCountFromServer, getDoc } from 'firebase/firestore';
 import { MultiSelect } from './components/MultiSelect';
 import { ExcelExportModal } from './components/ExcelExportModal';
+import { CareerMode } from './components/career/CareerMode';
 import { db, auth, googleProvider, handleFirestoreError, OperationType, isQuotaError } from './firebase';
 import { signInWithPopup, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useAuth } from './AuthContext';
@@ -1888,6 +1889,7 @@ const translations = {
     wants: 'Listas Wants',
     stats: 'Estadísticas',
     profile: 'Perfil',
+    career: 'Carrera',
     welcome: '¡Bienvenido!',
     modeLabel: 'Preferencia de Colección',
     collector: 'Coleccionista',
@@ -2009,6 +2011,7 @@ const translations = {
     wants: 'Wants Lists',
     stats: 'Statistics',
     profile: 'Profile',
+    career: 'Career',
     welcome: 'Welcome!',
     modeLabel: 'Collection Preference',
     collector: 'Collector',
@@ -10632,6 +10635,11 @@ const CollectionIcon = (props: any) => <CustomIcon src="/assets/coleccion.png" {
 const StatsIcon = (props: any) => <CustomIcon src="/assets/stats.png" {...props} />;
 const ProfileIcon = (props: any) => <CustomIcon src="/assets/perfil.png" {...props} />;
 const SearchIcon = (props: any) => <CustomIcon src="/assets/buscar.png" {...props} />;
+const CareerIcon = ({ active, size = 24 }: { active?: boolean, size?: number }) => (
+  <div className="flex items-center justify-center" style={{ width: size, height: size }}>
+    <Trophy size={size} className={`transition-all duration-300 ${active ? 'text-orange-500 scale-110' : 'text-gray-400 opacity-60'}`} />
+  </div>
+);
 const WantsIcon = ({ active, size = 24 }: { active?: boolean, size?: number }) => (
   <div className="flex items-center justify-center" style={{ width: size, height: size }}>
     <ListTodo size={size} className={`transition-all duration-300 ${active ? 'text-orange-500 scale-110' : 'text-gray-400 opacity-60'}`} />
@@ -10645,24 +10653,25 @@ const WantsIcon = ({ active, size = 24 }: { active?: boolean, size?: number }) =
   }) => {
     const t = translations[lang];
     return (
-      <nav className="fixed bottom-0 left-0 right-0 bg-[#1E1E1E]/90 backdrop-blur-xl border-t border-white/5 px-4 py-3 z-50 flex justify-between items-center max-w-md mx-auto rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.5)] sm:max-w-none sm:rounded-none">
+      <nav className="fixed bottom-0 left-0 right-0 bg-[#1E1E1E]/90 backdrop-blur-xl border-t border-white/5 px-2 py-3 z-50 flex justify-between items-center w-full mx-auto rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.5)] sm:max-w-none sm:rounded-none">
         {[
           { id: 'home', icon: HomeIcon, label: t.home },
           { id: 'collection', icon: CollectionIcon, label: t.collection },
           { id: 'wants', icon: WantsIcon, label: t.wants },
           { id: 'search', icon: SearchIcon, label: t.search },
+          { id: 'career', icon: CareerIcon, label: t.career || 'Career' },
           { id: 'stats', icon: StatsIcon, label: t.stats },
         ].map((tab) => (
           <button
             key={tab.id}
             id={`tour-nav-${tab.id}`}
             onClick={() => handleTabChange(tab.id)}
-            className={`flex flex-col items-center gap-1 transition-colors ${activeTab === tab.id ? 'text-orange-500' : 'text-white/70'}`}
+            className={`flex flex-1 flex-col items-center justify-center gap-1 transition-colors px-1 ${activeTab === tab.id ? 'text-orange-500' : 'text-white/70'}`}
           >
             <div className={`transition-all duration-300 ${activeTab === tab.id ? 'scale-110' : ''}`}>
-              <tab.icon size={28} active={activeTab === tab.id} />
+              <tab.icon size={24} active={activeTab === tab.id} />
             </div>
-            <span className="text-[9px] font-black uppercase tracking-wider">{tab.label}</span>
+            <span className="text-[8px] sm:text-[9px] font-black uppercase tracking-wider text-center line-clamp-1">{tab.label}</span>
           </button>
         ))}
       </nav>
@@ -18117,6 +18126,16 @@ export default function TrackerApp() {
               </div>
             )}
           </div>
+        )}
+
+        {activeTab === 'career' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="pb-24"
+          >
+            <CareerMode cards={cards} inventory={inventory} lang={lang} userUid={user?.uid} />
+          </motion.div>
         )}
 
         {activeTab === 'stats' && (
