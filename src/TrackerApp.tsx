@@ -11861,6 +11861,9 @@ export default function TrackerApp() {
     const today = new Date().toDateString();
     return lastSelection !== today;
   });
+  const [showCareerBetaNotice, setShowCareerBetaNotice] = useState(() => {
+    return !safeStorage.getItem('seenCareerBetaNotice');
+  });
   const [showQuotaDetails, setShowQuotaDetails] = useState(false);
   const [deletingWantsList, setDeletingWantsList] = useState<WantsList | null>(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -20075,6 +20078,70 @@ export default function TrackerApp() {
             lang={lang}
             onSelect={handleGameSelect}
           />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showCareerBetaNotice && !showGameSelector && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/90 backdrop-blur-md z-[250] flex items-center justify-center p-6 text-center"
+            onClick={() => {
+              safeStorage.setItem('seenCareerBetaNotice', 'true');
+              setShowCareerBetaNotice(false);
+            }}
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-[#1E1E1E] border border-orange-500/30 p-8 rounded-3xl shadow-2xl max-w-md w-full flex flex-col items-center gap-6 relative overflow-hidden"
+            >
+              <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-orange-500/20 to-transparent pointer-events-none" />
+              <div className="w-20 h-20 bg-orange-500/20 rounded-full flex items-center justify-center text-orange-500 animate-pulse relative z-10">
+                <Trophy size={40} />
+              </div>
+              <div className="relative z-10">
+                <h3 className="text-2xl font-black text-white mb-2 uppercase tracking-tight">
+                  {lang === 'es' ? '¡Nuevo Modo Carrera!' : 'New Career Mode!'}
+                </h3>
+                <span className="bg-orange-500 text-white text-[10px] font-black uppercase px-2 py-1 rounded-md mb-4 inline-block">BETA</span>
+                <p className="text-white/70 text-sm mb-4">
+                  {lang === 'es' 
+                    ? 'Te invitamos a probar "Road to Glory", el nuevo modo de juego simulado. Haz un draft de tus líderes, compite en torneos, gana monedas y ficha nuevos líderes en el mercado para completar el Salón de la Fama.' 
+                    : 'We invite you to try "Road to Glory", the new simulated game mode. Draft your leaders, compete in tournaments, earn coins, and sign new leaders in the market to complete the Hall of Fame.'}
+                </p>
+                <p className="text-orange-500/80 text-xs font-bold uppercase tracking-widest">
+                  {lang === 'es' ? 'Fase de pruebas en desarrollo' : 'Beta testing phase'}
+                </p>
+              </div>
+              
+              <div className="w-full flex flex-col gap-3 relative z-10">
+                <button 
+                  onClick={() => {
+                    safeStorage.setItem('seenCareerBetaNotice', 'true');
+                    setShowCareerBetaNotice(false);
+                    handleTabChange('career');
+                  }}
+                  className="w-full bg-orange-500 text-white font-black py-4 rounded-xl hover:bg-orange-600 transition-colors shadow-lg active:scale-95"
+                >
+                  {lang === 'es' ? 'PROBAR AHORA' : 'TRY IT NOW'}
+                </button>
+                <button 
+                  onClick={() => {
+                    safeStorage.setItem('seenCareerBetaNotice', 'true');
+                    setShowCareerBetaNotice(false);
+                  }}
+                  className="w-full py-4 text-white/50 font-bold hover:text-white transition-colors"
+                >
+                  {lang === 'es' ? 'Quizás más tarde' : 'Maybe later'}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
 
