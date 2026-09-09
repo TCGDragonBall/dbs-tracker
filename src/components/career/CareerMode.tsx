@@ -404,25 +404,36 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
               return (
                 <div key={card.id + i} className="relative group">
                   <img src={card.imageUrl} alt={card.name} className="w-full rounded-xl shadow-lg" />
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-4 rounded-xl">
-                    <button 
-                      onClick={() => toggleLock(card.id)}
-                      className="p-3 rounded-full bg-white/20 hover:bg-white/40 text-white"
-                    >
-                      {isLocked ? <Lock /> : <Unlock />}
-                    </button>
+                  
+                  {/* Lock button always visible in the corner */}
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleLock(card.id);
+                    }}
+                    className={`absolute top-2 right-2 p-2 rounded-full text-white shadow-lg z-10 transition-colors ${
+                      isLocked 
+                        ? 'bg-red-600 hover:bg-red-700' 
+                        : 'bg-black/60 hover:bg-black/80 border border-white/20'
+                    }`}
+                  >
+                    {isLocked ? <Lock size={16} /> : <Unlock size={16} />}
+                  </button>
+
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-4 rounded-xl pointer-events-none sm:pointer-events-auto">
                     <button 
                       onClick={() => selectLeader(card.id)}
-                      className="px-4 py-2 rounded-lg bg-orange-600 font-bold text-white shadow-xl hover:bg-orange-500"
+                      className="px-4 py-2 rounded-lg bg-orange-600 font-bold text-white shadow-xl hover:bg-orange-500 pointer-events-auto"
                     >
                       Elegir
                     </button>
                   </div>
-                  {isLocked && (
-                    <div className="absolute top-2 right-2 bg-red-600 p-1.5 rounded-full text-white shadow-lg">
-                      <Lock size={16} />
-                    </div>
-                  )}
+                  
+                  {/* Mobile tap support for Elegir since hover is tricky */}
+                  <div 
+                    className="absolute inset-0 z-0 sm:hidden"
+                    onClick={() => selectLeader(card.id)}
+                  />
                 </div>
               );
             })}
