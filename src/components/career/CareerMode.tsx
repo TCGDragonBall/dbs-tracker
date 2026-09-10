@@ -1033,7 +1033,7 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
 
                 <div>
                   <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest block mb-2 flex justify-between items-center">
-                    <span>Líder Rival (Opcional)</span>
+                    <span>Líder Rival</span>
                     {registerOpponentId && <button onClick={() => setRegisterOpponentId(null)} className="text-red-400 hover:text-red-300">Borrar</button>}
                   </label>
                   <button 
@@ -1064,10 +1064,10 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
 
                 <div className="pt-4 border-t border-white/10">
                   <button 
-                    disabled={!registerResult}
+                    disabled={!registerResult || !registerOpponentId}
                     onClick={() => {
-                      if (registerResult) {
-                        registerMatch(registerResult, registerMatchType, registerOpponentId || undefined);
+                      if (registerResult && registerOpponentId) {
+                        registerMatch(registerResult, registerMatchType, registerOpponentId);
                         setIsRegisterModalOpen(false);
                         setRegisterResult(null);
                         setRegisterOpponentId(null);
@@ -1246,11 +1246,53 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
                 }
               });
 
+              // Matchup calculation
+              const leaderStats: Record<string, { win: number, loss: number }> = {};
+              targetMatches.forEach(m => {
+                if (m.opponentLeaderId) {
+                  if (!leaderStats[m.opponentLeaderId]) {
+                    leaderStats[m.opponentLeaderId] = { win: 0, loss: 0 };
+                  }
+                  if (m.result === 'win') leaderStats[m.opponentLeaderId].win++;
+                  else leaderStats[m.opponentLeaderId].loss++;
+                }
+              });
+
+              let bestMatchups: string[] = [];
+              let worstMatchups: string[] = [];
+              let maxDiff = 0;
+              let minDiff = 0;
+
+              Object.entries(leaderStats).forEach(([id, stats]) => {
+                // Minimum 1 match required
+                if (stats.win + stats.loss >= 1) {
+                  const diff = stats.win - stats.loss;
+                  
+                  if (diff > 0) {
+                    if (diff > maxDiff) {
+                      maxDiff = diff;
+                      bestMatchups = [id];
+                    } else if (diff === maxDiff) {
+                      bestMatchups.push(id);
+                    }
+                  }
+
+                  if (diff < 0) {
+                    if (diff < minDiff) {
+                      minDiff = diff;
+                      worstMatchups = [id];
+                    } else if (diff === minDiff) {
+                      worstMatchups.push(id);
+                    }
+                  }
+                }
+              });
+
               const chartData = Object.values(colorStats).filter(d => d.win > 0 || d.loss > 0);
 
               return (
-                <>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="flex flex-col gap-4 overflow-y-auto max-h-[70vh] pr-2 scrollbar-thin scrollbar-thumb-white/10 pb-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 shrink-0">
                     <div className="bg-[#111] border border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center text-center">
                       <span className="text-white/50 text-[10px] font-bold uppercase tracking-widest mb-1">Partidas</span>
                       <span className="text-2xl font-black text-white">{totalMatches}</span>
@@ -1269,7 +1311,51 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
                     </div>
                   </div>
 
-                  <div className="bg-[#111] border border-white/5 p-4 rounded-2xl h-64 flex flex-col">
+                  {(bestMatchups.length > 0 || worstMatchups.length > 0) && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 shrink-0">
+                      {bestMatchups.length > 0 && (
+                        <div className="bg-[#111] border border-green-500/20 p-4 rounded-2xl flex flex-col">
+                          <span className="text-green-500/80 text-[10px] font-bold uppercase tracking-widest mb-3 flex items-center gap-1.5"><Trophy size={12}/> Mejor Matchup</span>
+                          <div className="flex flex-wrap gap-2">
+                            {bestMatchups.map(id => {
+                              const c = cards.find(card => card.id === id);
+                              if (!c) return null;
+                              return (
+                                <div key={id} className="relative group w-12 h-16 rounded-md overflow-hidden border border-green-500/30">
+                                  <img src={c.imageUrl} alt={c.name} className="w-full h-full object-cover object-top" />
+                                  <div className="absolute -bottom-1 -right-1 bg-green-500 text-black text-[9px] font-black px-1.5 py-0.5 rounded-tl-md">
+                                    {leaderStats[id].win}-{leaderStats[id].loss}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                      
+                      {worstMatchups.length > 0 && (
+                        <div className="bg-[#111] border border-red-500/20 p-4 rounded-2xl flex flex-col">
+                          <span className="text-red-500/80 text-[10px] font-bold uppercase tracking-widest mb-3 flex items-center gap-1.5"><X size={12}/> Peor Matchup</span>
+                          <div className="flex flex-wrap gap-2">
+                            {worstMatchups.map(id => {
+                              const c = cards.find(card => card.id === id);
+                              if (!c) return null;
+                              return (
+                                <div key={id} className="relative group w-12 h-16 rounded-md overflow-hidden border border-red-500/30">
+                                  <img src={c.imageUrl} alt={c.name} className="w-full h-full object-cover object-top" />
+                                  <div className="absolute -bottom-1 -right-1 bg-red-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-tl-md">
+                                    {leaderStats[id].win}-{leaderStats[id].loss}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="bg-[#111] border border-white/5 p-4 rounded-2xl h-64 flex flex-col shrink-0">
                     <span className="text-white/50 text-[10px] font-bold uppercase tracking-widest mb-4">Resultados por Color Rival</span>
                     {chartData.length > 0 ? (
                       <ResponsiveContainer width="100%" height="100%">
@@ -1292,7 +1378,7 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
                       </div>
                     )}
                   </div>
-                </>
+                </div>
               );
             })()}
           </div>
