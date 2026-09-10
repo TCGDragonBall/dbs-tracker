@@ -16,10 +16,12 @@ import {
   Coins,
   History,
   Link as LinkIcon,
-  Trash2
+  Trash2,
+  BarChart2
 } from 'lucide-react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 interface Card {
   id: string;
@@ -49,6 +51,7 @@ interface MatchRecord {
   result: 'win' | 'loss';
   type: 'test' | 'local' | 'regional';
   date: string;
+  opponentLeaderId?: string;
 }
 
 interface CareerSlot {
@@ -105,6 +108,17 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
   const [matchType, setMatchType] = useState<'test' | 'local' | 'regional'>('test');
   const [selectedHofRecord, setSelectedHofRecord] = useState<{leader: any, matches: MatchRecord[]} | null>(null);
   const [viewingHofForSlot, setViewingHofForSlot] = useState<string | null>(null);
+  const [selectedMatchDetail, setSelectedMatchDetail] = useState<MatchRecord | null>(null);
+  const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
+  const [statsTab, setStatsTab] = useState<'career' | 'current'>('current');
+
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [registerResult, setRegisterResult] = useState<'win' | 'loss' | null>(null);
+  const [registerMatchType, setRegisterMatchType] = useState<'test' | 'local' | 'regional'>('test');
+  const [registerOpponentId, setRegisterOpponentId] = useState<string | null>(null);
+  const [isOpponentSearchOpen, setIsOpponentSearchOpen] = useState(false);
+  const [opponentSearchQuery, setOpponentSearchQuery] = useState('');
+  const [opponentSearchColor, setOpponentSearchColor] = useState('Todos');
 
   // Load from Firebase
   useEffect(() => {
@@ -269,7 +283,7 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
     });
   };
 
-  const registerMatch = async (result: 'win' | 'loss', type: 'test' | 'local' | 'regional') => {
+  const registerMatch = async (result: 'win' | 'loss', type: 'test' | 'local' | 'regional', opponentId?: string) => {
     if (!activeSlotId) return;
     const slot = careerData[activeSlotId];
     
@@ -299,7 +313,7 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
       }
     }
 
-    const match: MatchRecord = { result, type, date: new Date().toISOString() };
+    const match: MatchRecord = { result, type, date: new Date().toISOString(), opponentLeaderId: opponentId };
     const nextMatches = [...slot.matches, match];
     
     const nextSlot: CareerSlot = {
@@ -677,46 +691,42 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
                    </p>
                    
                    <div className="w-full max-w-md">
-                     <div className="flex gap-2 justify-center mb-4">
-                       {(['test', 'local', 'regional'] as const).map(type => (
-                         <button 
-                           key={type}
-                           onClick={() => setMatchType(type)}
-                           className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase transition-colors ${matchType === type ? 'bg-orange-500 text-white' : 'bg-white/10 text-white/50 hover:bg-white/20'}`}
-                         >
-                           {type === 'test' ? 'Testeo' : type === 'local' ? 'Local' : 'Regional'}
-                         </button>
-                       ))}
-                     </div>
-
-                     <div className="flex gap-4 w-full">
-                       <button 
-                         onClick={() => registerMatch('win', matchType)}
-                         className="flex-1 py-4 bg-green-500/20 text-green-400 border border-green-500/30 rounded-2xl font-black hover:bg-green-500/30 transition-colors flex items-center justify-center gap-2"
-                       >
-                         <Trophy /> Victoria
-                       </button>
-                       <button 
-                         onClick={() => registerMatch('loss', matchType)}
-                         className="flex-1 py-4 bg-red-500/10 text-red-400 border border-red-500/20 rounded-2xl font-black hover:bg-red-500/20 transition-colors flex items-center justify-center gap-2"
-                       >
-                         <X /> Derrota
-                       </button>
-                     </div>
+                     <button
+                       onClick={() => setIsRegisterModalOpen(true)}
+                       className="w-full py-4 bg-orange-600 text-white border border-orange-500/50 rounded-2xl font-black text-lg hover:bg-orange-500 transition-colors flex items-center justify-center gap-2 shadow-lg active:scale-95"
+                     >
+                       <Swords /> Registrar Resultado
+                     </button>
                    </div>
                 </div>
 
                 {slot.matches.length > 0 && (
                   <div className="bg-[#1a1a1a] p-6 rounded-3xl border border-white/5">
-                    <h3 className="font-bold text-white mb-4 flex items-center gap-2">
-                      <History size={18} className="text-white/50" />
-                      Últimos resultados
-                    </h3>
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-bold text-white flex items-center gap-2">
+                        <History size={18} className="text-white/50" />
+                        Últimos resultados
+                      </h3>
+                      <button onClick={() => setIsStatsModalOpen(true)} className="flex items-center gap-2 text-xs font-bold text-orange-500 hover:text-orange-400 uppercase tracking-widest transition-colors bg-orange-500/10 px-3 py-1.5 rounded-xl border border-orange-500/20 shadow-sm">
+                        <BarChart2 size={14} /> Estadísticas
+                      </button>
+                    </div>
                     <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-white/10">
                       {slot.matches.slice(-10).reverse().map((m, idx) => (
-                        <div key={idx} className={`flex-shrink-0 px-3 py-1.5 rounded-xl border text-xs font-bold ${m.result === 'win' ? 'bg-green-500/10 border-green-500/20 text-green-400' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}>
-                          {m.result === 'win' ? 'V' : 'D'} <span className="opacity-50 mx-1">•</span> <span className="uppercase text-[10px]">{m.type === 'test' ? 'Test' : m.type}</span>
-                        </div>
+                        <button 
+                          key={idx} 
+                          onClick={() => setSelectedMatchDetail(m)}
+                          className={`hover:scale-105 transition-transform flex-shrink-0 flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-bold ${m.result === 'win' ? 'bg-green-500/10 border-green-500/20 text-green-400' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}
+                        >
+                          {m.opponentLeaderId && cards.find(c => c.id === m.opponentLeaderId) && (
+                            <div className="w-5 h-5 rounded-full overflow-hidden border border-current opacity-80 shrink-0">
+                              <img src={cards.find(c => c.id === m.opponentLeaderId)?.imageUrl} alt="Rival" className="w-full h-full object-cover object-top" />
+                            </div>
+                          )}
+                          <span>
+                            {m.result === 'win' ? 'V' : 'D'} <span className="opacity-50 mx-1">•</span> <span className="uppercase text-[10px]">{m.type === 'test' ? 'Test' : m.type}</span>
+                          </span>
+                        </button>
                       ))}
                     </div>
                   </div>
@@ -958,9 +968,14 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
                 <h4 className="text-white/80 font-bold mb-2">Historial de partidas</h4>
                 <div className="grid grid-cols-5 gap-2 max-h-60 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-white/10">
                   {selectedHofRecord.matches.map((m, i) => (
-                    <div key={i} className={`flex flex-col items-center justify-center p-2 rounded-lg border ${m.result === 'win' ? 'bg-green-500/10 border-green-500/20 text-green-400' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}>
-                      <span className="font-black text-lg leading-none mb-1">{m.result === 'win' ? 'V' : 'D'}</span>
-                      <span className="text-[9px] uppercase font-bold opacity-70 tracking-tighter truncate w-full text-center">{m.type}</span>
+                    <div key={i} className={`relative flex flex-col items-center justify-center p-2 rounded-lg border overflow-hidden ${m.result === 'win' ? 'bg-green-500/10 border-green-500/20 text-green-400' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}>
+                      {m.opponentLeaderId && cards.find(c => c.id === m.opponentLeaderId) && (
+                        <div className="absolute inset-0 opacity-20 grayscale pointer-events-none">
+                          <img src={cards.find(c => c.id === m.opponentLeaderId)?.imageUrl} alt="Rival" className="w-full h-full object-cover object-top" />
+                        </div>
+                      )}
+                      <span className="font-black text-lg leading-none mb-1 relative z-10">{m.result === 'win' ? 'V' : 'D'}</span>
+                      <span className="text-[9px] uppercase font-bold opacity-70 tracking-tighter truncate w-full text-center relative z-10">{m.type}</span>
                     </div>
                   ))}
                 </div>
@@ -970,6 +985,316 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
                 No hay historial detallado guardado para este líder.
               </div>
             )}
+          </div>
+        </div>
+      )}
+      {isRegisterModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 backdrop-blur-md" onClick={() => setIsRegisterModalOpen(false)}>
+          <div className="bg-[#1E1E1E] border border-orange-500/30 rounded-3xl p-6 max-w-lg w-full flex flex-col gap-6" onClick={e => e.stopPropagation()}>
+            <div className="flex justify-between items-center">
+              <h3 className="text-2xl font-black text-white uppercase tracking-tight">Registrar Resultado</h3>
+              <button onClick={() => setIsRegisterModalOpen(false)} className="text-white/50 hover:text-white"><X size={24} /></button>
+            </div>
+
+            {!isOpponentSearchOpen ? (
+              <div className="space-y-6">
+                <div>
+                  <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest block mb-2">Tipo de Torneo</label>
+                  <div className="flex gap-2 bg-[#111] p-1.5 rounded-2xl border border-white/5">
+                    {(['test', 'local', 'regional'] as const).map(type => (
+                      <button 
+                        key={type}
+                        onClick={() => setRegisterMatchType(type)}
+                        className={`flex-1 py-3 rounded-xl text-sm font-bold uppercase transition-all ${registerMatchType === type ? 'bg-orange-500 text-white shadow-lg' : 'text-white/50 hover:text-white/80 hover:bg-white/5'}`}
+                      >
+                        {type === 'test' ? 'Testeo' : type === 'local' ? 'Local' : 'Regional'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest block mb-2">Resultado</label>
+                  <div className="flex gap-3">
+                    <button 
+                      onClick={() => setRegisterResult('win')}
+                      className={`flex-1 py-4 rounded-2xl font-black text-lg flex items-center justify-center gap-2 border-2 transition-all ${registerResult === 'win' ? 'bg-green-500/20 text-green-400 border-green-500 scale-[1.02] shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'bg-[#111] text-white/40 border-white/5 hover:border-green-500/50 hover:text-green-500/50'}`}
+                    >
+                      <Trophy size={20} /> Victoria
+                    </button>
+                    <button 
+                      onClick={() => setRegisterResult('loss')}
+                      className={`flex-1 py-4 rounded-2xl font-black text-lg flex items-center justify-center gap-2 border-2 transition-all ${registerResult === 'loss' ? 'bg-red-500/20 text-red-400 border-red-500 scale-[1.02] shadow-[0_0_15px_rgba(239,68,68,0.3)]' : 'bg-[#111] text-white/40 border-white/5 hover:border-red-500/50 hover:text-red-500/50'}`}
+                    >
+                      <X size={20} /> Derrota
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest block mb-2 flex justify-between items-center">
+                    <span>Líder Rival (Opcional)</span>
+                    {registerOpponentId && <button onClick={() => setRegisterOpponentId(null)} className="text-red-400 hover:text-red-300">Borrar</button>}
+                  </label>
+                  <button 
+                    onClick={() => setIsOpponentSearchOpen(true)}
+                    className="w-full bg-[#111] border border-white/10 hover:border-orange-500/50 p-4 rounded-2xl flex items-center justify-between transition-colors group"
+                  >
+                    {registerOpponentId ? (
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-14 rounded-md overflow-hidden border border-white/20 shrink-0">
+                          <img src={cards.find(c => c.id === registerOpponentId)?.imageUrl} alt="Rival" className="w-full h-full object-cover object-top" />
+                        </div>
+                        <div className="text-left">
+                          <p className="text-white font-bold">{cards.find(c => c.id === registerOpponentId)?.name}</p>
+                          <p className="text-xs text-white/50">{cards.find(c => c.id === registerOpponentId)?.cardNumber}</p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-3 text-white/50 group-hover:text-white/80">
+                        <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center">
+                          <Search size={18} />
+                        </div>
+                        <span className="font-bold">Buscar líder rival...</span>
+                      </div>
+                    )}
+                    <span className="text-orange-500 opacity-0 group-hover:opacity-100 transition-opacity ml-2">Buscar</span>
+                  </button>
+                </div>
+
+                <div className="pt-4 border-t border-white/10">
+                  <button 
+                    disabled={!registerResult}
+                    onClick={() => {
+                      if (registerResult) {
+                        registerMatch(registerResult, registerMatchType, registerOpponentId || undefined);
+                        setIsRegisterModalOpen(false);
+                        setRegisterResult(null);
+                        setRegisterOpponentId(null);
+                        setOpponentSearchQuery('');
+                        setOpponentSearchColor('Todos');
+                      }
+                    }}
+                    className="w-full py-4 bg-orange-600 text-white rounded-2xl font-black text-xl hover:bg-orange-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                  >
+                    Confirmar
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4 flex flex-col h-[60vh]">
+                <div className="flex gap-2">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" size={18} />
+                    <input 
+                      type="text" 
+                      placeholder="Buscar por nombre o número..."
+                      value={opponentSearchQuery}
+                      onChange={e => setOpponentSearchQuery(e.target.value)}
+                      className="w-full bg-[#111] border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white outline-none focus:border-orange-500/50"
+                    />
+                  </div>
+                </div>
+                
+                <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+                  {[
+                    { id: 'Todos', label: 'Todos' },
+                    { id: 'Red', label: 'Rojo' },
+                    { id: 'Blue', label: 'Azul' },
+                    { id: 'Green', label: 'Verde' },
+                    { id: 'Yellow', label: 'Amarillo' },
+                    { id: 'Black', label: 'Negro' }
+                  ].map(col => (
+                    <button 
+                      key={col.id}
+                      onClick={() => setOpponentSearchColor(col.id)}
+                      className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-bold transition-colors ${opponentSearchColor === col.id ? 'bg-orange-500 text-white' : 'bg-white/5 text-white/50 hover:bg-white/10 hover:text-white'}`}
+                    >
+                      {col.label}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="flex-1 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-white/10 grid grid-cols-3 sm:grid-cols-4 gap-3">
+                  {cards.filter(c => 
+                    c.type.toLowerCase().includes('leader') && 
+                    (opponentSearchColor === 'Todos' || c.color === opponentSearchColor || c.color?.includes(opponentSearchColor)) &&
+                    (c.name.toLowerCase().includes(opponentSearchQuery.toLowerCase()) || c.cardNumber.toLowerCase().includes(opponentSearchQuery.toLowerCase())) &&
+                    (!activeSlotId || !careerData[activeSlotId] || careerData[activeSlotId].gameType !== 'Fusion World' || (c.id.startsWith('FS') || c.id.startsWith('FB') || c.id.startsWith('SB') || c.id.startsWith('FP')))
+                  ).slice(0, 50).map(card => (
+                    <button 
+                      key={card.id}
+                      onClick={() => {
+                        setRegisterOpponentId(card.id);
+                        setIsOpponentSearchOpen(false);
+                      }}
+                      className="relative group rounded-xl overflow-hidden shadow-lg border-2 border-transparent hover:border-orange-500 transition-colors"
+                    >
+                      <img src={card.imageUrl} alt={card.name} className="w-full h-auto" />
+                    </button>
+                  ))}
+                </div>
+
+                <div className="pt-2">
+                  <button 
+                    onClick={() => setIsOpponentSearchOpen(false)}
+                    className="w-full py-3 bg-white/10 text-white rounded-xl font-bold hover:bg-white/20 transition-colors"
+                  >
+                    Volver
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      {selectedMatchDetail && (
+        <div className="fixed inset-0 z-[60] bg-black/90 flex items-center justify-center p-4 backdrop-blur-md" onClick={() => setSelectedMatchDetail(null)}>
+          <div className="bg-[#1a1a1a] border border-orange-500/30 rounded-3xl p-6 max-w-sm w-full flex flex-col items-center gap-6 relative" onClick={e => e.stopPropagation()}>
+            <button onClick={() => setSelectedMatchDetail(null)} className="absolute top-4 right-4 text-white/50 hover:text-white"><X size={24} /></button>
+            
+            <div className={`px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest ${selectedMatchDetail.result === 'win' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'}`}>
+              {selectedMatchDetail.result === 'win' ? 'Victoria' : 'Derrota'} • {selectedMatchDetail.type === 'test' ? 'Testeo' : selectedMatchDetail.type === 'local' ? 'Local' : 'Regional'}
+            </div>
+
+            {selectedMatchDetail.opponentLeaderId && cards.find(c => c.id === selectedMatchDetail.opponentLeaderId) ? (
+              <div className="flex flex-col items-center gap-4 w-full">
+                <span className="text-white/50 font-bold uppercase text-xs tracking-widest">Líder Rival</span>
+                <img 
+                  src={cards.find(c => c.id === selectedMatchDetail.opponentLeaderId)?.imageUrl} 
+                  alt="Líder Rival" 
+                  className="w-48 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] border border-white/10"
+                />
+                <h3 className="font-bold text-white text-center text-lg leading-tight mt-2">{cards.find(c => c.id === selectedMatchDetail.opponentLeaderId)?.name}</h3>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-4 w-full py-8">
+                <span className="text-white/50 font-bold uppercase text-xs tracking-widest">Líder Rival</span>
+                <div className="text-white/30 text-sm font-semibold">No registrado</div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      {isStatsModalOpen && activeSlotId && careerData[activeSlotId] && (
+        <div className="fixed inset-0 z-[70] bg-black/90 flex items-center justify-center p-4 backdrop-blur-md" onClick={() => setIsStatsModalOpen(false)}>
+          <div className="bg-[#1E1E1E] border border-orange-500/30 rounded-3xl p-6 max-w-lg w-full flex flex-col gap-6 relative" onClick={e => e.stopPropagation()}>
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-orange-500/20 rounded-xl flex items-center justify-center text-orange-500">
+                  <BarChart2 size={24} />
+                </div>
+                <h3 className="text-2xl font-black text-white uppercase tracking-tight">Estadísticas</h3>
+              </div>
+              <button onClick={() => setIsStatsModalOpen(false)} className="text-white/50 hover:text-white"><X size={24} /></button>
+            </div>
+
+            <div className="flex gap-2 bg-[#111] p-1.5 rounded-2xl border border-white/5">
+              <button 
+                onClick={() => setStatsTab('current')}
+                className={`flex-1 py-2.5 rounded-xl text-xs font-bold uppercase transition-all ${statsTab === 'current' ? 'bg-orange-500 text-white shadow-lg' : 'text-white/50 hover:text-white/80 hover:bg-white/5'}`}
+              >
+                Líder Actual
+              </button>
+              <button 
+                onClick={() => setStatsTab('career')}
+                className={`flex-1 py-2.5 rounded-xl text-xs font-bold uppercase transition-all ${statsTab === 'career' ? 'bg-orange-500 text-white shadow-lg' : 'text-white/50 hover:text-white/80 hover:bg-white/5'}`}
+              >
+                Toda la Carrera
+              </button>
+            </div>
+            
+            {(() => {
+              const slot = careerData[activeSlotId];
+              
+              const targetMatches = statsTab === 'current' 
+                ? slot.matches 
+                : [
+                    ...slot.matches, 
+                    ...(slot.graduatedRecords?.flatMap(r => r.matches) || [])
+                  ];
+              
+              const totalMatches = targetMatches.length;
+              const wins = targetMatches.filter(m => m.result === 'win').length;
+              const losses = totalMatches - wins;
+              const winRate = totalMatches > 0 ? Math.round((wins / totalMatches) * 100) : 0;
+              
+              const colorStats: Record<string, { win: number, loss: number, name: string }> = {
+                'Red': { win: 0, loss: 0, name: 'Rojo' },
+                'Blue': { win: 0, loss: 0, name: 'Azul' },
+                'Green': { win: 0, loss: 0, name: 'Verde' },
+                'Yellow': { win: 0, loss: 0, name: 'Amarillo' },
+                'Black': { win: 0, loss: 0, name: 'Negro' },
+                'Unknown': { win: 0, loss: 0, name: 'No Reg.' }
+              };
+
+              targetMatches.forEach(m => {
+                let col = 'Unknown';
+                if (m.opponentLeaderId) {
+                  const oppCard = cards.find(c => c.id === m.opponentLeaderId);
+                  if (oppCard && oppCard.color) {
+                    if (oppCard.color.includes('Red')) col = 'Red';
+                    else if (oppCard.color.includes('Blue')) col = 'Blue';
+                    else if (oppCard.color.includes('Green')) col = 'Green';
+                    else if (oppCard.color.includes('Yellow')) col = 'Yellow';
+                    else if (oppCard.color.includes('Black')) col = 'Black';
+                  }
+                }
+                if (colorStats[col]) {
+                  if (m.result === 'win') colorStats[col].win++;
+                  else colorStats[col].loss++;
+                }
+              });
+
+              const chartData = Object.values(colorStats).filter(d => d.win > 0 || d.loss > 0);
+
+              return (
+                <>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div className="bg-[#111] border border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center text-center">
+                      <span className="text-white/50 text-[10px] font-bold uppercase tracking-widest mb-1">Partidas</span>
+                      <span className="text-2xl font-black text-white">{totalMatches}</span>
+                    </div>
+                    <div className="bg-[#111] border border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center text-center">
+                      <span className="text-white/50 text-[10px] font-bold uppercase tracking-widest mb-1">Victorias</span>
+                      <span className="text-2xl font-black text-green-500">{wins}</span>
+                    </div>
+                    <div className="bg-[#111] border border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center text-center">
+                      <span className="text-white/50 text-[10px] font-bold uppercase tracking-widest mb-1">Derrotas</span>
+                      <span className="text-2xl font-black text-red-500">{losses}</span>
+                    </div>
+                    <div className="bg-[#111] border border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center text-center">
+                      <span className="text-white/50 text-[10px] font-bold uppercase tracking-widest mb-1">Win Rate</span>
+                      <span className="text-2xl font-black text-orange-500">{winRate}%</span>
+                    </div>
+                  </div>
+
+                  <div className="bg-[#111] border border-white/5 p-4 rounded-2xl h-64 flex flex-col">
+                    <span className="text-white/50 text-[10px] font-bold uppercase tracking-widest mb-4">Resultados por Color Rival</span>
+                    {chartData.length > 0 ? (
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={chartData} margin={{ top: 0, right: 0, left: -25, bottom: 0 }}>
+                          <XAxis dataKey="name" stroke="#a1a1aa" fontSize={10} tickLine={false} axisLine={false} />
+                          <YAxis stroke="#a1a1aa" fontSize={10} tickLine={false} axisLine={false} allowDecimals={false} />
+                          <Tooltip 
+                            cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                            contentStyle={{ backgroundColor: '#1E1E1E', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                            itemStyle={{ fontWeight: 'bold' }}
+                          />
+                          <Legend wrapperStyle={{ fontSize: '10px' }} />
+                          <Bar dataKey="win" name="Victorias" fill="#22c55e" radius={[4, 4, 0, 0]} />
+                          <Bar dataKey="loss" name="Derrotas" fill="#ef4444" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    ) : (
+                      <div className="flex-1 flex items-center justify-center text-white/30 text-sm font-bold">
+                        No hay datos suficientes
+                      </div>
+                    )}
+                  </div>
+                </>
+              );
+            })()}
           </div>
         </div>
       )}
