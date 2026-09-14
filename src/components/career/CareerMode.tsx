@@ -17,7 +17,9 @@ import {
   History,
   Link as LinkIcon,
   Trash2,
-  BarChart2
+  BarChart2,
+  Star,
+  Award
 } from 'lucide-react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
@@ -45,6 +47,7 @@ interface CareerModeProps {
   inventory: InventoryItem[];
   lang: 'es' | 'en';
   userUid?: string;
+  gameType: 'masters' | 'fusion';
 }
 
 interface MatchRecord {
@@ -69,6 +72,7 @@ interface CareerSlot {
   matches: MatchRecord[];
   graduatedLeaders: string[];
   graduatedRecords?: { id: string, matches: MatchRecord[] }[];
+  unlockedAchievements?: string[];
   deckUrl: string;
   status: 'empty' | 'draft' | 'active' | 'market' | 'graduated';
 }
@@ -87,17 +91,38 @@ const INITIAL_SLOT: CareerSlot = {
   lossStreak: 0,
   matches: [],
   graduatedLeaders: [],
+  unlockedAchievements: [],
   deckUrl: '',
   status: 'empty'
 };
 
-const DEFAULT_DATA = {
-  slot1: { ...INITIAL_SLOT },
-  slot2: { ...INITIAL_SLOT },
-  slot3: { ...INITIAL_SLOT }
+const DEFAULT_DATA: Record<string, CareerSlot> = {
+  masters_slot1: { ...INITIAL_SLOT, gameType: 'Masters' },
+  masters_slot2: { ...INITIAL_SLOT, gameType: 'Masters' },
+  masters_slot3: { ...INITIAL_SLOT, gameType: 'Masters' },
+  fusion_slot1: { ...INITIAL_SLOT, gameType: 'Fusion World' },
+  fusion_slot2: { ...INITIAL_SLOT, gameType: 'Fusion World' },
+  fusion_slot3: { ...INITIAL_SLOT, gameType: 'Fusion World' }
 };
 
-export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, userUid }) => {
+interface Achievement {
+  id: string;
+  title: string;
+  description: string;
+  target: number;
+  rewardCoins: number;
+}
+
+const ACHIEVEMENTS: Achievement[] = [
+  { id: 'grad_3', title: 'Entrenador Prometedor', description: 'Gradúa a 3 líderes al Salón de la Fama', target: 3, rewardCoins: 5 },
+  { id: 'grad_5', title: 'Instructor Experto', description: 'Gradúa a 5 líderes al Salón de la Fama', target: 5, rewardCoins: 5 },
+  { id: 'grad_10', title: 'Maestro Táctico', description: 'Gradúa a 10 líderes al Salón de la Fama', target: 10, rewardCoins: 5 },
+  { id: 'grad_15', title: 'Leyenda del Dojo', description: 'Gradúa a 15 líderes al Salón de la Fama', target: 15, rewardCoins: 5 },
+  { id: 'grad_20', title: 'Gran Patriarca', description: 'Gradúa a 20 líderes al Salón de la Fama', target: 20, rewardCoins: 5 },
+  { id: 'grad_25', title: 'Dios de la Destrucción', description: 'Gradúa a 25 líderes al Salón de la Fama', target: 25, rewardCoins: 5 },
+];
+
+export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, userUid, gameType }) => {
   const [careerData, setCareerData] = useState<Record<string, CareerSlot>>(DEFAULT_DATA);
   const [activeSlotId, setActiveSlotId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -111,6 +136,7 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
   const [selectedMatchDetail, setSelectedMatchDetail] = useState<MatchRecord | null>(null);
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
   const [statsTab, setStatsTab] = useState<'career' | 'current'>('current');
+  const [isAchievementsModalOpen, setIsAchievementsModalOpen] = useState(false);
 
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [registerResult, setRegisterResult] = useState<'win' | 'loss' | null>(null);
@@ -134,11 +160,36 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
         
         if (snapshot.exists()) {
           const data = snapshot.data();
-          setCareerData({
-            slot1: data.slot1 || { ...INITIAL_SLOT },
-            slot2: data.slot2 || { ...INITIAL_SLOT },
-            slot3: data.slot3 || { ...INITIAL_SLOT }
+          const migratedData: Record<string, CareerSlot> = { ...DEFAULT_DATA };
+          let needsSave = false;
+
+          // Load valid new slots
+          Object.keys(data).forEach(key => {
+            if (key.includes('_slot')) {
+              migratedData[key] = data[key];
+            }
           });
+
+          // Migrate old slots
+          ['slot1', 'slot2', 'slot3'].forEach(oldKey => {
+            if (data[oldKey] && data[oldKey].status !== 'empty') {
+              const gt = data[oldKey].gameType === 'Fusion World' ? 'fusion' : 'masters';
+              for (let i = 1; i <= 3; i++) {
+                const newKey = `${gt}_slot${i}`;
+                if (migratedData[newKey].status === 'empty') {
+                  migratedData[newKey] = data[oldKey];
+                  needsSave = true;
+                  break;
+                }
+              }
+            }
+          });
+
+          setCareerData(migratedData);
+
+          if (needsSave) {
+            await setDoc(doc(db, 'users', userUid, 'career', 'data'), migratedData, { merge: true });
+          }
         } else {
           // Initialize
           await setDoc(doc(db, 'users', userUid, 'career', 'data'), DEFAULT_DATA, { merge: true });
@@ -168,7 +219,8 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
   };
 
   const resetSlot = async (slotId: string) => {
-    await saveSlot(slotId, { ...INITIAL_SLOT });
+    const existingSlot = careerData[slotId];
+    await saveSlot(slotId, { ...INITIAL_SLOT, gameType: existingSlot?.gameType || (slotId.startsWith('fusion') ? 'Fusion World' : 'Masters') });
     setConfirmReset(null);
   };
 
@@ -204,17 +256,37 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
     const owned = getOwnedLeaders(gameType, filter).filter(c => !existingSlot.graduatedLeaders.includes(c.id));
     const drafted: string[] = [];
     
-    const colors = gameType === 'Fusion World' 
-      ? ['Red', 'Blue', 'Green', 'Yellow', 'Black']
-      : ['Red', 'Blue', 'Green', 'Yellow', 'Black', 'Multi', 'White']; // Approx for Masters
+    if (owned.length < 20) {
+      const targetCount = Math.min(5, owned.length);
+      const shuffled = [...owned].sort(() => Math.random() - 0.5);
+      const selectedColors = new Set<string>();
+      const skipped: typeof owned = [];
 
-    colors.forEach(col => {
-      const pool = owned.filter(c => c.color === col);
-      if (pool.length > 0) {
-        const randomCard = pool[Math.floor(Math.random() * pool.length)];
-        drafted.push(randomCard.id);
+      for (const card of shuffled) {
+        if (drafted.length >= targetCount) break;
+        if (!selectedColors.has(card.color)) {
+          drafted.push(card.id);
+          selectedColors.add(card.color);
+        } else {
+          skipped.push(card);
+        }
       }
-    });
+      for (const card of skipped) {
+        if (drafted.length >= targetCount) break;
+        drafted.push(card.id);
+      }
+    } else {
+      const colors = gameType === 'Fusion World' 
+        ? ['Red', 'Blue', 'Green', 'Yellow', 'Black']
+        : ['Red', 'Blue', 'Green', 'Yellow', 'Black', 'Multi', 'White']; // Approx for Masters
+      colors.forEach(col => {
+        const pool = owned.filter(c => c.color === col);
+        if (pool.length > 0) {
+          const randomCard = pool[Math.floor(Math.random() * pool.length)];
+          drafted.push(randomCard.id);
+        }
+      });
+    }
 
     const newSlot: CareerSlot = {
       ...INITIAL_SLOT,
@@ -234,20 +306,46 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
     const slot = careerData[activeSlotId];
     if (slot.mulliganUsed) return;
 
-    const owned = getOwnedLeaders(slot.gameType, slot.filter);
-    const newDrafted = [...slot.draftedLeaders];
+    const owned = getOwnedLeaders(slot.gameType, slot.filter).filter(c => !slot.graduatedLeaders.includes(c.id));
+    
+    let newDrafted: string[] = [];
 
-    slot.draftedLeaders.forEach((leaderId, index) => {
-      if (!slot.lockedForMulligan.includes(leaderId)) {
-        const card = cards.find(c => c.id === leaderId);
-        if (card) {
-          const pool = owned.filter(c => c.color === card.color);
-          if (pool.length > 0) {
-            newDrafted[index] = pool[Math.floor(Math.random() * pool.length)].id;
-          }
+    if (owned.length < 20) {
+      newDrafted = [...slot.lockedForMulligan];
+      const targetCount = Math.min(5, owned.length);
+      const availablePool = owned.filter(c => !slot.lockedForMulligan.includes(c.id)).sort(() => Math.random() - 0.5);
+      
+      const lockedCards = slot.lockedForMulligan.map(id => cards.find(c => c.id === id)).filter(Boolean);
+      const selectedColors = new Set(lockedCards.map(c => c!.color));
+      const skipped: typeof owned = [];
+
+      for (const card of availablePool) {
+        if (newDrafted.length >= targetCount) break;
+        if (!selectedColors.has(card.color)) {
+          newDrafted.push(card.id);
+          selectedColors.add(card.color);
+        } else {
+          skipped.push(card);
         }
       }
-    });
+      for (const card of skipped) {
+        if (newDrafted.length >= targetCount) break;
+        newDrafted.push(card.id);
+      }
+    } else {
+      newDrafted = [...slot.draftedLeaders];
+      slot.draftedLeaders.forEach((leaderId, index) => {
+        if (!slot.lockedForMulligan.includes(leaderId)) {
+          const card = cards.find(c => c.id === leaderId);
+          if (card) {
+            const pool = owned.filter(c => c.color === card.color);
+            if (pool.length > 0) {
+              newDrafted[index] = pool[Math.floor(Math.random() * pool.length)].id;
+            }
+          }
+        }
+      });
+    }
 
     await saveSlot(activeSlotId, {
       ...slot,
@@ -334,6 +432,27 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
     await saveSlot(activeSlotId, nextSlot);
   };
 
+  const claimAchievement = async (achievementId: string) => {
+    if (!activeSlotId) return;
+    const slot = careerData[activeSlotId];
+    const achievement = ACHIEVEMENTS.find(a => a.id === achievementId);
+    if (!achievement) return;
+
+    const unlocked = slot.unlockedAchievements || [];
+    if (unlocked.includes(achievementId)) return;
+
+    const graduatedCount = slot.graduatedLeaders.length;
+    if (graduatedCount < achievement.target) return;
+
+    const nextSlot: CareerSlot = {
+      ...slot,
+      coins: slot.coins + achievement.rewardCoins,
+      unlockedAchievements: [...unlocked, achievementId]
+    };
+    
+    await saveSlot(activeSlotId, nextSlot);
+  };
+
   const buyFromMarket = async (type: 'reserve' | 'scout' | 'star' | 'new_draft', leaderId?: string) => {
     if (!activeSlotId) return;
     const slot = careerData[activeSlotId];
@@ -399,11 +518,22 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
     const slot = careerData[activeSlotId];
     
     if (slot.status === 'draft') {
+      const owned = getOwnedLeaders(slot.gameType, slot.filter).filter(c => !slot.graduatedLeaders.includes(c.id));
+      const isLowCollection = owned.length < 20;
+
       return (
         <div className="space-y-6">
           <button onClick={() => setActiveSlotId(null)} className="text-white/60 hover:text-white flex items-center gap-2">
             <X size={20} /> Cancelar Draft
           </button>
+
+          {isLowCollection && (
+            <div className="bg-yellow-500/10 border border-yellow-500/30 p-4 rounded-xl flex items-start gap-3 text-sm text-yellow-200">
+              <span className="text-xl leading-none">ℹ️</span>
+              <p>Tu colección tiene menos de 20 líderes disponibles. El draft se ha adaptado mostrando hasta 5 opciones y evitando colores repetidos dentro de lo posible.</p>
+            </div>
+          )}
+
           <div className="text-center space-y-2">
             <h2 className="text-2xl font-black text-white">El Gran Draft</h2>
             <p className="text-white/60">Selecciona tu Líder inicial o haz un Mulligan.</p>
@@ -477,7 +607,12 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
                Volver a Inicio
             </button>
             <div className="flex items-center gap-4 text-orange-400 font-black text-xl">
-              <Coins /> {slot.coins}
+              <button onClick={() => setIsAchievementsModalOpen(true)} className="flex items-center gap-2 text-xs font-bold text-yellow-500 hover:text-yellow-400 uppercase tracking-widest transition-colors bg-yellow-500/10 px-3 py-1.5 rounded-xl border border-yellow-500/20 shadow-sm mr-2">
+                <Award size={14} /> Logros
+              </button>
+              <div className="flex items-center gap-1">
+                <Coins /> {slot.coins}
+              </div>
             </div>
           </div>
 
@@ -803,7 +938,11 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
       </div>
 
       <div className="space-y-4">
-        {Object.entries(careerData).map(([slotId, slot]) => (
+        {[1, 2, 3].map((slotNum) => {
+          const slotId = `${gameType}_slot${slotNum}`;
+          const slot = careerData[slotId] || DEFAULT_DATA[slotId];
+          
+          return (
           <div key={slotId} className="bg-[#1a1a1a] p-1 rounded-3xl border border-white/10 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-blue-500/5" />
             <div className="relative p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -818,7 +957,7 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
                   </div>
                 )}
                 <div>
-                  <h3 className="text-xl font-bold text-white">Carrera {slotId.replace('slot', '')}</h3>
+                  <h3 className="text-xl font-bold text-white">Carrera {slotNum}</h3>
                   {slot.status === 'empty' ? (
                     <p className="text-sm text-white/40">Ranura Vacía</p>
                   ) : (
@@ -829,15 +968,20 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
               
               {slot.status === 'empty' ? (
                 <div className="flex gap-2 w-full flex-wrap sm:w-auto">
-                  <button onClick={() => startDraft(slotId, 'Fusion World', 'legacy')} className="flex-1 sm:flex-none px-4 py-2 bg-blue-600/20 text-blue-400 font-bold rounded-xl hover:bg-blue-600/30">
-                    FW (Todos)
-                  </button>
-                  <button onClick={() => startDraft(slotId, 'Masters', 'recent')} className="flex-1 sm:flex-none px-4 py-2 bg-red-600/20 text-red-400 font-bold rounded-xl hover:bg-red-600/30 whitespace-nowrap">
-                    Masters (BT28+)
-                  </button>
-                  <button onClick={() => startDraft(slotId, 'Masters', 'legacy')} className="flex-1 sm:flex-none px-4 py-2 bg-purple-600/20 text-purple-400 font-bold rounded-xl hover:bg-purple-600/30 whitespace-nowrap">
-                    Masters (Legacy)
-                  </button>
+                  {gameType === 'fusion' ? (
+                    <button onClick={() => startDraft(slotId, 'Fusion World', 'legacy')} className="flex-1 sm:flex-none px-4 py-2 bg-blue-600/20 text-blue-400 font-bold rounded-xl hover:bg-blue-600/30">
+                      FW (Todos)
+                    </button>
+                  ) : (
+                    <>
+                      <button onClick={() => startDraft(slotId, 'Masters', 'recent')} className="flex-1 sm:flex-none px-4 py-2 bg-red-600/20 text-red-400 font-bold rounded-xl hover:bg-red-600/30 whitespace-nowrap">
+                        Masters (BT28+)
+                      </button>
+                      <button onClick={() => startDraft(slotId, 'Masters', 'legacy')} className="flex-1 sm:flex-none px-4 py-2 bg-purple-600/20 text-purple-400 font-bold rounded-xl hover:bg-purple-600/30 whitespace-nowrap">
+                        Masters (Legacy)
+                      </button>
+                    </>
+                  )}
                 </div>
               ) : (
                 <div className="flex gap-2 w-full sm:w-auto">
@@ -896,7 +1040,7 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
               </div>
             )}
           </div>
-        ))}
+        )})}
       </div>
     </div>
   );
@@ -1381,6 +1525,74 @@ export const CareerMode: React.FC<CareerModeProps> = ({ cards, inventory, lang, 
                 </div>
               );
             })()}
+          </div>
+        </div>
+      )}
+      {isAchievementsModalOpen && activeSlotId && careerData[activeSlotId] && (
+        <div className="fixed inset-0 z-[80] bg-black/90 flex items-center justify-center p-4 backdrop-blur-md" onClick={() => setIsAchievementsModalOpen(false)}>
+          <div className="bg-[#1E1E1E] border border-yellow-500/30 rounded-3xl p-6 max-w-2xl w-full flex flex-col gap-6 relative" onClick={e => e.stopPropagation()}>
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-yellow-500/20 rounded-xl flex items-center justify-center text-yellow-500">
+                  <Award size={24} />
+                </div>
+                <h3 className="text-2xl font-black text-white uppercase tracking-tight">Logros de Carrera</h3>
+              </div>
+              <button onClick={() => setIsAchievementsModalOpen(false)} className="text-white/50 hover:text-white"><X size={24} /></button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto max-h-[70vh] pr-2 scrollbar-thin scrollbar-thumb-white/10">
+              {ACHIEVEMENTS.map(ach => {
+                const slot = careerData[activeSlotId];
+                const graduatedCount = slot.graduatedLeaders.length;
+                const unlocked = slot.unlockedAchievements || [];
+                const isClaimed = unlocked.includes(ach.id);
+                const isCompleted = graduatedCount >= ach.target;
+                const progress = Math.min(graduatedCount, ach.target);
+                const progressPercent = Math.round((progress / ach.target) * 100);
+
+                return (
+                  <div key={ach.id} className={`p-4 rounded-2xl border ${isClaimed ? 'bg-yellow-500/5 border-yellow-500/20' : isCompleted ? 'bg-green-500/10 border-green-500/30' : 'bg-[#111] border-white/5'} flex flex-col gap-3 relative overflow-hidden transition-colors`}>
+                    <div className="flex justify-between items-start gap-4">
+                      <div>
+                        <h4 className={`font-black ${isClaimed ? 'text-yellow-500' : isCompleted ? 'text-green-400' : 'text-white'} text-lg leading-tight`}>{ach.title}</h4>
+                        <p className="text-white/50 text-xs mt-1 leading-snug">{ach.description}</p>
+                      </div>
+                      <div className={`flex items-center gap-1 font-black text-sm shrink-0 px-2 py-1 rounded-lg ${isClaimed ? 'bg-yellow-500/10 text-yellow-500' : isCompleted ? 'bg-green-500/20 text-green-400' : 'bg-white/5 text-white/30'}`}>
+                        <Coins size={14} /> {ach.rewardCoins}
+                      </div>
+                    </div>
+                    
+                    {!isClaimed && (
+                      <div className="flex flex-col gap-1.5 mt-auto">
+                        <div className="flex justify-between text-[10px] font-bold text-white/40 uppercase tracking-widest">
+                          <span>Progreso</span>
+                          <span>{progress} / {ach.target}</span>
+                        </div>
+                        <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                          <div className={`h-full rounded-full transition-all duration-500 ${isCompleted ? 'bg-green-500' : 'bg-orange-500'}`} style={{ width: `${progressPercent}%` }} />
+                        </div>
+                      </div>
+                    )}
+
+                    {isCompleted && !isClaimed && (
+                      <button
+                        onClick={() => claimAchievement(ach.id)}
+                        className="mt-2 w-full py-2 bg-green-500 text-black font-black uppercase tracking-widest text-xs rounded-xl hover:bg-green-400 transition-colors shadow-[0_0_15px_rgba(34,197,94,0.3)]"
+                      >
+                        Reclamar Recompensa
+                      </button>
+                    )}
+
+                    {isClaimed && (
+                      <div className="absolute -bottom-6 -right-6 opacity-5">
+                        <Star size={100} />
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       )}

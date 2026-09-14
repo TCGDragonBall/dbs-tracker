@@ -18137,7 +18137,7 @@ export default function TrackerApp() {
             animate={{ opacity: 1 }}
             className="pb-24"
           >
-            <CareerMode cards={cards} inventory={inventory} lang={lang} userUid={user?.uid} />
+            <CareerMode cards={cards} inventory={inventory} lang={lang} userUid={user?.uid} gameType={gameType} />
           </motion.div>
         )}
 
