@@ -69,6 +69,7 @@ import {
 import { collection, query, onSnapshot, where, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, getDocFromServer, writeBatch, getCountFromServer, getDoc } from 'firebase/firestore';
 import { MultiSelect } from './components/MultiSelect';
 import { ExcelExportModal } from './components/ExcelExportModal';
+import { TurtleHub } from './components/turtle/TurtleHub';
 import { CareerMode } from './components/career/CareerMode';
 import { db, auth, googleProvider, handleFirestoreError, OperationType, isQuotaError } from './firebase';
 import { signInWithPopup, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
@@ -13565,7 +13566,7 @@ export default function TrackerApp() {
       }
     }
   }, [unlockedQueue, unlockedAchievement, userAchievements]);
-  const [profileView, setProfileView] = useState<'main' | 'achievements' | 'matches'>('main');
+  const [profileView, setProfileView] = useState<'main' | 'achievements' | 'matches' | 'turtle'>('main');
 
   const achievementsList = useMemo(() => getAchievementsList(cards, currentGroups, gameType), [cards, currentGroups, gameType]);
 
@@ -18162,7 +18163,7 @@ export default function TrackerApp() {
 
 
         {activeTab === 'profile' && (
-          <div className="max-w-md mx-auto space-y-8">
+          <div className={profileView === 'main' ? "max-w-md mx-auto space-y-8" : "w-full max-w-7xl mx-auto"}>
             {profileView === 'main' ? (
               <>
                 <div className="flex flex-col items-center py-8">
@@ -18214,6 +18215,24 @@ export default function TrackerApp() {
                       <span className="text-[10px] font-black text-white bg-red-500 px-2 py-1 rounded">BETA</span>
                       <ChevronRight size={20} className="text-gray-600" />
                     </div>
+                  </button>
+
+                  {/* Turtle School Hub link */}
+                  <button 
+                    onClick={() => setProfileView('turtle')}
+                    className="w-full p-5 bg-green-500/10 rounded-2xl flex items-center justify-between hover:bg-green-500/20 transition-colors border border-green-500/20 text-green-400 group relative overflow-hidden"
+                  >
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-green-500 to-transparent opacity-20"></div>
+                    <div className="flex items-center gap-4 relative z-10">
+                      <div className="p-2 bg-green-500/10 rounded-lg">
+                        <span className="text-xl">🐢</span>
+                      </div>
+                      <div className="text-left">
+                        <span className="font-bold block text-white group-hover:text-green-400 transition-colors">Turtle School Hub</span>
+                        <span className="text-[10px] text-green-500 font-bold uppercase">{lang === 'es' ? 'Torneos y Ligas' : 'Tournaments & Leagues'}</span>
+                      </div>
+                    </div>
+                    <ChevronRight size={20} className="text-green-600 relative z-10" />
                   </button>
 
                   <div className="p-5 bg-white/5 rounded-2xl border border-white/5 space-y-4">
@@ -18276,43 +18295,6 @@ export default function TrackerApp() {
                       </button>
                     </div>
                   </div>
-
-                  <button 
-                    onClick={() => {
-                      const exportData = cards.map(c => ({
-                        cardNumber: c.cardNumber,
-                        name: c.name,
-                        type: c.type,
-                        color: c.color,
-                        power: c.power && c.power !== '-' ? parseInt(c.power.replace(/\\D/g, '')) || 0 : 0,
-                        energyCost: c.energy && c.energy !== '-' ? parseInt(c.energy.split('(')[0]) || 0 : 0,
-                        comboPower: c.comboPower && c.comboPower !== '-' ? parseInt(c.comboPower) || 0 : 0,
-                        comboCost: c.comboEnergy && c.comboEnergy !== '-' ? parseInt(c.comboEnergy) || 0 : 0,
-                        character: c.character || '',
-                        specialTrait: c.specialTrait || '',
-                        era: c.era || '',
-                        skillText: c.skill || '',
-                        imageUrl: c.imageUrl
-                      }));
-                      const blob = new Blob([JSON.stringify(exportData, null, 2)], {type: "application/json"});
-                      const url = URL.createObjectURL(blob);
-                      const a = document.createElement('a');
-                      a.href = url;
-                      a.download = `dbs_cards_db_${gameType}.json`;
-                      a.click();
-                      URL.revokeObjectURL(url);
-                    }}
-                    className="w-full p-5 bg-emerald-500/10 rounded-2xl flex items-center justify-between hover:bg-emerald-500/20 transition-colors border border-emerald-500/20 text-emerald-400 mt-2"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="p-2 bg-emerald-500/10 rounded-lg text-emerald-500"><Download size={20} /></div>
-                      <div className="flex flex-col items-start">
-                        <span className="font-bold text-sm leading-tight">{lang === 'es' ? 'Exportar DB Simulador' : 'Export Simulator DB'}</span>
-                        <span className="text-[10px] text-emerald-500/70">{lang === 'es' ? 'Descargar JSON completo (.json)' : 'Download full cards JSON'}</span>
-                      </div>
-                    </div>
-                    <ChevronRight size={20} className="text-emerald-500/50" />
-                  </button>
 
                   <button 
                     onClick={() => setIsFeedbackModalOpen(true)}
@@ -18394,6 +18376,12 @@ export default function TrackerApp() {
                 groups={currentGroups}
                 gameType={gameType}
                 onBack={() => setProfileView('main')}
+              />
+            ) : profileView === 'turtle' ? (
+              <TurtleHub 
+                onBack={() => setProfileView('main')} 
+                lang={lang} 
+                cards={cards}
               />
             ) : (
               <MatchesView matches={matches} onBack={() => setProfileView('main')} lang={lang} userUid={user?.uid || ''} gameType={gameType} cards={cards} />
