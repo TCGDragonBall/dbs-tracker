@@ -13,6 +13,7 @@ interface TurtleEventAdminViewProps {
   currentUserUid: string;
   isTurtleAdmin: boolean;
   onGoToMatches: () => void;
+  cards?: any[];
 }
 
 export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({ 
@@ -21,7 +22,8 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
   lang,
   currentUserUid,
   isTurtleAdmin,
-  onGoToMatches
+  onGoToMatches,
+  cards = []
 }) => {
   const [event, setEvent] = useState<TurtleEvent | null>(null);
   const [registrations, setRegistrations] = useState<TurtleRegistration[]>([]);
@@ -366,6 +368,7 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
           isTurtleAdmin={isTurtleAdmin}
           currentUserUid={currentUserUid}
           onGoToMatches={onGoToMatches}
+          cards={cards}
         />
       )}
 

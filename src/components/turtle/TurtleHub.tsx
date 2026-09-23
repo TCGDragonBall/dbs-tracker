@@ -6,6 +6,7 @@ import { db, handleFirestoreError, OperationType } from '../../firebase';
 import { CreateEventModal } from './CreateEventModal';
 import { TurtleEventAdminView } from './TurtleEventAdminView';
 import { TurtlePlayerMatchesView } from './TurtlePlayerMatchesView';
+import { TurtleHubStandingsView } from './TurtleHubStandingsView';
 import { TurtleEvent, TurtleRegistration } from './types';
 
 interface TurtleHubProps {
@@ -189,6 +190,7 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
         onBack={() => setAdminViewEventId(null)}
         currentUserUid={user?.uid || ''}
         isTurtleAdmin={isTurtleAdmin}
+        cards={cards}
         onGoToMatches={() => {
           setAdminViewEventId(null);
           setActiveTab('matches');
@@ -310,10 +312,13 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
         )}
 
         {activeTab === 'standings' && (
-          <div className="text-center py-12">
-            <CheckCircle size={48} className="mx-auto text-green-500/50 mb-4" />
-            <p className="text-gray-400">{strings.comingSoon}</p>
-          </div>
+          <TurtleHubStandingsView
+            events={events}
+            lang={lang}
+            isTurtleAdmin={isTurtleAdmin}
+            cards={cards}
+            onOpenEventView={(eId) => setAdminViewEventId(eId)}
+          />
         )}
 
         {activeTab === 'rules' && (

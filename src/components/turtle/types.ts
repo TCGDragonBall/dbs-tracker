@@ -3,6 +3,12 @@ export type GameFormat = 'masters' | 'fusion_world';
 export type EventStructure = 'swiss' | 'swiss_top' | 'groups';
 export type EventStatus = 'open' | 'ongoing' | 'completed';
 
+export interface TurtleAdminAdjustment {
+  penaltyPoints?: number;
+  notes?: string;
+  disqualified?: boolean;
+}
+
 export interface TurtleEvent {
   id: string;
   type: EventType;
@@ -15,6 +21,7 @@ export interface TurtleEvent {
   description: string;
   status: EventStatus;
   botPlayers?: { userId: string; displayName: string; status: string }[];
+  adminAdjustments?: Record<string, TurtleAdminAdjustment>;
   createdAt: any;
 }
 

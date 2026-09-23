@@ -97,6 +97,50 @@
         "updatedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["ownerId", "name", "cardIds", "acquiredCardIds"]
+    },
+    "TurtleTournament": {
+      "title": "TurtleTournament",
+      "description": "Tournament or league event in Turtle School",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "type": { "type": "string" },
+        "gameFormat": { "type": "string" },
+        "structure": { "type": "string" },
+        "startDate": { "type": "string" },
+        "status": { "type": "string" },
+        "adminAdjustments": { "type": "object" }
+      },
+      "required": ["name", "type", "status"]
+    },
+    "TurtleRegistration": {
+      "title": "TurtleRegistration",
+      "description": "Registration of a player in a tournament or league",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "eventId": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["userId", "eventId", "status"]
+    },
+    "TurtleMatch": {
+      "title": "TurtleMatch",
+      "description": "Pairing and match result in a tournament or league",
+      "type": "object",
+      "properties": {
+        "eventId": { "type": "string" },
+        "round": { "type": "integer" },
+        "player1Id": { "type": "string" },
+        "player2Id": { "type": "string" },
+        "player1Wins": { "type": "integer" },
+        "player2Wins": { "type": "integer" },
+        "draws": { "type": "integer" },
+        "player1LeaderId": { "type": "string" },
+        "player2LeaderId": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["eventId", "round", "player1Id", "status"]
     }
   },
   "firestore": {
@@ -131,6 +175,18 @@
     "/lists/{listId}": {
       "schema": "WantsList",
       "description": "Custom wants lists"
+    },
+    "/ts_tournaments/{tournamentId}": {
+      "schema": "TurtleTournament",
+      "description": "Turtle School tournaments and leagues"
+    },
+    "/ts_registrations/{registrationId}": {
+      "schema": "TurtleRegistration",
+      "description": "Turtle School player registrations"
+    },
+    "/ts_matches/{matchId}": {
+      "schema": "TurtleMatch",
+      "description": "Turtle School match pairings and results"
     }
   }
 }
