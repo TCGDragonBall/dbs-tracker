@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { collection, query, where, onSnapshot, doc, updateDoc } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../../firebase';
-import { TurtleEvent, TurtleMatch, TurtleRegistration } from './types';
+import { TurtleEvent, TurtleMatch, TurtleRegistration, TurtleUserInfo } from './types';
 import { calculateLeagueStandings, getBaseLeaderCode, PlayerStanding } from './standingsEngine';
 import { TurtleStandingsTable } from './TurtleStandingsTable';
 import { TurtleAdminAdjustmentModal } from './TurtleAdminAdjustmentModal';
+import { exportTournamentPrizesExcel } from './turtlePrizesExcel';
 import { 
   Trophy, 
   Edit2, 
@@ -16,7 +17,9 @@ import {
   Award, 
   Sparkles, 
   ShieldAlert, 
-  ExternalLink 
+  ExternalLink,
+  FileSpreadsheet,
+  Package
 } from 'lucide-react';
 
 import { saveMatchesToFirestore, generateSwissNextRound } from './tournamentEngine';
@@ -24,7 +27,7 @@ import { saveMatchesToFirestore, generateSwissNextRound } from './tournamentEngi
 interface Props {
   event: TurtleEvent;
   registrations: TurtleRegistration[];
-  usersInfo: Record<string, { displayName: string; email: string }>;
+  usersInfo: Record<string, TurtleUserInfo>;
   lang: 'es' | 'en';
   isTurtleAdmin: boolean;
   currentUserUid: string;
@@ -163,6 +166,25 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
     cards
   );
 
+  const [isExporting, setIsExporting] = useState(false);
+
+  const handleExportExcel = async () => {
+    try {
+      setIsExporting(true);
+      await exportTournamentPrizesExcel({
+        event,
+        standings: calculatedStandings,
+        usersInfo: allUsersInfo,
+        lang
+      });
+    } catch (err) {
+      console.error('Error exporting prizes excel:', err);
+      alert(lang === 'es' ? 'Error al exportar a Excel.' : 'Error exporting to Excel.');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   const currentRoundMatches = matches.filter(m => m.round === (rounds.includes(selectedRound) ? selectedRound : maxRound));
   const allMatchesCompleted = matches.length > 0 && matches.every(m => m.status === 'completed');
 
@@ -218,6 +240,18 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
               ? (lang === 'es' ? 'Finalizado' : 'Completed') 
               : (lang === 'es' ? 'En Curso' : 'Ongoing')}
           </span>
+
+          {isTurtleAdmin && (
+            <button
+              onClick={handleExportExcel}
+              disabled={isExporting}
+              className="px-3.5 py-1.5 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 font-bold rounded-xl text-xs transition-colors flex items-center gap-1.5 shadow-[0_0_10px_rgba(16,185,129,0.2)] disabled:opacity-50"
+              title={lang === 'es' ? 'Descargar Excel con clasificación y datos de envío para premios' : 'Download Excel with standings and shipping data for prizes'}
+            >
+              <FileSpreadsheet size={15} />
+              <span>{isExporting ? (lang === 'es' ? 'Exportando...' : 'Exporting...') : (lang === 'es' ? 'Exportar Premios (Excel)' : 'Export Prizes (Excel)')}</span>
+            </button>
+          )}
 
           {isTurtleAdmin && event.status === 'ongoing' && event.type === 'league' && (
             <button

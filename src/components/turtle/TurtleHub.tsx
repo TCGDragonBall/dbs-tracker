@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../AuthContext';
-import { ArrowLeft, Trophy, Calendar, CheckCircle, Info, BookOpen, Shield, Plus, Users } from 'lucide-react';
+import { ArrowLeft, Trophy, Calendar, CheckCircle, Info, BookOpen, Shield, Plus, Users, Package } from 'lucide-react';
 import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, where } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../../firebase';
 import { CreateEventModal } from './CreateEventModal';
 import { TurtleEventAdminView } from './TurtleEventAdminView';
 import { TurtlePlayerMatchesView } from './TurtlePlayerMatchesView';
 import { TurtleHubStandingsView } from './TurtleHubStandingsView';
+import { TurtlePlayerProfileView } from './TurtlePlayerProfileView';
 import { TurtleEvent, TurtleRegistration } from './types';
 
 interface TurtleHubProps {
@@ -21,7 +22,7 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
   // Basic check for Turtle Admin
   const isTurtleAdmin = user?.email === 'anulix1983@gmail.com' || user?.email === 'sadsa.0170@gmail.com';
   
-  const [activeTab, setActiveTab] = useState<'tournaments' | 'leagues' | 'matches' | 'standings' | 'rules'>('tournaments');
+  const [activeTab, setActiveTab] = useState<'tournaments' | 'leagues' | 'matches' | 'standings' | 'rules' | 'profile'>('tournaments');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [adminViewEventId, setAdminViewEventId] = useState<string | null>(null);
   const [events, setEvents] = useState<TurtleEvent[]>([]);
@@ -162,6 +163,7 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
       leagues: 'Ligas',
       matches: 'Mis Partidas',
       standings: 'Clasificación',
+      shippingProfile: 'Mis Datos de Envío',
       rules: 'Reglas',
       adminPanel: 'Panel de Administrador',
       comingSoon: 'Próximamente...',
@@ -173,6 +175,7 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
       leagues: 'Leagues',
       matches: 'My Matches',
       standings: 'Standings',
+      shippingProfile: 'Shipping Profile',
       rules: 'Rules',
       adminPanel: 'Admin Panel',
       comingSoon: 'Coming soon...',
@@ -262,6 +265,12 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
           <CheckCircle size={18} /> {strings.standings}
         </button>
         <button 
+          onClick={() => setActiveTab('profile')}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold transition-all flex-shrink-0 ${activeTab === 'profile' ? 'bg-green-500 text-white shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/5'}`}
+        >
+          <Package size={18} /> {strings.shippingProfile}
+        </button>
+        <button 
           onClick={() => setActiveTab('rules')}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold transition-all flex-shrink-0 ${activeTab === 'rules' ? 'bg-green-500 text-white shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/5'}`}
         >
@@ -319,6 +328,10 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
             cards={cards}
             onOpenEventView={(eId) => setAdminViewEventId(eId)}
           />
+        )}
+
+        {activeTab === 'profile' && (
+          <TurtlePlayerProfileView user={user} lang={lang} />
         )}
 
         {activeTab === 'rules' && (

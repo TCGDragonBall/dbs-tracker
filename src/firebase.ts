@@ -1,31 +1,51 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc, collection, query, where, onSnapshot, addDoc, updateDoc, deleteDoc, getDocFromServer } from 'firebase/firestore';
+import { 
+  initializeFirestore,
+  getFirestore, 
+  doc, 
+  getDoc, 
+  setDoc, 
+  collection, 
+  query, 
+  where, 
+  onSnapshot, 
+  addDoc, 
+  updateDoc, 
+  deleteDoc, 
+  getDocFromServer 
+} from 'firebase/firestore';
 import firebaseConfig from '../firebase-applet-config.json';
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-const dbId = firebaseConfig.firestoreDatabaseId;
-export const db = (dbId === 'default' || dbId === '(default)' || !dbId) 
-  ? getFirestore(app) 
-  : getFirestore(app, dbId);
 
-// Disable persistence to prevent internal assertion SDK crashes
-// import { enableIndexedDbPersistence } from 'firebase/firestore';
-if (typeof window !== 'undefined') {
-  /*
+// Use initializeFirestore with auto-detect long polling and ignoreUndefinedProperties
+// This resolves WebChannel connection drops in iframe/proxy environments seamlessly.
+export const db = initializeFirestore(
+  app,
+  {
+    experimentalAutoDetectLongPolling: true,
+    ignoreUndefinedProperties: true
+  },
+  firebaseConfig.firestoreDatabaseId
+);
+
+// Connection test helper per Firebase integration guidelines
+export async function testFirestoreConnection(): Promise<boolean> {
   try {
-    enableIndexedDbPersistence(db).catch((err) => {
-      if (err.code === 'failed-precondition') {
-        console.warn("Firestore persistence failed: Multiple tabs open");
-      } else if (err.code === 'unimplemented') {
-        console.warn("Firestore persistence failed: Browser not supported");
-      }
-    });
-  } catch (e) {
-    console.warn("Synchronous error during Firestore persistence setup:", e);
+    await getDocFromServer(doc(db, 'test', 'connection'));
+    return true;
+  } catch (error) {
+    if (error instanceof Error && (error.message.includes('the client is offline') || (error as any).code === 'unavailable')) {
+      console.warn("Firestore connection: client is operating in offline mode or reconnecting.");
+    }
+    return false;
   }
-  */
+}
+
+if (typeof window !== 'undefined') {
+  testFirestoreConnection();
 }
 
 export const googleProvider = new GoogleAuthProvider();

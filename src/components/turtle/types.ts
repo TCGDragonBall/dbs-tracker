@@ -48,3 +48,22 @@ export interface TurtleMatch {
   status: 'pending' | 'completed';
   createdAt: any;
 }
+
+export interface TurtleUserInfo {
+  displayName: string;
+  email?: string;
+  fullName?: string;
+  shippingAddress?: string;
+  phone?: string;
+  shippingNotes?: string;
+}
+
+export interface TurtlePlayerShippingData {
+  fullName: string;
+  shippingAddress: string;
+  phone: string;
+  email: string;
+  shippingNotes?: string;
+  updatedAt?: any;
+}
+

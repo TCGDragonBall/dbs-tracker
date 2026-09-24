@@ -77,6 +77,10 @@
         "displayName": { "type": "string" },
         "photoURL": { "type": "string" },
         "email": { "type": "string" },
+        "fullName": { "type": "string" },
+        "shippingAddress": { "type": "string" },
+        "phone": { "type": "string" },
+        "shippingNotes": { "type": "string" },
         "friends": { "type": "array", "items": { "type": "string" } },
         "createdAt": { "type": "string", "format": "date-time" }
       },

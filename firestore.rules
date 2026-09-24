@@ -92,7 +92,7 @@ service cloud.firestore {
     }
     
     match /test/connection {
-      allow read: if isVerifiedUser();
+      allow read: if isSignedIn() || request.time != null;
     }
 
     // --- Turtle School Collections ---

@@ -13272,16 +13272,41 @@ export default function TrackerApp() {
   // Fetch total users for admin
   useEffect(() => {
     if (user?.email === 'anulix1983@gmail.com') {
-      const fetchTotalUsers = async () => {
+      let isMounted = true;
+      let retryTimer: ReturnType<typeof setTimeout> | null = null;
+
+      const fetchTotalUsers = async (attempt = 1) => {
         try {
           const coll = collection(db, 'users');
           const snapshot = await getCountFromServer(coll);
-          setTotalUsersCount(snapshot.data().count);
-        } catch (error) {
-          console.error("Error fetching total users:", error);
+          if (isMounted) {
+            setTotalUsersCount(snapshot.data().count);
+          }
+        } catch (error: any) {
+          const isNetworkError = 
+            error?.code === 'unavailable' || 
+            error?.message?.includes('offline') || 
+            error?.message?.includes('Connection failed') ||
+            error?.message?.includes('backend');
+
+          if (isNetworkError && attempt <= 3) {
+            retryTimer = setTimeout(() => {
+              if (isMounted) {
+                fetchTotalUsers(attempt + 1);
+              }
+            }, 2500 * attempt);
+            return;
+          }
+          console.warn("Could not fetch total users count:", error?.message || error);
         }
       };
+
       fetchTotalUsers();
+
+      return () => {
+        isMounted = false;
+        if (retryTimer) clearTimeout(retryTimer);
+      };
     }
   }, [user]);
 

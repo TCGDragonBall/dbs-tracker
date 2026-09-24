@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Check, Clock, User as UserIcon, AlertCircle, Trash2, Play } from 'lucide-react';
 import { collection, query, where, onSnapshot, doc, updateDoc, getDocs, deleteDoc, setDoc, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../../firebase';
-import { TurtleEvent, TurtleRegistration } from './types';
+import { TurtleEvent, TurtleRegistration, TurtleUserInfo } from './types';
 import { generateSwissRound1, generateRoundRobinMatches, saveMatchesToFirestore } from './tournamentEngine';
 import { TurtleEventActiveAdmin } from './TurtleEventActiveAdmin';
 
@@ -27,7 +27,7 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
 }) => {
   const [event, setEvent] = useState<TurtleEvent | null>(null);
   const [registrations, setRegistrations] = useState<TurtleRegistration[]>([]);
-  const [usersInfo, setUsersInfo] = useState<Record<string, { displayName: string; email: string }>>({});
+  const [usersInfo, setUsersInfo] = useState<Record<string, TurtleUserInfo>>({});
   const [loading, setLoading] = useState(true);
 
   // Fetch event details
@@ -58,13 +58,17 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
       // Fetch users info for all registered users (could be optimized, but works for admin view)
       try {
         const usersSnapshot = await getDocs(collection(db, 'users'));
-        const usersData: Record<string, { displayName: string; email: string }> = {};
+        const usersData: Record<string, TurtleUserInfo> = {};
         usersSnapshot.forEach(userDoc => {
           if (userIds.has(userDoc.id)) {
             const data = userDoc.data();
             usersData[userDoc.id] = {
               displayName: data.displayName || 'Unknown',
-              email: data.email || 'No email'
+              email: data.email || 'No email',
+              fullName: data.fullName || '',
+              shippingAddress: data.shippingAddress || '',
+              phone: data.phone || '',
+              shippingNotes: data.shippingNotes || ''
             };
           }
         });

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { collection, query, where, onSnapshot, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
-import { TurtleEvent, TurtleMatch, TurtleRegistration } from './types';
+import { TurtleEvent, TurtleMatch, TurtleRegistration, TurtleUserInfo } from './types';
 import { TurtleStandingsTable } from './TurtleStandingsTable';
 import { Trophy, Shield, ChevronRight, Calendar } from 'lucide-react';
 
@@ -34,7 +34,7 @@ export const TurtleHubStandingsView: React.FC<Props> = ({
 
   const [matches, setMatches] = useState<TurtleMatch[]>([]);
   const [registrations, setRegistrations] = useState<TurtleRegistration[]>([]);
-  const [usersInfo, setUsersInfo] = useState<Record<string, { displayName: string; email?: string }>>({});
+  const [usersInfo, setUsersInfo] = useState<Record<string, TurtleUserInfo>>({});
   const [loading, setLoading] = useState(false);
 
   const selectedEvent = events.find(e => e.id === selectedEventId);
@@ -66,16 +66,20 @@ export const TurtleHubStandingsView: React.FC<Props> = ({
 
       setRegistrations(regs);
 
-      // Fetch user display names
+      // Fetch user display names and shipping info
       try {
         const usersSnap = await getDocs(collection(db, 'users'));
-        const uInfo: Record<string, { displayName: string; email?: string }> = {};
+        const uInfo: Record<string, TurtleUserInfo> = {};
         usersSnap.forEach(docSnap => {
           if (userIds.has(docSnap.id)) {
             const data = docSnap.data();
             uInfo[docSnap.id] = {
               displayName: data.displayName || 'Unknown Player',
-              email: data.email
+              email: data.email,
+              fullName: data.fullName || '',
+              shippingAddress: data.shippingAddress || '',
+              phone: data.phone || '',
+              shippingNotes: data.shippingNotes || ''
             };
           }
         });

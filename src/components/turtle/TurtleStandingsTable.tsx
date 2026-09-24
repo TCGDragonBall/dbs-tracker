@@ -1,14 +1,32 @@
 import React, { useState } from 'react';
-import { TurtleEvent, TurtleMatch, TurtleRegistration } from './types';
+import { TurtleEvent, TurtleMatch, TurtleRegistration, TurtleUserInfo } from './types';
 import { calculateLeagueStandings, PlayerStanding } from './standingsEngine';
 import { TurtleAdminAdjustmentModal } from './TurtleAdminAdjustmentModal';
-import { Trophy, ShieldAlert, Award, AlertCircle, Info, Edit3, Sparkles } from 'lucide-react';
+import { exportTournamentPrizesExcel } from './turtlePrizesExcel';
+import { 
+  Trophy, 
+  ShieldAlert, 
+  Award, 
+  AlertCircle, 
+  Info, 
+  Edit3, 
+  Sparkles, 
+  FileSpreadsheet, 
+  Package, 
+  MapPin, 
+  Phone, 
+  Mail, 
+  Copy, 
+  Check, 
+  X,
+  User
+} from 'lucide-react';
 
 interface Props {
   event: TurtleEvent;
   matches: TurtleMatch[];
   registrations: TurtleRegistration[];
-  usersInfo: Record<string, { displayName: string; email?: string }>;
+  usersInfo: Record<string, TurtleUserInfo>;
   lang: 'es' | 'en';
   isTurtleAdmin: boolean;
   cards?: any[];
@@ -26,6 +44,9 @@ export const TurtleStandingsTable: React.FC<Props> = ({
   compact = false
 }) => {
   const [selectedPlayerForAdjustment, setSelectedPlayerForAdjustment] = useState<PlayerStanding | null>(null);
+  const [viewingShippingPlayer, setViewingShippingPlayer] = useState<PlayerStanding | null>(null);
+  const [copiedShipping, setCopiedShipping] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [showRulesInfo, setShowRulesInfo] = useState(!compact);
 
   const standings = calculateLeagueStandings(
@@ -35,6 +56,23 @@ export const TurtleStandingsTable: React.FC<Props> = ({
     usersInfo,
     cards
   );
+
+  const handleExportExcel = async () => {
+    try {
+      setIsExporting(true);
+      await exportTournamentPrizesExcel({
+        event,
+        standings,
+        usersInfo,
+        lang
+      });
+    } catch (err) {
+      console.error('Error exporting prizes excel:', err);
+      alert(lang === 'es' ? 'Error al exportar a Excel.' : 'Error exporting to Excel.');
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -117,13 +155,29 @@ export const TurtleStandingsTable: React.FC<Props> = ({
             </span>
           </div>
 
-          {isTurtleAdmin && !compact && (
-            <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
+            {isTurtleAdmin && (
+              <button
+                onClick={handleExportExcel}
+                disabled={isExporting}
+                className="px-3.5 py-1.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 text-xs font-black flex items-center gap-1.5 transition-all shadow-[0_0_12px_rgba(16,185,129,0.2)] disabled:opacity-50"
+                title={lang === 'es' ? 'Descargar Excel con clasificación y datos de envío de los jugadores' : 'Download Excel with standings and player shipping info'}
+              >
+                <FileSpreadsheet size={15} />
+                <span>
+                  {isExporting 
+                    ? (lang === 'es' ? 'Exportando...' : 'Exporting...') 
+                    : (lang === 'es' ? 'Exportar Premios (Excel)' : 'Export Prizes (Excel)')}
+                </span>
+              </button>
+            )}
+
+            {isTurtleAdmin && !compact && (
               <span className="text-xs text-orange-400/80 font-bold hidden sm:inline">
                 {lang === 'es' ? 'Modo Administrador activo' : 'Admin mode active'}
               </span>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {standings.length === 0 ? (
@@ -149,6 +203,11 @@ export const TurtleStandingsTable: React.FC<Props> = ({
                     </>
                   )}
                   <th className="py-3 px-3 text-right">{lang === 'es' ? 'TOTAL PTS' : 'TOTAL PTS'}</th>
+                  {isTurtleAdmin && (
+                    <th className="py-3 px-2 text-center" title="Datos de envío de premios">
+                      {lang === 'es' ? 'Envío' : 'Shipping'}
+                    </th>
+                  )}
                   {isTurtleAdmin && (
                     <th className="py-3 px-2 text-center w-16">{lang === 'es' ? 'Admin' : 'Admin'}</th>
                   )}
@@ -271,6 +330,41 @@ export const TurtleStandingsTable: React.FC<Props> = ({
                         )}
                       </td>
 
+                      {/* Shipping status column for admin */}
+                      {isTurtleAdmin && (
+                        <td className="py-3.5 px-2 text-center">
+                          {p.isBot ? (
+                            <span className="text-[10px] text-white/30 font-bold">Bot</span>
+                          ) : (() => {
+                            const uInfo = usersInfo[p.userId];
+                            const hasCompleteShipping = Boolean(uInfo?.fullName?.trim() && uInfo?.shippingAddress?.trim() && uInfo?.phone?.trim());
+                            return (
+                              <button
+                                onClick={() => setViewingShippingPlayer(p)}
+                                className={`inline-flex items-center gap-1 text-[10px] font-black uppercase px-2.5 py-1 rounded-xl border transition-all active:scale-95 ${
+                                  hasCompleteShipping
+                                    ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/30 shadow-[0_0_8px_rgba(16,185,129,0.15)]'
+                                    : 'bg-amber-500/15 text-amber-400 border-amber-500/30 hover:bg-amber-500/30 shadow-[0_0_8px_rgba(245,158,11,0.15)]'
+                                }`}
+                                title={lang === 'es' ? 'Ver dirección y datos de envío de este jugador' : 'View shipping address & details'}
+                              >
+                                {hasCompleteShipping ? (
+                                  <>
+                                    <Package size={12} />
+                                    <span>{lang === 'es' ? 'Listo' : 'Ready'}</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <AlertCircle size={12} />
+                                    <span>{lang === 'es' ? 'Faltan' : 'Pending'}</span>
+                                  </>
+                                )}
+                              </button>
+                            );
+                          })()}
+                        </td>
+                      )}
+
                       {/* Admin Actions */}
                       {isTurtleAdmin && (
                         <td className="py-3.5 px-2 text-center">
@@ -300,6 +394,115 @@ export const TurtleStandingsTable: React.FC<Props> = ({
           lang={lang}
           onClose={() => setSelectedPlayerForAdjustment(null)}
         />
+      )}
+
+      {/* Player Shipping Info Modal for Admin */}
+      {viewingShippingPlayer && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+          <div className="bg-[#181818] border border-white/10 rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl relative">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  <Package size={22} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-white uppercase italic">
+                    {lang === 'es' ? 'Datos de Envío de Premios' : 'Prize Shipping Information'}
+                  </h3>
+                  <p className="text-xs text-white/50">
+                    {viewingShippingPlayer.name} (Rank #{viewingShippingPlayer.rank})
+                  </p>
+                </div>
+              </div>
+              <button 
+                onClick={() => { setViewingShippingPlayer(null); setCopiedShipping(false); }}
+                className="p-2 text-white/40 hover:text-white rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {(() => {
+              const uInfo = usersInfo[viewingShippingPlayer.userId];
+              const fullName = uInfo?.fullName || '';
+              const address = uInfo?.shippingAddress || '';
+              const phone = uInfo?.phone || '';
+              const email = uInfo?.email || viewingShippingPlayer.email || '';
+              const notes = uInfo?.shippingNotes || '';
+
+              const fullLabel = `Destinatario: ${fullName || viewingShippingPlayer.name}\nDirección: ${address || 'Sin dirección'}\nTeléfono: ${phone || 'Sin teléfono'}\nEmail: ${email}\n${notes ? `Notas: ${notes}` : ''}`;
+
+              const handleCopy = () => {
+                navigator.clipboard.writeText(fullLabel);
+                setCopiedShipping(true);
+                setTimeout(() => setCopiedShipping(false), 3000);
+              };
+
+              return (
+                <div className="space-y-4">
+                  <div className="bg-black/40 border border-white/5 rounded-2xl p-4 space-y-3 text-xs">
+                    <div className="flex items-start gap-2.5">
+                      <User size={16} className="text-emerald-400 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <span className="text-white/40 font-bold block">{lang === 'es' ? 'Nombre Completo' : 'Full Name'}:</span>
+                        <span className="text-white font-bold text-sm">{fullName || (lang === 'es' ? '⚠️ No especificado' : '⚠️ Unspecified')}</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-2.5">
+                      <MapPin size={16} className="text-emerald-400 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <span className="text-white/40 font-bold block">{lang === 'es' ? 'Dirección Postal de Envío' : 'Shipping Address'}:</span>
+                        <span className="text-white font-medium whitespace-pre-wrap leading-relaxed">{address || (lang === 'es' ? '⚠️ Sin dirección registrada' : '⚠️ No address recorded')}</span>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-white/5">
+                      <div className="flex items-start gap-2.5">
+                        <Phone size={16} className="text-emerald-400 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <span className="text-white/40 font-bold block">{lang === 'es' ? 'Teléfono de Contacto' : 'Phone'}:</span>
+                          <span className="text-white font-bold">{phone || (lang === 'es' ? '⚠️ Sin teléfono' : '⚠️ No phone')}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-2.5">
+                        <Mail size={16} className="text-emerald-400 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <span className="text-white/40 font-bold block">Email:</span>
+                          <span className="text-white font-bold truncate max-w-[170px]">{email || 'N/A'}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {notes && (
+                      <div className="pt-2 border-t border-white/5">
+                        <span className="text-white/40 font-bold block mb-1">{lang === 'es' ? 'Observaciones de Entrega' : 'Delivery Notes'}:</span>
+                        <span className="text-white/80 italic">{notes}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex gap-2 justify-end">
+                    <button
+                      onClick={handleCopy}
+                      className="px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs rounded-xl flex items-center gap-2 transition-all shadow-lg active:scale-95"
+                    >
+                      {copiedShipping ? <Check size={15} /> : <Copy size={15} />}
+                      <span>{copiedShipping ? (lang === 'es' ? '¡Copiado!' : 'Copied!') : (lang === 'es' ? 'Copiar para Etiqueta' : 'Copy Shipping Label')}</span>
+                    </button>
+                    <button
+                      onClick={() => setViewingShippingPlayer(null)}
+                      className="px-4 py-2.5 bg-white/10 hover:bg-white/15 text-white font-bold text-xs rounded-xl transition-colors"
+                    >
+                      {lang === 'es' ? 'Cerrar' : 'Close'}
+                    </button>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        </div>
       )}
     </div>
   );
