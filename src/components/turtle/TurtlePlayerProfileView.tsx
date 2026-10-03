@@ -12,7 +12,8 @@ import {
   AlertCircle, 
   ShieldCheck, 
   Package, 
-  Sparkles 
+  Sparkles,
+  AtSign 
 } from 'lucide-react';
 
 interface Props {
@@ -28,6 +29,7 @@ export const TurtlePlayerProfileView: React.FC<Props> = ({ user, lang }) => {
 
   // Form states
   const [fullName, setFullName] = useState('');
+  const [discordUsername, setDiscordUsername] = useState('');
   const [shippingAddress, setShippingAddress] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -48,6 +50,7 @@ export const TurtlePlayerProfileView: React.FC<Props> = ({ user, lang }) => {
         if (snap.exists()) {
           const data = snap.data();
           setFullName(data.fullName || data.displayName || user.displayName || '');
+          setDiscordUsername(data.discordUsername || '');
           setShippingAddress(data.shippingAddress || '');
           setPhone(data.phone || '');
           setEmail(data.email || user.email || '');
@@ -87,6 +90,7 @@ export const TurtlePlayerProfileView: React.FC<Props> = ({ user, lang }) => {
         userRef,
         {
           fullName: fullName.trim(),
+          discordUsername: discordUsername.trim(),
           shippingAddress: shippingAddress.trim(),
           phone: phone.trim(),
           email: email.trim(),
@@ -209,6 +213,31 @@ export const TurtlePlayerProfileView: React.FC<Props> = ({ user, lang }) => {
             />
             <p className="text-[11px] text-white/40">
               {isEs ? 'Nombre completo necesario para la etiqueta del envío postal.' : 'Full legal name required for the postal shipping label.'}
+            </p>
+          </div>
+
+          {/* Discord / Username */}
+          <div className="space-y-2">
+            <label className="text-xs font-black uppercase tracking-wider text-white/80 flex items-center justify-between">
+              <span className="flex items-center gap-2">
+                <AtSign size={15} className="text-emerald-400" />
+                <span>{isEs ? 'Nombre de Usuario' : 'Username'}</span>
+              </span>
+              <span className="text-[10px] text-emerald-400 font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+                {isEs ? 'A ser posible Discord' : 'Discord preferred'}
+              </span>
+            </label>
+            <input
+              type="text"
+              value={discordUsername}
+              onChange={(e) => setDiscordUsername(e.target.value)}
+              placeholder={isEs ? 'Ej: son_goku / Goku#1234' : 'e.g. son_goku / Goku#1234'}
+              className="w-full bg-[#111] border border-white/10 focus:border-emerald-500 rounded-2xl px-4 py-3.5 text-white font-bold text-sm transition-colors placeholder:text-white/20 outline-none"
+            />
+            <p className="text-[11px] text-white/40">
+              {isEs 
+                ? 'Indica tu nombre de usuario, a ser posible el de Discord para localizarte en la comunidad.' 
+                : 'Enter your username, preferably your Discord tag to find you in the community.'}
             </p>
           </div>
 

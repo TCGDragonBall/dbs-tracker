@@ -76,6 +76,7 @@ export const TurtleHubStandingsView: React.FC<Props> = ({
             uInfo[docSnap.id] = {
               displayName: data.displayName || 'Unknown Player',
               email: data.email,
+              discordUsername: data.discordUsername || '',
               fullName: data.fullName || '',
               shippingAddress: data.shippingAddress || '',
               phone: data.phone || '',

@@ -52,6 +52,7 @@ export interface TurtleMatch {
 export interface TurtleUserInfo {
   displayName: string;
   email?: string;
+  discordUsername?: string;
   fullName?: string;
   shippingAddress?: string;
   phone?: string;
@@ -59,6 +60,7 @@ export interface TurtleUserInfo {
 }
 
 export interface TurtlePlayerShippingData {
+  discordUsername?: string;
   fullName: string;
   shippingAddress: string;
   phone: string;

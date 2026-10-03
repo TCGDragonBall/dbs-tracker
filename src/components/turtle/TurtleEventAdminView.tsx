@@ -65,6 +65,7 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
             usersData[userDoc.id] = {
               displayName: data.displayName || 'Unknown',
               email: data.email || 'No email',
+              discordUsername: data.discordUsername || '',
               fullName: data.fullName || '',
               shippingAddress: data.shippingAddress || '',
               phone: data.phone || '',

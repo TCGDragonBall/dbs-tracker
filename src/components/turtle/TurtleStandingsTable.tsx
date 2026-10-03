@@ -19,7 +19,8 @@ import {
   Copy, 
   Check, 
   X,
-  User
+  User,
+  AtSign
 } from 'lucide-react';
 
 interface Props {
@@ -425,12 +426,13 @@ export const TurtleStandingsTable: React.FC<Props> = ({
             {(() => {
               const uInfo = usersInfo[viewingShippingPlayer.userId];
               const fullName = uInfo?.fullName || '';
+              const discordUsername = uInfo?.discordUsername || '';
               const address = uInfo?.shippingAddress || '';
               const phone = uInfo?.phone || '';
               const email = uInfo?.email || viewingShippingPlayer.email || '';
               const notes = uInfo?.shippingNotes || '';
 
-              const fullLabel = `Destinatario: ${fullName || viewingShippingPlayer.name}\nDirección: ${address || 'Sin dirección'}\nTeléfono: ${phone || 'Sin teléfono'}\nEmail: ${email}\n${notes ? `Notas: ${notes}` : ''}`;
+              const fullLabel = `Destinatario: ${fullName || viewingShippingPlayer.name}\nUsuario / Discord: ${discordUsername ? `@${discordUsername.replace(/^@/, '')}` : 'No especificado'}\nDirección: ${address || 'Sin dirección'}\nTeléfono: ${phone || 'Sin teléfono'}\nEmail: ${email}\n${notes ? `Notas: ${notes}` : ''}`;
 
               const handleCopy = () => {
                 navigator.clipboard.writeText(fullLabel);
@@ -441,11 +443,23 @@ export const TurtleStandingsTable: React.FC<Props> = ({
               return (
                 <div className="space-y-4">
                   <div className="bg-black/40 border border-white/5 rounded-2xl p-4 space-y-3 text-xs">
-                    <div className="flex items-start gap-2.5">
-                      <User size={16} className="text-emerald-400 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <span className="text-white/40 font-bold block">{lang === 'es' ? 'Nombre Completo' : 'Full Name'}:</span>
-                        <span className="text-white font-bold text-sm">{fullName || (lang === 'es' ? '⚠️ No especificado' : '⚠️ Unspecified')}</span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pb-2 border-b border-white/5">
+                      <div className="flex items-start gap-2.5">
+                        <User size={16} className="text-emerald-400 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <span className="text-white/40 font-bold block">{lang === 'es' ? 'Nombre Completo' : 'Full Name'}:</span>
+                          <span className="text-white font-bold text-sm">{fullName || (lang === 'es' ? '⚠️ No especificado' : '⚠️ Unspecified')}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-2.5">
+                        <AtSign size={16} className="text-emerald-400 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <span className="text-white/40 font-bold block">{lang === 'es' ? 'Usuario / Discord' : 'Username / Discord'}:</span>
+                          <span className="text-emerald-400 font-bold text-sm">
+                            {discordUsername ? `@${discordUsername.replace(/^@/, '')}` : (lang === 'es' ? '⚠️ No especificado' : '⚠️ Unspecified')}
+                          </span>
+                        </div>
                       </div>
                     </div>
 
