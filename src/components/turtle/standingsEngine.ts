@@ -1,8 +1,12 @@
-import { TurtleEvent, TurtleMatch, TurtleRegistration } from './types';
+import { TurtleEvent, TurtleMatch, TurtleRegistration, TurtleUserInfo } from './types';
 
 export interface PlayerStanding {
   userId: string;
-  name: string;
+  name: string; // Nombre oficial mostrado en la clasificación
+  officialName: string; // Nombre oficial del jugador (nick sugerido en mis datos)
+  accountName?: string; // Nombre de cuenta / Google / original
+  discordUsername?: string; // Nick / Discord
+  fullName?: string; // Nombre real de envío
   email?: string;
   isBot?: boolean;
   matchesPlayed: number;
@@ -57,7 +61,7 @@ export function calculateLeagueStandings(
   event: TurtleEvent,
   matches: TurtleMatch[],
   registrations: TurtleRegistration[],
-  usersInfo: Record<string, { displayName: string; email?: string }>,
+  usersInfo: Record<string, TurtleUserInfo | { displayName: string; email?: string; [key: string]: any }>,
   cards?: any[]
 ): PlayerStanding[] {
   // Collect all player IDs (registered users + bots)
@@ -153,9 +157,17 @@ export function calculateLeagueStandings(
     };
 
     const isBot = botMap.has(uid);
-    const displayName = isBot
+    const uInfo = usersInfo[uid] as TurtleUserInfo | undefined;
+
+    // Official tournament name: Player's configured official name/nick from "Mis Datos",
+    // falling back to discordUsername, displayName, or 'Unknown Player'
+    const officialName = isBot
       ? botMap.get(uid)!
-      : (usersInfo[uid]?.displayName || 'Unknown Player');
+      : (uInfo?.officialName?.trim() || uInfo?.discordUsername?.trim() || uInfo?.displayName?.trim() || 'Unknown Player');
+
+    const accountName = isBot ? 'Bot' : (uInfo?.accountName || uInfo?.displayName || '');
+    const discordUsername = isBot ? '' : (uInfo?.discordUsername || '');
+    const fullName = isBot ? '' : (uInfo?.fullName || '');
     const email = isBot ? 'bot' : usersInfo[uid]?.email;
 
     const uniqueBaseLeaders = Array.from(raw.uniqueLeadersSet);
@@ -180,7 +192,11 @@ export function calculateLeagueStandings(
 
     return {
       userId: uid,
-      name: displayName,
+      name: officialName,
+      officialName,
+      accountName,
+      discordUsername,
+      fullName,
       email,
       isBot,
       matchesPlayed: raw.matchesPlayed,

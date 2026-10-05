@@ -51,6 +51,8 @@ export interface TurtleMatch {
 
 export interface TurtleUserInfo {
   displayName: string;
+  officialName?: string;
+  accountName?: string;
   email?: string;
   discordUsername?: string;
   fullName?: string;

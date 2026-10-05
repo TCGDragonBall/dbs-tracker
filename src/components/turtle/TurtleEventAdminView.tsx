@@ -62,8 +62,11 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
         usersSnapshot.forEach(userDoc => {
           if (userIds.has(userDoc.id)) {
             const data = userDoc.data();
+            const officialName = data.officialName || data.discordUsername || data.displayName || 'Unknown';
             usersData[userDoc.id] = {
               displayName: data.displayName || 'Unknown',
+              officialName: officialName,
+              accountName: data.accountName || data.displayName || '',
               email: data.email || 'No email',
               discordUsername: data.discordUsername || '',
               fullName: data.fullName || '',
@@ -309,8 +312,11 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
                 </thead>
                 <tbody className="divide-y divide-white/5">
                   {[...registrations, ...(event?.botPlayers || []).map(b => ({ id: b.userId, userId: b.userId, status: b.status, isBot: true, displayName: b.displayName }))].map(reg => {
-                    const user = (reg as any).isBot ? { displayName: (reg as any).displayName, email: 'bot@capsulecorp.com' } : usersInfo[reg.userId];
+                    const user: TurtleUserInfo | undefined = (reg as any).isBot 
+                      ? { displayName: (reg as any).displayName, officialName: (reg as any).displayName, accountName: (reg as any).displayName, email: 'bot@capsulecorp.com' } 
+                      : usersInfo[reg.userId];
                     const isPaid = reg.status === 'paid';
+                    const playerName = user?.officialName || user?.displayName || 'Unknown User';
 
                     return (
                       <tr key={reg.id} className="group hover:bg-white/5 transition-colors">
@@ -320,7 +326,14 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
                               <UserIcon size={18} />
                             </div>
                             <div>
-                              <p className="font-bold text-white">{user?.displayName || 'Unknown User'}</p>
+                              <div className="flex items-center gap-2">
+                                <p className="font-bold text-white">{playerName}</p>
+                                {user?.accountName && user.accountName !== playerName && !(reg as any).isBot && (
+                                  <span className="text-[11px] text-white/40" title={`${lang === 'es' ? 'Cuenta' : 'Account'}: ${user.accountName}`}>
+                                    ({user.accountName})
+                                  </span>
+                                )}
+                              </div>
                               <p className="text-xs text-gray-400">{user?.email || ''}</p>
                             </div>
                           </div>

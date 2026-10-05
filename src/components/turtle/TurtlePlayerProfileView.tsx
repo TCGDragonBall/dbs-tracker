@@ -50,7 +50,7 @@ export const TurtlePlayerProfileView: React.FC<Props> = ({ user, lang }) => {
         if (snap.exists()) {
           const data = snap.data();
           setFullName(data.fullName || data.displayName || user.displayName || '');
-          setDiscordUsername(data.discordUsername || '');
+          setDiscordUsername(data.officialName || data.discordUsername || data.username || data.displayName || user.displayName || '');
           setShippingAddress(data.shippingAddress || '');
           setPhone(data.phone || '');
           setEmail(data.email || user.email || '');
@@ -58,6 +58,7 @@ export const TurtlePlayerProfileView: React.FC<Props> = ({ user, lang }) => {
         } else {
           // Defaults from auth
           setFullName(user.displayName || '');
+          setDiscordUsername(user.displayName || '');
           setEmail(user.email || '');
         }
       } catch (err) {
@@ -72,6 +73,7 @@ export const TurtlePlayerProfileView: React.FC<Props> = ({ user, lang }) => {
 
   const isComplete = Boolean(
     fullName.trim() && 
+    discordUsername.trim() &&
     shippingAddress.trim() && 
     phone.trim() && 
     email.trim()
@@ -86,11 +88,19 @@ export const TurtlePlayerProfileView: React.FC<Props> = ({ user, lang }) => {
       setSavedSuccess(false);
 
       const userRef = doc(db, 'users', user.uid);
+      const snap = await getDoc(userRef);
+      const existingData = snap.exists() ? snap.data() : {};
+      const cleanOfficial = discordUsername.trim();
+      const existingAccountName = existingData.accountName || user.displayName || existingData.displayName || '';
+
       await setDoc(
         userRef,
         {
           fullName: fullName.trim(),
-          discordUsername: discordUsername.trim(),
+          discordUsername: cleanOfficial,
+          officialName: cleanOfficial,
+          accountName: existingAccountName || user.displayName || '',
+          displayName: cleanOfficial || user.displayName || 'Usuario',
           shippingAddress: shippingAddress.trim(),
           phone: phone.trim(),
           email: email.trim(),
@@ -216,28 +226,30 @@ export const TurtlePlayerProfileView: React.FC<Props> = ({ user, lang }) => {
             </p>
           </div>
 
-          {/* Discord / Username */}
+          {/* Discord / Username (Official Tournament Nick) */}
           <div className="space-y-2">
             <label className="text-xs font-black uppercase tracking-wider text-white/80 flex items-center justify-between">
               <span className="flex items-center gap-2">
                 <AtSign size={15} className="text-emerald-400" />
-                <span>{isEs ? 'Nombre de Usuario' : 'Username'}</span>
+                <span>{isEs ? 'Nombre de Usuario / Nick Oficial' : 'Username / Official Tournament Nick'}</span>
+                <span className="text-emerald-400 font-bold">*</span>
               </span>
               <span className="text-[10px] text-emerald-400 font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-                {isEs ? 'A ser posible Discord' : 'Discord preferred'}
+                {isEs ? 'Nombre Oficial en Clasificación' : 'Official Standings Name'}
               </span>
             </label>
             <input
               type="text"
+              required
               value={discordUsername}
               onChange={(e) => setDiscordUsername(e.target.value)}
-              placeholder={isEs ? 'Ej: son_goku / Goku#1234' : 'e.g. son_goku / Goku#1234'}
+              placeholder={isEs ? 'Ej: son_goku / GokuSSJ' : 'e.g. son_goku / GokuSSJ'}
               className="w-full bg-[#111] border border-white/10 focus:border-emerald-500 rounded-2xl px-4 py-3.5 text-white font-bold text-sm transition-colors placeholder:text-white/20 outline-none"
             />
             <p className="text-[11px] text-white/40">
               {isEs 
-                ? 'Indica tu nombre de usuario, a ser posible el de Discord para localizarte en la comunidad.' 
-                : 'Enter your username, preferably your Discord tag to find you in the community.'}
+                ? 'Este nombre sustituirá tu nombre en los listados de clasificación de torneos y ligas como tu Nombre Oficial. A ser posible, utiliza tu nick de Discord.' 
+                : 'This name will replace your name in tournament and league standings as your Official Name. Preferably use your Discord handle.'}
             </p>
           </div>
 

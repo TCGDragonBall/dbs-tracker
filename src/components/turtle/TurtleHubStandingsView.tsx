@@ -73,8 +73,11 @@ export const TurtleHubStandingsView: React.FC<Props> = ({
         usersSnap.forEach(docSnap => {
           if (userIds.has(docSnap.id)) {
             const data = docSnap.data();
+            const officialName = data.officialName || data.discordUsername || data.displayName || 'Unknown Player';
             uInfo[docSnap.id] = {
               displayName: data.displayName || 'Unknown Player',
+              officialName: officialName,
+              accountName: data.accountName || data.displayName || '',
               email: data.email,
               discordUsername: data.discordUsername || '',
               fullName: data.fullName || '',

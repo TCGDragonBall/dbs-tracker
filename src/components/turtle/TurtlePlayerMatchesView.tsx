@@ -83,7 +83,8 @@ export const TurtlePlayerMatchesView: React.FC<TurtlePlayerMatchesViewProps> = (
           if (!usersData[oId]) {
             const uDoc = await getDocs(query(collection(db, 'users'), where('__name__', '==', oId)));
             uDoc.forEach(d => {
-              usersData[d.id] = { displayName: d.data().displayName || 'Unknown User' };
+              const uData = d.data();
+              usersData[d.id] = { displayName: uData.officialName || uData.discordUsername || uData.displayName || 'Unknown User' };
             });
           }
         }

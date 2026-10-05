@@ -191,7 +191,7 @@ export const TurtleStandingsTable: React.FC<Props> = ({
               <thead>
                 <tr className="border-b border-white/10 text-[11px] font-black text-white/40 uppercase tracking-wider">
                   <th className="py-3 px-3 text-center w-12">#</th>
-                  <th className="py-3 px-3">{lang === 'es' ? 'Jugador' : 'Player'}</th>
+                  <th className="py-3 px-3">{lang === 'es' ? 'Jugador (Oficial)' : 'Player (Official)'}</th>
                   <th className="py-3 px-2 text-center" title="Partidas Jugadas">PJ</th>
                   <th className="py-3 px-2 text-center" title="Victorias - Derrotas">V-D</th>
                   <th className="py-3 px-2 text-center" title="Líderes Únicos Jugados (máx 4 pts)">
@@ -247,6 +247,15 @@ export const TurtleStandingsTable: React.FC<Props> = ({
                           }`}>
                             {p.name}
                           </span>
+
+                          {p.accountName && p.accountName !== p.name && !p.isBot && (
+                            <span 
+                              className="text-[10px] text-white/40 truncate max-w-[120px] hidden sm:inline"
+                              title={`${lang === 'es' ? 'Nombre en cuenta' : 'Account name'}: ${p.accountName}`}
+                            >
+                              ({p.accountName})
+                            </span>
+                          )}
 
                           {p.isBot && (
                             <span className="text-[9px] font-black uppercase px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-400 border border-blue-500/30">
@@ -432,7 +441,7 @@ export const TurtleStandingsTable: React.FC<Props> = ({
               const email = uInfo?.email || viewingShippingPlayer.email || '';
               const notes = uInfo?.shippingNotes || '';
 
-              const fullLabel = `Destinatario: ${fullName || viewingShippingPlayer.name}\nUsuario / Discord: ${discordUsername ? `@${discordUsername.replace(/^@/, '')}` : 'No especificado'}\nDirección: ${address || 'Sin dirección'}\nTeléfono: ${phone || 'Sin teléfono'}\nEmail: ${email}\n${notes ? `Notas: ${notes}` : ''}`;
+              const fullLabel = `Nombre Oficial (Torneos): ${viewingShippingPlayer.name}\nNombre de Cuenta: ${viewingShippingPlayer.accountName || uInfo?.displayName || 'No especificado'}\nDestinatario: ${fullName || viewingShippingPlayer.name}\nUsuario / Discord: ${discordUsername ? `@${discordUsername.replace(/^@/, '')}` : 'No especificado'}\nDirección: ${address || 'Sin dirección'}\nTeléfono: ${phone || 'Sin teléfono'}\nEmail: ${email}\n${notes ? `Notas: ${notes}` : ''}`;
 
               const handleCopy = () => {
                 navigator.clipboard.writeText(fullLabel);
@@ -445,9 +454,27 @@ export const TurtleStandingsTable: React.FC<Props> = ({
                   <div className="bg-black/40 border border-white/5 rounded-2xl p-4 space-y-3 text-xs">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pb-2 border-b border-white/5">
                       <div className="flex items-start gap-2.5">
+                        <Award size={16} className="text-yellow-400 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <span className="text-white/40 font-bold block">{lang === 'es' ? 'Nombre Oficial (Torneos)' : 'Official Tournament Name'}:</span>
+                          <span className="text-yellow-400 font-black text-sm">{viewingShippingPlayer.name}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-2.5">
                         <User size={16} className="text-emerald-400 flex-shrink-0 mt-0.5" />
                         <div>
-                          <span className="text-white/40 font-bold block">{lang === 'es' ? 'Nombre Completo' : 'Full Name'}:</span>
+                          <span className="text-white/40 font-bold block">{lang === 'es' ? 'Nombre de Cuenta / Registro' : 'Account / User Name'}:</span>
+                          <span className="text-white/80 font-bold text-sm">{viewingShippingPlayer.accountName || uInfo?.displayName || (lang === 'es' ? 'Cuenta de Jugador' : 'Player Account')}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pb-2 border-b border-white/5">
+                      <div className="flex items-start gap-2.5">
+                        <User size={16} className="text-emerald-400 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <span className="text-white/40 font-bold block">{lang === 'es' ? 'Nombre Completo (Envío)' : 'Full Name (Shipping)'}:</span>
                           <span className="text-white font-bold text-sm">{fullName || (lang === 'es' ? '⚠️ No especificado' : '⚠️ Unspecified')}</span>
                         </div>
                       </div>

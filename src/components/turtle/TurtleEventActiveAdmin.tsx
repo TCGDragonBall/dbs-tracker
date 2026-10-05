@@ -79,7 +79,7 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
   const allUsersInfo = { ...usersInfo };
   if (event.botPlayers) {
     event.botPlayers.forEach(b => {
-      allUsersInfo[b.userId] = { displayName: b.displayName, email: 'bot' };
+      allUsersInfo[b.userId] = { displayName: b.displayName, officialName: b.displayName, email: 'bot' };
     });
   }
 
@@ -303,8 +303,10 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
             
             <div className="space-y-3">
               {currentRoundMatches.map(m => {
-                const p1Name = allUsersInfo[m.player1Id]?.displayName || 'Unknown';
-                const p2Name = m.player2Id ? (allUsersInfo[m.player2Id]?.displayName || 'Unknown') : 'BYE';
+                const p1Info = allUsersInfo[m.player1Id];
+                const p2Info = m.player2Id ? allUsersInfo[m.player2Id] : null;
+                const p1Name = p1Info?.officialName || p1Info?.discordUsername || p1Info?.displayName || 'Unknown';
+                const p2Name = m.player2Id ? (p2Info?.officialName || p2Info?.discordUsername || p2Info?.displayName || 'Unknown') : 'BYE';
                 
                 const p1Card = cards.find(c => c.id === m.player1LeaderId);
                 const p2Card = cards.find(c => c.id === m.player2LeaderId);
