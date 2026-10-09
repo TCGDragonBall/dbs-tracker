@@ -326,6 +326,7 @@ const SET_BG: Record<string, string> = {
   'MASTERS_ULTRA_BOUT_TP_V2': 'https://dragonball.center/files/module_dbc/objetos/68/c17q173477.jpg',
   'EP18': 'https://dragonball.center/files/module_dbc/objetos/147/6p0d175120.jpg',
   'MASTERS_ULTRA_BOUT_TP_V3': 'https://dragonball.center/files/module_dbc/objetos/149/0rkf177061.jpg',
+  'MASTERS_ULTRA_BOUT_TP_V4': 'https://www.dbs-cardgame.com/images/event/prizes/pack/img_tournament-ultra-bout_vol04.png?v1',
   'MASTERS_SEALED_TP_FOLDER': 'https://dragonball.center/files/module_dbc/objetos/63/xqsm15537.jpg',
   'MASTERS_SEALED_TP01': 'https://dragonball.center/files/module_dbc/objetos/63/xqsm15537.jpg',
   'MASTERS_SEALED_TP02': 'https://dragonball.center/files/module_dbc/objetos/63/lmaa15538.jpg',
@@ -414,6 +415,7 @@ const SET_BG: Record<string, string> = {
   'MASTERS_SEALED_ULTRA_BOUT_TP_V2': 'https://dragonball.center/files/module_dbc/objetos/68/c17q173477.jpg',
   'MASTERS_SEALED_EP18': 'https://dragonball.center/files/module_dbc/objetos/147/6p0d175120.jpg',
   'MASTERS_SEALED_ULTRA_BOUT_TP_V3': 'https://dragonball.center/files/module_dbc/objetos/149/0rkf177061.jpg',
+  'MASTERS_SEALED_ULTRA_BOUT_TP_V4': 'https://www.dbs-cardgame.com/images/event/prizes/pack/img_tournament-ultra-bout_vol04.png?v1',
   'MASTERS_SEALED_EP06': 'https://dragonball.center/files/module_dbc/objetos/7/pdlh116356.jpg',
   'MASTERS_SEALED_EP07': 'https://dragonball.center/files/module_dbc/objetos/121/2m0b116459.jpg',
   'MASTERS_SEALED_EP08': 'https://dragonball.center/files/module_dbc/objetos/51/ga20116470.jpg',
@@ -576,6 +578,7 @@ const SET_BG_POS: Record<string, string> = {
   'EP18': 'bg-[50%_25%]',
   'EP19': 'bg-[50%_25%]',
   'MASTERS_ULTRA_BOUT_TP_V3': 'bg-[50%_25%]',
+  'MASTERS_ULTRA_BOUT_TP_V4': 'bg-[50%_25%]',
   'MASTERS_SEALED_TP_FOLDER': 'bg-[50%_25%]',
   'MASTERS_SEALED_TP01': 'bg-[50%_25%]',
   'MASTERS_SEALED_TP02': 'bg-[50%_25%]',
@@ -665,6 +668,7 @@ const SET_BG_POS: Record<string, string> = {
   'MASTERS_SEALED_EP18': 'bg-[50%_25%]',
   'MASTERS_SEALED_EP19': 'bg-[50%_25%]',
   'MASTERS_SEALED_ULTRA_BOUT_TP_V3': 'bg-[50%_25%]',
+  'MASTERS_SEALED_ULTRA_BOUT_TP_V4': 'bg-[50%_25%]',
   'MASTERS_SEALED_EP06': 'bg-[50%_25%]',
   'MASTERS_SEALED_EP07': 'bg-[50%_25%]',
   'MASTERS_SEALED_EP08': 'bg-[50%_25%]',
@@ -1077,7 +1081,8 @@ const expansionGroups: ExpansionGroup[] = [
           { id: 'MASTERS_ULTRA_BOUT_TP_V1', label: 'Ultra Bout Series Tournament Pack Vol. 1', sub: 'Tournament' },
           { id: 'MASTERS_DELUXE_PACK_2026_V1', label: 'Deluxe Pack 2026 Vol. 1', sub: 'Promo' },
           { id: 'MASTERS_ULTRA_BOUT_TP_V2', label: 'Ultra Bout Series Tournament Pack Vol. 2', sub: 'Tournament' },
-          { id: 'MASTERS_ULTRA_BOUT_TP_V3', label: 'Ultra Bout Series Tournament Pack Vol. 3', sub: 'Tournament' }
+          { id: 'MASTERS_ULTRA_BOUT_TP_V3', label: 'Ultra Bout Series Tournament Pack Vol. 3', sub: 'Tournament' },
+          { id: 'MASTERS_ULTRA_BOUT_TP_V4', label: 'Ultra Bout Series Tournament Pack Vol. 4', sub: 'Tournament' }
         ]
       },
       {
@@ -1226,7 +1231,8 @@ const expansionGroups: ExpansionGroup[] = [
           { id: 'MASTERS_SEALED_DELUXE_PACK_2026_V2', label: 'Deluxe Pack 2026 Vol. 2', sub: 'Promo' },
 
           { id: 'MASTERS_SEALED_ULTRA_BOUT_TP_V2', label: 'Ultra Bout Series Tournament Pack Vol. 2', sub: 'Tournament' },
-          { id: 'MASTERS_SEALED_ULTRA_BOUT_TP_V3', label: 'Ultra Bout Series Tournament Pack Vol. 3', sub: 'Tournament' }
+          { id: 'MASTERS_SEALED_ULTRA_BOUT_TP_V3', label: 'Ultra Bout Series Tournament Pack Vol. 3', sub: 'Tournament' },
+          { id: 'MASTERS_SEALED_ULTRA_BOUT_TP_V4', label: 'Ultra Bout Series Tournament Pack Vol. 4', sub: 'Tournament' }
         ]
       },
       {
@@ -2490,6 +2496,14 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
   'P-753': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
   'P-754': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
   'P-754_W': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.3' },
+  'BT24-134_PR': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.4' },
+  'BT24-134_PR02': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.4' },
+  'BT28-054_PR': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.4' },
+  'BT28-054_PR02': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.4' },
+  'BT28-138_PR': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.4' },
+  'BT28-138_PR02': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.4' },
+  'P-658_PR02': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.4' },
+  'P-658_PR03': { sourceProduct: 'Ultra-bout Series TOURNAMENT PACK VOL.4' },
   'P-757': { sourceProduct: 'Deluxe Pack 2026 Vol.2' },
   'P-758': { sourceProduct: 'Deluxe Pack 2026 Vol.2' },
   'P-759': { sourceProduct: 'Deluxe Pack 2026 Vol.2' },
@@ -3345,6 +3359,7 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'SEALED_CHAMPIONSHIP_PACS_2026_V2': 'https://dragonball.center/files/module_dbc/objetos/0/u0nt175101.jpg',
   'MASTERS_SEALED_CHAMPIONSHIP_PACS_2026_V2': 'https://dragonball.center/files/module_dbc/objetos/0/u0nt175101.jpg',
   'SEALED_ULTRA_BOUT_TP_V3': 'https://dragonball.center/files/module_dbc/objetos/149/0rkf177061.jpg',
+  'SEALED_ULTRA_BOUT_TP_V4': 'https://www.dbs-cardgame.com/images/event/prizes/pack/img_tournament-ultra-bout_vol04.png?v1',
   'MASTERS_SEALED_SPECIAL_TOKEN_PACK': 'https://dragonball.center/files/module_dbc/objetos/49/rou4116849.jpg',
   'MASTERS_TP_FOLDER': 'https://dragonball.center/files/module_dbc/objetos/63/xqsm15537.jpg',
   'MASTERS_SEALED_TP_FOLDER': 'https://dragonball.center/files/module_dbc/objetos/63/xqsm15537.jpg',
@@ -3428,6 +3443,7 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'MASTERS_SEALED_ULTRA_BOUT_TP_V2': 'https://dragonball.center/files/module_dbc/objetos/68/c17q173477.jpg',
   'MASTERS_SEALED_EP18': 'https://dragonball.center/files/module_dbc/objetos/147/6p0d175120.jpg',
   'MASTERS_SEALED_ULTRA_BOUT_TP_V3': 'https://dragonball.center/files/module_dbc/objetos/149/0rkf177061.jpg',
+  'MASTERS_SEALED_ULTRA_BOUT_TP_V4': 'https://www.dbs-cardgame.com/images/event/prizes/pack/img_tournament-ultra-bout_vol04.png?v1',
   'MASTERS_SEALED_EP06': 'https://dragonball.center/files/module_dbc/objetos/7/pdlh116356.jpg',
   'MASTERS_SEALED_EP07': 'https://dragonball.center/files/module_dbc/objetos/121/2m0b116459.jpg',
   'MASTERS_SEALED_EP08': 'https://dragonball.center/files/module_dbc/objetos/51/ga20116470.jpg',
@@ -4007,6 +4023,14 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'P-746_W': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-746_PR.png',
   'P-750_W': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-750_PR.png',
   'P-754_W': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-754_PR.png',
+  'BT24-134_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT24-134_PR.png',
+  'BT24-134_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT24-134_PR02.png',
+  'BT28-054_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT28-054_PR.png',
+  'BT28-054_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT28-054_PR02.png',
+  'BT28-138_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT28-138_PR.png',
+  'BT28-138_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT28-138_PR02.png',
+  'P-658_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-658_PR02.png',
+  'P-658_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-658_PR03.png',
   'P-757': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-757.png',
   'P-758': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-758.png',
   'P-759': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-759.png',
@@ -5583,6 +5607,7 @@ const CHANGELOG = [
     version: '4.1.15',
     date: '1 de agosto de 2026',
     changes: [
+      { es: 'Añadidas las cartas de ULTRA-BOUT Series Tournament Pack Vol.4 con sus versiones Winner (BT24-134_PR02, BT28-054_PR02, BT28-138_PR02, P-658_PR03) y regulares, e incorporado su sobre sellado.', en: 'Added ULTRA-BOUT Series Tournament Pack Vol.4 cards with Winner versions (BT24-134_PR02, BT28-054_PR02, BT28-138_PR02, P-658_PR03) and regular versions, plus sealed pack.' },
       { es: 'Añadidas versiones prerelease doradas independientes (BT18-089_ANNY, BT19-034_ANNY, BT20-114_ANNY, BT22-054_ANNY).', en: 'Added independent gold prerelease versions (BT18-089_ANNY, BT19-034_ANNY, BT20-114_ANNY, BT22-054_ANNY).' },
       { es: 'Los sets Collector\'s Selection ahora se consideran completos al 100% con 1 sola copia por carta, tanto en modo Coleccionista como en modo Jugador.', en: 'Collector\'s Selection sets are now considered 100% complete with just 1 copy per card, in both Collector and Player modes.' },
       { es: 'Eliminada la carta BT16-005_PR.', en: 'Removed card BT16-005_PR.' },
@@ -7595,7 +7620,7 @@ const EXTRA_SET_CARDS: Record<string, string[]> = {
 
 const PACK_ARRAYS: Record<string, string[]> = {
   'MASTERS_SEALED_TP_FOLDER': [
-    'SEALED_TP01', 'SEALED_TP02', 'SEALED_TP03', 'SEALED_TP04', 'SEALED_TP05_2019', 'SEALED_TP06', 'SEALED_TP07', 'SEALED_TP08', 'SEALED_TP09', 'SEALED_EX_TP', 'SEALED_TP_UW1', 'SEALED_TP_UW2', 'SEALED_TP_UW3', 'SEALED_TP_UW4', 'SEALED_TP_UW5', 'SEALED_TP_UW6', 'SEALED_TP_UW7', 'SEALED_TP_UW8', 'SEALED_ZENKAI_START_PACK', 'SEALED_ZENKAI_TP_V1', 'SEALED_ZENKAI_SERIES_PACK_V1', 'SEALED_ZENKAI_TP_V2', 'SEALED_Z03_DASH_PACK', 'SEALED_ZENKAI_TP_V3', 'SEALED_ZENKAI_TP_V4', 'SEALED_ZENKAI_TP_V5', 'SEALED_ZENKAI_TP_V6', 'SEALED_ZENKAI_TP_V7', 'SEALED_DELUXE_PACK_2024_V1', 'SEALED_ZENKAI_TP_V8', 'SEALED_DELUXE_PACK_2024_V2', 'SEALED_ZENKAI_TP_V9', 'SEALED_ZENKAI_TP_V10', 'SEALED_DELUXE_PACK_2025_V1', 'SEALED_ZENKAI_TP_V11', 'SEALED_ZENKAI_TP_V12', 'SEALED_DELUXE_PACK_2025_V2', 'SEALED_ULTRA_BOUT_TP_V13', 'SEALED_ULTRA_BOUT_TP_V1', 'SEALED_DELUXE_PACK_2026_V1', 'SEALED_DELUXE_PACK_2026_V2', 'SEALED_ULTRA_BOUT_TP_V2', 'SEALED_ULTRA_BOUT_TP_V3'
+    'SEALED_TP01', 'SEALED_TP02', 'SEALED_TP03', 'SEALED_TP04', 'SEALED_TP05_2019', 'SEALED_TP06', 'SEALED_TP07', 'SEALED_TP08', 'SEALED_TP09', 'SEALED_EX_TP', 'SEALED_TP_UW1', 'SEALED_TP_UW2', 'SEALED_TP_UW3', 'SEALED_TP_UW4', 'SEALED_TP_UW5', 'SEALED_TP_UW6', 'SEALED_TP_UW7', 'SEALED_TP_UW8', 'SEALED_ZENKAI_START_PACK', 'SEALED_ZENKAI_TP_V1', 'SEALED_ZENKAI_SERIES_PACK_V1', 'SEALED_ZENKAI_TP_V2', 'SEALED_Z03_DASH_PACK', 'SEALED_ZENKAI_TP_V3', 'SEALED_ZENKAI_TP_V4', 'SEALED_ZENKAI_TP_V5', 'SEALED_ZENKAI_TP_V6', 'SEALED_ZENKAI_TP_V7', 'SEALED_DELUXE_PACK_2024_V1', 'SEALED_ZENKAI_TP_V8', 'SEALED_DELUXE_PACK_2024_V2', 'SEALED_ZENKAI_TP_V9', 'SEALED_ZENKAI_TP_V10', 'SEALED_DELUXE_PACK_2025_V1', 'SEALED_ZENKAI_TP_V11', 'SEALED_ZENKAI_TP_V12', 'SEALED_DELUXE_PACK_2025_V2', 'SEALED_ULTRA_BOUT_TP_V13', 'SEALED_ULTRA_BOUT_TP_V1', 'SEALED_DELUXE_PACK_2026_V1', 'SEALED_DELUXE_PACK_2026_V2', 'SEALED_ULTRA_BOUT_TP_V2', 'SEALED_ULTRA_BOUT_TP_V3', 'SEALED_ULTRA_BOUT_TP_V4'
   ],
   'MASTERS_SEALED_TP01': ['SEALED_TP01'],
   'MASTERS_SEALED_TP02': ['SEALED_TP02'],
@@ -7641,6 +7666,7 @@ const PACK_ARRAYS: Record<string, string[]> = {
 
   'MASTERS_SEALED_ULTRA_BOUT_TP_V2': ['SEALED_ULTRA_BOUT_TP_V2'],
   'MASTERS_SEALED_ULTRA_BOUT_TP_V3': ['SEALED_ULTRA_BOUT_TP_V3'],
+  'MASTERS_SEALED_ULTRA_BOUT_TP_V4': ['SEALED_ULTRA_BOUT_TP_V4'],
   'MASTERS_SEALED_EP_FOLDER': [
     'SEALED_EVENT_PACK_01', 'SEALED_EVENT_PACK_02', 'SEALED_EVENT_PACK_03', 'SEALED_EVENT_PACK_04', 'SEALED_EVENT_PACK_05', 'SEALED_EVENT_PACK_06', 'SEALED_EVENT_PACK_07', 'SEALED_EVENT_PACK_08', 'SEALED_EVENT_PACK_09', 'SEALED_EVENT_PACK_10', 'SEALED_EVENT_PACK_11', 'SEALED_EVENT_PACK_12', 'SEALED_EVENT_PACK_13', 'SEALED_EVENT_PACK_14', 'SEALED_EVENT_PACK_15', 'SEALED_EVENT_PACK_16', 'SEALED_EVENT_PACK_17', 'SEALED_EVENT_PACK_18', 'SEALED_EVENT_PACK_19'
   ],
@@ -7787,6 +7813,7 @@ const PACK_ARRAYS: Record<string, string[]> = {
 
   'MASTERS_ULTRA_BOUT_TP_V2': ['P-723', 'P-724', 'P-725', 'P-726', 'P-727', 'P-728', 'P-729', 'P-730', 'P-731', 'P-732', 'P-733', 'P-734', 'P-735', 'P-736', 'P-737', 'P-738'],
   'MASTERS_ULTRA_BOUT_TP_V3': ['P-739', 'P-740', 'P-741', 'P-742', 'P-743', 'P-744', 'P-745', 'P-746', 'P-747', 'P-748', 'P-749', 'P-750', 'P-751', 'P-752', 'P-753', 'P-754'],
+  'MASTERS_ULTRA_BOUT_TP_V4': ['BT24-134_PR', 'BT24-134_PR02', 'BT28-054_PR', 'BT28-054_PR02', 'BT28-138_PR', 'BT28-138_PR02', 'P-658_PR02', 'P-658_PR03'],
   'MASTERS_DELUXE_PACK_2024_V1': ['SEALED_DELUXE_PACK_2024_V1'],
   'MASTERS_DELUXE_PACK_2024_V2': ['SEALED_DELUXE_PACK_2024_V2'],
   'MASTERS_DELUXE_PACK_2025_V1': ['SEALED_DELUXE_PACK_2025_V1'],

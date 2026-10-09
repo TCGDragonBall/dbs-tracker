@@ -79,5 +79,6 @@ SEALED_DELUXE_PACK_2026_V1	Deluxe Pack 2026 Vol. 1	-	Sealed	-	SEALED_DELUXE_PACK
 SEALED_ULTRA_BOUT_TP_V2	Ultra Bout Series Tournament Pack Vol. 2	-	Sealed	-	SEALED_ULTRA_BOUT_TP_V2	-	-	-	-	-	-	-	-
 SEALED_EVENT_PACK_18	Event Pack 18	-	Sealed	-	SEALED_EVENT_PACK_18	-	-	-	-	-	-	-	-
 SEALED_ULTRA_BOUT_TP_V3	Ultra Bout Series Tournament Pack Vol. 3	-	Sealed	-	SEALED_ULTRA_BOUT_TP_V3	-	-	-	-	-	-	-	-
+SEALED_ULTRA_BOUT_TP_V4	Ultra Bout Series Tournament Pack Vol. 4	-	Sealed	-	SEALED_ULTRA_BOUT_TP_V4	-	-	-	-	-	-	-	-
 SEALED_SPECIAL_TOKEN_PACK	Special Token Pack	-	Sealed	-	SEALED_SPECIAL_TOKEN_PACK	-	-	-	-	-	-	-	-
 `;
