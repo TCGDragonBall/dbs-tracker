@@ -76,7 +76,7 @@ export const generateRoundRobinMatches = async (eventId: string, playerIds: stri
           round,
           player1Id: realPlayer,
           player2Id: null,
-          player1Wins: 2,
+          player1Wins: 0,
           player2Wins: 0,
           draws: 0,
           status: 'completed',

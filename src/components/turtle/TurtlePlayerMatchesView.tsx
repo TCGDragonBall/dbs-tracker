@@ -247,7 +247,10 @@ export const TurtlePlayerMatchesView: React.FC<TurtlePlayerMatchesViewProps> = (
         const event = events[match.eventId];
         const isPlayer1 = match.player1Id === userUid;
         const oppId = isPlayer1 ? match.player2Id : match.player1Id;
-        const oppName = oppId ? usersInfo[oppId]?.displayName || 'Unknown' : 'BYE';
+        const isLeagueBye = event?.type === 'league' && !oppId;
+        const oppName = oppId 
+          ? usersInfo[oppId]?.displayName || 'Unknown' 
+          : (isLeagueBye ? (lang === 'es' ? 'Descanso Semanal' : 'Rest Week') : 'BYE');
         const isCompleted = match.status === 'completed';
         
         let resultLabel = '';
@@ -279,10 +282,18 @@ export const TurtlePlayerMatchesView: React.FC<TurtlePlayerMatchesViewProps> = (
                 <span>{oppName}</span>
               </div>
               
-              {isCompleted && (
+              {isCompleted && oppId && (
                 <div className="flex items-center gap-2 mt-2">
                   <span className={`text-xs font-black px-3 py-1 rounded bg-black/50 ${resultColor}`}>
                     {resultLabel === 'WIN' ? (lang === 'es' ? 'VICTORIA' : 'WIN') : resultLabel === 'LOSS' ? (lang === 'es' ? 'DERROTA' : 'LOSS') : 'DRAW'}
+                  </span>
+                </div>
+              )}
+
+              {isLeagueBye && (
+                <div className="flex items-center gap-2 mt-2">
+                  <span className="text-xs font-black px-3 py-1 rounded bg-white/10 text-white/60">
+                    {lang === 'es' ? 'DESCANSO (SIN PARTIDA ESTA JORNADA)' : 'REST WEEK (NO MATCH)'}
                   </span>
                 </div>
               )}
@@ -299,7 +310,7 @@ export const TurtlePlayerMatchesView: React.FC<TurtlePlayerMatchesViewProps> = (
             
             {(!oppId) && (
               <div className="px-4 py-2 bg-white/10 text-white/50 font-bold rounded-xl text-sm italic">
-                BYE
+                {isLeagueBye ? (lang === 'es' ? 'Descanso' : 'Rest') : 'BYE'}
               </div>
             )}
           </div>

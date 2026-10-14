@@ -203,6 +203,12 @@ export function calculateLeagueStandings(
   matches.forEach(m => {
     if (m.status !== 'completed') return;
 
+    // In leagues, Byes / rest rounds (odd number of players where a player rests)
+    // DO NOT count as a match or win, and do NOT award any points or game wins!
+    if (event.type === 'league' && (!m.player1Id || !m.player2Id)) {
+      return;
+    }
+
     // Player 1 processing
     if (m.player1Id && statsMap[m.player1Id]) {
       const p1 = statsMap[m.player1Id];

@@ -417,8 +417,11 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
               {currentRoundMatches.map(m => {
                 const p1Info = allUsersInfo[m.player1Id];
                 const p2Info = m.player2Id ? allUsersInfo[m.player2Id] : null;
+                const isLeagueBye = event.type === 'league' && !m.player2Id;
                 const p1Name = p1Info?.officialName || p1Info?.discordUsername || p1Info?.displayName || 'Unknown';
-                const p2Name = m.player2Id ? (p2Info?.officialName || p2Info?.discordUsername || p2Info?.displayName || 'Unknown') : 'BYE';
+                const p2Name = m.player2Id 
+                  ? (p2Info?.officialName || p2Info?.discordUsername || p2Info?.displayName || 'Unknown') 
+                  : (event.type === 'league' ? (lang === 'es' ? 'Descanso Semanal' : 'Rest Week') : 'BYE');
                 
                 const p1Card = cards.find(c => c.id === m.player1LeaderId);
                 const p2Card = cards.find(c => c.id === m.player2LeaderId);
@@ -534,7 +537,7 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
                             {/* P1 */}
                             <div className="flex-1 flex items-center justify-end gap-2 text-right">
                               <div>
-                                <p className={`font-bold ${m.player1Wins > m.player2Wins ? 'text-green-400' : 'text-white'}`}>
+                                <p className={`font-bold ${!isLeagueBye && m.player1Wins > m.player2Wins ? 'text-green-400' : 'text-white'}`}>
                                   {p1Name}
                                 </p>
                                 {p1BaseCode && (
@@ -549,8 +552,10 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
                             </div>
                             
                             {/* Score */}
-                            <div className="px-4 py-1.5 bg-[#111] rounded-xl font-black text-lg border border-white/10 text-white min-w-[80px] text-center shadow-inner">
-                              {m.status === 'completed' ? `${m.player1Wins} - ${m.player2Wins}` : 'VS'}
+                            <div className="px-4 py-1.5 bg-[#111] rounded-xl font-black text-sm md:text-base border border-white/10 text-white min-w-[80px] text-center shadow-inner">
+                              {isLeagueBye 
+                                ? (lang === 'es' ? 'Descanso' : 'Rest') 
+                                : (m.status === 'completed' ? `${m.player1Wins} - ${m.player2Wins}` : 'VS')}
                             </div>
                             
                             {/* P2 */}
@@ -559,7 +564,7 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
                                 <img src={p2Card.imageUrl} alt="" className="w-7 h-10 object-cover rounded shadow" />
                               )}
                               <div>
-                                <p className={`font-bold ${m.player2Wins > m.player1Wins ? 'text-green-400' : 'text-white'}`}>
+                                <p className={`font-bold ${!isLeagueBye && m.player2Wins > m.player1Wins ? 'text-green-400' : 'text-white'}`}>
                                   {p2Name}
                                 </p>
                                 {p2BaseCode && (
