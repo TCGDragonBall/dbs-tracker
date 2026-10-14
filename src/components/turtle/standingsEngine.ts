@@ -1,5 +1,18 @@
 import { TurtleEvent, TurtleMatch, TurtleRegistration, TurtleUserInfo } from './types';
 
+export interface PlayerLeaderItem {
+  key: string;
+  displayCode: string;
+  cardId: string;
+  name?: string;
+  imageUrl?: string;
+  backImageUrl?: string;
+  color?: string;
+  rarity?: string;
+  power?: string;
+  card?: any;
+}
+
 export interface PlayerStanding {
   userId: string;
   name: string; // Nombre oficial mostrado en la clasificación
@@ -17,6 +30,7 @@ export interface PlayerStanding {
   gameDiff: number;
   uniqueBaseLeaders: string[];
   uniqueLeaderCount: number;
+  leaderDetails: PlayerLeaderItem[];
   winPoints: number; // 3 points per win
   leaderPoints: number; // 1 point per unique leader, max 4
   rawPoints: number; // winPoints + leaderPoints
@@ -25,6 +39,44 @@ export interface PlayerStanding {
   isDisqualified: boolean;
   finalPoints: number; // 0 if disqualified else Math.max(0, rawPoints - penaltyPoints)
   rank: number;
+}
+
+/**
+ * Ensures an image URL from dragonball.center or relative paths is absolute.
+ */
+export function formatCardImageUrl(url?: string): string {
+  if (!url) return '';
+  if (url.startsWith('/')) {
+    return `https://dragonball.center${url}`;
+  }
+  return url;
+}
+
+/**
+ * Validates that a card is strictly a standard Leader and NOT a Z-Leader, Battle card, etc.
+ */
+export function isOnlyLeaderCard(card: any): boolean {
+  if (!card || !card.type) return false;
+  const t = String(card.type).trim().toLowerCase();
+  // Must be leader
+  if (!t.includes('leader') && !t.includes('líder')) return false;
+  // Exclude Z-Leader cards explicitly
+  if (
+    t.includes('z-leader') || 
+    t.includes('z-lider') || 
+    t.includes('z líder') || 
+    t.includes('z leader') || 
+    t.startsWith('z-') || 
+    t.startsWith('z ')
+  ) {
+    return false;
+  }
+  // Exclude if rarity denotes Z-Leader
+  const r = String(card.rarity || '').trim().toLowerCase();
+  if (r.includes('z-leader') || r.includes('z-lider')) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -185,7 +237,7 @@ export function calculateLeagueStandings(
     losses: number;
     gameWins: number;
     gameLosses: number;
-    uniqueLeadersMap: Map<string, string>; // canonicalKey -> displayCode
+    uniqueLeadersMap: Map<string, PlayerLeaderItem>; // canonicalKey -> PlayerLeaderItem
   }> = {};
 
   allUserIds.forEach(uid => {
@@ -195,7 +247,7 @@ export function calculateLeagueStandings(
       losses: 0,
       gameWins: 0,
       gameLosses: 0,
-      uniqueLeadersMap: new Map<string, string>()
+      uniqueLeadersMap: new Map<string, PlayerLeaderItem>()
     };
   });
 
@@ -225,7 +277,19 @@ export function calculateLeagueStandings(
       if (m.player1LeaderId) {
         const { key, displayCode } = getLeaderIdentity(m.player1LeaderId, cards);
         if (key && !p1.uniqueLeadersMap.has(key)) {
-          p1.uniqueLeadersMap.set(key, displayCode);
+          const cardObj = findLeaderCard(m.player1LeaderId, cards) || findLeaderCard(displayCode, cards);
+          p1.uniqueLeadersMap.set(key, {
+            key,
+            displayCode,
+            cardId: m.player1LeaderId,
+            name: cardObj?.name,
+            imageUrl: formatCardImageUrl(cardObj?.imageUrl),
+            backImageUrl: formatCardImageUrl(cardObj?.backImageUrl),
+            color: cardObj?.color,
+            rarity: cardObj?.rarity,
+            power: cardObj?.power,
+            card: cardObj
+          });
         }
       }
     }
@@ -246,7 +310,19 @@ export function calculateLeagueStandings(
       if (m.player2LeaderId) {
         const { key, displayCode } = getLeaderIdentity(m.player2LeaderId, cards);
         if (key && !p2.uniqueLeadersMap.has(key)) {
-          p2.uniqueLeadersMap.set(key, displayCode);
+          const cardObj = findLeaderCard(m.player2LeaderId, cards) || findLeaderCard(displayCode, cards);
+          p2.uniqueLeadersMap.set(key, {
+            key,
+            displayCode,
+            cardId: m.player2LeaderId,
+            name: cardObj?.name,
+            imageUrl: formatCardImageUrl(cardObj?.imageUrl),
+            backImageUrl: formatCardImageUrl(cardObj?.backImageUrl),
+            color: cardObj?.color,
+            rarity: cardObj?.rarity,
+            power: cardObj?.power,
+            card: cardObj
+          });
         }
       }
     }
@@ -260,7 +336,7 @@ export function calculateLeagueStandings(
       losses: 0,
       gameWins: 0,
       gameLosses: 0,
-      uniqueLeadersMap: new Map<string, string>()
+      uniqueLeadersMap: new Map<string, PlayerLeaderItem>()
     };
 
     const isBot = botMap.has(uid);
@@ -277,7 +353,8 @@ export function calculateLeagueStandings(
     const fullName = isBot ? '' : (uInfo?.fullName || '');
     const email = isBot ? 'bot' : usersInfo[uid]?.email;
 
-    const uniqueBaseLeaders = Array.from(raw.uniqueLeadersMap.values());
+    const leaderDetails = Array.from(raw.uniqueLeadersMap.values());
+    const uniqueBaseLeaders = leaderDetails.map(l => l.displayCode);
     const uniqueLeaderCount = raw.uniqueLeadersMap.size;
 
     // Scoring rules:
@@ -316,6 +393,7 @@ export function calculateLeagueStandings(
       gameDiff,
       uniqueBaseLeaders,
       uniqueLeaderCount,
+      leaderDetails,
       winPoints,
       leaderPoints,
       rawPoints,

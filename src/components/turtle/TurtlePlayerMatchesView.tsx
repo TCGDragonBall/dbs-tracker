@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, query, where, onSnapshot, getDocs, doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../../firebase';
 import { TurtleMatch, TurtleEvent } from './types';
+import { isOnlyLeaderCard, formatCardImageUrl } from './standingsEngine';
 import { Trophy, X, Search, Calendar, User as UserIcon, CheckCircle } from 'lucide-react';
 
 interface TurtlePlayerMatchesViewProps {
@@ -366,7 +367,7 @@ export const TurtlePlayerMatchesView: React.FC<TurtlePlayerMatchesViewProps> = (
                     {myLeaderId ? (
                       <>
                         <img 
-                          src={cards.find(c => c.id === myLeaderId)?.imageUrl} 
+                          src={formatCardImageUrl(cards.find(c => c.id === myLeaderId)?.imageUrl)} 
                           alt="Leader" 
                           className="absolute inset-0 w-full h-full object-cover object-top" 
                         />
@@ -422,36 +423,61 @@ export const TurtlePlayerMatchesView: React.FC<TurtlePlayerMatchesViewProps> = (
         </div>
       )}
 
-      {/* Leader Search Modal */}
+      {/* Leader Search Modal - Styled like Wants list & Tracker search */}
       {isLeaderSearchOpen && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-fade-in">
-          <div className="bg-[#151515] border border-white/10 w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-            <div className="p-4 border-b border-white/10 flex justify-between items-center flex-shrink-0">
-              <h3 className="text-xl font-black text-white">
-                {lang === 'es' ? 'Seleccionar Líder' : 'Select Leader'}
-              </h3>
-              <button onClick={() => setIsLeaderSearchOpen(false)} className="p-2 bg-white/5 hover:bg-red-500/20 hover:text-red-400 rounded-full text-white/50 transition-colors">
+        <div className="fixed inset-0 z-[140] flex items-center justify-center p-3 sm:p-4 bg-black/90 backdrop-blur-sm animate-fade-in">
+          <div className="bg-[#151515] border border-white/10 w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl flex flex-col h-[90vh]">
+            {/* Modal Header */}
+            <div className="p-4 sm:p-5 border-b border-white/10 flex justify-between items-center flex-shrink-0 bg-black/30">
+              <div>
+                <h3 className="text-lg sm:text-xl font-black text-white flex items-center gap-2">
+                  <span className="text-orange-400">🛡️</span>
+                  {lang === 'es' ? 'Seleccionar Líder' : 'Select Leader'}
+                </h3>
+                <p className="text-xs text-white/40 mt-0.5">
+                  {lang === 'es' ? 'Solo líderes oficiales (sin cartas Z-Líder)' : 'Standard leaders only (excluding Z-Leaders)'}
+                </p>
+              </div>
+              <button 
+                onClick={() => setIsLeaderSearchOpen(false)} 
+                className="p-2 bg-white/5 hover:bg-red-500/20 hover:text-red-400 rounded-full text-white/50 transition-colors"
+                title={lang === 'es' ? 'Cerrar' : 'Close'}
+              >
                 <X size={20} />
               </button>
             </div>
             
+            {/* Filters Bar */}
             <div className="p-4 flex flex-col gap-3 flex-shrink-0 border-b border-white/5 bg-black/20">
               <div className="relative">
                 <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
                 <input 
                   type="text"
-                  placeholder={lang === 'es' ? 'Buscar por nombre o ID...' : 'Search by name or ID...'}
+                  placeholder={lang === 'es' ? 'Buscar líder por nombre o código (ej. BT1-001, Goku)...' : 'Search leader by name or code (e.g. BT1-001, Goku)...'}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-[#111] border border-white/10 rounded-2xl py-3 pl-11 pr-4 text-white font-bold placeholder:text-white/30 focus:outline-none focus:border-orange-500/50 transition-colors"
+                  autoFocus
+                  className="w-full bg-[#111] border border-white/10 rounded-2xl py-3 pl-11 pr-10 text-white text-sm font-bold placeholder:text-white/30 focus:outline-none focus:border-orange-500/50 transition-colors"
                 />
+                {searchQuery && (
+                  <button 
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white p-1"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
               </div>
-              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+              <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
                 {['Todos', 'Red', 'Blue', 'Green', 'Yellow', 'Black'].map(color => (
                   <button
                     key={color}
                     onClick={() => setSearchColor(color)}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-colors ${searchColor === color ? 'bg-orange-500 text-white' : 'bg-white/5 text-white/50 hover:bg-white/10'}`}
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-colors ${
+                      searchColor === color 
+                        ? 'bg-orange-500 text-white shadow-md shadow-orange-500/20' 
+                        : 'bg-white/5 text-white/50 hover:bg-white/10'
+                    }`}
                   >
                     {color}
                   </button>
@@ -459,24 +485,74 @@ export const TurtlePlayerMatchesView: React.FC<TurtlePlayerMatchesViewProps> = (
               </div>
             </div>
             
-            <div className="flex-1 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-white/10 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
-              {cards.filter(c => 
-                c.type.toLowerCase().includes('leader') && 
-                (searchColor === 'Todos' || c.color === searchColor || c.color?.includes(searchColor)) &&
-                (c.name.toLowerCase().includes(searchQuery.toLowerCase()) || c.cardNumber.toLowerCase().includes(searchQuery.toLowerCase()))
-              ).map(card => (
-                <button 
-                  key={card.id}
-                  onClick={() => selectLeader(card.id)}
-                  className="relative group rounded-xl overflow-hidden border-2 border-transparent hover:border-orange-500 transition-all aspect-[2.5/3.5] shadow-lg hover:shadow-orange-500/20 hover:-translate-y-1"
-                >
-                  <img src={card.imageUrl} alt={card.name} className="w-full h-full object-cover object-top" loading="lazy" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-2 text-left">
-                    <span className="text-[10px] font-black text-orange-400">{card.cardNumber}</span>
-                    <span className="text-xs font-bold text-white truncate">{card.name}</span>
+            {/* Card Catalog Grid */}
+            <div className="flex-1 overflow-y-auto p-4 sm:p-5 scrollbar-thin scrollbar-thumb-white/10">
+              {(() => {
+                const filteredLeaders = cards.filter(c => 
+                  isOnlyLeaderCard(c) && 
+                  (searchColor === 'Todos' || c.color === searchColor || c.color?.toLowerCase()?.includes(searchColor.toLowerCase())) &&
+                  (c.name?.toLowerCase().includes(searchQuery.toLowerCase()) || c.cardNumber?.toLowerCase().includes(searchQuery.toLowerCase()) || c.id?.toLowerCase().includes(searchQuery.toLowerCase()))
+                );
+
+                if (filteredLeaders.length === 0) {
+                  return (
+                    <div className="text-center py-20 text-white/40 font-bold flex flex-col items-center justify-center gap-2">
+                      <Search size={32} className="text-white/20" />
+                      <span>{lang === 'es' ? 'No se encontraron líderes que coincidan con la búsqueda.' : 'No leaders found matching the search.'}</span>
+                    </div>
+                  );
+                }
+
+                return (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5">
+                    {filteredLeaders.map(card => {
+                      const imgUrl = formatCardImageUrl(card.imageUrl);
+                      return (
+                        <div
+                          key={card.id}
+                          onClick={() => selectLeader(card.id)}
+                          className="bg-[#121212] border border-white/10 hover:border-orange-500 rounded-2xl p-2.5 relative overflow-hidden transition-all flex flex-col group/card cursor-pointer select-none hover:shadow-xl hover:shadow-orange-500/10 hover:-translate-y-1 active:scale-[0.98]"
+                        >
+                          {/* Minimum height aspect container matching wants list search */}
+                          <div className="relative pt-[140%] overflow-hidden rounded-xl bg-black/40 min-h-[160px]">
+                            <img
+                              src={imgUrl}
+                              alt={card.name}
+                              className="absolute inset-0 w-full h-full object-cover object-top rounded-xl shadow transition-transform duration-500 group-hover/card:scale-105"
+                              loading="lazy"
+                              onError={(e) => {
+                                if (card.cardNumber) {
+                                  (e.currentTarget as HTMLImageElement).src = `https://www.dbs-cardgame.com/images/cardlist/cardimg/${card.cardNumber}.png`;
+                                }
+                              }}
+                            />
+                          </div>
+
+                          {/* Info below image */}
+                          <div className="text-left pt-2 flex-1 flex flex-col justify-between">
+                            <div>
+                              <p className="text-[11px] font-black tracking-tight text-white line-clamp-1 leading-tight mb-0.5 group-hover/card:text-orange-400 transition-colors">
+                                {card.name}
+                              </p>
+                              <p className="text-[9px] text-orange-500 font-extrabold uppercase tracking-widest flex items-center justify-between">
+                                <span>{card.cardNumber}</span>
+                                <span className="text-gray-400 text-[8px]">{(card.rarity || "").replace(/\*/g, '')}</span>
+                              </p>
+                            </div>
+                            {card.color && (
+                              <div className="mt-1 flex items-center justify-between">
+                                <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-white/5 text-white/60 border border-white/5 uppercase">
+                                  {card.color}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
-                </button>
-              ))}
+                );
+              })()}
             </div>
           </div>
         </div>

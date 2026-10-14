@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TurtleEvent, TurtleMatch, TurtleRegistration, TurtleUserInfo } from './types';
-import { calculateLeagueStandings, PlayerStanding } from './standingsEngine';
+import { calculateLeagueStandings, PlayerStanding, findLeaderCard, formatCardImageUrl } from './standingsEngine';
 import { TurtleAdminAdjustmentModal } from './TurtleAdminAdjustmentModal';
 import { exportTournamentPrizesExcel } from './turtlePrizesExcel';
 import { 
@@ -20,7 +20,10 @@ import {
   Check, 
   X,
   User,
-  AtSign
+  AtSign,
+  Eye,
+  RefreshCw,
+  Shield
 } from 'lucide-react';
 
 interface Props {
@@ -46,6 +49,8 @@ export const TurtleStandingsTable: React.FC<Props> = ({
 }) => {
   const [selectedPlayerForAdjustment, setSelectedPlayerForAdjustment] = useState<PlayerStanding | null>(null);
   const [viewingShippingPlayer, setViewingShippingPlayer] = useState<PlayerStanding | null>(null);
+  const [viewingLeadersPlayer, setViewingLeadersPlayer] = useState<PlayerStanding | null>(null);
+  const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const [copiedShipping, setCopiedShipping] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [showRulesInfo, setShowRulesInfo] = useState(!compact);
@@ -276,18 +281,24 @@ export const TurtleStandingsTable: React.FC<Props> = ({
                           )}
                         </div>
 
-                        {/* Leader chips preview */}
-                        {p.uniqueBaseLeaders.length > 0 && !compact && (
-                          <div className="flex flex-wrap gap-1 mt-1">
-                            {p.uniqueBaseLeaders.map(code => (
-                              <span 
-                                key={code} 
-                                className="text-[9px] font-black bg-purple-500/10 border border-purple-500/30 text-purple-300 px-1.5 py-0.5 rounded"
-                                title={`Líder base jugado: ${code}`}
-                              >
-                                {code}
+                        {/* Ver líderes button */}
+                        {p.uniqueLeaderCount > 0 && (
+                          <div className="mt-1">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setViewingLeadersPlayer(p);
+                              }}
+                              className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 hover:text-purple-200 border border-purple-500/30 text-[10px] font-black transition-all shadow-sm group hover:scale-[1.02] active:scale-[0.98]"
+                              title={lang === 'es' ? 'Ver líderes jugados' : 'View played leaders'}
+                            >
+                              <Eye size={12} className="text-purple-400 group-hover:text-purple-200 transition-colors" />
+                              <span>{lang === 'es' ? 'Ver líderes' : 'View leaders'}</span>
+                              <span className="text-[9px] px-1 py-0.2 bg-purple-500/30 rounded-md text-purple-200 font-bold">
+                                {p.uniqueLeaderCount}
                               </span>
-                            ))}
+                            </button>
                           </div>
                         )}
                       </td>
@@ -306,15 +317,26 @@ export const TurtleStandingsTable: React.FC<Props> = ({
 
                       {/* Unique Leaders */}
                       <td className="py-3.5 px-2 text-center">
-                        {event.type === 'league' ? (
-                          <div className="inline-flex items-center gap-1 font-bold text-xs px-2 py-0.5 rounded-lg bg-purple-500/15 text-purple-300 border border-purple-500/20">
-                            <span>{p.uniqueLeaderCount}/4</span>
-                            <span className="text-[10px] text-purple-400">(+{p.leaderPoints})</span>
-                          </div>
+                        {p.uniqueLeaderCount > 0 ? (
+                          <button
+                            type="button"
+                            onClick={() => setViewingLeadersPlayer(p)}
+                            className="group transition-transform hover:scale-105"
+                            title={lang === 'es' ? 'Ver líderes jugados' : 'View played leaders'}
+                          >
+                            {event.type === 'league' ? (
+                              <div className="inline-flex items-center gap-1 font-bold text-xs px-2 py-0.5 rounded-lg bg-purple-500/15 group-hover:bg-purple-500/25 text-purple-300 border border-purple-500/20 group-hover:border-purple-500/40 transition-colors">
+                                <span>{p.uniqueLeaderCount}/4</span>
+                                <span className="text-[10px] text-purple-400">(+{p.leaderPoints})</span>
+                              </div>
+                            ) : (
+                              <div className="inline-flex items-center gap-1 font-bold text-xs px-2 py-0.5 rounded-lg bg-white/5 group-hover:bg-white/10 text-white/70 group-hover:text-white border border-white/10 group-hover:border-white/20 transition-colors">
+                                <span>{p.uniqueLeaderCount}</span>
+                              </div>
+                            )}
+                          </button>
                         ) : (
-                          <div className="inline-flex items-center gap-1 font-bold text-xs px-2 py-0.5 rounded-lg bg-white/5 text-white/70 border border-white/10">
-                            <span>{p.uniqueLeaderCount}</span>
-                          </div>
+                          <span className="text-xs text-white/30 font-medium">0</span>
                         )}
                       </td>
 
@@ -554,6 +576,219 @@ export const TurtleStandingsTable: React.FC<Props> = ({
                 </div>
               );
             })()}
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Ver Líderes Jugados */}
+      {viewingLeadersPlayer && (
+        <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
+          <div className="bg-[#151515] border border-white/10 w-full max-w-3xl rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+            {/* Header */}
+            <div className="p-5 border-b border-white/10 flex justify-between items-start flex-shrink-0 bg-gradient-to-r from-purple-950/20 via-[#151515] to-transparent">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-2xl bg-purple-500/20 text-purple-400 border border-purple-500/30">
+                  <Shield size={22} />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-white flex items-center gap-2">
+                    <span>{lang === 'es' ? 'Líderes Jugados' : 'Played Leaders'}</span>
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                      {viewingLeadersPlayer.uniqueLeaderCount} {lang === 'es' ? 'únicos' : 'unique'}
+                    </span>
+                  </h3>
+                  <p className="text-xs text-white/50 font-medium mt-0.5">
+                    {lang === 'es' ? 'Jugador' : 'Player'}: <strong className="text-white">{viewingLeadersPlayer.name}</strong>
+                    {event.type === 'league' && (
+                      <span className="text-purple-400 font-bold ml-2">
+                        • {viewingLeadersPlayer.leaderPoints} {lang === 'es' ? 'puntos en liga' : 'league points'} (máx 4)
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => {
+                  setViewingLeadersPlayer(null);
+                  setFlippedCards({});
+                }}
+                className="p-2 bg-white/5 hover:bg-red-500/20 hover:text-red-400 rounded-full text-white/50 transition-colors"
+                title={lang === 'es' ? 'Cerrar' : 'Close'}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Content: Leader Cards Grid */}
+            <div className="flex-1 overflow-y-auto p-5 scrollbar-thin scrollbar-thumb-white/10">
+              {(() => {
+                const leadersList = (viewingLeadersPlayer.leaderDetails && viewingLeadersPlayer.leaderDetails.length > 0)
+                  ? viewingLeadersPlayer.leaderDetails
+                  : (viewingLeadersPlayer.uniqueBaseLeaders || []).map(code => {
+                      const c = findLeaderCard(code, cards);
+                      return {
+                        key: code,
+                        displayCode: code,
+                        cardId: code,
+                        name: c?.name,
+                        imageUrl: c?.imageUrl,
+                        backImageUrl: c?.backImageUrl,
+                        color: c?.color,
+                        rarity: c?.rarity,
+                        power: c?.power,
+                        card: c
+                      };
+                    });
+
+                if (leadersList.length === 0) {
+                  return (
+                    <div className="text-center py-12 text-white/40 font-bold">
+                      {lang === 'es' ? 'No hay líderes registrados para este jugador en este evento.' : 'No leaders recorded for this player in this event.'}
+                    </div>
+                  );
+                }
+
+                return (
+                  <div className={`grid gap-4 ${
+                    leadersList.length === 1 
+                      ? 'grid-cols-1 max-w-xs mx-auto' 
+                      : leadersList.length === 2 
+                      ? 'grid-cols-1 sm:grid-cols-2 max-w-xl mx-auto' 
+                      : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3'
+                  }`}>
+                    {leadersList.map((leader, idx) => {
+                      const isFlipped = !!flippedCards[leader.key || String(idx)];
+                      const cardObj = leader.card || findLeaderCard(leader.displayCode, cards);
+                      
+                      let frontImg = leader.imageUrl || cardObj?.imageUrl;
+                      let backImg = leader.backImageUrl || cardObj?.backImageUrl;
+                      
+                      if (frontImg?.startsWith('/')) frontImg = `https://dragonball.center${frontImg}`;
+                      if (backImg?.startsWith('/')) backImg = `https://dragonball.center${backImg}`;
+                      
+                      if (!frontImg && leader.displayCode) {
+                        frontImg = `https://www.dbs-cardgame.com/images/cardlist/cardimg/${leader.displayCode}.png`;
+                      }
+
+                      const currentImg = (isFlipped && backImg) ? backImg : frontImg;
+                      const cardName = cardObj?.name || leader.name || leader.displayCode;
+                      const cardColor = cardObj?.color || leader.color;
+                      const cardPower = cardObj?.power || leader.power;
+                      const cardRarity = cardObj?.rarity || leader.rarity;
+
+                      // Color classes
+                      const colorClass = (() => {
+                        if (!cardColor) return 'bg-purple-500/20 text-purple-300 border-purple-500/30';
+                        const c = cardColor.toLowerCase();
+                        if (c.includes('red') || c.includes('rojo')) return 'bg-red-500/20 text-red-300 border-red-500/30';
+                        if (c.includes('blue') || c.includes('azul')) return 'bg-blue-500/20 text-blue-300 border-blue-500/30';
+                        if (c.includes('green') || c.includes('verde')) return 'bg-green-500/20 text-green-300 border-green-500/30';
+                        if (c.includes('yellow') || c.includes('amarillo')) return 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30';
+                        if (c.includes('black') || c.includes('negro')) return 'bg-zinc-700/40 text-zinc-300 border-zinc-600/40';
+                        return 'bg-purple-500/20 text-purple-300 border-purple-500/30';
+                      })();
+
+                      return (
+                        <div
+                          key={leader.key || leader.cardId || idx}
+                          className="bg-black/40 border border-white/10 rounded-2xl p-3.5 flex flex-col justify-between hover:border-purple-500/40 transition-all shadow-lg group"
+                        >
+                          {/* Card Image Container */}
+                          <div className="relative aspect-[2.5/3.5] rounded-xl overflow-hidden bg-black/60 border border-white/5 shadow-inner mb-3">
+                            {currentImg ? (
+                              <img
+                                src={currentImg}
+                                alt={cardName}
+                                className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
+                                loading="lazy"
+                                onError={(e) => {
+                                  (e.currentTarget as HTMLImageElement).src = 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT1-001.png';
+                                }}
+                              />
+                            ) : (
+                              <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center text-white/30">
+                                <Shield size={36} className="mb-2 text-white/20" />
+                                <span className="font-mono font-bold text-sm text-white/60">{leader.displayCode}</span>
+                              </div>
+                            )}
+
+                            {/* Back / Front Tag */}
+                            {backImg && (
+                              <div className="absolute top-2 left-2 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider backdrop-blur-md border shadow-md bg-black/80 text-white border-white/20">
+                                {isFlipped ? 'Back' : 'Front'}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Details & Controls */}
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="font-mono text-xs font-black text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20">
+                                {leader.displayCode}
+                              </span>
+                              {cardColor && (
+                                <span className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${colorClass}`}>
+                                  {cardColor}
+                                </span>
+                              )}
+                            </div>
+
+                            <div>
+                              <h4 className="text-xs font-bold text-white line-clamp-2 leading-tight" title={cardName}>
+                                {cardName}
+                              </h4>
+                              {(cardPower || cardRarity) && (
+                                <div className="flex items-center gap-2 mt-1 text-[11px] text-white/40 font-medium">
+                                  {cardPower && <span>Poder: <strong className="text-white/70">{cardPower}</strong></span>}
+                                  {cardRarity && <span>• {cardRarity}</span>}
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Flip card button: Ver Back / Ver Front */}
+                            {backImg && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const cardKey = leader.key || String(idx);
+                                  setFlippedCards(prev => ({
+                                    ...prev,
+                                    [cardKey]: !prev[cardKey]
+                                  }));
+                                }}
+                                className="w-full py-2 px-3 rounded-xl bg-white/5 hover:bg-purple-500/20 text-white/80 hover:text-purple-300 border border-white/10 hover:border-purple-500/30 text-xs font-bold flex items-center justify-center gap-1.5 transition-all active:scale-95"
+                              >
+                                <RefreshCw size={13} className={isFlipped ? 'rotate-180 transition-transform' : 'transition-transform'} />
+                                <span>
+                                  {isFlipped 
+                                    ? (lang === 'es' ? 'Ver Front' : 'View Front') 
+                                    : (lang === 'es' ? 'Ver Back' : 'View Back')}
+                                </span>
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
+            </div>
+
+            {/* Footer */}
+            <div className="p-4 border-t border-white/10 bg-[#121212] flex justify-end">
+              <button
+                type="button"
+                onClick={() => {
+                  setViewingLeadersPlayer(null);
+                  setFlippedCards({});
+                }}
+                className="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs transition-colors"
+              >
+                {lang === 'es' ? 'Cerrar' : 'Close'}
+              </button>
+            </div>
           </div>
         </div>
       )}
