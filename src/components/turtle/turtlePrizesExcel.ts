@@ -53,6 +53,7 @@ export async function exportTournamentPrizesExcel({
   sheet.addRow([]);
 
   // Column definitions & headers (Row 4)
+  const isLeague = event.type === 'league';
   const headers = isEs ? [
     'Posición',
     'Nombre Oficial (Clasificación)',
@@ -67,7 +68,7 @@ export async function exportTournamentPrizesExcel({
     'Partidas Jugadas',
     'Victorias (V)',
     'Derrotas (D)',
-    'Líderes Únicos',
+    isLeague ? 'Líderes Únicos (Bonus Liga)' : 'Líderes Jugados',
     'Pts Base',
     'Sanción / Ajuste',
     'Estado Torneo',
@@ -86,7 +87,7 @@ export async function exportTournamentPrizesExcel({
     'Matches Played',
     'Wins (W)',
     'Losses (L)',
-    'Unique Leaders',
+    isLeague ? 'Unique Leaders (League Bonus)' : 'Leaders Played',
     'Base Pts',
     'Penalty / Adjust',
     'Tournament Status',
@@ -136,6 +137,8 @@ export async function exportTournamentPrizesExcel({
       ? (isEs ? 'DESCALIFICADO' : 'DISQUALIFIED')
       : (isEs ? 'ACTIVO' : 'ACTIVE');
 
+    const leaderCellText = isLeague ? `${p.uniqueLeaderCount}/4 (+${p.leaderPoints} pts)` : `${p.uniqueLeaderCount}`;
+
     const row = sheet.addRow([
       rankText,
       officialName,
@@ -150,7 +153,7 @@ export async function exportTournamentPrizesExcel({
       p.matchesPlayed,
       p.wins,
       p.losses,
-      `${p.uniqueLeaderCount}/4`,
+      leaderCellText,
       p.rawPoints,
       p.penaltyPoints > 0 ? `-${p.penaltyPoints}` : '0',
       statusText,

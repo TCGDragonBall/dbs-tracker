@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../AuthContext';
-import { ArrowLeft, Trophy, Calendar, CheckCircle, Info, BookOpen, Shield, Plus, Users, Package } from 'lucide-react';
-import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, where } from 'firebase/firestore';
+import { ArrowLeft, Trophy, Calendar, CheckCircle, Info, BookOpen, Shield, Plus, Users, Package, Trash2 } from 'lucide-react';
+import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, where, doc, deleteDoc, getDocs } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../../firebase';
 import { CreateEventModal } from './CreateEventModal';
 import { TurtleEventAdminView } from './TurtleEventAdminView';
@@ -28,6 +28,8 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
   const [events, setEvents] = useState<TurtleEvent[]>([]);
   const [registrations, setRegistrations] = useState<TurtleRegistration[]>([]);
   const [loading, setLoading] = useState(true);
+  const [eventToDelete, setEventToDelete] = useState<TurtleEvent | null>(null);
+  const [isDeletingEvent, setIsDeletingEvent] = useState(false);
 
   // Fetch events
   useEffect(() => {
@@ -87,6 +89,33 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
     }
   };
 
+  const handleDeleteEvent = async () => {
+    if (!eventToDelete || isDeletingEvent) return;
+    setIsDeletingEvent(true);
+    try {
+      // 1. Delete all matches of this event
+      const matchesSnap = await getDocs(query(collection(db, 'ts_matches'), where('eventId', '==', eventToDelete.id)));
+      const matchDeletes = matchesSnap.docs.map(d => deleteDoc(d.ref));
+      await Promise.all(matchDeletes);
+
+      // 2. Delete all registrations of this event
+      const regsSnap = await getDocs(query(collection(db, 'ts_registrations'), where('eventId', '==', eventToDelete.id)));
+      const regDeletes = regsSnap.docs.map(d => deleteDoc(d.ref));
+      await Promise.all(regDeletes);
+
+      // 3. Delete event document
+      await deleteDoc(doc(db, 'ts_tournaments', eventToDelete.id));
+
+      setEventToDelete(null);
+    } catch (error) {
+      console.error('Error deleting event:', error);
+      handleFirestoreError(error, OperationType.DELETE, 'ts_tournaments');
+      alert(lang === 'es' ? 'Error al eliminar el evento.' : 'Error deleting event.');
+    } finally {
+      setIsDeletingEvent(false);
+    }
+  };
+
   const renderEventCard = (event: TurtleEvent) => {
     const isEnrolled = registrations.find(r => r.eventId === event.id);
 
@@ -117,7 +146,7 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
           </div>
         </div>
 
-        <div className="w-full md:w-auto flex flex-col gap-2">
+        <div className="w-full md:w-auto flex flex-col sm:flex-row md:flex-col gap-2">
           {isEnrolled ? (
             <div className={`px-4 py-3 rounded-xl text-center font-bold text-sm border ${
               isEnrolled.status === 'paid' 
@@ -149,6 +178,17 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
               ) : (
                 <><Trophy size={14} /> {lang === 'es' ? 'Ver Evento' : 'View Event'}</>
               )}
+            </button>
+          )}
+
+          {isTurtleAdmin && (
+            <button 
+              onClick={() => setEventToDelete(event)}
+              className="w-full md:w-auto px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 font-bold text-xs rounded-xl transition-colors border border-red-500/20 flex items-center justify-center gap-1.5"
+              title={lang === 'es' ? 'Eliminar evento' : 'Delete event'}
+            >
+              <Trash2 size={13} />
+              <span>{lang === 'es' ? 'Eliminar' : 'Delete'}</span>
             </button>
           )}
         </div>
@@ -348,6 +388,55 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
         onClose={() => setIsCreateModalOpen(false)} 
         lang={lang} 
       />
+
+      {/* Delete Event Confirmation Modal */}
+      {eventToDelete && (
+        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-fade-in">
+          <div className="bg-[#151515] border border-white/10 w-full max-w-md rounded-3xl p-6 shadow-2xl flex flex-col gap-5">
+            <div className="flex items-center gap-3 text-red-400">
+              <div className="w-10 h-10 rounded-2xl bg-red-500/10 flex items-center justify-center border border-red-500/20">
+                <Trash2 size={20} />
+              </div>
+              <div>
+                <h3 className="text-lg font-black text-white">
+                  {lang === 'es' ? (eventToDelete.type === 'league' ? '¿Eliminar Liga?' : '¿Eliminar Torneo?') : 'Delete Event?'}
+                </h3>
+                <p className="text-xs text-white/50">{eventToDelete.name}</p>
+              </div>
+            </div>
+
+            <p className="text-sm text-white/70 leading-relaxed">
+              {lang === 'es' 
+                ? `¿Estás seguro de que deseas eliminar permanentemente "${eventToDelete.name}" (${eventToDelete.type === 'league' ? 'Liga' : 'Torneo'})? Esta acción borrará todas sus partidas e inscripciones y no se puede deshacer.` 
+                : `Are you sure you want to permanently delete "${eventToDelete.name}" (${eventToDelete.type === 'league' ? 'League' : 'Tournament'})? All its matches and registrations will also be deleted. This action cannot be undone.`}
+            </p>
+
+            <div className="flex justify-end gap-3 pt-2 border-t border-white/5">
+              <button
+                onClick={() => setEventToDelete(null)}
+                disabled={isDeletingEvent}
+                className="px-4 py-2 rounded-xl text-white/70 hover:text-white hover:bg-white/10 font-bold transition-colors text-sm"
+              >
+                {lang === 'es' ? 'Cancelar' : 'Cancel'}
+              </button>
+              <button
+                onClick={handleDeleteEvent}
+                disabled={isDeletingEvent}
+                className="px-5 py-2.5 bg-red-500 hover:bg-red-600 disabled:opacity-50 text-white font-bold rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all text-sm flex items-center gap-2"
+              >
+                {isDeletingEvent ? (
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <Trash2 size={16} />
+                )}
+                {isDeletingEvent 
+                  ? (lang === 'es' ? 'Eliminando...' : 'Deleting...') 
+                  : (lang === 'es' ? 'Eliminar Definitivamente' : 'Delete Permanently')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

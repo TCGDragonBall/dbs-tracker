@@ -129,6 +129,29 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
   const [isStarting, setIsStarting] = useState(false);
   const [isAddingBots, setIsAddingBots] = useState(false);
   const [showConfirmStart, setShowConfirmStart] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDeleteEvent = async () => {
+    if (!event || isDeleting) return;
+    setIsDeleting(true);
+    try {
+      const matchesSnap = await getDocs(query(collection(db, 'ts_matches'), where('eventId', '==', event.id)));
+      await Promise.all(matchesSnap.docs.map(d => deleteDoc(d.ref)));
+
+      const regsSnap = await getDocs(query(collection(db, 'ts_registrations'), where('eventId', '==', event.id)));
+      await Promise.all(regsSnap.docs.map(d => deleteDoc(d.ref)));
+
+      await deleteDoc(doc(db, 'ts_tournaments', event.id));
+      onBack();
+    } catch (err) {
+      console.error('Error deleting event:', err);
+      handleFirestoreError(err, OperationType.DELETE, 'ts_tournaments');
+      alert(lang === 'es' ? 'Error al eliminar el evento.' : 'Error deleting event.');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const handleAddBots = async () => {
     if (!event) return;
@@ -290,7 +313,16 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
               : (event.type === 'league' ? 'Start League' : 'Start Tournament')
             }
           </button>
-          </div>
+          <button
+            onClick={() => setShowConfirmDelete(true)}
+            disabled={isDeleting}
+            className="flex items-center gap-2 px-4 py-3 bg-red-500/10 hover:bg-red-500/20 text-red-400 font-bold rounded-xl transition-all border border-red-500/20 active:scale-95"
+            title={lang === 'es' ? 'Eliminar evento' : 'Delete event'}
+          >
+            <Trash2 size={18} />
+            <span className="hidden sm:inline">{lang === 'es' ? 'Eliminar' : 'Delete'}</span>
+          </button>
+        </div>
         )}
       </div>
 
@@ -414,6 +446,46 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
                 className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white font-black rounded-xl shadow-lg transition-colors"
               >
                 {lang === 'es' ? 'Iniciar' : 'Start'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showConfirmDelete && (
+        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-fade-in">
+          <div className="bg-[#151515] border border-white/10 w-full max-w-md rounded-3xl p-6 shadow-2xl flex flex-col gap-6">
+            <div className="flex items-center gap-3 text-red-400">
+              <div className="w-10 h-10 rounded-2xl bg-red-500/10 flex items-center justify-center border border-red-500/20">
+                <Trash2 size={20} />
+              </div>
+              <h3 className="text-xl font-black text-white">
+                {lang === 'es' ? (event.type === 'league' ? '¿Eliminar Liga?' : '¿Eliminar Torneo?') : 'Delete Event?'}
+              </h3>
+            </div>
+            <p className="text-white/70">
+              {lang === 'es'
+                ? `¿Seguro que quieres eliminar este evento ("${event.name}")? Se borrarán también todas las inscripciones y partidas asociadas. Esta acción no se puede deshacer.`
+                : `Are you sure you want to delete this event ("${event.name}")? All associated registrations and matches will also be deleted. This action cannot be undone.`}
+            </p>
+            <div className="flex justify-end gap-3">
+              <button 
+                onClick={() => setShowConfirmDelete(false)}
+                disabled={isDeleting}
+                className="px-4 py-2 rounded-xl text-white/70 hover:text-white hover:bg-white/10 font-bold transition-colors"
+              >
+                {lang === 'es' ? 'Cancelar' : 'Cancel'}
+              </button>
+              <button 
+                onClick={handleDeleteEvent}
+                disabled={isDeleting}
+                className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white font-black rounded-xl shadow-lg transition-colors flex items-center gap-2"
+              >
+                {isDeleting && <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
+                {isDeleting 
+                  ? (lang === 'es' ? 'Eliminando...' : 'Deleting...') 
+                  : (lang === 'es' ? 'Eliminar Definitivamente' : 'Delete Permanently')}
               </button>
             </div>
           </div>

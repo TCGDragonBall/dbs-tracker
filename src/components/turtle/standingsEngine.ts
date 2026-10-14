@@ -28,33 +28,134 @@ export interface PlayerStanding {
 }
 
 /**
- * Extracts the original BT/base card number from a leader card ID or number.
- * Alternative versions (e.g. BT1-001_SPR, BT1-001_JP04, FB01-001_Alt) 
- * will map to the original base number (BT1-001, FB01-001).
+ * Normalizes leader card name to a clean comparable string.
+ * Strips special symbols, extra spaces, slashes (/ or //) so that
+ * variants, promos, and alternate arts of the same leader match accurately.
  */
-export function getBaseLeaderCode(cardIdOrNumber: string, cards?: any[]): string {
-  if (!cardIdOrNumber) return '';
+function normalizeLeaderName(name: string): string {
+  if (!name) return '';
+  return name
+    .toLowerCase()
+    .replace(/[\/\\]+/g, ' ')
+    .replace(/[^a-z0-9]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 
-  let codeToInspect = cardIdOrNumber;
+/**
+ * Searches for a leader card in the cards catalog using multiple strategies:
+ * 1. Exact match on id or cardNumber (case-insensitive)
+ * 2. Variant-stripped match (e.g., P-111_PR -> P-111, BT1-001_SPR -> BT1-001)
+ * 3. Leading-zero normalization (e.g., P-11 -> P-011, P-011 -> P-11)
+ */
+export function findLeaderCard(cardIdOrNumber: string, cards?: any[]): any | undefined {
+  if (!cardIdOrNumber || !cards || !Array.isArray(cards) || cards.length === 0) return undefined;
 
-  // If card catalog is provided, try to find the canonical cardNumber
-  if (cards && Array.isArray(cards) && cards.length > 0) {
-    const foundCard = cards.find(c => c.id === cardIdOrNumber || c.cardNumber === cardIdOrNumber);
-    if (foundCard) {
-      codeToInspect = foundCard.cardNumber || foundCard.id || cardIdOrNumber;
+  const raw = cardIdOrNumber.trim();
+  const rawLower = raw.toLowerCase();
+
+  // 1. Exact match on id or cardNumber
+  let found = cards.find(c => 
+    c.id?.toLowerCase() === rawLower || 
+    c.cardNumber?.toLowerCase() === rawLower
+  );
+  if (found) return found;
+
+  // 2. Suffix stripped match (_PR, _SPR, _JP01, _p1, -alt, etc.)
+  const stripped = raw.split('_')[0].split('-alt')[0].split('-Alt')[0].trim();
+  const strippedLower = stripped.toLowerCase();
+  found = cards.find(c => 
+    c.id?.toLowerCase() === strippedLower || 
+    c.cardNumber?.toLowerCase() === strippedLower
+  );
+  if (found) return found;
+
+  // 3. Numeric zero-padding or unpadding (e.g. P-11 <-> P-011, P-1 <-> P-001)
+  const numMatch = stripped.match(/^([A-Za-z]+[0-9]*-)0*(\d+)$/i);
+  if (numMatch) {
+    const prefix = numMatch[1].toUpperCase();
+    const num = parseInt(numMatch[2], 10);
+    const p3 = `${prefix}${String(num).padStart(3, '0')}`.toLowerCase();
+    const p2 = `${prefix}${String(num).padStart(2, '0')}`.toLowerCase();
+    const pUnpadded = `${prefix}${num}`.toLowerCase();
+
+    found = cards.find(c => {
+      const cId = c.id?.toLowerCase() || '';
+      const cNum = c.cardNumber?.toLowerCase() || '';
+      const cIdBase = cId.split('_')[0];
+      const cNumBase = cNum.split('_')[0];
+      return (
+        cIdBase === p3 || cIdBase === p2 || cIdBase === pUnpadded ||
+        cNumBase === p3 || cNumBase === p2 || cNumBase === pUnpadded
+      );
+    });
+    if (found) return found;
+  }
+
+  return undefined;
+}
+
+/**
+ * Returns a canonical identity key and display code for a leader card.
+ * Different versions or alternate arts of the SAME leader (e.g. P-111 and P-111_PR,
+ * or P-111 and P-11_PR, or BT1-030 and BT1-030_PR, or FB01-001 and FB01-001_A)
+ * will produce the exact same canonical identity key, ensuring they count
+ * as only 1 leader in league standings.
+ */
+export function getLeaderIdentity(cardIdOrNumber: string, cards?: any[]): { key: string; displayCode: string } {
+  if (!cardIdOrNumber) return { key: '', displayCode: '' };
+
+  const foundCard = findLeaderCard(cardIdOrNumber, cards);
+
+  // Determine base display code
+  let rawCode = foundCard?.cardNumber || foundCard?.id || cardIdOrNumber;
+  let baseCode = rawCode.split('_')[0].split('-alt')[0].split('-Alt')[0].trim().toUpperCase();
+
+  // Normalize promo number formatting (e.g. P-11 -> P-011)
+  const pMatch = baseCode.match(/^([A-Z]+)-0*(\d+)$/);
+  if (pMatch) {
+    const prefix = pMatch[1];
+    const num = parseInt(pMatch[2], 10);
+    if (prefix === 'P' && num < 1000) {
+      baseCode = `P-${String(num).padStart(3, '0')}`;
     }
   }
 
-  // Remove suffixes after '_' (e.g., BT1-001_SPR -> BT1-001, BT1-001_JP04_L2 -> BT1-001)
-  const base = codeToInspect.split('_')[0].trim().toUpperCase();
-  return base;
+  // Canonical identity key:
+  // In DBSCG, alternate arts/reprints/promo variants of the same leader card
+  // always share the exact same card name (Front // Back).
+  if (foundCard?.name) {
+    const normName = normalizeLeaderName(foundCard.name);
+    if (normName) {
+      return {
+        key: `NAME:${normName}`,
+        displayCode: baseCode
+      };
+    }
+  }
+
+  return {
+    key: `CODE:${baseCode}`,
+    displayCode: baseCode
+  };
+}
+
+/**
+ * Extracts the original BT/base card number from a leader card ID or number.
+ * Alternative versions (e.g. BT1-001_SPR, BT1-001_JP04, FB01-001_Alt, P-111_PR) 
+ * will map to the original base number (BT1-001, FB01-001, P-111).
+ */
+export function getBaseLeaderCode(cardIdOrNumber: string, cards?: any[]): string {
+  const identity = getLeaderIdentity(cardIdOrNumber, cards);
+  return identity.displayCode;
 }
 
 /**
  * Calculates league and tournament standings according to the official rules:
  * - Match Win = 3 points
  * - Match Loss = 0 points
- * - Unique Leader played = 1 point (max 4 points total)
+ * - Unique Leader played = 1 point (max 4 points total) - ONLY in leagues
+ * - Alternate arts / promo versions of the same leader count as 1 leader
  * - Admin Adjustments: deduction for unplayed matches / penalties, and disqualification (DQ)
  */
 export function calculateLeagueStandings(
@@ -84,7 +185,7 @@ export function calculateLeagueStandings(
     losses: number;
     gameWins: number;
     gameLosses: number;
-    uniqueLeadersSet: Set<string>;
+    uniqueLeadersMap: Map<string, string>; // canonicalKey -> displayCode
   }> = {};
 
   allUserIds.forEach(uid => {
@@ -94,7 +195,7 @@ export function calculateLeagueStandings(
       losses: 0,
       gameWins: 0,
       gameLosses: 0,
-      uniqueLeadersSet: new Set<string>()
+      uniqueLeadersMap: new Map<string, string>()
     };
   });
 
@@ -116,9 +217,9 @@ export function calculateLeagueStandings(
       }
 
       if (m.player1LeaderId) {
-        const baseLeader = getBaseLeaderCode(m.player1LeaderId, cards);
-        if (baseLeader) {
-          p1.uniqueLeadersSet.add(baseLeader);
+        const { key, displayCode } = getLeaderIdentity(m.player1LeaderId, cards);
+        if (key && !p1.uniqueLeadersMap.has(key)) {
+          p1.uniqueLeadersMap.set(key, displayCode);
         }
       }
     }
@@ -137,9 +238,9 @@ export function calculateLeagueStandings(
       }
 
       if (m.player2LeaderId) {
-        const baseLeader = getBaseLeaderCode(m.player2LeaderId, cards);
-        if (baseLeader) {
-          p2.uniqueLeadersSet.add(baseLeader);
+        const { key, displayCode } = getLeaderIdentity(m.player2LeaderId, cards);
+        if (key && !p2.uniqueLeadersMap.has(key)) {
+          p2.uniqueLeadersMap.set(key, displayCode);
         }
       }
     }
@@ -153,7 +254,7 @@ export function calculateLeagueStandings(
       losses: 0,
       gameWins: 0,
       gameLosses: 0,
-      uniqueLeadersSet: new Set<string>()
+      uniqueLeadersMap: new Map<string, string>()
     };
 
     const isBot = botMap.has(uid);
@@ -170,15 +271,17 @@ export function calculateLeagueStandings(
     const fullName = isBot ? '' : (uInfo?.fullName || '');
     const email = isBot ? 'bot' : usersInfo[uid]?.email;
 
-    const uniqueBaseLeaders = Array.from(raw.uniqueLeadersSet);
-    const uniqueLeaderCount = uniqueBaseLeaders.length;
+    const uniqueBaseLeaders = Array.from(raw.uniqueLeadersMap.values());
+    const uniqueLeaderCount = raw.uniqueLeadersMap.size;
 
-    // League scoring rules:
+    // Scoring rules:
     // Victoria = 3 puntos
     // Derrota = 0 puntos
-    // Líder único jugado = 1 punto (max 4)
+    // Líder único jugado = 1 punto (max 4 pts) - SOLO para Ligas (event.type === 'league')
+    // Para torneos normales, sólo se suman 3 puntos por victoria (sin puntuación extra de líderes)
+    const isLeague = event.type === 'league';
     const winPoints = raw.wins * 3;
-    const leaderPoints = Math.min(4, uniqueLeaderCount);
+    const leaderPoints = isLeague ? Math.min(4, uniqueLeaderCount) : 0;
     const rawPoints = winPoints + leaderPoints;
 
     // Admin adjustments (penalties for unplayed matches or DQ)
@@ -223,7 +326,7 @@ export function calculateLeagueStandings(
   // 2. Final Points descending
   // 3. Game difference (gameWins - gameLosses) descending
   // 4. Match wins descending
-  // 5. Unique leaders played descending
+  // 5. Unique leaders played descending (only for leagues)
   // 6. Name alphabetical
   list.sort((a, b) => {
     if (a.isDisqualified && !b.isDisqualified) return 1;
@@ -241,7 +344,7 @@ export function calculateLeagueStandings(
       return b.wins - a.wins;
     }
 
-    if (b.uniqueLeaderCount !== a.uniqueLeaderCount) {
+    if (event.type === 'league' && b.uniqueLeaderCount !== a.uniqueLeaderCount) {
       return b.uniqueLeaderCount - a.uniqueLeaderCount;
     }
 

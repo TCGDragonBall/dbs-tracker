@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, where, onSnapshot, getDocs, doc, updateDoc } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, getDocs, doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../../firebase';
 import { TurtleMatch, TurtleEvent } from './types';
 import { Trophy, X, Search, Calendar, User as UserIcon, CheckCircle } from 'lucide-react';
@@ -20,11 +20,9 @@ export const TurtlePlayerMatchesView: React.FC<TurtlePlayerMatchesViewProps> = (
   const [reportingMatch, setReportingMatch] = useState<TurtleMatch | null>(null);
   const [matchResult, setMatchResult] = useState<'win' | 'loss'>('win');
   const [myLeaderId, setMyLeaderId] = useState<string | null>(null);
-  const [oppLeaderId, setOppLeaderId] = useState<string | null>(null);
 
   // Leader Search State
   const [isLeaderSearchOpen, setIsLeaderSearchOpen] = useState(false);
-  const [searchTarget, setSearchTarget] = useState<'me' | 'opp'>('me');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchColor, setSearchColor] = useState('Todos');
 
@@ -109,34 +107,74 @@ export const TurtlePlayerMatchesView: React.FC<TurtlePlayerMatchesViewProps> = (
     };
   }, [userUid]);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleReportMatch = async () => {
-    if (!reportingMatch) return;
+    if (!reportingMatch || isSubmitting) return;
     
-    // Ensure both leaders are selected
-    if (!myLeaderId || !oppLeaderId) {
-      alert(lang === 'es' ? 'Debes seleccionar los líderes de ambos jugadores.' : 'You must select leaders for both players.');
+    // Ensure leader is selected
+    if (!myLeaderId) {
+      alert(lang === 'es' ? 'Debes seleccionar tu líder antes de guardar.' : 'You must select your leader before saving.');
       return;
     }
 
+    setIsSubmitting(true);
     try {
       const isPlayer1 = reportingMatch.player1Id === userUid;
       const myW = matchResult === 'win' ? 1 : 0;
       const opW = matchResult === 'loss' ? 1 : 0;
       
-      const updateData = {
+      const updateData: any = {
         player1Wins: isPlayer1 ? myW : opW,
         player2Wins: isPlayer1 ? opW : myW,
         draws: 0,
-        player1LeaderId: isPlayer1 ? myLeaderId : oppLeaderId,
-        player2LeaderId: isPlayer1 ? oppLeaderId : myLeaderId,
-        status: 'completed'
+        status: 'completed',
+        updatedAt: serverTimestamp()
       };
 
+      if (isPlayer1) {
+        updateData.player1LeaderId = myLeaderId;
+        if (reportingMatch.player2LeaderId) {
+          updateData.player2LeaderId = reportingMatch.player2LeaderId;
+        }
+      } else {
+        updateData.player2LeaderId = myLeaderId;
+        if (reportingMatch.player1LeaderId) {
+          updateData.player1LeaderId = reportingMatch.player1LeaderId;
+        }
+      }
+
       await updateDoc(doc(db, 'ts_matches', reportingMatch.id), updateData);
+
+      // Persist chosen leader so next reports default to it automatically
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem(`turtle_last_leader_${userUid}_${reportingMatch.eventId}`, myLeaderId);
+          localStorage.setItem(`turtle_last_leader_${userUid}`, myLeaderId);
+        } catch (e) {
+          // ignore
+        }
+      }
+
       setReportingMatch(null);
-    } catch (error) {
+    } catch (error: any) {
       handleFirestoreError(error, OperationType.UPDATE, 'ts_matches');
-      alert(lang === 'es' ? 'Error al reportar el resultado.' : 'Error reporting result.');
+      const errCode = (error as any)?.code || '';
+      let msg = lang === 'es' ? 'Error al reportar el resultado.' : 'Error reporting result.';
+      if (errCode.includes('permission-denied')) {
+        msg = lang === 'es' 
+          ? 'Error de permisos: comprueba que has iniciado sesión y vuelve a intentarlo.' 
+          : 'Permission error: please check that you are signed in and try again.';
+      } else if (errCode.includes('unavailable') || errCode.includes('network')) {
+        msg = lang === 'es'
+          ? 'Error de conexión: comprueba tu conexión a internet.'
+          : 'Connection error: please check your network connection.';
+      } else if (error?.message) {
+        msg += ` (${error.message})`;
+      }
+      alert(msg);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -150,23 +188,39 @@ export const TurtlePlayerMatchesView: React.FC<TurtlePlayerMatchesViewProps> = (
     } else {
       setMatchResult('win'); // Default to win
     }
-    setMyLeaderId(isPlayer1 ? match.player1LeaderId || null : match.player2LeaderId || null);
-    setOppLeaderId(isPlayer1 ? match.player2LeaderId || null : match.player1LeaderId || null);
+
+    const existingLeader = isPlayer1 ? match.player1LeaderId : match.player2LeaderId;
+    if (existingLeader) {
+      setMyLeaderId(existingLeader);
+    } else {
+      // Find leader from previous matches of this user in the same event
+      const prevInEvent = matches
+        .filter(m => m.eventId === match.eventId && m.status === 'completed')
+        .map(m => m.player1Id === userUid ? m.player1LeaderId : (m.player2Id === userUid ? m.player2LeaderId : null))
+        .find(lid => Boolean(lid));
+
+      let defaultLeader = prevInEvent;
+      if (!defaultLeader && typeof window !== 'undefined') {
+        try {
+          defaultLeader = localStorage.getItem(`turtle_last_leader_${userUid}_${match.eventId}`)
+            || localStorage.getItem(`turtle_last_leader_${userUid}`)
+            || null;
+        } catch (e) {
+          // ignore
+        }
+      }
+      setMyLeaderId(defaultLeader || null);
+    }
   };
 
-  const openLeaderSearch = (target: 'me' | 'opp') => {
-    setSearchTarget(target);
+  const openLeaderSearch = () => {
     setSearchQuery('');
     setSearchColor('Todos');
     setIsLeaderSearchOpen(true);
   };
 
   const selectLeader = (cardId: string) => {
-    if (searchTarget === 'me') {
-      setMyLeaderId(cardId);
-    } else {
-      setOppLeaderId(cardId);
-    }
+    setMyLeaderId(cardId);
     setIsLeaderSearchOpen(false);
   };
 
@@ -287,60 +341,52 @@ export const TurtlePlayerMatchesView: React.FC<TurtlePlayerMatchesViewProps> = (
                 </div>
               </div>
 
-              {/* Leader Selectors */}
-              <div className="grid grid-cols-2 gap-4">
-                {/* My Leader */}
-                <div>
-                  <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest block mb-2 text-center">
-                    {lang === 'es' ? 'Tu Líder' : 'Your Leader'}
-                  </label>
+              {/* Selector de Líder */}
+              <div>
+                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-2 text-center">
+                  {lang === 'es' ? 'Selector de Líder' : 'Leader Selector'}
+                </label>
+                <div className="flex flex-col items-center">
                   <button 
-                    onClick={() => openLeaderSearch('me')}
-                    className="w-full aspect-[2.5/3.5] bg-[#111] border-2 border-dashed border-white/20 hover:border-green-500/50 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors relative overflow-hidden group"
+                    type="button"
+                    onClick={openLeaderSearch}
+                    className="w-44 aspect-[2.5/3.5] bg-[#111] border-2 border-dashed border-white/20 hover:border-purple-500 rounded-2xl flex flex-col items-center justify-center gap-2 transition-all relative overflow-hidden group shadow-xl"
                   >
                     {myLeaderId ? (
                       <>
-                        <img src={cards.find(c => c.id === myLeaderId)?.imageUrl} alt="My Leader" className="absolute inset-0 w-full h-full object-cover object-top" />
+                        <img 
+                          src={cards.find(c => c.id === myLeaderId)?.imageUrl} 
+                          alt="Leader" 
+                          className="absolute inset-0 w-full h-full object-cover object-top" 
+                        />
                         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <span className="text-white font-bold text-xs bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm">Cambiar</span>
+                          <span className="text-white font-bold text-xs bg-black/70 px-3 py-1.5 rounded-full backdrop-blur-sm border border-white/20">
+                            {lang === 'es' ? 'Cambiar Líder' : 'Change Leader'}
+                          </span>
                         </div>
                       </>
                     ) : (
                       <>
-                        <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/50 group-hover:text-white transition-colors">
-                          <Search size={20} />
+                        <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-white/50 group-hover:text-purple-400 group-hover:bg-purple-500/10 transition-all">
+                          <Search size={22} />
                         </div>
-                        <span className="text-xs font-bold text-white/50 group-hover:text-white transition-colors px-2 text-center">Seleccionar</span>
+                        <span className="text-xs font-bold text-white/50 group-hover:text-white transition-colors px-2 text-center">
+                          {lang === 'es' ? 'Seleccionar Líder' : 'Select Leader'}
+                        </span>
                       </>
                     )}
                   </button>
-                </div>
-                
-                {/* Opponent Leader */}
-                <div>
-                  <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest block mb-2 text-center">
-                    {lang === 'es' ? 'Líder Rival' : 'Opponent Leader'}
-                  </label>
-                  <button 
-                    onClick={() => openLeaderSearch('opp')}
-                    className="w-full aspect-[2.5/3.5] bg-[#111] border-2 border-dashed border-white/20 hover:border-red-500/50 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors relative overflow-hidden group"
-                  >
-                    {oppLeaderId ? (
-                      <>
-                        <img src={cards.find(c => c.id === oppLeaderId)?.imageUrl} alt="Opp Leader" className="absolute inset-0 w-full h-full object-cover object-top" />
-                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <span className="text-white font-bold text-xs bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm">Cambiar</span>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/50 group-hover:text-white transition-colors">
-                          <Search size={20} />
-                        </div>
-                        <span className="text-xs font-bold text-white/50 group-hover:text-white transition-colors px-2 text-center">Seleccionar</span>
-                      </>
-                    )}
-                  </button>
+
+                  {myLeaderId && (
+                    <div className="mt-2 text-center">
+                      <p className="text-xs font-bold text-purple-300 truncate max-w-[220px]">
+                        {cards.find(c => c.id === myLeaderId)?.name || myLeaderId}
+                      </p>
+                      <span className="text-[10px] font-mono text-white/40">
+                        {cards.find(c => c.id === myLeaderId)?.cardNumber || ''}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -348,10 +394,17 @@ export const TurtlePlayerMatchesView: React.FC<TurtlePlayerMatchesViewProps> = (
             <div className="p-4 border-t border-white/10 bg-black/20">
               <button 
                 onClick={handleReportMatch}
-                className="w-full py-4 bg-green-500 hover:bg-green-600 text-white font-black uppercase tracking-widest rounded-xl transition-all shadow-[0_0_15px_rgba(34,197,94,0.3)] flex items-center justify-center gap-2"
+                disabled={isSubmitting}
+                className="w-full py-4 bg-green-500 hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-black uppercase tracking-widest rounded-xl transition-all shadow-[0_0_15px_rgba(34,197,94,0.3)] flex items-center justify-center gap-2"
               >
-                <CheckCircle size={20} />
-                {lang === 'es' ? 'Guardar Resultado' : 'Save Result'}
+                {isSubmitting ? (
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <CheckCircle size={20} />
+                )}
+                {isSubmitting 
+                  ? (lang === 'es' ? 'Guardando...' : 'Saving...') 
+                  : (lang === 'es' ? 'Guardar Resultado' : 'Save Result')}
               </button>
             </div>
           </div>

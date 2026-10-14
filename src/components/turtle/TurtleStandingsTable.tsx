@@ -111,7 +111,7 @@ export const TurtleStandingsTable: React.FC<Props> = ({
           </div>
 
           {showRulesInfo && (
-            <div className="mt-4 pt-4 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-3 animate-fade-in text-xs">
+            <div className={`mt-4 pt-4 border-t border-white/10 grid grid-cols-1 ${event.type === 'league' ? 'sm:grid-cols-3' : 'sm:grid-cols-2'} gap-3 animate-fade-in text-xs`}>
               <div className="bg-black/40 rounded-2xl p-3 border border-white/5">
                 <span className="font-black text-green-400 uppercase tracking-wider block mb-1">
                   1. {lang === 'es' ? 'Partidas' : 'Matches'}
@@ -121,18 +121,20 @@ export const TurtleStandingsTable: React.FC<Props> = ({
                 </p>
               </div>
 
-              <div className="bg-black/40 rounded-2xl p-3 border border-white/5">
-                <span className="font-black text-purple-400 uppercase tracking-wider block mb-1 flex items-center gap-1">
-                  <Sparkles size={13} /> 2. {lang === 'es' ? 'Líder Único Jugado' : 'Unique Leader'}
-                </span>
-                <p className="text-white/80">
-                  <span className="text-purple-400 font-bold">+1 pt</span> por cada líder diferente jugado (<span className="text-white font-bold">máximo 4 pts</span>). Artes alternativos cuentan como el mismo líder.
-                </p>
-              </div>
+              {event.type === 'league' && (
+                <div className="bg-black/40 rounded-2xl p-3 border border-white/5">
+                  <span className="font-black text-purple-400 uppercase tracking-wider block mb-1 flex items-center gap-1">
+                    <Sparkles size={13} /> 2. {lang === 'es' ? 'Líder Único Jugado' : 'Unique Leader'}
+                  </span>
+                  <p className="text-white/80">
+                    <span className="text-purple-400 font-bold">+1 pt</span> por cada líder diferente jugado (<span className="text-white font-bold">máximo 4 pts</span>). Artes alternativos cuentan como el mismo líder.
+                  </p>
+                </div>
+              )}
 
               <div className="bg-black/40 rounded-2xl p-3 border border-white/5">
                 <span className="font-black text-orange-400 uppercase tracking-wider block mb-1 flex items-center gap-1">
-                  <ShieldAlert size={13} /> 3. {lang === 'es' ? 'Ajustes Admin' : 'Admin Overrides'}
+                  <ShieldAlert size={13} /> {event.type === 'league' ? '3.' : '2.'} {lang === 'es' ? 'Ajustes Admin' : 'Admin Overrides'}
                 </span>
                 <p className="text-white/80">
                   Los admins pueden aplicar restas de puntos por partidas no jugadas o sanciones, y descalificar jugadores (DQ).
@@ -194,13 +196,17 @@ export const TurtleStandingsTable: React.FC<Props> = ({
                   <th className="py-3 px-3">{lang === 'es' ? 'Jugador (Oficial)' : 'Player (Official)'}</th>
                   <th className="py-3 px-2 text-center" title="Partidas Jugadas">PJ</th>
                   <th className="py-3 px-2 text-center" title="Victorias - Derrotas">V-D</th>
-                  <th className="py-3 px-2 text-center" title="Líderes Únicos Jugados (máx 4 pts)">
+                  <th className="py-3 px-2 text-center" title={event.type === 'league' ? (lang === 'es' ? 'Líderes Únicos Jugados (máx 4 pts en Liga)' : 'Unique Leaders Played (max 4 pts in League)') : (lang === 'es' ? 'Líderes Jugados' : 'Leaders Played')}>
                     {lang === 'es' ? 'Líderes' : 'Leaders'}
                   </th>
                   {!compact && (
                     <>
-                      <th className="py-3 px-2 text-center" title="Puntos Base (Victorias + Líderes)">Pts Base</th>
-                      <th className="py-3 px-2 text-center" title="Sanciones / Penalizaciones por partidas no jugadas">Sanción</th>
+                      <th className="py-3 px-2 text-center" title={event.type === 'league' ? (lang === 'es' ? 'Puntos Base (Victorias + Líderes)' : 'Base Points (Wins + Leaders)') : (lang === 'es' ? 'Puntos Base (Victorias x3)' : 'Base Points (Wins x3)')}>
+                        {lang === 'es' ? 'Pts Base' : 'Base Pts'}
+                      </th>
+                      <th className="py-3 px-2 text-center" title={lang === 'es' ? 'Sanciones / Penalizaciones por partidas no jugadas' : 'Penalties for unplayed matches'}>
+                        {lang === 'es' ? 'Sanción' : 'Penalty'}
+                      </th>
                     </>
                   )}
                   <th className="py-3 px-3 text-right">{lang === 'es' ? 'TOTAL PTS' : 'TOTAL PTS'}</th>
@@ -300,10 +306,16 @@ export const TurtleStandingsTable: React.FC<Props> = ({
 
                       {/* Unique Leaders */}
                       <td className="py-3.5 px-2 text-center">
-                        <div className="inline-flex items-center gap-1 font-bold text-xs px-2 py-0.5 rounded-lg bg-purple-500/15 text-purple-300 border border-purple-500/20">
-                          <span>{p.uniqueLeaderCount}/4</span>
-                          <span className="text-[10px] text-purple-400">(+{p.leaderPoints})</span>
-                        </div>
+                        {event.type === 'league' ? (
+                          <div className="inline-flex items-center gap-1 font-bold text-xs px-2 py-0.5 rounded-lg bg-purple-500/15 text-purple-300 border border-purple-500/20">
+                            <span>{p.uniqueLeaderCount}/4</span>
+                            <span className="text-[10px] text-purple-400">(+{p.leaderPoints})</span>
+                          </div>
+                        ) : (
+                          <div className="inline-flex items-center gap-1 font-bold text-xs px-2 py-0.5 rounded-lg bg-white/5 text-white/70 border border-white/10">
+                            <span>{p.uniqueLeaderCount}</span>
+                          </div>
+                        )}
                       </td>
 
                       {/* Base Points */}
