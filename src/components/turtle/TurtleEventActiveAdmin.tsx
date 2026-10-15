@@ -642,11 +642,19 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
               {/* Rules summary note */}
               <div className="mb-4 p-3 bg-black/40 rounded-xl border border-white/5 text-[11px] text-white/60 space-y-1">
                 <p>
-                  <span className="text-green-400 font-bold">Victoria:</span> 3 pts • <span className="text-purple-400 font-bold">Líder único:</span> +1 pt (máx 4)
+                  {event.type === 'league' ? (
+                    <>
+                      <span className="text-green-400 font-bold">{lang === 'es' ? 'Victoria:' : 'Win:'}</span> 3 pts • <span className="text-purple-400 font-bold">{lang === 'es' ? 'Líder único:' : 'Unique Leader:'}</span> +1 pt (máx 4)
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-green-400 font-bold">{lang === 'es' ? 'Victoria:' : 'Win:'}</span> 3 pts • <span className="text-red-400 font-bold">{lang === 'es' ? 'Derrota:' : 'Loss:'}</span> 0 pts
+                    </>
+                  )}
                 </p>
                 {event.adminAdjustments && Object.keys(event.adminAdjustments).length > 0 && (
                   <p className="text-orange-400 font-bold">
-                    * Incluye ajustes y sanciones de la liga
+                    {lang === 'es' ? '* Incluye ajustes y sanciones' : '* Includes adjustments and penalties'}
                   </p>
                 )}
               </div>
@@ -676,7 +684,7 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
                           {p.name}
                         </span>
                         <span className="text-[10px] text-white/40 block">
-                          {p.wins}V - {p.losses}D • {p.uniqueLeaderCount}/4 líd.
+                          {p.wins}V - {p.losses}D {event.type === 'league' ? `• ${p.uniqueLeaderCount}/4 líd.` : `• ${p.uniqueLeaderCount} ${p.uniqueLeaderCount === 1 ? (lang === 'es' ? 'líd.' : 'leader') : (lang === 'es' ? 'líd.' : 'leaders')}`}
                         </span>
                       </div>
                     </div>

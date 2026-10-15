@@ -92,15 +92,23 @@ export const TurtleStandingsTable: React.FC<Props> = ({
               </div>
               <div>
                 <h3 className="text-lg font-black text-white uppercase italic tracking-wide flex items-center gap-2">
-                  <span>{lang === 'es' ? 'Sistema de Puntuación de Liga' : 'League Scoring System'}</span>
+                  <span>
+                    {event.type === 'league'
+                      ? (lang === 'es' ? 'Sistema de Puntuación de Liga' : 'League Scoring System')
+                      : (lang === 'es' ? 'Sistema de Puntuación de Torneo' : 'Tournament Scoring System')}
+                  </span>
                   <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 border border-green-500/30">
                     Oficial
                   </span>
                 </h3>
                 <p className="text-xs text-white/60">
                   {lang === 'es' 
-                    ? 'Reglas oficiales de la liga con líderes únicos y ajustes de admin.' 
-                    : 'Official league scoring rules with unique leaders and admin overrides.'}
+                    ? (event.type === 'league' 
+                        ? 'Reglas oficiales de la liga con líderes únicos y ajustes de admin.' 
+                        : 'Reglas oficiales del torneo y ajustes de admin.')
+                    : (event.type === 'league' 
+                        ? 'Official league scoring rules with unique leaders and admin overrides.' 
+                        : 'Official tournament scoring rules and admin overrides.')}
                 </p>
               </div>
             </div>

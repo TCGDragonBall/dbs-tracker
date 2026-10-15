@@ -270,7 +270,7 @@ export function calculateLeagueStandings(
 
       if (m.player1Wins > m.player2Wins) {
         p1.wins++;
-      } else if (m.player2Id && m.player1Wins < m.player2Wins) {
+      } else if (m.player1Wins < m.player2Wins) {
         p1.losses++;
       }
 
@@ -303,7 +303,7 @@ export function calculateLeagueStandings(
 
       if (m.player2Wins > m.player1Wins) {
         p2.wins++;
-      } else if (m.player1Wins < m.player2Wins) {
+      } else if (m.player2Wins < m.player1Wins) {
         p2.losses++;
       }
 
