@@ -25,7 +25,7 @@ export const generateSwissRound1 = async (eventId: string, playerIds: string[]) 
       round: 1,
       player1Id: p1,
       player2Id: p2,
-      player1Wins: p2 === null ? 2 : 0, // Bye is usually a 2-0 win
+      player1Wins: p2 === null ? 1 : 0, // Bye is a 1-0 win
       player2Wins: 0,
       draws: 0,
       status: p2 === null ? 'completed' : 'pending',
@@ -122,11 +122,8 @@ export const generateSwissNextRound = async (eventId: string, currentMatches: Tu
       points.set(m.player2Id, (points.get(m.player2Id) || 0) + 1);
     } else if (m.player2Wins > m.player1Wins && m.player2Id) {
       points.set(m.player2Id, (points.get(m.player2Id) || 0) + 3);
-    }
-    
-    // Byes give 3 points usually
-    if (!m.player2Id && m.player1Id) {
-       points.set(m.player1Id, (points.get(m.player1Id) || 0) + 3);
+    } else if (!m.player2Id && m.player1Id) {
+      points.set(m.player1Id, (points.get(m.player1Id) || 0) + 3);
     }
   });
 
@@ -159,7 +156,7 @@ export const generateSwissNextRound = async (eventId: string, currentMatches: Tu
       round: currentRound + 1,
       player1Id: p1,
       player2Id: p2,
-      player1Wins: p2 === null ? 2 : 0,
+      player1Wins: p2 === null ? 1 : 0,
       player2Wins: 0,
       draws: 0,
       status: p2 === null ? 'completed' : 'pending',

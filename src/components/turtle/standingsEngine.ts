@@ -265,12 +265,17 @@ export function calculateLeagueStandings(
     if (m.player1Id && statsMap[m.player1Id]) {
       const p1 = statsMap[m.player1Id];
       p1.matchesPlayed++;
-      p1.gameWins += m.player1Wins || 0;
-      p1.gameLosses += m.player2Wins || 0;
+      // Equalize Byes and normal wins: both are 1-0
+      const isBye = !m.player2Id;
+      const p1Won = isBye || (m.player1Wins > m.player2Wins);
+      const p1Lost = !isBye && (m.player1Wins < m.player2Wins);
 
-      if (m.player1Wins > m.player2Wins) {
+      p1.gameWins += p1Won ? 1 : 0;
+      p1.gameLosses += p1Lost ? 1 : 0;
+
+      if (p1Won) {
         p1.wins++;
-      } else if (m.player1Wins < m.player2Wins) {
+      } else if (p1Lost) {
         p1.losses++;
       }
 
@@ -298,12 +303,15 @@ export function calculateLeagueStandings(
     if (m.player2Id && statsMap[m.player2Id]) {
       const p2 = statsMap[m.player2Id];
       p2.matchesPlayed++;
-      p2.gameWins += m.player2Wins || 0;
-      p2.gameLosses += m.player1Wins || 0;
+      const p2Won = m.player2Wins > m.player1Wins;
+      const p2Lost = m.player2Wins < m.player1Wins;
 
-      if (m.player2Wins > m.player1Wins) {
+      p2.gameWins += p2Won ? 1 : 0;
+      p2.gameLosses += p2Lost ? 1 : 0;
+
+      if (p2Won) {
         p2.wins++;
-      } else if (m.player2Wins < m.player1Wins) {
+      } else if (p2Lost) {
         p2.losses++;
       }
 

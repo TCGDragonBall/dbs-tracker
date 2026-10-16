@@ -197,8 +197,19 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
 
   const handleEditMatch = (m: TurtleMatch) => {
     setEditingMatch(m);
-    setP1Wins(m.player1Wins || 0);
-    setP2Wins(m.player2Wins || 0);
+    if (!m.player2Id) {
+      setP1Wins(1);
+      setP2Wins(0);
+    } else if (m.player1Wins > m.player2Wins) {
+      setP1Wins(1);
+      setP2Wins(0);
+    } else if (m.player2Wins > m.player1Wins) {
+      setP1Wins(0);
+      setP2Wins(1);
+    } else {
+      setP1Wins(0);
+      setP2Wins(0);
+    }
     setP1LeaderId(m.player1LeaderId || null);
     setP2LeaderId(m.player2LeaderId || null);
   };
@@ -206,13 +217,18 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
   const handleSaveMatch = async () => {
     if (!editingMatch) return;
     try {
+      const isBye = !editingMatch.player2Id;
+      const isWinnerChosen = p1Wins > p2Wins || p2Wins > p1Wins || isBye;
+      const p1FinalWins = isBye || p1Wins > p2Wins ? 1 : 0;
+      const p2FinalWins = !isBye && p2Wins > p1Wins ? 1 : 0;
+
       await updateDoc(doc(db, 'ts_matches', editingMatch.id), {
-        player1Wins: p1Wins,
-        player2Wins: p2Wins,
+        player1Wins: p1FinalWins,
+        player2Wins: p2FinalWins,
         draws: 0,
         player1LeaderId: p1LeaderId || null,
         player2LeaderId: p2LeaderId || null,
-        status: 'completed'
+        status: isWinnerChosen ? 'completed' : editingMatch.status
       });
       setEditingMatch(null);
     } catch (e) {
@@ -450,20 +466,51 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
                         {/* Scores & Leader Pickers in Edit */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           {/* Player 1 */}
-                          <div className="bg-[#111] p-3 rounded-xl border border-white/5 space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm font-bold text-white truncate max-w-[130px]">{p1Name}</span>
-                              <div className="flex items-center gap-1.5">
-                                <span className="text-xs text-white/50">{lang === 'es' ? 'Victorias:' : 'Wins:'}</span>
-                                <input 
-                                  type="number" 
-                                  value={p1Wins} 
-                                  onChange={e => setP1Wins(parseInt(e.target.value) || 0)} 
-                                  className="w-12 bg-black border border-white/10 text-white p-1 rounded-lg text-center font-bold" 
-                                  min="0" 
-                                  max="2" 
-                                />
-                              </div>
+                          <div className={`p-3 rounded-xl border space-y-2.5 transition-all ${
+                            p1Wins > p2Wins 
+                              ? 'bg-green-500/10 border-green-500/40' 
+                              : (p2Wins > p1Wins ? 'bg-red-500/5 border-red-500/20' : 'bg-[#111] border-white/5')
+                          }`}>
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="text-sm font-bold text-white truncate max-w-[140px]">{p1Name}</span>
+                              {p1Wins > p2Wins && (
+                                <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-green-500/20 text-green-400 border border-green-500/40">
+                                  {lang === 'es' ? 'Victoria' : 'Win'}
+                                </span>
+                              )}
+                              {p2Wins > p1Wins && (
+                                <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/40">
+                                  {lang === 'es' ? 'Derrota' : 'Loss'}
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Victoria / Derrota selection */}
+                            <div className="flex gap-2">
+                              <button
+                                type="button"
+                                onClick={() => { setP1Wins(1); setP2Wins(0); }}
+                                className={`flex-1 py-2 px-3 rounded-lg text-xs font-black uppercase flex items-center justify-center gap-1.5 border transition-all ${
+                                  p1Wins > p2Wins 
+                                    ? 'bg-green-500 text-white border-green-400 shadow-[0_0_12px_rgba(34,197,94,0.3)]' 
+                                    : 'bg-black/50 text-white/40 border-white/10 hover:border-green-500/50 hover:text-green-400'
+                                }`}
+                              >
+                                <Trophy size={14} /> {lang === 'es' ? 'Victoria' : 'Win'}
+                              </button>
+                              {m.player2Id && (
+                                <button
+                                  type="button"
+                                  onClick={() => { setP1Wins(0); setP2Wins(1); }}
+                                  className={`flex-1 py-2 px-3 rounded-lg text-xs font-black uppercase flex items-center justify-center gap-1.5 border transition-all ${
+                                    p2Wins > p1Wins 
+                                      ? 'bg-red-500 text-white border-red-400 shadow-[0_0_12px_rgba(239,68,68,0.3)]' 
+                                      : 'bg-black/50 text-white/40 border-white/10 hover:border-red-500/50 hover:text-red-400'
+                                  }`}
+                                >
+                                  <X size={14} /> {lang === 'es' ? 'Derrota' : 'Loss'}
+                                </button>
+                              )}
                             </div>
 
                             {/* Leader picker button */}
@@ -488,22 +535,56 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
                           </div>
 
                           {/* Player 2 */}
-                          <div className="bg-[#111] p-3 rounded-xl border border-white/5 space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm font-bold text-white truncate max-w-[130px]">{p2Name}</span>
-                              <div className="flex items-center gap-1.5">
-                                <span className="text-xs text-white/50">{lang === 'es' ? 'Victorias:' : 'Wins:'}</span>
-                                <input 
-                                  type="number" 
-                                  value={p2Wins} 
-                                  onChange={e => setP2Wins(parseInt(e.target.value) || 0)} 
-                                  className="w-12 bg-black border border-white/10 text-white p-1 rounded-lg text-center font-bold" 
-                                  min="0" 
-                                  max="2" 
-                                  disabled={!m.player2Id}
-                                />
-                              </div>
+                          <div className={`p-3 rounded-xl border space-y-2.5 transition-all ${
+                            p2Wins > p1Wins 
+                              ? 'bg-green-500/10 border-green-500/40' 
+                              : (p1Wins > p2Wins ? 'bg-red-500/5 border-red-500/20' : 'bg-[#111] border-white/5')
+                          }`}>
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="text-sm font-bold text-white truncate max-w-[140px]">{p2Name}</span>
+                              {m.player2Id && p2Wins > p1Wins && (
+                                <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-green-500/20 text-green-400 border border-green-500/40">
+                                  {lang === 'es' ? 'Victoria' : 'Win'}
+                                </span>
+                              )}
+                              {m.player2Id && p1Wins > p2Wins && (
+                                <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/40">
+                                  {lang === 'es' ? 'Derrota' : 'Loss'}
+                                </span>
+                              )}
                             </div>
+
+                            {/* Victoria / Derrota selection */}
+                            {m.player2Id ? (
+                              <div className="flex gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => { setP1Wins(0); setP2Wins(1); }}
+                                  className={`flex-1 py-2 px-3 rounded-lg text-xs font-black uppercase flex items-center justify-center gap-1.5 border transition-all ${
+                                    p2Wins > p1Wins 
+                                      ? 'bg-green-500 text-white border-green-400 shadow-[0_0_12px_rgba(34,197,94,0.3)]' 
+                                      : 'bg-black/50 text-white/40 border-white/10 hover:border-green-500/50 hover:text-green-400'
+                                  }`}
+                                >
+                                  <Trophy size={14} /> {lang === 'es' ? 'Victoria' : 'Win'}
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => { setP1Wins(1); setP2Wins(0); }}
+                                  className={`flex-1 py-2 px-3 rounded-lg text-xs font-black uppercase flex items-center justify-center gap-1.5 border transition-all ${
+                                    p1Wins > p2Wins 
+                                      ? 'bg-red-500 text-white border-red-400 shadow-[0_0_12px_rgba(239,68,68,0.3)]' 
+                                      : 'bg-black/50 text-white/40 border-white/10 hover:border-red-500/50 hover:text-red-400'
+                                  }`}
+                                >
+                                  <X size={14} /> {lang === 'es' ? 'Derrota' : 'Loss'}
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="py-2 text-center text-xs text-white/40 italic bg-black/30 rounded-lg border border-white/5">
+                                {lang === 'es' ? 'BYE (Sin oponente - Victoria 1-0)' : 'BYE (No opponent - 1-0 win)'}
+                              </div>
+                            )}
 
                             {/* Leader picker button */}
                             {m.player2Id && (
@@ -555,7 +636,9 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
                             <div className="px-4 py-1.5 bg-[#111] rounded-xl font-black text-sm md:text-base border border-white/10 text-white min-w-[80px] text-center shadow-inner">
                               {isLeagueBye 
                                 ? (lang === 'es' ? 'Descanso' : 'Rest') 
-                                : (m.status === 'completed' ? `${m.player1Wins} - ${m.player2Wins}` : 'VS')}
+                                : (m.status === 'completed' 
+                                    ? (!m.player2Id ? '1 - 0' : `${m.player1Wins > m.player2Wins ? 1 : 0} - ${m.player2Wins > m.player1Wins ? 1 : 0}`) 
+                                    : 'VS')}
                             </div>
                             
                             {/* P2 */}
