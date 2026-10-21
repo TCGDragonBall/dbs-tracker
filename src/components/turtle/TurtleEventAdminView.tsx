@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Check, Clock, User as UserIcon, AlertCircle, Trash2, Play } from 'lucide-react';
+import { ArrowLeft, Check, Clock, User as UserIcon, AlertCircle, Trash2, Play, ExternalLink } from 'lucide-react';
 import { collection, query, where, onSnapshot, doc, updateDoc, getDocs, deleteDoc, setDoc, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../../firebase';
 import { TurtleEvent, TurtleRegistration, TurtleUserInfo } from './types';
@@ -270,9 +270,21 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
             <h2 className="text-2xl md:text-3xl font-black text-white uppercase italic tracking-tight">
               {event.name}
             </h2>
-            <p className="text-gray-400 font-bold">
-              {lang === 'es' ? 'Gestión de Inscritos' : 'Enrollment Management'} • {registrations.length} {lang === 'es' ? 'jugadores' : 'players'}
-            </p>
+            <div className="flex items-center gap-3 flex-wrap">
+              <p className="text-gray-400 font-bold text-sm">
+                {lang === 'es' ? 'Gestión de Inscritos' : 'Enrollment Management'} • {registrations.length} {lang === 'es' ? 'jugadores' : 'players'}
+              </p>
+              <a
+                href="https://www.paypal.biz/montalfan"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-2.5 py-1 bg-[#0070BA]/20 hover:bg-[#0070BA]/30 text-blue-300 border border-[#0070BA]/30 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                title="PayPal: https://www.paypal.biz/montalfan"
+              >
+                <span>PayPal (@montalfan)</span>
+                <ExternalLink size={11} />
+              </a>
+            </div>
           </div>
         </div>
         

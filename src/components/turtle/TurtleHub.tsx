@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../AuthContext';
-import { ArrowLeft, Trophy, Calendar, CheckCircle, Info, BookOpen, Shield, Plus, Users, Package, Trash2 } from 'lucide-react';
+import { ArrowLeft, Trophy, Calendar, CheckCircle, Info, BookOpen, Shield, Plus, Users, Package, Trash2, ExternalLink, X } from 'lucide-react';
 import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, where, doc, deleteDoc, getDocs } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../../firebase';
 import { CreateEventModal } from './CreateEventModal';
@@ -30,6 +30,7 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
   const [loading, setLoading] = useState(true);
   const [eventToDelete, setEventToDelete] = useState<TurtleEvent | null>(null);
   const [isDeletingEvent, setIsDeletingEvent] = useState(false);
+  const [paypalModalEvent, setPaypalModalEvent] = useState<TurtleEvent | null>(null);
 
   // Fetch events
   useEffect(() => {
@@ -75,15 +76,17 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
     return () => unsubscribe();
   }, [user]);
 
-  const handleEnroll = async (eventId: string) => {
+  const handleEnroll = async (event: TurtleEvent) => {
     if (!user) return;
     try {
       await addDoc(collection(db, 'ts_registrations'), {
         userId: user.uid,
-        eventId,
+        eventId: event.id,
         status: 'pending',
         createdAt: serverTimestamp()
       });
+      // Open PayPal payment dialog immediately upon enrolling
+      setPaypalModalEvent(event);
     } catch (error) {
       handleFirestoreError(error, OperationType.CREATE, 'ts_registrations');
     }
@@ -122,7 +125,7 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
     return (
       <div key={event.id} className="p-5 bg-black/40 border border-white/10 rounded-2xl flex flex-col md:flex-row gap-4 items-start md:items-center justify-between group hover:border-green-500/30 transition-colors">
         <div className="flex-1">
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex items-center gap-2 mb-2 flex-wrap">
             <span className={`text-[10px] font-black uppercase px-2 py-1 rounded ${event.status === 'open' ? 'bg-green-500 text-white' : 'bg-gray-500 text-white'}`}>
               {event.status === 'open' ? (lang === 'es' ? 'Abierto' : 'Open') : (lang === 'es' ? 'Cerrado' : 'Closed')}
             </span>
@@ -137,33 +140,74 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
           </div>
           <h4 className="text-xl font-bold text-white mb-1 group-hover:text-green-400 transition-colors">{event.name}</h4>
           <p className="text-sm text-gray-400 mb-2">{event.description}</p>
-          <div className="flex items-center gap-4 text-xs font-bold text-gray-500">
+          <div className="flex items-center gap-4 text-xs font-bold text-gray-500 flex-wrap">
             <span className="flex items-center gap-1">
               <Calendar size={14} /> 
               {event.startDate} {event.startTime ? ` ${event.startTime}` : ''}
             </span>
-            {event.entryFee > 0 && <span className="flex items-center gap-1 text-yellow-500">🏆 {event.entryFee}€</span>}
+            {event.entryFee > 0 && (
+              <span className="flex items-center gap-1.5 text-yellow-500">
+                <span>🏆 {event.entryFee}€</span>
+                <a
+                  href="https://www.paypal.biz/montalfan"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-[11px] text-[#3b82f6] hover:text-[#60a5fa] underline flex items-center gap-0.5 ml-0.5 font-normal"
+                  title="PayPal: https://www.paypal.biz/montalfan"
+                >
+                  <span>PayPal</span>
+                  <ExternalLink size={10} />
+                </a>
+              </span>
+            )}
           </div>
         </div>
 
         <div className="w-full md:w-auto flex flex-col sm:flex-row md:flex-col gap-2">
           {isEnrolled ? (
-            <div className={`px-4 py-3 rounded-xl text-center font-bold text-sm border ${
-              isEnrolled.status === 'paid' 
-                ? 'bg-green-500/20 text-green-400 border-green-500/30' 
-                : 'bg-yellow-500/20 text-yellow-500 border-yellow-500/30'
-            }`}>
-              {isEnrolled.status === 'paid' 
-                ? (lang === 'es' ? '✅ Inscrito (Pagado)' : '✅ Enrolled (Paid)')
-                : (lang === 'es' ? '⏳ Inscrito (Falta pago)' : '⏳ Enrolled (Pending payment)')}
+            <div className="flex flex-col gap-2 w-full md:w-auto">
+              <div className={`px-4 py-2.5 rounded-xl text-center font-bold text-sm border ${
+                isEnrolled.status === 'paid' 
+                  ? 'bg-green-500/20 text-green-400 border-green-500/30' 
+                  : 'bg-yellow-500/20 text-yellow-500 border-yellow-500/30'
+              }`}>
+                {isEnrolled.status === 'paid' 
+                  ? (lang === 'es' ? '✅ Inscrito (Pagado)' : '✅ Enrolled (Paid)')
+                  : (lang === 'es' ? '⏳ Inscrito (Falta pago)' : '⏳ Enrolled (Pending payment)')}
+              </div>
+
+              {isEnrolled.status !== 'paid' && (
+                <div className="flex flex-col gap-1 w-full md:w-auto">
+                  <a 
+                    href="https://www.paypal.biz/montalfan"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full px-4 py-2.5 bg-[#0070BA] hover:bg-[#005ea6] text-white font-bold text-xs rounded-xl transition-all shadow-[0_0_15px_rgba(0,112,186,0.35)] active:scale-95 flex items-center justify-center gap-2"
+                    title="PayPal: https://www.paypal.biz/montalfan"
+                  >
+                    <svg className="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24">
+                      <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.72a.78.78 0 0 1 .77-.642h7.054c3.42 0 5.86 1.442 5.568 5.166-.254 3.238-2.298 5.093-5.26 5.093h-2.18l-1.04 6.643a.643.643 0 0 1-.634.544l-2.146.813z" />
+                    </svg>
+                    <span>{lang === 'es' ? 'Pagar con PayPal' : 'Pay with PayPal'}</span>
+                    <ExternalLink size={13} className="shrink-0" />
+                  </a>
+                  <button
+                    onClick={() => setPaypalModalEvent(event)}
+                    className="text-[11px] text-gray-400 hover:text-white underline text-center py-0.5"
+                  >
+                    {lang === 'es' ? 'Ver detalles del pago' : 'View payment info'}
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             event.status === 'open' && (
               <button 
-                onClick={() => handleEnroll(event.id)}
-                className="w-full md:w-auto px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl transition-all active:scale-95 shadow-[0_0_15px_rgba(34,197,94,0.3)]"
+                onClick={() => handleEnroll(event)}
+                className="w-full md:w-auto px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl transition-all active:scale-95 shadow-[0_0_15px_rgba(34,197,94,0.3)] flex items-center justify-center gap-2"
               >
-                {lang === 'es' ? 'Inscribirme' : 'Enroll'}
+                <span>{lang === 'es' ? 'Inscribirme' : 'Enroll'}</span>
               </button>
             )
           )}
@@ -432,6 +476,100 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
                 {isDeletingEvent 
                   ? (lang === 'es' ? 'Eliminando...' : 'Deleting...') 
                   : (lang === 'es' ? 'Eliminar Definitivamente' : 'Delete Permanently')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PayPal Registration Payment Modal */}
+      {paypalModalEvent && (
+        <div className="fixed inset-0 z-[130] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
+          <div className="bg-[#161618] border border-[#0070BA]/40 w-full max-w-md rounded-3xl p-6 shadow-[0_0_50px_rgba(0,112,186,0.3)] flex flex-col gap-4 relative">
+            <button
+              onClick={() => setPaypalModalEvent(null)}
+              className="absolute top-4 right-4 p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-xl transition-colors"
+              title={lang === 'es' ? 'Cerrar' : 'Close'}
+            >
+              <X size={20} />
+            </button>
+
+            <div className="flex items-center gap-3 pr-8">
+              <div className="w-12 h-12 rounded-2xl bg-[#0070BA]/20 border border-[#0070BA]/40 flex items-center justify-center text-[#0070BA] shadow-[0_0_15px_rgba(0,112,186,0.3)] shrink-0">
+                <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                  <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.72a.78.78 0 0 1 .77-.642h7.054c3.42 0 5.86 1.442 5.568 5.166-.254 3.238-2.298 5.093-5.26 5.093h-2.18l-1.04 6.643a.643.643 0 0 1-.634.544l-2.146.813z" />
+                </svg>
+              </div>
+              <div>
+                <span className="text-[10px] font-black uppercase tracking-wider text-green-400 bg-green-500/10 px-2 py-0.5 rounded-full border border-green-500/20">
+                  {lang === 'es' ? '¡Inscripción Registrada!' : 'Enrollment Registered!'}
+                </span>
+                <h3 className="text-lg font-black text-white mt-1 leading-tight">
+                  {paypalModalEvent.name}
+                </h3>
+              </div>
+            </div>
+
+            {paypalModalEvent.entryFee > 0 && (
+              <div className="p-3 bg-yellow-500/10 border border-yellow-500/25 rounded-2xl flex items-center justify-between">
+                <span className="text-xs font-bold text-yellow-300/80 uppercase">
+                  {lang === 'es' ? 'Cuota de inscripción' : 'Entry Fee'}
+                </span>
+                <span className="text-xl font-black text-yellow-400">
+                  {paypalModalEvent.entryFee} €
+                </span>
+              </div>
+            )}
+
+            <p className="text-sm text-gray-300 leading-relaxed">
+              {lang === 'es'
+                ? 'Para formalizar tu plaza y completar la inscripción, accede al siguiente enlace directo a nuestro perfil de PayPal y realiza el pago de la cuota:'
+                : 'To confirm your spot and complete your registration, access the direct link below to our PayPal profile and submit the fee payment:'}
+            </p>
+
+            <a
+              href="https://www.paypal.biz/montalfan"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-3.5 px-6 bg-gradient-to-r from-[#0070BA] to-[#003087] hover:from-[#005ea6] hover:to-[#00266e] text-white font-black text-base rounded-2xl flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(0,112,186,0.45)] transition-all transform hover:scale-[1.02] active:scale-95 border border-blue-400/30"
+            >
+              <svg className="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
+                <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.72a.78.78 0 0 1 .77-.642h7.054c3.42 0 5.86 1.442 5.568 5.166-.254 3.238-2.298 5.093-5.26 5.093h-2.18l-1.04 6.643a.643.643 0 0 1-.634.544l-2.146.813z" />
+              </svg>
+              <span>{lang === 'es' ? 'Pagar con PayPal (@montalfan)' : 'Pay with PayPal (@montalfan)'}</span>
+              <ExternalLink size={18} className="shrink-0" />
+            </a>
+
+            <div className="text-[11px] text-gray-400 bg-black/40 border border-white/5 rounded-2xl p-3.5 flex flex-col gap-1.5">
+              <p className="font-semibold text-gray-200">
+                💡 {lang === 'es' ? 'Instrucciones del pago:' : 'Payment instructions:'}
+              </p>
+              <p>
+                {lang === 'es'
+                  ? 'Recuerda indicar tu nombre de jugador o usuario en el concepto de PayPal. Una vez recibido el importe, la administración marcará tu plaza como Pagada.'
+                  : 'Please include your player name or app account in the PayPal note. Once received, the admins will mark your registration as Paid.'}
+              </p>
+              <div className="pt-1">
+                <span className="text-[10px] text-gray-500 uppercase font-bold block mb-0.5">
+                  {lang === 'es' ? 'Enlace directo de PayPal' : 'Direct PayPal link'}:
+                </span>
+                <a
+                  href="https://www.paypal.biz/montalfan"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-400 hover:text-blue-300 underline font-mono text-xs break-all"
+                >
+                  https://www.paypal.biz/montalfan
+                </a>
+              </div>
+            </div>
+
+            <div className="pt-2 border-t border-white/5 flex justify-end">
+              <button
+                onClick={() => setPaypalModalEvent(null)}
+                className="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold transition-colors text-sm"
+              >
+                {lang === 'es' ? 'Entendido / Continuar' : 'Got it / Continue'}
               </button>
             </div>
           </div>
