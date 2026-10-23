@@ -1,9 +1,9 @@
-import { TurtleMatch } from './types';
+import { TurtleMatch, TurtleGroup } from './types';
 import { collection, writeBatch, doc } from 'firebase/firestore';
 import { db } from '../../firebase';
 
 // Helper to shuffle array (Fisher-Yates)
-function shuffle<T>(array: T[]): T[] {
+export function shuffle<T>(array: T[]): T[] {
   const result = [...array];
   for (let i = result.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -11,6 +11,42 @@ function shuffle<T>(array: T[]): T[] {
   }
   return result;
 }
+
+/**
+ * Calculates the number of groups based on the player count:
+ * - < 14 players: 1 group
+ * - 14 to 25 players: 2 groups
+ * - >= 26 players: 3 groups
+ */
+export const getRecommendedGroupCount = (playerCount: number): number => {
+  if (playerCount >= 26) return 3;
+  if (playerCount >= 14) return 2;
+  return 1;
+};
+
+/**
+ * Distributes players evenly across the required number of groups.
+ */
+export const distributePlayersIntoGroups = (
+  playerIds: string[],
+  groupCount?: number
+): TurtleGroup[] => {
+  const count = groupCount || getRecommendedGroupCount(playerIds.length);
+  const shuffled = shuffle(playerIds);
+  const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+  
+  const groups: TurtleGroup[] = Array.from({ length: count }, (_, i) => ({
+    id: `group_${letters[i].toLowerCase()}`,
+    name: `Grupo ${letters[i]}`,
+    playerIds: []
+  }));
+
+  shuffled.forEach((pid, idx) => {
+    groups[idx % count].playerIds.push(pid);
+  });
+
+  return groups;
+};
 
 export const generateSwissRound1 = async (eventId: string, playerIds: string[]) => {
   const shuffled = shuffle(playerIds);
@@ -36,7 +72,12 @@ export const generateSwissRound1 = async (eventId: string, playerIds: string[]) 
   return matches;
 };
 
-export const generateRoundRobinMatches = async (eventId: string, playerIds: string[]) => {
+export const generateRoundRobinMatches = async (
+  eventId: string,
+  playerIds: string[],
+  groupId?: string,
+  groupName?: string
+) => {
   let players = shuffle(playerIds);
   // Add a 'bye' marker if odd
   if (players.length % 2 !== 0) {
@@ -60,6 +101,8 @@ export const generateRoundRobinMatches = async (eventId: string, playerIds: stri
       if (p1 !== 'BYE' && p2 !== 'BYE') {
         matches.push({
           eventId,
+          groupId,
+          groupName,
           round,
           player1Id: p1,
           player2Id: p2,
@@ -73,6 +116,8 @@ export const generateRoundRobinMatches = async (eventId: string, playerIds: stri
         const realPlayer = p1 === 'BYE' ? p2 : p1;
         matches.push({
           eventId,
+          groupId,
+          groupName,
           round,
           player1Id: realPlayer,
           player2Id: null,
@@ -92,6 +137,23 @@ export const generateRoundRobinMatches = async (eventId: string, playerIds: stri
   }
   
   return matches;
+};
+
+export const generateLeagueGroupsMatches = async (
+  eventId: string,
+  groups: TurtleGroup[]
+) => {
+  const allMatches: Omit<TurtleMatch, 'id'>[] = [];
+  for (const group of groups) {
+    const groupMatches = await generateRoundRobinMatches(
+      eventId,
+      group.playerIds,
+      group.id,
+      group.name
+    );
+    allMatches.push(...groupMatches);
+  }
+  return allMatches;
 };
 
 export const saveMatchesToFirestore = async (matches: Omit<TurtleMatch, 'id'>[]) => {

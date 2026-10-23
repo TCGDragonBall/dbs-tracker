@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Check, Clock, User as UserIcon, AlertCircle, Trash2, Play, ExternalLink } from 'lucide-react';
-import { collection, query, where, onSnapshot, doc, updateDoc, getDocs, deleteDoc, setDoc, addDoc, serverTimestamp } from 'firebase/firestore';
+import { ArrowLeft, Check, Clock, User as UserIcon, AlertCircle, Trash2, Play, ExternalLink, Shuffle, Users } from 'lucide-react';
+import { collection, query, where, onSnapshot, doc, updateDoc, getDocs, deleteDoc, setDoc, addDoc, serverTimestamp, writeBatch } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../../firebase';
-import { TurtleEvent, TurtleRegistration, TurtleUserInfo } from './types';
-import { generateSwissRound1, generateRoundRobinMatches, saveMatchesToFirestore } from './tournamentEngine';
+import { TurtleEvent, TurtleRegistration, TurtleUserInfo, TurtleGroup, TurtleMatch } from './types';
+import { generateSwissRound1, generateRoundRobinMatches, generateLeagueGroupsMatches, distributePlayersIntoGroups, getRecommendedGroupCount, saveMatchesToFirestore } from './tournamentEngine';
 import { TurtleEventActiveAdmin } from './TurtleEventActiveAdmin';
 
 interface TurtleEventAdminViewProps {
@@ -29,6 +29,20 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
   const [registrations, setRegistrations] = useState<TurtleRegistration[]>([]);
   const [usersInfo, setUsersInfo] = useState<Record<string, TurtleUserInfo>>({});
   const [loading, setLoading] = useState(true);
+  const [isDistributingGroups, setIsDistributingGroups] = useState(false);
+
+  const botList = event?.botPlayers || [];
+  const allEnrolledPlayers = [
+    ...registrations,
+    ...botList.map(b => ({
+      id: b.userId,
+      userId: b.userId,
+      status: b.status as 'pending' | 'paid',
+      isBot: true,
+      displayName: b.displayName
+    }))
+  ];
+  const totalPlayerCount = allEnrolledPlayers.length;
 
   // Fetch event details
   useEffect(() => {
@@ -157,19 +171,27 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
     if (!event) return;
     try {
       setIsAddingBots(true);
-      const botNames = ['Goku (Bot)', 'Vegeta (Bot)', 'Piccolo (Bot)', 'Krillin (Bot)', 'Gohan (Bot)', 'Trunks (Bot)', 'Frieza (Bot)'];
+      const currentBots = event.botPlayers || [];
+      const currentOffset = currentBots.length;
+      const botPool = [
+        'Goku', 'Vegeta', 'Piccolo', 'Krillin', 'Gohan', 'Trunks', 'Frieza',
+        'Cell', 'Buu', 'Beerus', 'Whis', 'Broly', 'Yamcha', 'Tien',
+        'Android 17', 'Android 18', 'Raditz', 'Nappa', 'Bardock', 'Goten'
+      ];
       
       const newBots = [];
       for (let i = 0; i < 7; i++) {
         const botId = `bot_${Date.now()}_${i}`;
+        const nameIdx = (currentOffset + i) % botPool.length;
+        const cycleNum = Math.floor((currentOffset + i) / botPool.length) + 1;
+        const nameSuffix = cycleNum > 1 ? ` #${cycleNum}` : '';
         newBots.push({
           userId: botId,
-          displayName: botNames[i],
+          displayName: `${botPool[nameIdx]}${nameSuffix} (Bot)`,
           status: 'paid'
         });
       }
       
-      const currentBots = event.botPlayers || [];
       await updateDoc(doc(db, 'ts_tournaments', event.id), {
         botPlayers: [...currentBots, ...newBots]
       });
@@ -180,6 +202,61 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
       alert(lang === 'es' ? 'Error al añadir bots. Comprueba las reglas de Firebase.' : 'Error adding bots. Check Firebase rules.');
     } finally {
       setIsAddingBots(false);
+    }
+  };
+
+  const handleClearBots = async () => {
+    if (!event) return;
+    try {
+      setIsAddingBots(true);
+      await updateDoc(doc(db, 'ts_tournaments', event.id), {
+        botPlayers: []
+      });
+    } catch (error) {
+      console.error(error);
+      alert(lang === 'es' ? 'Error al limpiar bots.' : 'Error clearing bots.');
+    } finally {
+      setIsAddingBots(false);
+    }
+  };
+
+  const handleDistributeGroups = async () => {
+    if (!event) return;
+    const allPlayerIds = [...registrations.map(r => r.userId), ...(event.botPlayers?.map(b => b.userId) || [])];
+    if (allPlayerIds.length < 2) {
+      alert(lang === 'es' ? 'Se necesitan al menos 2 jugadores para realizar el sorteo de grupos.' : 'At least 2 players are needed to distribute into groups.');
+      return;
+    }
+
+    try {
+      setIsDistributingGroups(true);
+      const groups = distributePlayersIntoGroups(allPlayerIds);
+      
+      // Update event document with groups
+      await updateDoc(doc(db, 'ts_tournaments', event.id), {
+        groups
+      });
+
+      // Update individual registration documents if real players exist
+      if (registrations.length > 0) {
+        const batch = writeBatch(db);
+        for (const reg of registrations) {
+          const assignedGroup = groups.find(g => g.playerIds.includes(reg.userId));
+          if (assignedGroup) {
+            batch.update(doc(db, 'ts_registrations', reg.id), {
+              groupId: assignedGroup.id,
+              groupName: assignedGroup.name
+            });
+          }
+        }
+        await batch.commit();
+      }
+    } catch (err) {
+      console.error('Error distributing groups:', err);
+      handleFirestoreError(err, OperationType.UPDATE, 'ts_tournaments');
+      alert(lang === 'es' ? 'Error al distribuir en grupos.' : 'Error distributing into groups.');
+    } finally {
+      setIsDistributingGroups(false);
     }
   };
 
@@ -206,12 +283,30 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
     
     try {
       setIsStarting(true);
-      let matches = [];
+      let matches: Omit<TurtleMatch, 'id'>[] = [];
       
       console.log('Generating matches for:', event.type, paidPlayers.length, 'players');
       
       if (event.type === 'league') {
-        matches = await generateRoundRobinMatches(event.id, paidPlayers);
+        let leagueGroups = event.groups;
+        
+        // If groups were not sorted beforehand or empty, generate them automatically according to player count
+        if (!leagueGroups || leagueGroups.length === 0) {
+          leagueGroups = distributePlayersIntoGroups(paidPlayers);
+          await updateDoc(doc(db, 'ts_tournaments', event.id), { groups: leagueGroups });
+        } else {
+          // If groups existed, ensure all paid players are present in groups
+          const assignedSet = new Set(leagueGroups.flatMap(g => g.playerIds));
+          const unassigned = paidPlayers.filter(p => !assignedSet.has(p));
+          if (unassigned.length > 0) {
+            unassigned.forEach((p, idx) => {
+              leagueGroups![idx % leagueGroups!.length].playerIds.push(p);
+            });
+            await updateDoc(doc(db, 'ts_tournaments', event.id), { groups: leagueGroups });
+          }
+        }
+        
+        matches = await generateLeagueGroupsMatches(event.id, leagueGroups);
       } else {
         matches = await generateSwissRound1(event.id, paidPlayers);
       }
@@ -272,7 +367,12 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
             </h2>
             <div className="flex items-center gap-3 flex-wrap">
               <p className="text-gray-400 font-bold text-sm">
-                {lang === 'es' ? 'Gestión de Inscritos' : 'Enrollment Management'} • {registrations.length} {lang === 'es' ? 'jugadores' : 'players'}
+                {lang === 'es' ? 'Gestión de Inscritos' : 'Enrollment Management'} • {totalPlayerCount} {lang === 'es' ? 'jugadores' : 'players'}
+                {botList.length > 0 && (
+                  <span className="text-blue-400 font-semibold ml-1.5 text-xs">
+                    ({registrations.length} {lang === 'es' ? 'reales' : 'real'} + {botList.length} bots)
+                  </span>
+                )}
               </p>
               <a
                 href="https://www.paypal.biz/montalfan"
@@ -306,6 +406,16 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
               )}
               {lang === 'es' ? 'Añadir 7 Bots' : 'Add 7 Bots'}
             </button>
+            {botList.length > 0 && (
+              <button
+                onClick={handleClearBots}
+                disabled={isAddingBots}
+                className="flex items-center gap-2 px-3 py-3 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white font-bold rounded-xl transition-all border border-white/10 active:scale-95 text-xs"
+                title={lang === 'es' ? 'Quitar todos los bots de prueba' : 'Remove all test bots'}
+              >
+                {lang === 'es' ? 'Limpiar Bots' : 'Clear Bots'}
+              </button>
+            )}
             <button
               onClick={handleStartEventClick}
             disabled={isStarting}
@@ -339,50 +449,198 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
       </div>
 
       {event.status === 'open' ? (
-        <div className="bg-[#151515] rounded-3xl p-6 border border-white/5 shadow-2xl">
-          {(registrations.length === 0 && (!event?.botPlayers || event.botPlayers.length === 0)) ? (
-            <div className="text-center py-12 text-gray-500">
-              {lang === 'es' ? 'Aún no hay inscritos en este evento.' : 'No players enrolled yet.'}
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead>
-                  <tr className="border-b border-white/10 text-xs font-bold text-gray-400 uppercase tracking-wider">
-                    <th className="pb-3 pl-4">{lang === 'es' ? 'Jugador' : 'Player'}</th>
-                    <th className="pb-3 text-center">{lang === 'es' ? 'Estado Pago' : 'Payment Status'}</th>
-                    <th className="pb-3 text-right pr-4">{lang === 'es' ? 'Acciones' : 'Actions'}</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5">
-                  {[...registrations, ...(event?.botPlayers || []).map(b => ({ id: b.userId, userId: b.userId, status: b.status, isBot: true, displayName: b.displayName }))].map(reg => {
-                    const user: TurtleUserInfo | undefined = (reg as any).isBot 
-                      ? { displayName: (reg as any).displayName, officialName: (reg as any).displayName, accountName: (reg as any).displayName, email: 'bot@capsulecorp.com' } 
-                      : usersInfo[reg.userId];
-                    const isPaid = reg.status === 'paid';
-                    const playerName = user?.officialName || user?.displayName || 'Unknown User';
+        <div className="space-y-6">
+          {/* League Group Division Section (Only for Leagues) */}
+          {event.type === 'league' && (
+            <div className="bg-gradient-to-r from-emerald-950/40 via-[#161616] to-[#121212] border border-emerald-500/30 rounded-3xl p-6 shadow-xl space-y-4">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-white/5 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
+                    <Shuffle size={22} />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h3 className="text-lg font-black text-white uppercase italic tracking-wide">
+                        {lang === 'es' ? 'División en Grupos de la Liga' : 'League Group Division'}
+                      </h3>
+                      <span className={`text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full border ${
+                        event.groups && event.groups.length > 0
+                          ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                          : 'bg-yellow-500/20 text-yellow-300 border-yellow-500/40'
+                      }`}>
+                        {event.groups && event.groups.length > 0
+                          ? (lang === 'es' ? `${event.groups.length} Grupos Asignados` : `${event.groups.length} Groups Assigned`)
+                          : (lang === 'es' ? 'Pendiente de Sorteo' : 'Pending Group Draw')}
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-400 mt-1">
+                      {lang === 'es' 
+                        ? `División automática por inscritos: <14 (1 grupo), 14 a 25 (2 grupos), ≥26 (3 grupos).`
+                        : `Automatic division: <14 (1 group), 14-25 (2 groups), ≥26 (3 groups).`}
+                    </p>
+                  </div>
+                </div>
 
+                {isTurtleAdmin && (
+                  <button
+                    onClick={handleDistributeGroups}
+                    disabled={isDistributingGroups || totalPlayerCount < 2}
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wide transition-all shadow-lg ${
+                      isDistributingGroups || totalPlayerCount < 2
+                        ? 'bg-white/10 text-white/40 cursor-not-allowed'
+                        : 'bg-emerald-500 hover:bg-emerald-600 text-white active:scale-95 shadow-[0_0_15px_rgba(16,185,129,0.3)]'
+                    }`}
+                  >
+                    {isDistributingGroups ? (
+                      <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      <Shuffle size={15} />
+                    )}
+                    <span>
+                      {event.groups && event.groups.length > 0
+                        ? (lang === 'es' ? 'Volver a Sortear Grupos Aleatoriamente' : 'Re-draw Groups Randomly')
+                        : (lang === 'es' ? 'Sortear y Distribuir en Grupos' : 'Draw & Distribute into Groups')}
+                    </span>
+                  </button>
+                )}
+              </div>
+
+              {/* Group Cards */}
+              {event.groups && event.groups.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
+                  {event.groups.map((group, gIdx) => {
+                    const isOdd = group.playerIds.length % 2 !== 0;
                     return (
-                      <tr key={reg.id} className="group hover:bg-white/5 transition-colors">
-                        <td className="py-4 pl-4">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white">
-                              <UserIcon size={18} />
-                            </div>
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <p className="font-bold text-white">{playerName}</p>
-                                {user?.accountName && user.accountName !== playerName && !(reg as any).isBot && (
-                                  <span className="text-[11px] text-white/40" title={`${lang === 'es' ? 'Cuenta' : 'Account'}: ${user.accountName}`}>
-                                    ({user.accountName})
-                                  </span>
+                      <div 
+                        key={group.id} 
+                        className="bg-black/50 border border-white/10 rounded-2xl p-4 flex flex-col gap-3"
+                      >
+                        <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                          <div className="flex items-center gap-2">
+                            <span className={`w-3 h-3 rounded-full ${gIdx === 0 ? 'bg-blue-400' : gIdx === 1 ? 'bg-emerald-400' : 'bg-orange-400'}`} />
+                            <h4 className="font-black text-white text-base uppercase tracking-tight">
+                              {group.name}
+                            </h4>
+                          </div>
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="text-xs font-bold text-gray-300 bg-white/10 px-2 py-0.5 rounded-lg">
+                              {group.playerIds.length} {lang === 'es' ? 'jugadores' : 'players'}
+                            </span>
+                            {isOdd && (
+                              <span 
+                                className="text-[10px] font-bold text-yellow-400/90 bg-yellow-500/10 border border-yellow-500/30 px-2 py-0.5 rounded-lg"
+                                title={lang === 'es' ? 'Número impar: un jugador descansará cada jornada sin meter bots' : 'Odd count: 1 player rests each round without bots'}
+                              >
+                                {lang === 'es' ? 'Descanso semanal' : 'Weekly rest'}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                          {group.playerIds.map(pId => {
+                            const botPlayer = (event.botPlayers || []).find(b => b.userId === pId);
+                            const u = usersInfo[pId];
+                            const pName = botPlayer?.displayName || u?.officialName || u?.discordUsername || u?.displayName || 'Unknown Player';
+                            const isPaid = botPlayer ? botPlayer.status === 'paid' : registrations.find(r => r.userId === pId)?.status === 'paid';
+                            return (
+                              <div key={pId} className="flex items-center justify-between text-xs py-1 px-2 rounded-lg bg-white/5">
+                                <span className="font-bold text-gray-200 truncate">{pName}</span>
+                                {isPaid ? (
+                                  <span className="text-[10px] text-green-400 font-bold">✓ {lang === 'es' ? 'Pagado' : 'Paid'}</span>
+                                ) : (
+                                  <span className="text-[10px] text-yellow-400 font-bold">⏳ {lang === 'es' ? 'Pendiente' : 'Pending'}</span>
                                 )}
                               </div>
-                              <p className="text-xs text-gray-400">{user?.email || ''}</p>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="p-4 rounded-2xl bg-black/30 border border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                  <div className="text-xs text-gray-400">
+                    <span className="font-bold text-gray-300">
+                      {lang === 'es' ? 'Inscritos actuales: ' : 'Current enrolled: '}
+                    </span>
+                    <span className="text-emerald-400 font-black text-sm">{totalPlayerCount}</span>
+                    <span className="mx-2">•</span>
+                    <span>
+                      {totalPlayerCount < 14
+                        ? (lang === 'es' ? 'Se formará 1 grupo único (menos de 14 jugadores).' : '1 single group will be formed (under 14 players).')
+                        : totalPlayerCount < 26
+                        ? (lang === 'es' ? 'Se formarán 2 grupos aleatorios (entre 14 y 25 jugadores).' : '2 random groups will be formed (between 14 and 25 players).')
+                        : (lang === 'es' ? 'Se formarán 3 grupos aleatorios (26 o más jugadores).' : '3 random groups will be formed (26 or more players).')}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="bg-[#151515] rounded-3xl p-6 border border-white/5 shadow-2xl">
+            {(registrations.length === 0 && (!event?.botPlayers || event.botPlayers.length === 0)) ? (
+              <div className="text-center py-12 text-gray-500">
+                {lang === 'es' ? 'Aún no hay inscritos en este evento.' : 'No players enrolled yet.'}
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead>
+                    <tr className="border-b border-white/10 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                      <th className="pb-3 pl-4">{lang === 'es' ? 'Jugador' : 'Player'}</th>
+                      {event.type === 'league' && (
+                        <th className="pb-3 text-center">{lang === 'es' ? 'Grupo' : 'Group'}</th>
+                      )}
+                      <th className="pb-3 text-center">{lang === 'es' ? 'Estado Pago' : 'Payment Status'}</th>
+                      <th className="pb-3 text-right pr-4">{lang === 'es' ? 'Acciones' : 'Actions'}</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5">
+                    {[...registrations, ...(event?.botPlayers || []).map(b => ({ id: b.userId, userId: b.userId, status: b.status, isBot: true, displayName: b.displayName }))].map(reg => {
+                      const user: TurtleUserInfo | undefined = (reg as any).isBot 
+                        ? { displayName: (reg as any).displayName, officialName: (reg as any).displayName, accountName: (reg as any).displayName, email: 'bot@capsulecorp.com' } 
+                        : usersInfo[reg.userId];
+                      const isPaid = reg.status === 'paid';
+                      const playerName = user?.officialName || user?.displayName || 'Unknown User';
+                      const assignedGroup = event.type === 'league' ? event.groups?.find(g => g.playerIds.includes(reg.userId)) : null;
+
+                      return (
+                        <tr key={reg.id} className="group hover:bg-white/5 transition-colors">
+                          <td className="py-4 pl-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white">
+                                <UserIcon size={18} />
+                              </div>
+                              <div>
+                                <div className="flex items-center gap-2">
+                                  <p className="font-bold text-white">{playerName}</p>
+                                  {user?.accountName && user.accountName !== playerName && !(reg as any).isBot && (
+                                    <span className="text-[11px] text-white/40" title={`${lang === 'es' ? 'Cuenta' : 'Account'}: ${user.accountName}`}>
+                                      ({user.accountName})
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-xs text-gray-400">{user?.email || ''}</p>
+                              </div>
                             </div>
-                          </div>
-                        </td>
-                        <td className="py-4 text-center">
+                          </td>
+                          {event.type === 'league' && (
+                            <td className="py-4 text-center">
+                              {assignedGroup ? (
+                                <span className="px-2.5 py-1 rounded-full text-xs font-black bg-white/10 text-emerald-300 border border-emerald-500/30">
+                                  {assignedGroup.name}
+                                </span>
+                              ) : (
+                                <span className="text-xs text-white/30 italic">
+                                  {lang === 'es' ? 'Sin sortear' : 'Not drawn'}
+                                </span>
+                              )}
+                            </td>
+                          )}
+                          <td className="py-4 text-center">
                           <div className="flex justify-center">
                             <button
                               onClick={() => handleTogglePayment(reg.id, reg.status, (reg as any).isBot)}
@@ -421,6 +679,7 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
             </div>
           )}
         </div>
+      </div>
       ) : (
         <TurtleEventActiveAdmin 
           event={event} 

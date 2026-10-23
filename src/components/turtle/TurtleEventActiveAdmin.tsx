@@ -271,6 +271,7 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
   };
 
   const [selectedRound, setSelectedRound] = useState<number>(1);
+  const [selectedGroupFilter, setSelectedGroupFilter] = useState<string>('all');
 
   const rounds = Array.from(new Set(matches.map(m => m.round))).sort((a, b) => a - b);
   const maxRound = rounds.length > 0 ? Math.max(...rounds) : 1;
@@ -313,7 +314,9 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
     }
   };
 
-  const currentRoundMatches = matches.filter(m => m.round === (rounds.includes(selectedRound) ? selectedRound : maxRound));
+  const currentRoundMatches = matches
+    .filter(m => m.round === (rounds.includes(selectedRound) ? selectedRound : maxRound))
+    .filter(m => selectedGroupFilter === 'all' || m.groupId === selectedGroupFilter);
   const allMatchesCompleted = matches.length > 0 && matches.every(m => m.status === 'completed');
 
   if (loading) {
@@ -428,6 +431,34 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
                 ))}
               </div>
             </div>
+
+            {event.groups && event.groups.length > 1 && (
+              <div className="flex gap-1.5 p-1 bg-black/40 rounded-xl border border-white/10 w-fit mb-4 overflow-x-auto max-w-full">
+                <button
+                  onClick={() => setSelectedGroupFilter('all')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
+                    selectedGroupFilter === 'all'
+                      ? 'bg-white/20 text-white shadow-sm'
+                      : 'text-white/40 hover:text-white'
+                  }`}
+                >
+                  {lang === 'es' ? 'Todos los Grupos' : 'All Groups'}
+                </button>
+                {event.groups.map(g => (
+                  <button
+                    key={g.id}
+                    onClick={() => setSelectedGroupFilter(g.id)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
+                      selectedGroupFilter === g.id
+                        ? 'bg-emerald-500 text-white shadow-[0_0_10px_rgba(16,185,129,0.3)]'
+                        : 'text-white/40 hover:text-white'
+                    }`}
+                  >
+                    {g.name}
+                  </button>
+                ))}
+              </div>
+            )}
             
             <div className="space-y-3">
               {currentRoundMatches.map(m => {
@@ -451,7 +482,7 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
                       <div className="w-full flex flex-col gap-4">
                         <div className="flex items-center justify-between border-b border-white/10 pb-2">
                           <span className="text-xs font-black uppercase text-orange-400">
-                            {lang === 'es' ? 'Editar Resultado y Líderes' : 'Edit Result & Leaders'}
+                            {m.groupName ? `${m.groupName} • ` : ''}{lang === 'es' ? 'Editar Resultado y Líderes' : 'Edit Result & Leaders'}
                           </span>
                           <div className="flex gap-2">
                             <button onClick={handleSaveMatch} className="bg-green-500 hover:bg-green-600 px-3 py-1.5 rounded-lg text-white font-bold text-xs flex items-center gap-1.5">
@@ -661,6 +692,11 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
                           
                           {/* Actions */}
                           <div className="flex gap-2 flex-shrink-0">
+                            {m.groupName && (
+                              <span className="hidden sm:inline-block px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[10px] font-black uppercase tracking-wider">
+                                {m.groupName}
+                              </span>
+                            )}
                             {(m.status !== 'completed' && (m.player1Id === currentUserUid || m.player2Id === currentUserUid)) && (
                               <button
                                 onClick={() => openPlayerReportModal(m)}

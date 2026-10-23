@@ -192,8 +192,8 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({ isOpen, onCl
             {type === 'league' && (
               <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl text-blue-400 text-xs font-bold">
                 {lang === 'es' 
-                  ? 'Estructura: Grupos (Se repartirán dependiendo del número de usuarios)' 
-                  : 'Structure: Groups (Distributed depending on number of users)'}
+                  ? 'Estructura: Grupos (<14 jugadores: 1 grupo, 14-25: 2 grupos, ≥26: 3 grupos. Sorteo aleatorio de grupos por administradores).' 
+                  : 'Structure: Groups (<14 players: 1 group, 14-25: 2 groups, ≥26: 3 groups. Random group draw by administrators).'}
               </div>
             )}
 

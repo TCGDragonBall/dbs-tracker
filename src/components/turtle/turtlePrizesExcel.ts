@@ -132,7 +132,7 @@ export async function exportTournamentPrizesExcel({
       ? (isEs ? 'COMPLETO' : 'COMPLETE')
       : (isEs ? 'PENDIENTE' : 'PENDING');
 
-    const rankText = p.isDisqualified ? 'DQ' : `#${p.rank}`;
+    const rankText = p.isDisqualified ? 'DQ' : (p.groupName ? `#${p.rank} (${p.groupName})` : `#${p.rank}`);
     const statusText = p.isDisqualified
       ? (isEs ? 'DESCALIFICADO' : 'DISQUALIFIED')
       : (isEs ? 'ACTIVO' : 'ACTIVE');

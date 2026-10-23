@@ -274,9 +274,16 @@ export const TurtlePlayerMatchesView: React.FC<TurtlePlayerMatchesViewProps> = (
         return (
           <div key={match.id} className="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col md:flex-row gap-4 items-center justify-between hover:bg-white/10 transition-colors">
             <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left">
-              <span className="text-[10px] uppercase font-black tracking-widest text-green-500 mb-1">
-                {event?.name} • {lang === 'es' ? 'Ronda' : 'Round'} {match.round}
-              </span>
+              <div className="flex items-center gap-2 mb-1 flex-wrap">
+                <span className="text-[10px] uppercase font-black tracking-widest text-green-500">
+                  {event?.name} • {lang === 'es' ? 'Ronda' : 'Round'} {match.round}
+                </span>
+                {match.groupName && (
+                  <span className="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-black uppercase tracking-wider">
+                    {match.groupName}
+                  </span>
+                )}
+              </div>
               <div className="flex items-center gap-4 text-lg md:text-xl font-bold text-white">
                 <span>{lang === 'es' ? 'Tú' : 'You'}</span>
                 <span className="text-white/30 text-sm">VS</span>

@@ -135,7 +135,9 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
             <span className="text-[10px] font-bold text-gray-400 bg-white/5 px-2 py-1 rounded uppercase">
               {event.type === 'tournament' 
                 ? (event.structure === 'swiss' ? 'Suizo' : 'Suizo + Top')
-                : 'Grupos'}
+                : (event.groups && event.groups.length > 0
+                    ? `${event.groups.length} ${lang === 'es' ? 'Grupos' : 'Groups'}`
+                    : 'Grupos')}
             </span>
           </div>
           <h4 className="text-xl font-bold text-white mb-1 group-hover:text-green-400 transition-colors">{event.name}</h4>
@@ -167,15 +169,27 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
         <div className="w-full md:w-auto flex flex-col sm:flex-row md:flex-col gap-2">
           {isEnrolled ? (
             <div className="flex flex-col gap-2 w-full md:w-auto">
-              <div className={`px-4 py-2.5 rounded-xl text-center font-bold text-sm border ${
-                isEnrolled.status === 'paid' 
-                  ? 'bg-green-500/20 text-green-400 border-green-500/30' 
-                  : 'bg-yellow-500/20 text-yellow-500 border-yellow-500/30'
-              }`}>
-                {isEnrolled.status === 'paid' 
-                  ? (lang === 'es' ? '✅ Inscrito (Pagado)' : '✅ Enrolled (Paid)')
-                  : (lang === 'es' ? '⏳ Inscrito (Falta pago)' : '⏳ Enrolled (Pending payment)')}
-              </div>
+              {(() => {
+                const userGroupName = isEnrolled.groupName || event.groups?.find(g => g.playerIds.includes(isEnrolled.userId))?.name;
+                return (
+                  <div className={`px-4 py-2.5 rounded-xl text-center font-bold text-sm border ${
+                    isEnrolled.status === 'paid' 
+                      ? 'bg-green-500/20 text-green-400 border-green-500/30' 
+                      : 'bg-yellow-500/20 text-yellow-500 border-yellow-500/30'
+                  }`}>
+                    <div>
+                      {isEnrolled.status === 'paid' 
+                        ? (lang === 'es' ? '✅ Inscrito (Pagado)' : '✅ Enrolled (Paid)')
+                        : (lang === 'es' ? '⏳ Inscrito (Falta pago)' : '⏳ Enrolled (Pending payment)')}
+                    </div>
+                    {userGroupName && (
+                      <div className="text-xs text-emerald-300 font-extrabold mt-1">
+                        {userGroupName}
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
 
               {isEnrolled.status !== 'paid' && (
                 <div className="flex flex-col gap-1 w-full md:w-auto">

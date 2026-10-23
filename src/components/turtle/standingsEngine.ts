@@ -22,6 +22,8 @@ export interface PlayerStanding {
   fullName?: string; // Nombre real de envío
   email?: string;
   isBot?: boolean;
+  groupId?: string;
+  groupName?: string;
   matchesPlayed: number;
   wins: number;
   losses: number;
@@ -384,6 +386,11 @@ export function calculateLeagueStandings(
     const finalPoints = isDisqualified ? 0 : Math.max(0, rawPoints - penaltyPoints);
     const gameDiff = raw.gameWins - raw.gameLosses;
 
+    const playerGroup = event.groups?.find(g => g.playerIds.includes(uid));
+    const reg = registrations.find(r => r.userId === uid);
+    const groupId = playerGroup?.id || reg?.groupId;
+    const groupName = playerGroup?.name || reg?.groupName;
+
     return {
       userId: uid,
       name: officialName,
@@ -393,6 +400,8 @@ export function calculateLeagueStandings(
       fullName,
       email,
       isBot,
+      groupId,
+      groupName,
       matchesPlayed: raw.matchesPlayed,
       wins: raw.wins,
       losses: raw.losses,

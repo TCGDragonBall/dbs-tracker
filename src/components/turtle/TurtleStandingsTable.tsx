@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { TurtleEvent, TurtleMatch, TurtleRegistration, TurtleUserInfo } from './types';
 import { calculateLeagueStandings, PlayerStanding, findLeaderCard, formatCardImageUrl } from './standingsEngine';
 import { TurtleAdminAdjustmentModal } from './TurtleAdminAdjustmentModal';
@@ -62,6 +62,21 @@ export const TurtleStandingsTable: React.FC<Props> = ({
     usersInfo,
     cards
   );
+
+  const [selectedGroupTab, setSelectedGroupTab] = useState<string>('all');
+  const hasMultipleGroups = event.type === 'league' && !!event.groups && event.groups.length > 1;
+
+  // Filter standings by group if selected, and re-calculate relative rank within that group
+  const displayedStandings = useMemo(() => {
+    if (!hasMultipleGroups || selectedGroupTab === 'all') {
+      return standings;
+    }
+    const filtered = standings.filter(s => s.groupId === selectedGroupTab);
+    return filtered.map((s, idx) => ({
+      ...s,
+      rank: idx + 1
+    }));
+  }, [standings, hasMultipleGroups, selectedGroupTab]);
 
   const handleExportExcel = async () => {
     try {
@@ -196,7 +211,39 @@ export const TurtleStandingsTable: React.FC<Props> = ({
           </div>
         </div>
 
-        {standings.length === 0 ? (
+        {hasMultipleGroups && (
+          <div className="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-hide">
+            <button
+              onClick={() => setSelectedGroupTab('all')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                selectedGroupTab === 'all'
+                  ? 'bg-white/20 text-white border border-white/20 shadow-sm'
+                  : 'bg-white/5 text-white/50 hover:bg-white/10'
+              }`}
+            >
+              {lang === 'es' ? 'Todos los Grupos' : 'All Groups'} ({standings.length})
+            </button>
+            {event.groups!.map(g => {
+              const count = standings.filter(s => s.groupId === g.id).length;
+              return (
+                <button
+                  key={g.id}
+                  onClick={() => setSelectedGroupTab(g.id)}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                    selectedGroupTab === g.id
+                      ? 'bg-emerald-500 text-white shadow-[0_0_12px_rgba(16,185,129,0.3)]'
+                      : 'bg-white/5 text-white/50 hover:bg-white/10'
+                  }`}
+                >
+                  <span>{g.name}</span>
+                  <span className="text-[10px] opacity-75">({count})</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {displayedStandings.length === 0 ? (
           <div className="text-center py-12 text-white/40 font-bold">
             {lang === 'es' ? 'No hay participantes registrados.' : 'No participants registered.'}
           </div>
@@ -234,7 +281,7 @@ export const TurtleStandingsTable: React.FC<Props> = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5 text-sm font-medium">
-                {standings.map((p) => {
+                {displayedStandings.map((p) => {
                   const isTop3 = p.rank <= 3 && !p.isDisqualified;
                   const rankBadgeColor = p.isDisqualified
                     ? 'text-white/20'
@@ -279,6 +326,12 @@ export const TurtleStandingsTable: React.FC<Props> = ({
                           {p.isBot && (
                             <span className="text-[9px] font-black uppercase px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-400 border border-blue-500/30">
                               BOT
+                            </span>
+                          )}
+
+                          {hasMultipleGroups && p.groupName && selectedGroupTab === 'all' && (
+                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                              {p.groupName}
                             </span>
                           )}
 

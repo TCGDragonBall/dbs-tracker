@@ -3,6 +3,12 @@ export type GameFormat = 'masters' | 'fusion_world';
 export type EventStructure = 'swiss' | 'swiss_top' | 'groups';
 export type EventStatus = 'open' | 'ongoing' | 'completed';
 
+export interface TurtleGroup {
+  id: string; // e.g. 'group_a', 'group_b', 'group_c'
+  name: string; // e.g. 'Grupo A', 'Grupo B', 'Grupo C'
+  playerIds: string[];
+}
+
 export interface TurtleAdminAdjustment {
   penaltyPoints?: number;
   notes?: string;
@@ -22,6 +28,7 @@ export interface TurtleEvent {
   status: EventStatus;
   botPlayers?: { userId: string; displayName: string; status: string }[];
   adminAdjustments?: Record<string, TurtleAdminAdjustment>;
+  groups?: TurtleGroup[];
   createdAt: any;
 }
 
@@ -31,6 +38,8 @@ export interface TurtleRegistration {
   eventId: string;
   status: 'pending' | 'paid';
   decklistUrl?: string;
+  groupId?: string;
+  groupName?: string;
   createdAt: any;
 }
 
@@ -38,6 +47,8 @@ export interface TurtleMatch {
   id: string;
   eventId: string;
   round: number;
+  groupId?: string;
+  groupName?: string;
   player1Id: string;
   player2Id: string | null; // null if bye
   player1Wins: number;
