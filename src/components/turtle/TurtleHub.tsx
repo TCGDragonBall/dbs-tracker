@@ -180,7 +180,7 @@ export const TurtleHub: React.FC<TurtleHubProps> = ({ onBack, lang, cards }) => 
                     <div>
                       {isEnrolled.status === 'paid' 
                         ? (lang === 'es' ? '✅ Inscrito (Pagado)' : '✅ Enrolled (Paid)')
-                        : (lang === 'es' ? '⏳ Inscrito (Falta pago)' : '⏳ Enrolled (Pending payment)')}
+                        : (lang === 'es' ? '⏳ Inscrito (Confirmando pago)' : '⏳ Enrolled (Confirming payment)')}
                     </div>
                     {userGroupName && (
                       <div className="text-xs text-emerald-300 font-extrabold mt-1">
