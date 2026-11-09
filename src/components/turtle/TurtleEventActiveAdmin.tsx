@@ -69,6 +69,8 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
   const [playerReportingMatch, setPlayerReportingMatch] = useState<TurtleMatch | null>(null);
   const [playerMatchResult, setPlayerMatchResult] = useState<'win' | 'loss'>('win');
   const [playerMyLeaderId, setPlayerMyLeaderId] = useState<string | null>(null);
+  const [playerOpponentLeaderId, setPlayerOpponentLeaderId] = useState<string | null>(null);
+  const [playerSelectingLeaderTarget, setPlayerSelectingLeaderTarget] = useState<'my' | 'opponent'>('my');
   const [isPlayerLeaderSearchOpen, setIsPlayerLeaderSearchOpen] = useState(false);
   const [playerSearchQuery, setPlayerSearchQuery] = useState('');
   const [playerSearchColor, setPlayerSearchColor] = useState('Todos');
@@ -77,6 +79,7 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
   const openPlayerReportModal = (m: TurtleMatch) => {
     setPlayerReportingMatch(m);
     const isP1 = m.player1Id === currentUserUid;
+    const oppId = isP1 ? m.player2Id : m.player1Id;
     const myW = isP1 ? m.player1Wins : m.player2Wins;
     const opW = isP1 ? m.player2Wins : m.player1Wins;
     if (opW > myW) {
@@ -86,9 +89,11 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
     }
 
     // Default leader: check match first, then previous match in this event, then localStorage
-    const existingLeader = isP1 ? m.player1LeaderId : m.player2LeaderId;
-    if (existingLeader) {
-      setPlayerMyLeaderId(existingLeader);
+    const myExistingLeader = isP1 ? m.player1LeaderId : m.player2LeaderId;
+    const oppExistingLeader = isP1 ? m.player2LeaderId : m.player1LeaderId;
+
+    if (myExistingLeader) {
+      setPlayerMyLeaderId(myExistingLeader);
     } else {
       const prevInEvent = matches
         .filter(otherM => otherM.status === 'completed')
@@ -106,6 +111,18 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
         }
       }
       setPlayerMyLeaderId(defaultLeader || null);
+    }
+
+    if (oppExistingLeader) {
+      setPlayerOpponentLeaderId(oppExistingLeader);
+    } else if (oppId) {
+      const oppPrevLeader = matches
+        .filter(otherM => otherM.status === 'completed')
+        .map(otherM => otherM.player1Id === oppId ? otherM.player1LeaderId : (otherM.player2Id === oppId ? otherM.player2LeaderId : null))
+        .find(lid => Boolean(lid));
+      setPlayerOpponentLeaderId(oppPrevLeader || null);
+    } else {
+      setPlayerOpponentLeaderId(null);
     }
   };
 
@@ -133,12 +150,16 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
 
       if (isP1) {
         updateData.player1LeaderId = playerMyLeaderId;
-        if (playerReportingMatch.player2LeaderId) {
+        if (playerOpponentLeaderId) {
+          updateData.player2LeaderId = playerOpponentLeaderId;
+        } else if (playerReportingMatch.player2LeaderId) {
           updateData.player2LeaderId = playerReportingMatch.player2LeaderId;
         }
       } else {
         updateData.player2LeaderId = playerMyLeaderId;
-        if (playerReportingMatch.player1LeaderId) {
+        if (playerOpponentLeaderId) {
+          updateData.player1LeaderId = playerOpponentLeaderId;
+        } else if (playerReportingMatch.player1LeaderId) {
           updateData.player1LeaderId = playerReportingMatch.player1LeaderId;
         }
       }
@@ -189,6 +210,16 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
   }, [event.id]);
 
   const allUsersInfo = { ...usersInfo };
+  if (event.manualPlayers) {
+    event.manualPlayers.forEach(m => {
+      allUsersInfo[m.userId] = {
+        displayName: m.displayName,
+        officialName: m.displayName,
+        email: m.email || 'manual',
+        accountName: m.notes || 'Manual'
+      };
+    });
+  }
   if (event.botPlayers) {
     event.botPlayers.forEach(b => {
       allUsersInfo[b.userId] = { displayName: b.displayName, officialName: b.displayName, email: 'bot' };
@@ -282,7 +313,11 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
     }
   }, [maxRound, rounds, selectedRound]);
 
-  const allPlayerIds = [...registrations.map(r => r.userId), ...(event.botPlayers?.map(b => b.userId) || [])];
+  const allPlayerIds = [
+    ...registrations.map(r => r.userId),
+    ...(event.manualPlayers?.map(m => m.userId) || []),
+    ...(event.botPlayers?.map(b => b.userId) || [])
+  ];
   const totalPlayers = allPlayerIds.length;
   const totalAllowedRounds = Math.max(2, Math.ceil(Math.log2(totalPlayers || 2)));
 
@@ -919,10 +954,11 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
         const oppId = isP1 ? playerReportingMatch.player2Id : playerReportingMatch.player1Id;
         const oppName = oppId ? allUsersInfo[oppId]?.displayName || 'Unknown' : 'BYE';
         const myCard = cards.find(c => c.id === playerMyLeaderId);
+        const oppCard = cards.find(c => c.id === playerOpponentLeaderId);
 
         return (
           <div className="fixed inset-0 z-[130] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-            <div className="bg-[#151515] border border-white/10 w-full max-w-md rounded-3xl overflow-hidden shadow-2xl relative flex flex-col max-h-[90vh]">
+            <div className="bg-[#151515] border border-white/10 w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl relative flex flex-col max-h-[90vh]">
               <div className="p-4 border-b border-white/10 flex justify-between items-center bg-black/20">
                 <div>
                   <h3 className="text-xl font-black text-white uppercase italic">
@@ -940,7 +976,7 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
                 </button>
               </div>
 
-              <div className="p-6 overflow-y-auto space-y-6">
+              <div className="p-5 overflow-y-auto space-y-5">
                 {/* Score Selector - Bo1 Win/Loss */}
                 <div>
                   <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest block mb-2 text-center">
@@ -948,68 +984,162 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
                   </label>
                   <div className="flex gap-3">
                     <button 
+                      type="button"
                       onClick={() => setPlayerMatchResult('win')}
-                      className={`flex-1 py-4 rounded-2xl font-black text-lg flex items-center justify-center gap-2 border-2 transition-all ${playerMatchResult === 'win' ? 'bg-green-500/20 text-green-400 border-green-500 scale-[1.02] shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'bg-[#111] text-white/40 border-white/5 hover:border-green-500/50 hover:text-green-500/50'}`}
+                      className={`flex-1 py-3.5 rounded-2xl font-black text-base flex items-center justify-center gap-2 border-2 transition-all ${playerMatchResult === 'win' ? 'bg-green-500/20 text-green-400 border-green-500 scale-[1.02] shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'bg-[#111] text-white/40 border-white/5 hover:border-green-500/50 hover:text-green-500/50'}`}
                     >
-                      <Trophy size={20} /> {lang === 'es' ? 'Victoria' : 'Win'}
+                      <Trophy size={18} /> {lang === 'es' ? 'Victoria' : 'Win'}
                     </button>
                     <button 
+                      type="button"
                       onClick={() => setPlayerMatchResult('loss')}
-                      className={`flex-1 py-4 rounded-2xl font-black text-lg flex items-center justify-center gap-2 border-2 transition-all ${playerMatchResult === 'loss' ? 'bg-red-500/20 text-red-400 border-red-500 scale-[1.02] shadow-[0_0_15px_rgba(239,68,68,0.3)]' : 'bg-[#111] text-white/40 border-white/5 hover:border-red-500/50 hover:text-red-500/50'}`}
+                      className={`flex-1 py-3.5 rounded-2xl font-black text-base flex items-center justify-center gap-2 border-2 transition-all ${playerMatchResult === 'loss' ? 'bg-red-500/20 text-red-400 border-red-500 scale-[1.02] shadow-[0_0_15px_rgba(239,68,68,0.3)]' : 'bg-[#111] text-white/40 border-white/5 hover:border-red-500/50 hover:text-red-500/50'}`}
                     >
-                      <X size={20} /> {lang === 'es' ? 'Derrota' : 'Loss'}
+                      <X size={18} /> {lang === 'es' ? 'Derrota' : 'Loss'}
                     </button>
                   </div>
                 </div>
 
-                {/* Selector de Líder */}
+                {/* Líderes Selector (Propio y Rival) */}
                 <div>
-                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-2 text-center">
-                    {lang === 'es' ? 'Selector de Líder' : 'Leader Selector'}
-                  </label>
-                  <div className="flex flex-col items-center">
-                    <button 
-                      type="button"
-                      onClick={() => {
-                        setPlayerSearchQuery('');
-                        setPlayerSearchColor('Todos');
-                        setIsPlayerLeaderSearchOpen(true);
-                      }}
-                      className="w-44 aspect-[2.5/3.5] bg-[#111] border-2 border-dashed border-white/20 hover:border-purple-500 rounded-2xl flex flex-col items-center justify-center gap-2 transition-all relative overflow-hidden group shadow-xl"
-                    >
-                      {playerMyLeaderId && myCard ? (
-                        <>
-                          <img 
-                            src={formatCardImageUrl(myCard.imageUrl)} 
-                            alt={myCard.name} 
-                            className="absolute inset-0 w-full h-full object-cover object-top" 
-                          />
-                          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <span className="text-white font-bold text-xs bg-black/70 px-3 py-1.5 rounded-full backdrop-blur-sm border border-white/20">
-                              {lang === 'es' ? 'Cambiar Líder' : 'Change Leader'}
-                            </span>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-white/50 group-hover:text-purple-400 group-hover:bg-purple-500/10 transition-all">
-                            <Search size={22} />
-                          </div>
-                          <span className="text-xs font-bold text-white/50 group-hover:text-white transition-colors px-2 text-center">
-                            {lang === 'es' ? 'Seleccionar Líder' : 'Select Leader'}
-                          </span>
-                        </>
-                      )}
-                    </button>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-[11px] font-black text-gray-300 uppercase tracking-wider">
+                      {lang === 'es' ? 'Líderes de la Partida' : 'Match Leaders'}
+                    </label>
+                    <span className="text-[10px] text-emerald-400 font-bold">
+                      {lang === 'es' ? '★ Puntos extra de Liga' : '★ League Bonus Pts'}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-gray-400 mb-3">
+                    {lang === 'es' 
+                      ? 'Indica tu líder y el líder de tu rival para que ambos registren correctamente su líder en la clasificación de la liga.'
+                      : 'Select both your leader and your opponent\'s leader to ensure both count towards leader points.'}
+                  </p>
 
-                    {playerMyLeaderId && (
-                      <div className="mt-2 text-center">
-                        <p className="text-xs font-bold text-purple-300 truncate max-w-[220px]">
-                          {myCard?.name || playerMyLeaderId}
-                        </p>
-                        <span className="text-[10px] font-mono text-white/40">
-                          {myCard?.cardNumber || ''}
+                  <div className={`grid ${oppId ? 'grid-cols-2' : 'grid-cols-1'} gap-3`}>
+                    {/* Tu Líder */}
+                    <div className="bg-[#111] p-3 rounded-2xl border border-white/5 flex flex-col items-center">
+                      <span className="text-[11px] font-black text-white mb-2 truncate max-w-full text-center">
+                        🛡️ {lang === 'es' ? 'Tu Líder' : 'Your Leader'}
+                      </span>
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          setPlayerSelectingLeaderTarget('my');
+                          setPlayerSearchQuery('');
+                          setPlayerSearchColor('Todos');
+                          setIsPlayerLeaderSearchOpen(true);
+                        }}
+                        className="w-full max-w-[130px] aspect-[2.5/3.5] bg-black/40 border-2 border-dashed border-white/20 hover:border-purple-500 rounded-2xl flex flex-col items-center justify-center gap-1.5 transition-all relative overflow-hidden group shadow-lg"
+                      >
+                        {playerMyLeaderId && myCard ? (
+                          <>
+                            <img 
+                              src={formatCardImageUrl(myCard.imageUrl)} 
+                              alt={myCard.name} 
+                              className="absolute inset-0 w-full h-full object-cover object-top" 
+                            />
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                              <span className="text-white font-bold text-[10px] bg-black/70 px-2 py-1 rounded-full backdrop-blur-sm border border-white/20">
+                                {lang === 'es' ? 'Cambiar' : 'Change'}
+                              </span>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/50 group-hover:text-purple-400 group-hover:bg-purple-500/10 transition-all">
+                              <Search size={18} />
+                            </div>
+                            <span className="text-[10px] font-bold text-white/50 group-hover:text-white transition-colors px-1 text-center">
+                              {lang === 'es' ? 'Elegir Líder' : 'Pick Leader'}
+                            </span>
+                          </>
+                        )}
+                      </button>
+
+                      {playerMyLeaderId && myCard ? (
+                        <div className="mt-2 text-center w-full">
+                          <p className="text-[11px] font-bold text-purple-300 truncate" title={myCard.name}>
+                            {myCard.name}
+                          </p>
+                          <span className="text-[9px] font-mono text-white/40 block">
+                            {myCard.cardNumber || ''}
+                          </span>
+                        </div>
+                      ) : (
+                        <span className="text-[10px] text-yellow-400 font-bold mt-2">
+                          * {lang === 'es' ? 'Obligatorio' : 'Required'}
                         </span>
+                      )}
+                    </div>
+
+                    {/* Líder del Rival */}
+                    {oppId && (
+                      <div className="bg-[#111] p-3 rounded-2xl border border-white/5 flex flex-col items-center">
+                        <span className="text-[11px] font-black text-white mb-2 truncate max-w-full text-center" title={oppName}>
+                          ⚔️ {oppName}
+                        </span>
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            setPlayerSelectingLeaderTarget('opponent');
+                            setPlayerSearchQuery('');
+                            setPlayerSearchColor('Todos');
+                            setIsPlayerLeaderSearchOpen(true);
+                          }}
+                          className="w-full max-w-[130px] aspect-[2.5/3.5] bg-black/40 border-2 border-dashed border-white/20 hover:border-orange-500 rounded-2xl flex flex-col items-center justify-center gap-1.5 transition-all relative overflow-hidden group shadow-lg"
+                        >
+                          {playerOpponentLeaderId && oppCard ? (
+                            <>
+                              <img 
+                                src={formatCardImageUrl(oppCard.imageUrl)} 
+                                alt={oppCard.name} 
+                                className="absolute inset-0 w-full h-full object-cover object-top" 
+                              />
+                              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <span className="text-white font-bold text-[10px] bg-black/70 px-2 py-1 rounded-full backdrop-blur-sm border border-white/20">
+                                  {lang === 'es' ? 'Cambiar' : 'Change'}
+                                </span>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/50 group-hover:text-orange-400 group-hover:bg-orange-500/10 transition-all">
+                                <Search size={18} />
+                              </div>
+                              <span className="text-[10px] font-bold text-white/50 group-hover:text-white transition-colors px-1 text-center">
+                                {lang === 'es' ? 'Elegir Líder' : 'Pick Leader'}
+                              </span>
+                            </>
+                          )}
+                        </button>
+
+                        {playerOpponentLeaderId && oppCard ? (
+                          <div className="mt-2 text-center w-full">
+                            <p className="text-[11px] font-bold text-orange-300 truncate" title={oppCard.name}>
+                              {oppCard.name}
+                            </p>
+                            <div className="flex items-center justify-center gap-1">
+                              <span className="text-[9px] font-mono text-white/40">
+                                {oppCard.cardNumber || ''}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setPlayerOpponentLeaderId(null);
+                                }}
+                                className="text-[9px] text-red-400 hover:text-red-300 underline ml-1"
+                              >
+                                ({lang === 'es' ? 'quitar' : 'clear'})
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <span className="text-[10px] text-gray-500 mt-2">
+                            {lang === 'es' ? 'Recomendado' : 'Recommended'}
+                          </span>
+                        )}
                       </div>
                     )}
                   </div>
@@ -1045,7 +1175,9 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
               <div>
                 <h3 className="text-lg sm:text-xl font-black text-white flex items-center gap-2">
                   <span className="text-purple-400">🛡️</span>
-                  {lang === 'es' ? 'Seleccionar Mi Líder' : 'Select My Leader'}
+                  {playerSelectingLeaderTarget === 'my' 
+                    ? (lang === 'es' ? 'Seleccionar Tu Líder' : 'Select Your Leader') 
+                    : (lang === 'es' ? 'Seleccionar Líder del Rival' : 'Select Opponent Leader')}
                 </h3>
                 <p className="text-xs text-white/40 mt-0.5">
                   {lang === 'es' ? 'Solo líderes oficiales (sin cartas Z-Líder)' : 'Standard leaders only (excluding Z-Leaders)'}
@@ -1122,7 +1254,11 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
                         <div
                           key={card.id}
                           onClick={() => {
-                            setPlayerMyLeaderId(card.id);
+                            if (playerSelectingLeaderTarget === 'my') {
+                              setPlayerMyLeaderId(card.id);
+                            } else {
+                              setPlayerOpponentLeaderId(card.id);
+                            }
                             setIsPlayerLeaderSearchOpen(false);
                           }}
                           className="bg-[#121212] border border-white/10 hover:border-purple-500 rounded-2xl p-2.5 relative overflow-hidden transition-all flex flex-col group/card cursor-pointer select-none hover:shadow-xl hover:shadow-purple-500/10 hover:-translate-y-1 active:scale-[0.98]"

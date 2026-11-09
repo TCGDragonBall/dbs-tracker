@@ -15,6 +15,15 @@ export interface TurtleAdminAdjustment {
   disqualified?: boolean;
 }
 
+export interface TurtleManualPlayer {
+  userId: string;
+  displayName: string;
+  email?: string;
+  notes?: string;
+  status: 'pending' | 'paid';
+  createdAt?: any;
+}
+
 export interface TurtleEvent {
   id: string;
   type: EventType;
@@ -27,6 +36,7 @@ export interface TurtleEvent {
   description: string;
   status: EventStatus;
   botPlayers?: { userId: string; displayName: string; status: string }[];
+  manualPlayers?: TurtleManualPlayer[];
   adminAdjustments?: Record<string, TurtleAdminAdjustment>;
   groups?: TurtleGroup[];
   createdAt: any;

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Check, Clock, User as UserIcon, AlertCircle, Trash2, Play, ExternalLink, Shuffle, Users } from 'lucide-react';
+import { ArrowLeft, Check, Clock, User as UserIcon, AlertCircle, Trash2, Play, ExternalLink, Shuffle, Users, UserPlus, Search, X } from 'lucide-react';
 import { collection, query, where, onSnapshot, doc, updateDoc, getDocs, deleteDoc, setDoc, addDoc, serverTimestamp, writeBatch } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../../firebase';
-import { TurtleEvent, TurtleRegistration, TurtleUserInfo, TurtleGroup, TurtleMatch } from './types';
+import { TurtleEvent, TurtleRegistration, TurtleUserInfo, TurtleGroup, TurtleMatch, TurtleManualPlayer } from './types';
 import { generateSwissRound1, generateRoundRobinMatches, generateLeagueGroupsMatches, distributePlayersIntoGroups, getRecommendedGroupCount, saveMatchesToFirestore } from './tournamentEngine';
 import { TurtleEventActiveAdmin } from './TurtleEventActiveAdmin';
 
@@ -31,14 +31,45 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
   const [loading, setLoading] = useState(true);
   const [isDistributingGroups, setIsDistributingGroups] = useState(false);
 
+  // Manual player modal states
+  const [showAddPlayerModal, setShowAddPlayerModal] = useState(false);
+  const [addPlayerTab, setAddPlayerTab] = useState<'manual' | 'existing'>('manual');
+  const [manualName, setManualName] = useState('');
+  const [manualEmail, setManualEmail] = useState('');
+  const [manualNotes, setManualNotes] = useState('');
+  const [manualStatus, setManualStatus] = useState<'paid' | 'pending'>('paid');
+  const [selectedExistingUserId, setSelectedExistingUserId] = useState('');
+  const [existingUserSearch, setExistingUserSearch] = useState('');
+  const [allPlatformUsers, setAllPlatformUsers] = useState<{ id: string; displayName: string; email?: string }[]>([]);
+  const [isSavingPlayer, setIsSavingPlayer] = useState(false);
+
   const botList = event?.botPlayers || [];
+  const manualList = event?.manualPlayers || [];
   const allEnrolledPlayers = [
-    ...registrations,
+    ...registrations.map(r => ({
+      ...r,
+      isBot: false,
+      isManual: false,
+      playerType: 'registered' as const
+    })),
+    ...manualList.map(m => ({
+      id: m.userId,
+      userId: m.userId,
+      status: m.status as 'pending' | 'paid',
+      isBot: false,
+      isManual: true,
+      playerType: 'manual' as const,
+      displayName: m.displayName,
+      email: m.email,
+      notes: m.notes
+    })),
     ...botList.map(b => ({
       id: b.userId,
       userId: b.userId,
       status: b.status as 'pending' | 'paid',
       isBot: true,
+      isManual: false,
+      playerType: 'bot' as const,
       displayName: b.displayName
     }))
   ];
@@ -73,10 +104,18 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
       try {
         const usersSnapshot = await getDocs(collection(db, 'users'));
         const usersData: Record<string, TurtleUserInfo> = {};
+        const platformUsersList: { id: string; displayName: string; email?: string }[] = [];
+
         usersSnapshot.forEach(userDoc => {
+          const data = userDoc.data();
+          const officialName = data.officialName || data.discordUsername || data.displayName || data.accountName || 'Unknown';
+          platformUsersList.push({
+            id: userDoc.id,
+            displayName: officialName,
+            email: data.email
+          });
+
           if (userIds.has(userDoc.id)) {
-            const data = userDoc.data();
-            const officialName = data.officialName || data.discordUsername || data.displayName || 'Unknown';
             usersData[userDoc.id] = {
               displayName: data.displayName || 'Unknown',
               officialName: officialName,
@@ -91,6 +130,7 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
           }
         });
         setUsersInfo(usersData);
+        setAllPlatformUsers(platformUsersList);
       } catch (err) {
         console.error("Error fetching users:", err);
       }
@@ -104,7 +144,7 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
     return () => unsubscribe();
   }, [eventId]);
 
-  const handleTogglePayment = async (regId: string, currentStatus: string, isBot?: boolean) => {
+  const handleTogglePayment = async (regId: string, currentStatus: string, isBot?: boolean, isManual?: boolean) => {
     if (!event) return;
     try {
       if (isBot) {
@@ -114,28 +154,99 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
           botPlayers[botIndex].status = currentStatus === 'paid' ? 'pending' : 'paid';
           await updateDoc(doc(db, 'ts_tournaments', event.id), { botPlayers });
         }
+      } else if (isManual) {
+        const manualPlayers = [...(event.manualPlayers || [])];
+        const mIndex = manualPlayers.findIndex(m => m.userId === regId);
+        if (mIndex !== -1) {
+          manualPlayers[mIndex].status = currentStatus === 'paid' ? 'pending' : 'paid';
+          await updateDoc(doc(db, 'ts_tournaments', event.id), { manualPlayers });
+        }
       } else {
         await updateDoc(doc(db, 'ts_registrations', regId), {
           status: currentStatus === 'paid' ? 'pending' : 'paid'
         });
       }
     } catch (error) {
-      handleFirestoreError(error, OperationType.UPDATE, isBot ? 'ts_tournaments' : 'ts_registrations');
+      handleFirestoreError(error, OperationType.UPDATE, (isBot || isManual) ? 'ts_tournaments' : 'ts_registrations');
     }
   };
 
-  const handleRemoveRegistration = async (regId: string, isBot?: boolean) => {
+  const handleRemoveRegistration = async (regId: string, isBot?: boolean, isManual?: boolean) => {
     if (!event) return;
     if (window.confirm(lang === 'es' ? '¿Seguro que quieres eliminar esta inscripción?' : 'Are you sure you want to remove this registration?')) {
       try {
         if (isBot) {
           const botPlayers = (event.botPlayers || []).filter(b => b.userId !== regId);
           await updateDoc(doc(db, 'ts_tournaments', event.id), { botPlayers });
+        } else if (isManual) {
+          const manualPlayers = (event.manualPlayers || []).filter(m => m.userId !== regId);
+          await updateDoc(doc(db, 'ts_tournaments', event.id), { manualPlayers });
         } else {
           await deleteDoc(doc(db, 'ts_registrations', regId));
         }
       } catch (error) {
-        handleFirestoreError(error, OperationType.DELETE, isBot ? 'ts_tournaments' : 'ts_registrations');
+        handleFirestoreError(error, OperationType.DELETE, (isBot || isManual) ? 'ts_tournaments' : 'ts_registrations');
+      }
+    }
+  };
+
+  const handleAddPlayerSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!event || isSavingPlayer) return;
+
+    if (addPlayerTab === 'manual') {
+      if (!manualName.trim()) {
+        alert(lang === 'es' ? 'Introduce el nombre o alias del jugador.' : 'Please enter player name or alias.');
+        return;
+      }
+      try {
+        setIsSavingPlayer(true);
+        const newPlayer: TurtleManualPlayer = {
+          userId: `manual_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          displayName: manualName.trim(),
+          email: manualEmail.trim() || undefined,
+          notes: manualNotes.trim() || undefined,
+          status: manualStatus,
+          createdAt: new Date().toISOString()
+        };
+        const currentManuals = event.manualPlayers || [];
+        await updateDoc(doc(db, 'ts_tournaments', event.id), {
+          manualPlayers: [...currentManuals, newPlayer]
+        });
+        setManualName('');
+        setManualEmail('');
+        setManualNotes('');
+        setManualStatus('paid');
+        setShowAddPlayerModal(false);
+      } catch (err) {
+        console.error('Error adding manual player:', err);
+        handleFirestoreError(err, OperationType.UPDATE, 'ts_tournaments');
+        alert(lang === 'es' ? 'Error al añadir jugador manual.' : 'Error adding manual player.');
+      } finally {
+        setIsSavingPlayer(false);
+      }
+    } else {
+      if (!selectedExistingUserId) {
+        alert(lang === 'es' ? 'Selecciona un usuario registrado.' : 'Please select a registered user.');
+        return;
+      }
+      try {
+        setIsSavingPlayer(true);
+        await addDoc(collection(db, 'ts_registrations'), {
+          eventId: event.id,
+          userId: selectedExistingUserId,
+          status: manualStatus,
+          createdAt: serverTimestamp()
+        });
+        setSelectedExistingUserId('');
+        setExistingUserSearch('');
+        setShowAddPlayerModal(false);
+      } catch (err) {
+        console.error('Error registering existing user:', err);
+        handleFirestoreError(err, OperationType.CREATE, 'ts_registrations');
+        alert(lang === 'es' ? 'Error al inscribir usuario.' : 'Error registering user.');
+      } finally {
+        setIsSavingPlayer(false);
       }
     }
   };
@@ -222,7 +333,11 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
 
   const handleDistributeGroups = async () => {
     if (!event) return;
-    const allPlayerIds = [...registrations.map(r => r.userId), ...(event.botPlayers?.map(b => b.userId) || [])];
+    const allPlayerIds = [
+      ...registrations.map(r => r.userId),
+      ...(event.manualPlayers?.map(m => m.userId) || []),
+      ...(event.botPlayers?.map(b => b.userId) || [])
+    ];
     if (allPlayerIds.length < 2) {
       alert(lang === 'es' ? 'Se necesitan al menos 2 jugadores para realizar el sorteo de grupos.' : 'At least 2 players are needed to distribute into groups.');
       return;
@@ -262,8 +377,9 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
 
   const handleStartEventClick = () => {
     const realPaid = registrations.filter(r => r.status === 'paid').map(r => r.userId);
+    const manualPaid = (event?.manualPlayers || []).filter(m => m.status === 'paid').map(m => m.userId);
     const botPaid = (event?.botPlayers || []).filter(b => b.status === 'paid').map(b => b.userId);
-    const paidPlayers = [...realPaid, ...botPaid];
+    const paidPlayers = [...realPaid, ...manualPaid, ...botPaid];
     
     if (paidPlayers.length < 2) {
       alert(lang === 'es' ? 'Se necesitan al menos 2 jugadores pagados para comenzar.' : 'At least 2 paid players are required to start.');
@@ -276,8 +392,9 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
   const handleStartEvent = async () => {
     if (!event) return;
     const realPaid = registrations.filter(r => r.status === 'paid').map(r => r.userId);
+    const manualPaid = (event.manualPlayers || []).filter(m => m.status === 'paid').map(m => m.userId);
     const botPaid = (event.botPlayers || []).filter(b => b.status === 'paid').map(b => b.userId);
-    const paidPlayers = [...realPaid, ...botPaid];
+    const paidPlayers = [...realPaid, ...manualPaid, ...botPaid];
     
     setShowConfirmStart(false);
     
@@ -368,9 +485,11 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
             <div className="flex items-center gap-3 flex-wrap">
               <p className="text-gray-400 font-bold text-sm">
                 {lang === 'es' ? 'Gestión de Inscritos' : 'Enrollment Management'} • {totalPlayerCount} {lang === 'es' ? 'jugadores' : 'players'}
-                {botList.length > 0 && (
+                {(botList.length > 0 || manualList.length > 0) && (
                   <span className="text-blue-400 font-semibold ml-1.5 text-xs">
-                    ({registrations.length} {lang === 'es' ? 'reales' : 'real'} + {botList.length} bots)
+                    ({registrations.length} {lang === 'es' ? 'web' : 'web'}
+                    {manualList.length > 0 ? ` + ${manualList.length} ${lang === 'es' ? 'manuales' : 'manual'}` : ''}
+                    {botList.length > 0 ? ` + ${botList.length} bots` : ''})
                   </span>
                 )}
               </p>
@@ -389,11 +508,19 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
         </div>
         
         {event.status === 'open' && isTurtleAdmin && (
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap items-center">
+            <button
+              onClick={() => setShowAddPlayerModal(true)}
+              className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold rounded-xl transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)] active:scale-95 text-sm"
+              title={lang === 'es' ? 'Añadir jugador manualmente o inscribir usuario registrado' : 'Manually add player or enroll registered user'}
+            >
+              <UserPlus size={18} />
+              <span>{lang === 'es' ? 'Añadir Jugador' : 'Add Player'}</span>
+            </button>
             <button
               onClick={handleAddBots}
               disabled={isAddingBots}
-              className={`flex items-center gap-2 px-6 py-3 font-bold rounded-xl transition-all shadow-lg ${
+              className={`flex items-center gap-2 px-5 py-3 font-bold rounded-xl transition-all shadow-lg ${
                 isAddingBots 
                   ? 'bg-blue-500/50 text-white/50 cursor-not-allowed' 
                   : 'bg-blue-500 hover:bg-blue-600 text-white active:scale-95'
@@ -540,16 +667,38 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
                         <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
                           {group.playerIds.map(pId => {
                             const botPlayer = (event.botPlayers || []).find(b => b.userId === pId);
+                            const manualPlayer = (event.manualPlayers || []).find(m => m.userId === pId);
                             const u = usersInfo[pId];
-                            const pName = botPlayer?.displayName || u?.officialName || u?.discordUsername || u?.displayName || 'Unknown Player';
-                            const isPaid = botPlayer ? botPlayer.status === 'paid' : registrations.find(r => r.userId === pId)?.status === 'paid';
+                            const pName = botPlayer?.displayName 
+                              || manualPlayer?.displayName 
+                              || u?.officialName 
+                              || u?.discordUsername 
+                              || u?.displayName 
+                              || 'Unknown Player';
+                            const isPaid = botPlayer 
+                              ? botPlayer.status === 'paid' 
+                              : manualPlayer
+                              ? manualPlayer.status === 'paid'
+                              : registrations.find(r => r.userId === pId)?.status === 'paid';
                             return (
                               <div key={pId} className="flex items-center justify-between text-xs py-1 px-2 rounded-lg bg-white/5">
-                                <span className="font-bold text-gray-200 truncate">{pName}</span>
+                                <div className="flex items-center gap-1.5 truncate pr-2">
+                                  <span className="font-bold text-gray-200 truncate">{pName}</span>
+                                  {manualPlayer && (
+                                    <span className="text-[9px] px-1.5 py-0.2 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30 shrink-0 font-medium">
+                                      Manual
+                                    </span>
+                                  )}
+                                  {botPlayer && (
+                                    <span className="text-[9px] px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30 shrink-0 font-medium">
+                                      Bot
+                                    </span>
+                                  )}
+                                </div>
                                 {isPaid ? (
-                                  <span className="text-[10px] text-green-400 font-bold">✓ {lang === 'es' ? 'Pagado' : 'Paid'}</span>
+                                  <span className="text-[10px] text-green-400 font-bold shrink-0">✓ {lang === 'es' ? 'Pagado' : 'Paid'}</span>
                                 ) : (
-                                  <span className="text-[10px] text-yellow-400 font-bold">⏳ {lang === 'es' ? 'Pendiente' : 'Pending'}</span>
+                                  <span className="text-[10px] text-yellow-400 font-bold shrink-0">⏳ {lang === 'es' ? 'Pendiente' : 'Pending'}</span>
                                 )}
                               </div>
                             );
@@ -581,7 +730,7 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
           )}
 
           <div className="bg-[#151515] rounded-3xl p-6 border border-white/5 shadow-2xl">
-            {(registrations.length === 0 && (!event?.botPlayers || event.botPlayers.length === 0)) ? (
+            {allEnrolledPlayers.length === 0 ? (
               <div className="text-center py-12 text-gray-500">
                 {lang === 'es' ? 'Aún no hay inscritos en este evento.' : 'No players enrolled yet.'}
               </div>
@@ -599,31 +748,61 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-white/5">
-                    {[...registrations, ...(event?.botPlayers || []).map(b => ({ id: b.userId, userId: b.userId, status: b.status, isBot: true, displayName: b.displayName }))].map(reg => {
-                      const user: TurtleUserInfo | undefined = (reg as any).isBot 
+                    {allEnrolledPlayers.map(reg => {
+                      const user: TurtleUserInfo | undefined = reg.isBot 
                         ? { displayName: (reg as any).displayName, officialName: (reg as any).displayName, accountName: (reg as any).displayName, email: 'bot@capsulecorp.com' } 
+                        : reg.isManual
+                        ? { displayName: (reg as any).displayName, officialName: (reg as any).displayName, accountName: 'Manual', email: (reg as any).email || (reg as any).notes || '' }
                         : usersInfo[reg.userId];
                       const isPaid = reg.status === 'paid';
-                      const playerName = user?.officialName || user?.displayName || 'Unknown User';
+                      const playerName = reg.isManual 
+                        ? (reg as any).displayName 
+                        : (user?.officialName || user?.displayName || 'Unknown User');
                       const assignedGroup = event.type === 'league' ? event.groups?.find(g => g.playerIds.includes(reg.userId)) : null;
 
                       return (
                         <tr key={reg.id} className="group hover:bg-white/5 transition-colors">
                           <td className="py-4 pl-4">
                             <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white">
-                                <UserIcon size={18} />
+                              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white ${
+                                reg.isManual 
+                                  ? 'bg-purple-600/20 text-purple-300 border border-purple-500/30' 
+                                  : reg.isBot 
+                                  ? 'bg-blue-600/20 text-blue-300 border border-blue-500/30' 
+                                  : 'bg-white/10 text-white'
+                              }`}>
+                                {reg.isManual ? <UserPlus size={18} /> : <UserIcon size={18} />}
                               </div>
                               <div>
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 flex-wrap">
                                   <p className="font-bold text-white">{playerName}</p>
-                                  {user?.accountName && user.accountName !== playerName && !(reg as any).isBot && (
+                                  {reg.isManual && (
+                                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30 uppercase tracking-wider">
+                                      {lang === 'es' ? 'Manual' : 'Manual'}
+                                    </span>
+                                  )}
+                                  {reg.isBot && (
+                                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30 uppercase tracking-wider">
+                                      Bot
+                                    </span>
+                                  )}
+                                  {user?.accountName && user.accountName !== playerName && !reg.isBot && !reg.isManual && (
                                     <span className="text-[11px] text-white/40" title={`${lang === 'es' ? 'Cuenta' : 'Account'}: ${user.accountName}`}>
                                       ({user.accountName})
                                     </span>
                                   )}
                                 </div>
-                                <p className="text-xs text-gray-400">{user?.email || ''}</p>
+                                <div className="flex items-center gap-2 text-xs text-gray-400">
+                                  {reg.isManual && (reg as any).notes && (
+                                    <span className="text-gray-400 italic">{(reg as any).notes}</span>
+                                  )}
+                                  {reg.isManual && (reg as any).email && (
+                                    <span>{(reg as any).email}</span>
+                                  )}
+                                  {!reg.isManual && !reg.isBot && (
+                                    <span>{user?.email || ''}</span>
+                                  )}
+                                </div>
                               </div>
                             </div>
                           </td>
@@ -641,41 +820,41 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
                             </td>
                           )}
                           <td className="py-4 text-center">
-                          <div className="flex justify-center">
+                            <div className="flex justify-center">
+                              <button
+                                onClick={() => handleTogglePayment(reg.id, reg.status, reg.isBot, reg.isManual)}
+                                className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all ${
+                                  isPaid 
+                                    ? 'bg-green-500/20 text-green-400 border border-green-500/30 hover:bg-green-500/30' 
+                                    : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 hover:bg-yellow-500/30'
+                                }`}
+                              >
+                                {isPaid ? (
+                                  <>
+                                    <Check size={14} /> {lang === 'es' ? 'Pagado' : 'Paid'}
+                                  </>
+                                ) : (
+                                  <>
+                                    <Clock size={14} /> {lang === 'es' ? 'Pendiente' : 'Pending'}
+                                  </>
+                                )}
+                              </button>
+                            </div>
+                          </td>
+                          <td className="py-4 text-right pr-4">
                             <button
-                              onClick={() => handleTogglePayment(reg.id, reg.status, (reg as any).isBot)}
-                              className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all ${
-                                isPaid 
-                                  ? 'bg-green-500/20 text-green-400 border border-green-500/30 hover:bg-green-500/30' 
-                                  : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 hover:bg-yellow-500/30'
-                              }`}
+                              onClick={() => handleRemoveRegistration(reg.id, reg.isBot, reg.isManual)}
+                              className="p-2 text-red-400/50 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
+                              title={lang === 'es' ? 'Eliminar jugador / inscripción' : 'Remove player / registration'}
                             >
-                              {isPaid ? (
-                                <>
-                                  <Check size={14} /> {lang === 'es' ? 'Pagado' : 'Paid'}
-                                </>
-                              ) : (
-                                <>
-                                  <Clock size={14} /> {lang === 'es' ? 'Pendiente' : 'Pending'}
-                                </>
-                              )}
+                              <Trash2 size={18} />
                             </button>
-                          </div>
-                        </td>
-                        <td className="py-4 text-right pr-4">
-                          <button
-                            onClick={() => handleRemoveRegistration(reg.id, (reg as any).isBot)}
-                            className="p-2 text-red-400/50 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
-                            title={lang === 'es' ? 'Eliminar inscripción' : 'Remove registration'}
-                          >
-                            <Trash2 size={18} />
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
             </div>
           )}
         </div>
@@ -759,6 +938,229 @@ export const TurtleEventAdminView: React.FC<TurtleEventAdminViewProps> = ({
                   : (lang === 'es' ? 'Eliminar Definitivamente' : 'Delete Permanently')}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Manual & Registered Player Creation Modal */}
+      {showAddPlayerModal && (
+        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-fade-in">
+          <div className="bg-[#161616] border border-white/10 w-full max-w-lg rounded-3xl p-6 shadow-2xl flex flex-col gap-5 text-left max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-purple-500/20 text-purple-400 border border-purple-500/30 flex items-center justify-center shrink-0">
+                  <UserPlus size={20} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-white leading-tight">
+                    {lang === 'es' ? 'Añadir Jugador al Evento' : 'Add Player to Event'}
+                  </h3>
+                  <p className="text-xs text-gray-400 mt-0.5">
+                    {lang === 'es' 
+                      ? 'Inscribe un jugador manual / externo o selecciona un usuario de la app.' 
+                      : 'Manually register a player or enroll an existing user.'}
+                  </p>
+                </div>
+              </div>
+              <button 
+                onClick={() => {
+                  setShowAddPlayerModal(false);
+                  setManualName('');
+                  setManualEmail('');
+                  setManualNotes('');
+                  setSelectedExistingUserId('');
+                  setExistingUserSearch('');
+                }}
+                className="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Tab switch */}
+            <div className="flex rounded-xl bg-black/40 p-1 border border-white/5">
+              <button
+                type="button"
+                onClick={() => setAddPlayerTab('manual')}
+                className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${
+                  addPlayerTab === 'manual'
+                    ? 'bg-purple-600 text-white shadow-lg'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                {lang === 'es' ? '👤 Jugador Manual / Externo' : '👤 Manual / External Player'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setAddPlayerTab('existing')}
+                className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${
+                  addPlayerTab === 'existing'
+                    ? 'bg-purple-600 text-white shadow-lg'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                {lang === 'es' ? '👥 Usuario Registrado' : '👥 Registered App User'}
+              </button>
+            </div>
+
+            <form onSubmit={handleAddPlayerSubmit} className="space-y-4">
+              {addPlayerTab === 'manual' ? (
+                <>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">
+                      {lang === 'es' ? 'Nombre o Alias del Jugador *' : 'Player Name or Alias *'}
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={manualName}
+                      onChange={(e) => setManualName(e.target.value)}
+                      placeholder={lang === 'es' ? 'ej. Pedro Pérez, SonGohan99, KameSenin...' : 'e.g. Peter Smith, SonGohan99...'}
+                      className="w-full px-4 py-2.5 bg-black/50 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-purple-500 transition-colors"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">
+                      {lang === 'es' ? 'Email (Opcional)' : 'Email (Optional)'}
+                    </label>
+                    <input
+                      type="email"
+                      value={manualEmail}
+                      onChange={(e) => setManualEmail(e.target.value)}
+                      placeholder={lang === 'es' ? 'ej. jugador@ejemplo.com' : 'e.g. player@example.com'}
+                      className="w-full px-4 py-2.5 bg-black/50 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-purple-500 transition-colors"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">
+                      {lang === 'es' ? 'Observaciones / Notas (Opcional)' : 'Notes / Remarks (Optional)'}
+                    </label>
+                    <input
+                      type="text"
+                      value={manualNotes}
+                      onChange={(e) => setManualNotes(e.target.value)}
+                      placeholder={lang === 'es' ? 'ej. Pago en efectivo en tienda, Teléfono, etc.' : 'e.g. Paid in cash at store, Phone, etc.'}
+                      className="w-full px-4 py-2.5 bg-black/50 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-purple-500 transition-colors"
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">
+                      {lang === 'es' ? 'Buscar Usuario Registrado' : 'Search Registered User'}
+                    </label>
+                    <div className="relative mb-2">
+                      <Search size={16} className="absolute left-3.5 top-3 text-gray-400" />
+                      <input
+                        type="text"
+                        value={existingUserSearch}
+                        onChange={(e) => setExistingUserSearch(e.target.value)}
+                        placeholder={lang === 'es' ? 'Filtrar por nombre o email...' : 'Filter by name or email...'}
+                        className="w-full pl-9 pr-4 py-2 bg-black/50 border border-white/10 rounded-xl text-white text-xs focus:outline-none focus:border-purple-500 transition-colors"
+                      />
+                    </div>
+
+                    <div className="max-h-48 overflow-y-auto space-y-1.5 border border-white/10 rounded-xl p-2 bg-black/30">
+                      {(() => {
+                        const availableUsers = allPlatformUsers.filter(u => 
+                          !registrations.some(r => r.userId === u.id) &&
+                          (!existingUserSearch.trim() || 
+                            u.displayName.toLowerCase().includes(existingUserSearch.toLowerCase()) || 
+                            (u.email && u.email.toLowerCase().includes(existingUserSearch.toLowerCase())))
+                        );
+
+                        if (availableUsers.length === 0) {
+                          return (
+                            <div className="p-4 text-center text-xs text-gray-500">
+                              {lang === 'es' 
+                                ? 'No se encontraron usuarios disponibles para inscribir.' 
+                                : 'No available users found to enroll.'}
+                            </div>
+                          );
+                        }
+
+                        return availableUsers.map(u => (
+                          <div 
+                            key={u.id}
+                            onClick={() => setSelectedExistingUserId(u.id)}
+                            className={`p-2 rounded-lg cursor-pointer text-xs flex items-center justify-between transition-colors ${
+                              selectedExistingUserId === u.id
+                                ? 'bg-purple-600 text-white font-bold'
+                                : 'bg-white/5 hover:bg-white/10 text-gray-200'
+                            }`}
+                          >
+                            <span className="truncate">{u.displayName}</span>
+                            <span className="text-[10px] opacity-70 truncate max-w-[150px]">{u.email || ''}</span>
+                          </div>
+                        ));
+                      })()}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Payment status selector */}
+              <div>
+                <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">
+                  {lang === 'es' ? 'Estado Inicial del Pago' : 'Initial Payment Status'}
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setManualStatus('paid')}
+                    className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                      manualStatus === 'paid'
+                        ? 'bg-green-500/20 text-green-400 border-green-500/50 shadow-[0_0_10px_rgba(34,197,94,0.2)]'
+                        : 'bg-white/5 text-gray-400 border-white/10 hover:bg-white/10'
+                    }`}
+                  >
+                    <Check size={14} />
+                    <span>{lang === 'es' ? 'Pagado (Confirmado)' : 'Paid (Confirmed)'}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setManualStatus('pending')}
+                    className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                      manualStatus === 'pending'
+                        ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50 shadow-[0_0_10px_rgba(234,179,8,0.2)]'
+                        : 'bg-white/5 text-gray-400 border-white/10 hover:bg-white/10'
+                    }`}
+                  >
+                    <Clock size={14} />
+                    <span>{lang === 'es' ? 'Pendiente de Pago' : 'Pending Payment'}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Action buttons */}
+              <div className="flex justify-end gap-3 pt-3 border-t border-white/10">
+                <button
+                  type="button"
+                  onClick={() => setShowAddPlayerModal(false)}
+                  disabled={isSavingPlayer}
+                  className="px-4 py-2.5 rounded-xl text-white/70 hover:text-white hover:bg-white/10 font-bold transition-colors text-xs"
+                >
+                  {lang === 'es' ? 'Cancelar' : 'Cancel'}
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSavingPlayer}
+                  className="px-6 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold rounded-xl shadow-lg transition-all active:scale-95 text-xs flex items-center gap-2"
+                >
+                  {isSavingPlayer && (
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  )}
+                  <span>
+                    {isSavingPlayer 
+                      ? (lang === 'es' ? 'Inscribiendo...' : 'Enrolling...') 
+                      : (lang === 'es' ? 'Inscribir Jugador' : 'Enroll Player')}
+                  </span>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

@@ -219,11 +219,19 @@ export function calculateLeagueStandings(
   usersInfo: Record<string, TurtleUserInfo | { displayName: string; email?: string; [key: string]: any }>,
   cards?: any[]
 ): PlayerStanding[] {
-  // Collect all player IDs (registered users + bots)
+  // Collect all player IDs (registered users + manual + bots)
   const allUserIds = new Set<string>();
   const botMap = new Map<string, string>();
+  const manualMap = new Map<string, { displayName: string; email?: string }>();
 
   registrations.forEach(r => allUserIds.add(r.userId));
+
+  if (event.manualPlayers) {
+    event.manualPlayers.forEach(m => {
+      allUserIds.add(m.userId);
+      manualMap.set(m.userId, { displayName: m.displayName, email: m.email });
+    });
+  }
 
   if (event.botPlayers) {
     event.botPlayers.forEach(b => {
@@ -350,18 +358,21 @@ export function calculateLeagueStandings(
     };
 
     const isBot = botMap.has(uid);
+    const isManual = manualMap.has(uid);
     const uInfo = usersInfo[uid] as TurtleUserInfo | undefined;
 
     // Official tournament name: Player's configured official name/nick from "Mis Datos",
-    // falling back to discordUsername, displayName, or 'Unknown Player'
+    // falling back to manual display name, discordUsername, displayName, or 'Unknown Player'
     const officialName = isBot
       ? botMap.get(uid)!
+      : isManual
+      ? manualMap.get(uid)!.displayName
       : (uInfo?.officialName?.trim() || uInfo?.discordUsername?.trim() || uInfo?.displayName?.trim() || 'Unknown Player');
 
-    const accountName = isBot ? 'Bot' : (uInfo?.accountName || uInfo?.displayName || '');
-    const discordUsername = isBot ? '' : (uInfo?.discordUsername || '');
-    const fullName = isBot ? '' : (uInfo?.fullName || '');
-    const email = isBot ? 'bot' : usersInfo[uid]?.email;
+    const accountName = isBot ? 'Bot' : isManual ? 'Manual' : (uInfo?.accountName || uInfo?.displayName || '');
+    const discordUsername = isBot || isManual ? '' : (uInfo?.discordUsername || '');
+    const fullName = isBot || isManual ? '' : (uInfo?.fullName || '');
+    const email = isBot ? 'bot' : isManual ? (manualMap.get(uid)?.email || 'manual') : usersInfo[uid]?.email;
 
     const leaderDetails = Array.from(raw.uniqueLeadersMap.values());
     const uniqueBaseLeaders = leaderDetails.map(l => l.displayCode);
