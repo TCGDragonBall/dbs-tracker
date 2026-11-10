@@ -19,10 +19,11 @@ import {
   ShieldAlert, 
   ExternalLink,
   FileSpreadsheet,
-  Package
+  Package,
+  RotateCcw
 } from 'lucide-react';
 
-import { saveMatchesToFirestore, generateSwissNextRound } from './tournamentEngine';
+import { saveMatchesToFirestore, generateSwissNextRound, deleteRoundMatchesFromFirestore } from './tournamentEngine';
 
 interface Props {
   event: TurtleEvent;
@@ -269,6 +270,45 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
 
   const [showConfirmNextRound, setShowConfirmNextRound] = useState(false);
   const [showConfirmFinishLeague, setShowConfirmFinishLeague] = useState(false);
+  const [showConfirmRegenerateRound, setShowConfirmRegenerateRound] = useState(false);
+  const [isRegeneratingRound, setIsRegeneratingRound] = useState(false);
+
+  const [selectedRound, setSelectedRound] = useState<number>(1);
+  const [selectedGroupFilter, setSelectedGroupFilter] = useState<string>('all');
+
+  const rounds = Array.from(new Set(matches.map(m => m.round))).sort((a, b) => a - b);
+  const maxRound = rounds.length > 0 ? Math.max(...rounds) : 1;
+
+  useEffect(() => {
+    if (rounds.length > 0 && !rounds.includes(selectedRound)) {
+      setSelectedRound(maxRound);
+    }
+  }, [maxRound, rounds, selectedRound]);
+
+  // Accurate list of players actually playing in this tournament
+  const participatingPlayerIds = React.useMemo(() => {
+    // 1. Gather all players who have appeared in tournament matches
+    const fromMatches = new Set<string>();
+    matches.forEach(m => {
+      if (m.player1Id) fromMatches.add(m.player1Id);
+      if (m.player2Id) fromMatches.add(m.player2Id);
+    });
+    if (fromMatches.size > 0) {
+      return Array.from(fromMatches);
+    }
+
+    // 2. Fallback before matches exist: confirmed paid players only
+    const confirmedRegs = registrations.filter(r => r.status === 'paid');
+    const manualPaid = (event.manualPlayers || []).filter(m => m.status === 'paid').map(m => m.userId);
+    const botPaid = (event.botPlayers || []).filter(b => b.status === 'paid').map(b => b.userId);
+    const combined = [...confirmedRegs.map(r => r.userId), ...manualPaid, ...botPaid];
+    const unique = Array.from(new Set(combined));
+    return unique.length > 0 ? unique : Array.from(new Set(registrations.map(r => r.userId)));
+  }, [matches, registrations, event.manualPlayers, event.botPlayers]);
+
+  const allPlayerIds = participatingPlayerIds;
+  const totalPlayers = participatingPlayerIds.length;
+  const totalAllowedRounds = Math.max(2, Math.ceil(Math.log2(totalPlayers || 2)));
 
   const handleNextRoundClick = () => {
     if (currentRoundMatches.some(m => m.status !== 'completed')) {
@@ -281,11 +321,39 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
   const handleNextRound = async () => {
     setShowConfirmNextRound(false);
     try {
-      const nextMatches = await generateSwissNextRound(event.id, matches, allPlayerIds, maxRound);
+      const nextMatches = await generateSwissNextRound(event.id, matches, participatingPlayerIds, maxRound);
       await saveMatchesToFirestore(nextMatches);
     } catch (error) {
       console.error(error);
       alert(lang === 'es' ? 'Error al generar ronda.' : 'Error generating round.');
+    }
+  };
+
+  const handleRegenerateRound = async () => {
+    if (isRegeneratingRound) return;
+    setIsRegeneratingRound(true);
+    setShowConfirmRegenerateRound(false);
+    try {
+      // Find all matches currently in this round
+      const roundMatches = matches.filter(m => m.round === maxRound);
+      const matchIds = roundMatches.map(m => m.id);
+
+      // Matches prior to this round
+      const priorMatches = matches.filter(m => m.round < maxRound);
+
+      // Delete current round matches from Firestore
+      await deleteRoundMatchesFromFirestore(matchIds);
+
+      // Generate new matches based on prior rounds
+      const nextMatches = await generateSwissNextRound(event.id, priorMatches, participatingPlayerIds, maxRound - 1);
+      await saveMatchesToFirestore(nextMatches);
+
+      alert(lang === 'es' ? `¡Ronda ${maxRound} regenerada con nuevos emparejamientos sin repeticiones!` : `Round ${maxRound} successfully regenerated with no duplicate pairings!`);
+    } catch (error) {
+      console.error('Error regenerating round:', error);
+      alert(lang === 'es' ? 'Error al regenerar la ronda.' : 'Error regenerating round.');
+    } finally {
+      setIsRegeneratingRound(false);
     }
   };
 
@@ -300,26 +368,6 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
       alert(lang === 'es' ? 'Error al finalizar la liga.' : 'Error finishing league.');
     }
   };
-
-  const [selectedRound, setSelectedRound] = useState<number>(1);
-  const [selectedGroupFilter, setSelectedGroupFilter] = useState<string>('all');
-
-  const rounds = Array.from(new Set(matches.map(m => m.round))).sort((a, b) => a - b);
-  const maxRound = rounds.length > 0 ? Math.max(...rounds) : 1;
-
-  useEffect(() => {
-    if (rounds.length > 0 && !rounds.includes(selectedRound)) {
-      setSelectedRound(maxRound);
-    }
-  }, [maxRound, rounds, selectedRound]);
-
-  const allPlayerIds = [
-    ...registrations.map(r => r.userId),
-    ...(event.manualPlayers?.map(m => m.userId) || []),
-    ...(event.botPlayers?.map(b => b.userId) || [])
-  ];
-  const totalPlayers = allPlayerIds.length;
-  const totalAllowedRounds = Math.max(2, Math.ceil(Math.log2(totalPlayers || 2)));
 
   // Calculate official standings
   const calculatedStandings = calculateLeagueStandings(
@@ -774,6 +822,27 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
                   )}
                 </>
               )}
+
+              {/* Admin Button to Regenerate Current Round (if maxRound > 1) */}
+              {isTurtleAdmin && event.type !== 'league' && selectedRound === maxRound && maxRound > 1 && (
+                <div className="mt-4 pt-4 border-t border-white/5 flex flex-col items-center gap-1.5">
+                  <button
+                    onClick={() => setShowConfirmRegenerateRound(true)}
+                    disabled={isRegeneratingRound}
+                    className="w-full py-2.5 px-4 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 hover:text-amber-300 border border-amber-500/30 hover:border-amber-500/50 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2"
+                  >
+                    <RotateCcw size={14} className={isRegeneratingRound ? 'animate-spin' : ''} />
+                    {lang === 'es' 
+                      ? `Rehacer emparejamientos de la Ronda ${maxRound}` 
+                      : `Regenerate Round ${maxRound} pairings`}
+                  </button>
+                  <span className="text-[11px] text-white/40 text-center">
+                    {lang === 'es'
+                      ? 'Vuelve a emparejar esta ronda evitando automáticamente rivales ya jugados.'
+                      : 'Re-pairs this round automatically avoiding previous opponents.'}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 
@@ -912,6 +981,43 @@ export const TurtleEventActiveAdmin: React.FC<Props> = ({
                 className="px-6 py-2 bg-orange-500 hover:bg-orange-600 text-white font-black rounded-xl shadow-lg transition-colors"
               >
                 {lang === 'es' ? 'Generar' : 'Generate'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirmation Modal for Regenerating Round */}
+      {showConfirmRegenerateRound && (
+        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-fade-in">
+          <div className="bg-[#151515] border border-amber-500/30 w-full max-w-md rounded-3xl p-6 shadow-2xl flex flex-col gap-6">
+            <h3 className="text-xl font-black text-white flex items-center gap-2">
+              <RotateCcw size={22} className="text-amber-400" />
+              {lang === 'es' ? `¿Rehacer Ronda ${maxRound}?` : `Regenerate Round ${maxRound}?`}
+            </h3>
+            <p className="text-white/70 text-sm">
+              {lang === 'es'
+                ? `Se eliminarán los emparejamientos actuales de la Ronda ${maxRound} y se volverán a generar según las reglas del sistema suizo, asegurando que ningún jugador repita contra un rival al que ya se enfrentó en rondas anteriores.`
+                : `Current pairings for Round ${maxRound} will be removed and regenerated using the Swiss algorithm, ensuring no player plays a previous opponent.`}
+            </p>
+            <div className="flex justify-end gap-3">
+              <button 
+                onClick={() => setShowConfirmRegenerateRound(false)}
+                className="px-4 py-2 rounded-xl text-white/70 hover:text-white hover:bg-white/10 font-bold transition-colors text-sm"
+              >
+                {lang === 'es' ? 'Cancelar' : 'Cancel'}
+              </button>
+              <button 
+                onClick={handleRegenerateRound}
+                disabled={isRegeneratingRound}
+                className="px-6 py-2 bg-amber-500 hover:bg-amber-600 text-black font-black rounded-xl shadow-lg transition-colors text-sm flex items-center gap-2"
+              >
+                {isRegeneratingRound ? (
+                  <span className="animate-spin">⏳</span>
+                ) : (
+                  <RotateCcw size={16} />
+                )}
+                {lang === 'es' ? 'Rehacer Emparejamientos' : 'Regenerate Pairings'}
               </button>
             </div>
           </div>

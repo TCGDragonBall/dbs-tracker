@@ -168,63 +168,197 @@ export const saveMatchesToFirestore = async (matches: Omit<TurtleMatch, 'id'>[])
   await batch.commit();
 };
 
-export const generateSwissNextRound = async (eventId: string, currentMatches: TurtleMatch[], playerIds: string[], currentRound: number) => {
-  // Simple next round generator based on points
-  // Calculate points
-  const points = new Map<string, number>();
-  playerIds.forEach(id => points.set(id, 0));
-  
-  currentMatches.forEach(m => {
-    if (m.status !== 'completed') return;
-    
-    if (m.player1Wins > m.player2Wins && m.player1Id) {
-      points.set(m.player1Id, (points.get(m.player1Id) || 0) + 3);
-    } else if (m.player1Wins === m.player2Wins && m.player1Id && m.player2Id) {
-      points.set(m.player1Id, (points.get(m.player1Id) || 0) + 1);
-      points.set(m.player2Id, (points.get(m.player2Id) || 0) + 1);
-    } else if (m.player2Wins > m.player1Wins && m.player2Id) {
-      points.set(m.player2Id, (points.get(m.player2Id) || 0) + 3);
-    } else if (!m.player2Id && m.player1Id) {
-      points.set(m.player1Id, (points.get(m.player1Id) || 0) + 3);
+export const deleteRoundMatchesFromFirestore = async (matchIds: string[]) => {
+  if (!matchIds || matchIds.length === 0) return;
+  const batch = writeBatch(db);
+  matchIds.forEach(id => {
+    const docRef = doc(db, 'ts_matches', id);
+    batch.delete(docRef);
+  });
+  await batch.commit();
+};
+
+export const generateSwissNextRound = async (
+  eventId: string,
+  currentMatches: TurtleMatch[],
+  playerIds: string[],
+  currentRound: number
+) => {
+  // 1. Gather all active participating players
+  const playerSet = new Set<string>();
+  (playerIds || []).forEach(id => {
+    if (id) playerSet.add(id);
+  });
+
+  // Include any player who participated in prior matches of this event
+  const priorMatches = currentMatches.filter(m => m.round <= currentRound);
+  priorMatches.forEach(m => {
+    if (m.player1Id) playerSet.add(m.player1Id);
+    if (m.player2Id) playerSet.add(m.player2Id);
+  });
+
+  const allActivePlayers = Array.from(playerSet);
+  if (allActivePlayers.length === 0) return [];
+
+  // 2. Track past matchups and prior byes
+  // opponentsPlayed: Map<playerId, Set<opponentId>>
+  const opponentsPlayed = new Map<string, Set<string>>();
+  const byesReceived = new Set<string>();
+  allActivePlayers.forEach(p => opponentsPlayed.set(p, new Set<string>()));
+
+  priorMatches.forEach(m => {
+    if (m.player1Id && m.player2Id) {
+      if (!opponentsPlayed.has(m.player1Id)) opponentsPlayed.set(m.player1Id, new Set());
+      if (!opponentsPlayed.has(m.player2Id)) opponentsPlayed.set(m.player2Id, new Set());
+      opponentsPlayed.get(m.player1Id)!.add(m.player2Id);
+      opponentsPlayed.get(m.player2Id)!.add(m.player1Id);
+    } else if (m.player1Id && !m.player2Id) {
+      byesReceived.add(m.player1Id);
+    } else if (!m.player1Id && m.player2Id) {
+      byesReceived.add(m.player2Id);
     }
   });
 
-  // Sort players by points
-  const sortedPlayers = [...playerIds].sort((a, b) => (points.get(b) || 0) - (points.get(a) || 0));
+  // 3. Calculate Swiss points up to currentRound
+  const points = new Map<string, number>();
+  allActivePlayers.forEach(p => points.set(p, 0));
 
-  const nextRoundMatches: Omit<TurtleMatch, 'id'>[] = [];
-  
-  // Greedy pairing (Not perfect Swiss, but works for basic cases)
-  const paired = new Set<string>();
-  
-  for (let i = 0; i < sortedPlayers.length; i++) {
-    const p1 = sortedPlayers[i];
-    if (paired.has(p1)) continue;
-    
-    let p2: string | null = null;
-    for (let j = i + 1; j < sortedPlayers.length; j++) {
-      if (!paired.has(sortedPlayers[j])) {
-        // Ideally check if they haven't played before, but simplified for now
-        p2 = sortedPlayers[j];
-        break;
+  priorMatches.forEach(m => {
+    if (m.status !== 'completed') return;
+
+    if (!m.player2Id && m.player1Id) {
+      // Bye awards 3 points
+      points.set(m.player1Id, (points.get(m.player1Id) || 0) + 3);
+    } else if (!m.player1Id && m.player2Id) {
+      points.set(m.player2Id, (points.get(m.player2Id) || 0) + 3);
+    } else if (m.player1Id && m.player2Id) {
+      if (m.player1Wins > m.player2Wins) {
+        points.set(m.player1Id, (points.get(m.player1Id) || 0) + 3);
+      } else if (m.player2Wins > m.player1Wins) {
+        points.set(m.player2Id, (points.get(m.player2Id) || 0) + 3);
+      } else {
+        // Tie / draw awards 1 point to each
+        points.set(m.player1Id, (points.get(m.player1Id) || 0) + 1);
+        points.set(m.player2Id, (points.get(m.player2Id) || 0) + 1);
       }
     }
-    
-    paired.add(p1);
-    if (p2) paired.add(p2);
-    
+  });
+
+  const nextRoundMatches: Omit<TurtleMatch, 'id'>[] = [];
+  let playersToPair = [...allActivePlayers];
+
+  // 4. Handle odd number of players (BYE allocation)
+  if (playersToPair.length % 2 !== 0) {
+    // Candidates who haven't had a BYE yet
+    let byeCandidates = playersToPair.filter(p => !byesReceived.has(p));
+    if (byeCandidates.length === 0) {
+      // If every player has already received a bye (rare), allow any player
+      byeCandidates = [...playersToPair];
+    }
+
+    // Sort bye candidates by score ascending (lowest points get priority for BYE in Swiss)
+    // Within same points, shuffle randomly to be completely fair
+    const shuffledByeCandidates = shuffle(byeCandidates);
+    shuffledByeCandidates.sort((a, b) => (points.get(a) || 0) - (points.get(b) || 0));
+
+    const byePlayer = shuffledByeCandidates[0];
+    playersToPair = playersToPair.filter(p => p !== byePlayer);
+
     nextRoundMatches.push({
       eventId,
       round: currentRound + 1,
-      player1Id: p1,
-      player2Id: p2,
-      player1Wins: p2 === null ? 1 : 0,
+      player1Id: byePlayer,
+      player2Id: null,
+      player1Wins: 1,
       player2Wins: 0,
       draws: 0,
-      status: p2 === null ? 'completed' : 'pending',
+      status: 'completed',
       createdAt: new Date()
     });
   }
-  
+
+  // 5. Backtracking Swiss Pairing Solver
+  // Sort players primarily by points descending. Within same score, shuffle randomly.
+  const shuffledPlayers = shuffle(playersToPair);
+  shuffledPlayers.sort((a, b) => (points.get(b) || 0) - (points.get(a) || 0));
+
+  // Recursive solver:
+  // allowRematches: false for strict Swiss, true as ultimate fallback if mathematically unavoidable
+  const solve = (unpaired: string[], allowRematches: boolean): [string, string][] | null => {
+    if (unpaired.length === 0) return [];
+    if (unpaired.length === 1) return null;
+
+    const p1 = unpaired[0];
+    const p1Points = points.get(p1) || 0;
+    const p1History = opponentsPlayed.get(p1) || new Set<string>();
+
+    let candidates = unpaired.slice(1);
+
+    if (!allowRematches) {
+      candidates = candidates.filter(c => !p1History.has(c));
+      if (candidates.length === 0) return null;
+    }
+
+    // Order candidate opponents:
+    // 1. Closest score distance first: |points(p1) - points(c)|
+    // 2. If allowing rematches as fallback, prefer candidates who have NOT been played before
+    candidates.sort((a, b) => {
+      if (allowRematches) {
+        const aPlayed = p1History.has(a) ? 1 : 0;
+        const bPlayed = p1History.has(b) ? 1 : 0;
+        if (aPlayed !== bPlayed) return aPlayed - bPlayed;
+      }
+      const diffA = Math.abs((points.get(a) || 0) - p1Points);
+      const diffB = Math.abs((points.get(b) || 0) - p1Points);
+      return diffA - diffB;
+    });
+
+    for (const p2 of candidates) {
+      const remaining = unpaired.filter(p => p !== p1 && p !== p2);
+      const subResult = solve(remaining, allowRematches);
+      if (subResult !== null) {
+        return [[p1, p2], ...subResult];
+      }
+    }
+
+    return null;
+  };
+
+  // Attempt strict pairing first (guarantees NO player faces an opponent they already played)
+  let pairings = solve(shuffledPlayers, false);
+
+  // If impossible (only occurs if rounds > player count - 1), relax constraint to minimize rematches
+  if (!pairings) {
+    pairings = solve(shuffledPlayers, true);
+  }
+
+  // Absolute safety fallback
+  if (!pairings) {
+    pairings = [];
+    for (let i = 0; i < shuffledPlayers.length; i += 2) {
+      if (i + 1 < shuffledPlayers.length) {
+        pairings.push([shuffledPlayers[i], shuffledPlayers[i + 1]]);
+      }
+    }
+  }
+
+  // 6. Convert pairs to match objects
+  pairings.forEach(([p1, p2]) => {
+    // 50% coin flip for table/side orientation
+    const [first, second] = Math.random() > 0.5 ? [p1, p2] : [p2, p1];
+    nextRoundMatches.push({
+      eventId,
+      round: currentRound + 1,
+      player1Id: first,
+      player2Id: second,
+      player1Wins: 0,
+      player2Wins: 0,
+      draws: 0,
+      status: 'pending',
+      createdAt: new Date()
+    });
+  });
+
   return nextRoundMatches;
 };
+
