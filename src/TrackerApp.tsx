@@ -133,6 +133,7 @@ const SET_BG: Record<string, string> = {
   'BT29': '/fearsomerivals.webp',
   'BT30': '/threegloriousfighters.webp',
   'BT31': 'https://www.dbs-cardgame.com/images/top/mv_ultra-bout-series04.jpg?1',
+  'BT32': 'https://www.dbs-cardgame.com/images/top/mv_ultra-bout-series05.jpg?1',
   'TB1': '/the_tournament_of_power.png',
   'TB2': '/worldmartialartstournament.png',
   'TB3': '/clashoffates.jpg',
@@ -836,7 +837,8 @@ const expansionGroups: ExpansionGroup[] = [
       { id: 'BT28', label: 'BT28: Prismatic Clash', sub: 'Main Set' },
       { id: 'BT29', label: 'BT29: Fearsome Rivals', sub: 'Main Set' },
       { id: 'BT30', label: 'BT30: Three Glorious Fighters', sub: 'Main Set' },
-      { id: 'BT31', label: 'BT31: Impact Beyond Dimensions', sub: 'Main Set' }
+      { id: 'BT31', label: 'BT31: Impact Beyond Dimensions', sub: 'Main Set' },
+      { id: 'BT32', label: 'BT32: Chromatic Ascension', sub: 'Main Set' }
     ]
   },
   {
@@ -1885,6 +1887,7 @@ import { bt28Data } from './data/bt28';
 import { bt29Data } from './data/bt29';
 import { bt30Data } from './data/bt30';
 import { bt31Data } from './data/bt31';
+import { bt32Data } from './data/bt32';
 import { fusionWorldData } from './data/fusion_world';
 import { sealedCardsData } from './data/sealed';
 import { playmatsData } from './data/playmats';
@@ -2263,6 +2266,7 @@ const SET_METADATA: Record<string, { sourceProduct: string; releaseDate?: string
   'BT8': { sourceProduct: 'Malicious Machinations', releaseDate: '22 de noviembre de 2019' },
   'BT9': { sourceProduct: 'Universal Onslaught', releaseDate: '14 de febrero de 2020' },
   'BT10': { sourceProduct: 'Rise of the Unison Warrior', releaseDate: '17 de julio de 2020' },
+  'BT32': { sourceProduct: 'Chromatic Ascension', releaseDate: '27 de noviembre de 2026' },
   'TB1': { sourceProduct: 'The Tournament of Power', releaseDate: '25 de mayo de 2018' },
   'TB2': { sourceProduct: 'World Martial Arts Tournament', releaseDate: '21 de septiembre de 2018' },
   'TB3': { sourceProduct: 'Clash of Fates', releaseDate: '1 de febrero de 2019' },
@@ -2512,6 +2516,11 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
   'P-761_PR': { sourceProduct: 'Deluxe Pack 2026 Vol.2' },
   'P-762': { sourceProduct: 'Deluxe Pack 2026 Vol.2' },
   'P-762_PR': { sourceProduct: 'Deluxe Pack 2026 Vol.2' },
+  // -CHROMATIC ASCENSION- Release Promo
+  'P-763': { sourceProduct: '-CHROMATIC ASCENSION- Release Promo' },
+  'P-763_PR': { sourceProduct: '-CHROMATIC ASCENSION- Release Promo TOP' },
+  'P-764': { sourceProduct: '-CHROMATIC ASCENSION- Release Promo' },
+  'P-764_PR': { sourceProduct: '-CHROMATIC ASCENSION- Release Promo TOP' },
 
   
   // Event Pack 09
@@ -2897,6 +2906,28 @@ const CARD_METADATA: Record<string, { sourceProduct: string; releaseDate?: strin
   // Premium Alt-Art Card Set 2026 Vol.2
     'BT26-049_CH26_W2_T16': { sourceProduct: 'CHAMPIONSHIP 26-27 Online/Offline Regionals Wave 2 Top 16 Alt-Art Card' },
   'BT28-078_CH26_GLD2': { sourceProduct: 'CHAMPIONSHIP 26-27 Golden Card 2026 Vol.2' },
+  // CHAMPIONSHIP 26-27 Finals
+  'BT1-053_PR06': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Pack' },
+  'BT13-135_PR02': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Pack' },
+  'BT19-150_PR02': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Pack' },
+  'BT20-099_PR02': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Pack' },
+  'BT24-118_PR03': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Pack' },
+  'BT25-137_PR02': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Pack' },
+  'BT26-019_PR': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Pack' },
+  'BT26-031_PR02': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Championship Top 16 Alt-Art Leader Card' },
+  'BT26-128_PR02': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Pack' },
+  'BT27-039_PR02': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Pack' },
+  'BT27-088_PR': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Pack' },
+  'BT27-138_PR02': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Pack' },
+  'BT28-081_PR': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Pack' },
+  'BT29-149_PR': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Championship Top 16 Alt-Art Card' },
+  'BT31-001_PR02': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Championship Alt-Art Leader Card Top 1~3' },
+  'EX19-12_PR02': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Pack' },
+  'EX21-04_PR02': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Pack' },
+  'EX23-09_PR02': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Pack' },
+  'P-219_PR04': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Pack' },
+  'P-575_PR03': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Pack' },
+  'P-690_PR02': { sourceProduct: 'CHAMPIONSHIP 26-27 Finals Pack' },
   'BT22-034_PACS2': { sourceProduct: 'Premium Alt-Art Card Set 2026 Vol.2' },
   'BT26-128_PACS2': { sourceProduct: 'Premium Alt-Art Card Set 2026 Vol.2' },
   'BT27-059_PACS2': { sourceProduct: 'Premium Alt-Art Card Set 2026 Vol.2' },
@@ -4039,6 +4070,37 @@ const IMAGE_OVERRIDES: Record<string, string> = {
   'P-761_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-761_PR.png',
   'P-762': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-762.png',
   'P-762_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-762_PR.png',
+  'P-763': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-763.png',
+  'P-763_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-763_b.png',
+  'P-763_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-763_PR.png',
+  'P-763_PR_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-763_PR_b.png',
+  'P-764': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-764.png',
+  'P-764_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-764_PR.png',
+
+  // CHAMPIONSHIP 26-27 Finals
+  'BT1-053_PR06': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT1-053_PR06.png',
+  'BT13-135_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT13-135_PR02.png',
+  'BT19-150_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT19-150_PR02.png',
+  'BT20-099_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT20-099_PR02.png',
+  'BT24-118_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT24-118_PR03.png',
+  'BT25-137_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT25-137_PR02.png',
+  'BT26-019_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT26-019_PR.png',
+  'BT26-031_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT26-031_PR02.png',
+  'BT26-031_PR02_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT26-031_PR02_b.png',
+  'BT26-128_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT26-128_PR02.png',
+  'BT27-039_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT27-039_PR02.png',
+  'BT27-088_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT27-088_PR.png',
+  'BT27-138_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT27-138_PR02.png',
+  'BT28-081_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT28-081_PR.png',
+  'BT29-149_PR': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT29-149_PR.png',
+  'BT31-001_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT31-001_PR02.png',
+  'BT31-001_PR02_b': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT31-001_PR02_b.png',
+  'EX19-12_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/EX19-12_PR02.png',
+  'EX21-04_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/EX21-04_PR02.png',
+  'EX23-09_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/EX23-09_PR02.png',
+  'P-219_PR04': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-219_PR04.png',
+  'P-575_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-575_PR03.png',
+  'P-690_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/P-690_PR02.png',
 
   'BT19-065_PR02': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT19-065_PR02.png',
   'BT19-065_PR03': 'https://www.dbs-cardgame.com/images/cardlist/cardimg/BT19-065_PR03.png',
@@ -5341,6 +5403,11 @@ const IMAGE_OVERRIDES: Record<string, string> = {
 };
 
 const LEGAL_STATUS_MAP: Record<string, { status: 'Banned' | 'Limited' | 'Errata' | 'Banned (BO1)'; date?: string }> = {
+  // New Bans & Limits (27 de noviembre de 2026)
+  'BT27-001': { status: 'Banned', date: '27 de noviembre de 2026' },
+  'P-761': { status: 'Banned', date: '27 de noviembre de 2026' },
+  'BT25-120': { status: 'Limited', date: '27 de noviembre de 2026' },
+
   // New Bans & Limits (3 de julio de 2026)
   'BT5-050': { status: 'Banned', date: '3 de julio de 2026' },
   'BT27-098': { status: 'Banned', date: '3 de julio de 2026' },
@@ -7329,7 +7396,7 @@ const renderSkillText = (text: string) => {
 const isHorizontalFormat = (card: Card) => card.type === 'Playmat';
 
 const isAlternative = (cardId: string) => {
-  if (cardId.includes('_SPR') || cardId.includes('_GDR') || cardId.includes('_W') || cardId.includes('_SLR')) return false;
+  if (cardId.includes('_SPR') || cardId.includes('_GDR') || cardId.includes('_AGDR') || cardId.includes('_W') || cardId.includes('_SLR')) return false;
   return cardId.includes('_');
 };
 
@@ -8064,7 +8131,7 @@ const getDeduplicatedStats = (subsetCards: Card[], inventory: InventoryItem[] | 
   const baseMap = new Map<string, { needed: number; owned: number }>();
   subsetCards.forEach(c => {
     let baseId = c.cardNumber.split('_')[0];
-    if (c.rarity === 'SPR' || c.rarity === 'GDR' || c.rarity === 'SCR' || c.id.includes('_SLR')) {
+    if (c.rarity === 'SPR' || c.rarity === 'GDR' || c.rarity === 'AGDR' || c.rarity === 'SCR' || c.id.includes('_SLR')) {
       baseId = `${baseId}_${c.rarity || 'SLR'}`;
     }
     const target = getTargetQuantity(c, goal);
@@ -8095,7 +8162,7 @@ const getTargetQuantity = (card: Card, goal: 'collector' | 'player') => {
     card.id.includes('_SLR') || 
     card.type.includes('Marker') || card.type.toLowerCase().includes('merit') || 
     card.type.includes('Playmat') || 
-    ['SCR', 'GDR', 'LEADER RARE'].includes(card.rarity) ||
+    ['SCR', 'GDR', 'AGDR', 'LEADER RARE'].includes(card.rarity) ||
     /_CS[1-3]/.test(card.id) ||
     /_TS0[1-9]/.test(card.id);
   return isOneUnitOnly ? 1 : 4;
@@ -8222,7 +8289,7 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
 
   const globalLeaderCards = cards.filter(c => c.type.toLowerCase().includes('leader'));
   const globalScrCards = cards.filter(c => c.rarity === 'SCR');
-  const globalGdrCards = cards.filter(c => c.rarity === 'GDR');
+  const globalGdrCards = cards.filter(c => c.rarity === 'GDR' || c.rarity === 'AGDR');
   const globalBattleCards = cards.filter(c => c.type.toLowerCase().includes('battle'));
   const globalDbrCards = cards.filter(c => c.rarity === 'DBR');
   const globalFpCards = cards.filter(c => c.expansion === 'FP');
@@ -8628,7 +8695,7 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
               id: achId,
               category: group.category,
               subCategory: set.label,
-              icon: ['SPR', 'SCR', 'GDR', 'GFR', 'DR', 'DPR'].includes(r) ? 'Star' : 'Award',
+              icon: ['SPR', 'SCR', 'GDR', 'AGDR', 'GFR', 'DR', 'DPR'].includes(r) ? 'Star' : 'Award',
               title: { es: `${set.id}: Rareza ${r}`, en: `${set.id}: Rarity ${r}` },
               description: { es: `Consigue todas las cartas ${r} de ${set.id}.`, en: `Collect all ${r} cards from ${set.id}.` },
               type: 'unique',
@@ -8660,7 +8727,7 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
           return false;
         };
         const isVirtual = isVirtualSet(set.id);
-        const sCardsBase = cards.filter(c => cardTagsCheckBase(c, set.id) && (isVirtual || !c.id.match(/_PR\d*$/) || c.rarity === 'SPR' || c.rarity === 'GDR'));
+        const sCardsBase = cards.filter(c => cardTagsCheckBase(c, set.id) && (isVirtual || !c.id.match(/_PR\d*$/) || c.rarity === 'SPR' || c.rarity === 'GDR' || c.rarity === 'AGDR'));
 
         list.push({
           id: baseAchId,
@@ -8668,7 +8735,7 @@ const getAchievementsList = (cards: Card[], groups: ExpansionGroup[], gameType: 
           subCategory: set.label,
           icon: 'Trophy',
           title: { es: `${set.id}: Set Base 100%`, en: `${set.id} Base Set 100%` },
-          description: { es: `Completado el set base de ${set.label} (incluyendo SPR y GDR, sin variantes promo).`, en: `Completed ${set.label} base set (including SPR and GDR, excluding promo variants).` },
+          description: { es: `Completado el set base de ${set.label} (incluyendo SPR, GDR y AGDR, sin variantes promo).`, en: `Completed ${set.label} base set (including SPR, GDR, and AGDR, excluding promo variants).` },
           type: 'unique',
           check: (cards, inventory, inventoryMap) => {
             const owned = sCardsBase.filter(l => (inventoryMap?.get(l.id) || 0) > 0);
@@ -8812,7 +8879,7 @@ const Dashboard = ({
           {/* Full background image spanning 100% of the banner */}
           <div 
             className="absolute inset-0 opacity-20 bg-cover bg-no-repeat bg-center mix-blend-lighten pointer-events-none transition-opacity duration-700 group-hover:opacity-30 animate-fade-in"
-            style={{ backgroundImage: "url('https://www.dbs-cardgame.com/images/product/dbs-b32/img_item.png?v01')" }}
+            style={{ backgroundImage: "url('https://www.dbs-cardgame.com/images/top/mv_ultra-bout-series05.jpg?1')" }}
           />
           
           {/* Ambient Glows */}
@@ -9191,6 +9258,8 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
         multiplier = 750;
       } else if (rarity === 'GDR') {
         multiplier = 2500;
+      } else if (rarity === 'AGDR') {
+        multiplier = 5000;
       }
       
       score += item.quantity * multiplier;
@@ -9499,6 +9568,7 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
                     <div className="flex justify-between"><span>Especial (SPR/L/*):</span> <span className="text-yellow-400 font-bold">250 pts</span></div>
                     <div className="flex justify-between"><span>Secreta (SCR):</span> <span className="text-yellow-400 font-bold">750 pts</span></div>
                     <div className="flex justify-between"><span>God Rare (GDR):</span> <span className="text-yellow-400 font-bold">2500 pts</span></div>
+                    <div className="flex justify-between"><span>Anniv. God Rare (AGDR):</span> <span className="text-yellow-400 font-bold">5000 pts</span></div>
                   </div>
                   <p className="text-[8.5px] italic text-gray-500 pt-1 border-t border-white/5">
                     {lang === 'es' ? '* Los puntos se multiplican según la cantidad de copias que tengas de cada carta.' : '* Points are multiplied based on the number of copies owned of each card.'}
@@ -9818,6 +9888,7 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
                 else if (stat.name === 'SPR') barColor = 'bg-orange-500';
                 else if (stat.name.startsWith('SCR')) barColor = 'bg-gradient-to-r from-purple-500 via-pink-500 to-red-500';
                 else if (stat.name === 'GDR') barColor = 'bg-gradient-to-r from-amber-400 via-yellow-300 to-yellow-600 animate-pulse';
+                else if (stat.name === 'AGDR') barColor = 'bg-gradient-to-r from-rose-500 via-amber-300 to-yellow-500 animate-pulse';
 
                 return (
                   <div key={stat.name} className="flex flex-col gap-2 p-1.5 rounded-xl hover:bg-white/[0.02] transition-colors">
@@ -10114,7 +10185,7 @@ const CardStats = ({ cards, inventory, collectionGoal, lang, achievementsList, u
 };
 
 const FoilEffect = ({ rarity, mouseX = 0, mouseY = 0, isMetal = false }: { rarity: string, mouseX?: number, mouseY?: number, isMetal?: boolean }) => {
-  const isHighRarity = ['SCR', 'GDR', 'LEADER RARE', 'SPR', 'SR', 'RLR', 'PRW'].includes(rarity) || rarity.includes('*');
+  const isHighRarity = ['SCR', 'GDR', 'AGDR', 'LEADER RARE', 'SPR', 'SR', 'RLR', 'PRW'].includes(rarity) || rarity.includes('*');
   const isFoil = isHighRarity || rarity === 'R' || isMetal;
   
   if (!isFoil) return null;
@@ -10129,7 +10200,7 @@ const FoilEffect = ({ rarity, mouseX = 0, mouseY = 0, isMetal = false }: { rarit
     isSR: rarity === 'SR' || rarity === 'SR*',
     isSPR: rarity === 'SPR',
     isSCR: rarity.startsWith('SCR'),
-    isGDR: rarity === 'GDR',
+    isGDR: rarity === 'GDR' || rarity === 'AGDR',
     isAlt: rarity.includes('*'),
     isMetal
   };
@@ -12170,7 +12241,7 @@ export default function TrackerApp() {
         const listGameType = list.gameType || 'masters';
         const isLeader = card.type === 'Leader' || card.type === 'Z-Leader' || card.type?.toLowerCase().includes('leader');
         if (listGameType === 'masters') {
-          const isSCRorGDR = card.rarity === 'SCR' || card.rarity === 'GDR' || card.rarity?.toLowerCase() === 'scr' || card.rarity?.toLowerCase() === 'gdr';
+          const isSCRorGDR = card.rarity === 'SCR' || card.rarity === 'GDR' || card.rarity === 'AGDR' || card.rarity?.toLowerCase() === 'scr' || card.rarity?.toLowerCase() === 'gdr' || card.rarity?.toLowerCase() === 'agdr';
           if (isLeader || isSCRorGDR) {
             return 1;
           }
@@ -13897,7 +13968,7 @@ export default function TrackerApp() {
     }
 
     // Handle alternatives toggle for BASE sets
-    const isAlt = isAlternative(card.id) && card.rarity !== 'SPR' && card.rarity !== 'GDR';
+    const isAlt = isAlternative(card.id) && card.rarity !== 'SPR' && card.rarity !== 'GDR' && card.rarity !== 'AGDR';
     const isVirtual = isVirtualSet(filters.expansion);
     
     const isExplicitExtraInAnySet = typeof EXTRA_SET_CARDS !== 'undefined' && Object.values(EXTRA_SET_CARDS).some(arr => arr.includes(card.id));
@@ -14173,10 +14244,10 @@ export default function TrackerApp() {
     
     cards.forEach(c => {
       let baseId = c.cardNumber.split('_')[0];
-      if (c.rarity === 'SPR' || c.rarity === 'GDR' || c.rarity === 'SCR' || c.id.includes('_SLR')) {
+      if (c.rarity === 'SPR' || c.rarity === 'GDR' || c.rarity === 'AGDR' || c.rarity === 'SCR' || c.id.includes('_SLR')) {
         baseId = `${baseId}_${c.rarity || 'SLR'}`;
       }
-      const isAlt = isAlternative(c.id) && c.rarity !== 'SPR' && c.rarity !== 'GDR';
+      const isAlt = isAlternative(c.id) && c.rarity !== 'SPR' && c.rarity !== 'GDR' && c.rarity !== 'AGDR';
       
       const target = getTargetQuantity(c, collectionGoal);
       const quantity = exactInventoryMap.get(c.id) || 0;
@@ -14255,7 +14326,7 @@ export default function TrackerApp() {
   useEffect(() => {
     const loadCards = async () => {
       console.log(`[DATA] Loading cards for gameType: ${gameType}`);
-      const mastersDataRaw = `${bt1Data}\n${promoData}\n${startersData}\n${expertsData}\n${expansionsData}\n${tb3Data}\n${tb2Data}\n${tb1Data}\n${eb1Data}\n${db3Data}\n${db2Data}\n${db1Data}\n${bt2Data}\n${bt3Data}\n${bt4Data}\n${bt5Data}\n${bt6Data}\n${bt7Data}\n${bt8Data}\n${bt9Data}\n${bt10Data}\n${bt11Data}\n${bt12Data}\n${bt13Data}\n${bt14Data}\n${bt15Data}\n${bt16Data}\n${bt17Data}\n${bt18Data}\n${bt19Data}\n${bt20Data}\n${bt21Data}\n${bt22Data}\n${bt23Data}\n${bt24Data}\n${bt25Data}\n${bt26Data}\n${bt27Data}\n${bt28Data}\n${bt29Data}\n${bt30Data}\n${bt31Data}\n${energyMarkersData}\n${tokensData}\n${meritsData}\n${sealedCardsData}\n${sleevesData}\n${playmatsData}\n${casesData}\n${separatorsData}`;
+      const mastersDataRaw = `${bt1Data}\n${promoData}\n${startersData}\n${expertsData}\n${expansionsData}\n${tb3Data}\n${tb2Data}\n${tb1Data}\n${eb1Data}\n${db3Data}\n${db2Data}\n${db1Data}\n${bt2Data}\n${bt3Data}\n${bt4Data}\n${bt5Data}\n${bt6Data}\n${bt7Data}\n${bt8Data}\n${bt9Data}\n${bt10Data}\n${bt11Data}\n${bt12Data}\n${bt13Data}\n${bt14Data}\n${bt15Data}\n${bt16Data}\n${bt17Data}\n${bt18Data}\n${bt19Data}\n${bt20Data}\n${bt21Data}\n${bt22Data}\n${bt23Data}\n${bt24Data}\n${bt25Data}\n${bt26Data}\n${bt27Data}\n${bt28Data}\n${bt29Data}\n${bt30Data}\n${bt31Data}\n${bt32Data}\n${energyMarkersData}\n${tokensData}\n${meritsData}\n${sealedCardsData}\n${sleevesData}\n${playmatsData}\n${casesData}\n${separatorsData}`;
       const combinedData = gameType === 'fusion' ? `${fusionWorldData}\n${st01Data}` : mastersDataRaw;
 
       let parsedCards: (Card & { baseIndex?: number })[] = combinedData.split('\n').filter(line => line.trim()).map((line, i) => {
@@ -14479,7 +14550,7 @@ export default function TrackerApp() {
           expansion: expansionId || 'BT1',
           imageUrl: imageUrl,
           backImageUrl: backImageUrl,
-          isFoil: ['SR', 'SPR', 'SCR', 'GDR', 'RLR', 'PRW', 'LEADER RARE', 'L*', 'C*', 'UC*', 'R*', 'SR*', 'SCR*', 'SCR**'].includes(rarity) || (cardNumber || '').includes('METAL'),
+          isFoil: ['SR', 'SPR', 'SCR', 'GDR', 'AGDR', 'RLR', 'PRW', 'LEADER RARE', 'L*', 'C*', 'UC*', 'R*', 'SR*', 'SCR*', 'SCR**'].includes(rarity) || (cardNumber || '').includes('METAL'),
           power: power,
           energy: energy,
           comboEnergy: comboEnergy,

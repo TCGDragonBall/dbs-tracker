@@ -71,6 +71,7 @@ BT1-053_PR	Senzu Bean	PR	Extra	Blue	BT1		1(B)						[Activate Battle] Choose up t
 BT1-053_PR02	Senzu Bean	PR	Extra	Blue	BT1		1(B)						[Activate Battle] Choose up to 1 of your cards. It gains +5000 power for the duration of the turn. Then, choose up to 2 of your energy and switch them to Active Mode.
 BT1-053_PR03	Senzu Bean	PR	Extra	Blue	BT1		1(B)						[Activate Battle] Choose up to 1 of your cards. It gains +5000 power for the duration of the turn. Then, choose up to 2 of your energy and switch them to Active Mode.
 BT1-053_PR05	Senzu Bean	PR	Extra	Blue	BT1		1(B)						[Activate Battle] Choose up to 1 of your cards. It gains +5000 power for the duration of the turn. Then, choose up to 2 of your energy and switch them to Active Mode.
+BT1-053_PR06	Senzu Bean	PR	Extra	Blue	BT1		1(B)						[Activate Battle] Choose up to 1 of your cards. It gains +5000 power for the duration of the turn. Then, choose up to 2 of your energy and switch them to Active Mode.
 BT1-054	Encouraging Presence Monaka	C	Extra	Blue	BT1		1(B)						[Activate Main] Your Leader Card gains [Double Strike] (This card inflicts 2 damage instead of 1 when attacking) for the duration of the turn. Then, draw 1 card.
 BT1-055	Whis's Coercion	C	Extra	Blue	BT1		1(B)						[Counter Attack] Negate the attack. Then, choose up to 1 of your energy and switch it to Active Mode.
 BT1-055_JP05	Whis's Coercion	PR	Extra	Blue	BT1		1(B)						[Counter Attack] Negate the attack. Then, choose up to 1 of your energy and switch it to Active Mode.
